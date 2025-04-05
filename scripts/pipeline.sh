@@ -155,40 +155,35 @@ echo "==========================================================================
 
 echo -e "\n====================================================== PROJECT STRUCTURE ======================================================"
 # Define output directories
-RESULTS_DIR="$PROJ_DIR/results"  # Stores general results of the entire project
-FASTQC_DIR="$RESULTS_DIR/fastqc"  # Stores FastQC reports for quality control analysis
-HOST_DNA_ANALYSIS_DIR="$RESULTS_DIR/host_dna_analysis"  # Stores host DNA-related outputs like BLAST, karyotype, etc.
-echo "Results are in $RESULTS_DIR (FastQC: $FASTQC_DIR, Host DNA: $HOST_DNA_ANALYSIS_DIR)."
+RESULTS_DIR="$PROJ_DIR/results"  # General results of the entire project
+FASTQC_DIR="$RESULTS_DIR/fastqc"  # FastQC reports for quality control analysis
+HOST_DNA_ANALYSIS_DIR="$RESULTS_DIR/host_dna_analysis"  # Host DNA-related outputs (e.g., BLAST, karyotype)
 
 PROCESSED_DIR="$(dirname "$RAW_FASTQ_DIR")/processed_data"  # Root directory for processed data
-TRIMMED_DIR="$PROCESSED_DIR/trimmed"  # Stores trimmed FASTQ files
+TRIMMED_DIR="$PROCESSED_DIR/trimmed"  # Trimmed FASTQ files
 
 # Define human DNA alignment outputs
-# These directories store files that are created once for the entire sub-project, not for each individual run.
-HUMAN_DIR="$PROCESSED_DIR/human"  # Stores human DNA-related outputs
-ALIGNED_SAM_DIR="$HUMAN_DIR/aligned_sam"  # Stores SAM files of host-aligned reads
-SORTED_BAM_DIR="$HUMAN_DIR/sorted_bam"  # Stores sorted BAM files of host-alignments
-BED_FILES_DIR="$HUMAN_DIR/bed_files"  # Stores BED files for host DNA reads
-tree -d "$HUMAN_DIR" 
-echo "Human DNA-related files (SAM, BAM, and BED) in HUMAN_DIR are created once per sub-project and do not change with each pipeline run."
+# These files are created once for the entire sub-project and do not change with each pipeline run.
+HUMAN_DIR="$PROCESSED_DIR/human"  # Human DNA-related outputs
+ALIGNED_SAM_DIR="$HUMAN_DIR/aligned_sam"  # SAM files of host-aligned reads
+SORTED_BAM_DIR="$HUMAN_DIR/sorted_bam"  # Sorted BAM files of host-alignments
+BED_FILES_DIR="$HUMAN_DIR/bed_files"  # BED files for host DNA reads
 
 # Define metagenomic Kraken2/Bracken output directories
-# Unlike the files in $HUMAN_DIR, these files are generated and overwritten with each pipeline execution.
-METAGENOMIC_DIR="$PROCESSED_DIR/metagenomic"  # Stores host-filtered reads and metagenomic classification results
-FILTERED_FASTQ_DIR="$METAGENOMIC_DIR/filtered_fastq"  # Stores host-removed paired FASTQ files
-KRAKEN2_DIR="$METAGENOMIC_DIR/kraken2"  # Stores Kraken2 classification results
-CLASSIFIED_DIR="$METAGENOMIC_DIR/classified"  # Stores classified reads after Kraken2
-UNCLASSIFIED_DIR="$METAGENOMIC_DIR/unclassified"  # Stores unclassified reads from Kraken2
-BRACKEN_DIR="$METAGENOMIC_DIR/bracken"  # Stores Bracken abundance estimation results
-echo "Intermediate metagenomic files in $METAGENOMIC_DIR are generated and overwritten with each pipeline execution and should be inspected beforehand if desired."
+# These files are overwritten with each pipeline execution.
+METAGENOMIC_DIR="$PROCESSED_DIR/metagenomic"  # Host-filtered reads and metagenomic classification results
+FILTERED_FASTQ_DIR="$METAGENOMIC_DIR/filtered_fastq"  # Host-removed paired FASTQ files
+KRAKEN2_DIR="$METAGENOMIC_DIR/kraken2"  # Kraken2 classification results
+CLASSIFIED_DIR="$METAGENOMIC_DIR/classified"  # Classified reads after Kraken2
+UNCLASSIFIED_DIR="$METAGENOMIC_DIR/unclassified"  # Unclassified reads from Kraken2
+BRACKEN_DIR="$METAGENOMIC_DIR/bracken"  # Bracken abundance estimation results
 
 # Define run-specific directories
-# These directories store final output for each run (e.g., Kraken2 classification, Bracken results, and others).
-RUN_DIR="$RESULTS_DIR/runs/$(date +"run_%d%m_%H%M")"  # Unique directory for each pipeline run, based on timestamp
-REPORTS_DIR="$RUN_DIR/reports"  # Stores Kraken2 and Bracken reports (k2report, breport, etc.)
-KRONA_DIR="$RUN_DIR/krona"  # Stores Krona plots for visualizing taxonomic classification
-DIVERSITY_DIR="$RUN_DIR/diversity"  # Stores diversity analysis results (e.g., alpha/beta diversity)
-echo "Run-specific results (e.g., Kraken2, Bracken) are in $RUN_DIR."
+# These directories store final output for each run (e.g., Kraken2, Bracken results).
+RUN_DIR="$RESULTS_DIR/runs/$(date +"run_%d%m_%H%M")"  # Unique directory for each pipeline run
+REPORTS_DIR="$RUN_DIR/reports"  # Kraken2 and Bracken reports (k2report, breport, etc.)
+KRONA_DIR="$RUN_DIR/krona"  # Krona plots for taxonomic classification
+DIVERSITY_DIR="$RUN_DIR/diversity"  # Diversity analysis results (e.g., alpha/beta diversity)
 
 # Create all necessary directories
 mkdir -p "$RESULTS_DIR" "$HOST_DNA_ANALYSIS_DIR" "$FASTQC_DIR/pre_trimming" "$FASTQC_DIR/post_trimming" \
@@ -196,7 +191,15 @@ mkdir -p "$RESULTS_DIR" "$HOST_DNA_ANALYSIS_DIR" "$FASTQC_DIR/pre_trimming" "$FA
     "$KRAKEN2_DIR" "$CLASSIFIED_DIR" "$UNCLASSIFIED_DIR" "$BRACKEN_DIR" "$REPORTS_DIR" \
     "$KRONA_DIR" "$DIVERSITY_DIR" "$SORTED_BAM_DIR" "$BED_FILES_DIR"
 
+# Display the directory structure of the project
+tree -d "$PROJ_DIR"
+
+# Inform the user about the project structure
+echo "Human DNA-related files (SAM, BAM, and BED) in the 'human' directory are created once per sub-project and remain unchanged across runs."
+echo "Intermediate metagenomic files in the 'metagenomic' directory are overwritten with each run and should be inspected beforehand if desired."
+echo "Results are stored in the 'results' directory (including FastQC, host DNA analysis, and run-specific results like Kraken2 and Bracken)."
 echo "✅ All output directories created successfully."
+
 if [[ "$TRIM" == true ]]; then
     
     echo -e "\n=================================================== QUALITY CONTROL & TRIMMING ==================================================="
