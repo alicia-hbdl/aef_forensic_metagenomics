@@ -36,4 +36,4 @@ for (file_path in file_paths) {
 output_dir <- dirname(dirname(file_paths[1]))
 output_file <- file.path(output_dir, "combined_breports.csv")
 write_csv(combined_table, output_file)
-print(combined_table)
+cat("Combined CSV file saved to:", output_file, "\n")

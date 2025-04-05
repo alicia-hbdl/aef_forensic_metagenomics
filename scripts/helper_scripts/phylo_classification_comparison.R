@@ -20,36 +20,32 @@ options(ENTREZ_KEY = "5a8133264ac32a3f11c0f1e666a90d96c908")
 
 # Parse command-line argument (input file path)
 args <- commandArgs(trailingOnly = TRUE)
-if (length(args) != 1) stop("Usage: Rscript phylo_classification_comparison.R <path/to/pavian/comparison_table.tsv>")
+if (length(args) != 1) stop("Usage: Rscript phylo_classification_comparison.R <path/to/pavian/combined_breports.csv>")
 file_path <- args[1]
 if (!file.exists(file_path)) stop("Error: Comparison table not found!")
 
 # Define the species that should be bold
+# Make sure these are the ground_truth species
 highlight_species <- c("Bacillus subtilis", "Enterococcus faecalis", "Escherichia coli", 
                        "Limosilactobacillus fermentum", "Listeria monocytogenes", 
                        "Pseudomonas aeruginosa", "Salmonella enterica", 
                        "Staphylococcus aureus", "Saccharomyces cerevisiae", 
                        "Cryptococcus neoformans")
 
-# Load and clean read count table
-read_counts <- read_tsv(file_path, show_col_types = FALSE) %>%
-  mutate(name = gsub("root><wbr>...><wbr>", "", name)) %>%  # Remove unwanted text from 'name'
+# Load and clean combined breport table
+read_counts <- read_csv(file_path, show_col_types = FALSE) %>%
   mutate(
-    name = recode(name,
-                  "Bacillus intestinalis" = "Bacillus spizizenii",  # Standardize taxonomic names (ensures consistency between the phylogenetic tree and species heatmap)
-                  "Cryptococcus gattii VGI" = "Cryptococcus gattii",
-                  "Cryptococcus gattii VGII" = "Cryptococcus deuterogattii")) %>%
-  rename_with(~ gsub(".cladeReads", "", .x)) %>%  # Clean column names
-  select(-c(taxRank, taxID, Max, lineage)) %>%  # Remove unnecessary columns
-  { 
-    existing <- .
-    missing_species <- setdiff(highlight_species, existing$name)
-    missing_rows <- tibble(name = missing_species) %>%
-      mutate(across(-name, ~ 0))  # Fill other columns with 0
-    bind_rows(existing, missing_rows)
-  }
+    species = recode(species,
+                     "Bacillus intestinalis" = "Bacillus spizizenii",  # Standardize taxonomic names (ensures consistency between the phylogenetic tree and species heatmap)
+                     "Cryptococcus gattii VGI" = "Cryptococcus gattii",
+                     "Cryptococcus gattii VGII" = "Cryptococcus deuterogattii")
+  ) %>%
+  # Replace all NAs with 0
+  replace(is.na(.), 0) %>%
+  # Filter rows where the average of the numeric columns (excluding species) is greater than 3
+  filter(rowMeans(select(., -species)) > 10) # Plot how precision varies across thresholds for this one
 
-read_counts[is.na(read_counts)] <- 0  # Replace all NAs with 0
+print(read_counts)
 
 # Read CSV and transform using pipes
 total_reads_path <- file.path(dirname(file_path), "../../../../processed_data/metagenomic/total_reads.csv")
