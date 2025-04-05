@@ -169,7 +169,8 @@ HUMAN_DIR="$PROCESSED_DIR/human"  # Stores human DNA-related outputs
 ALIGNED_SAM_DIR="$HUMAN_DIR/aligned_sam"  # Stores SAM files of host-aligned reads
 SORTED_BAM_DIR="$HUMAN_DIR/sorted_bam"  # Stores sorted BAM files of host-alignments
 BED_FILES_DIR="$HUMAN_DIR/bed_files"  # Stores BED files for host DNA reads
-echo "Human DNA-related files (SAM, BAM, and BED) in $HUMAN_DIR are created once per sub-project and do not change with each pipeline run."
+tree -d "$HUMAN_DIR" 
+echo "Human DNA-related files (SAM, BAM, and BED) in HUMAN_DIR are created once per sub-project and do not change with each pipeline run."
 
 # Define metagenomic Kraken2/Bracken output directories
 # Unlike the files in $HUMAN_DIR, these files are generated and overwritten with each pipeline execution.
