@@ -47,13 +47,13 @@ mapfile -t SORTED_BEDS < <(find "$BED_FILES_DIR" -name "*.sorted.bed")
 
 if (( ${#SORTED_BEDS[@]} < 2 )); then
     echo "⚠️ Only one BED file found – skipping multiinter and using it directly."
-    cp "${SORTED_BEDS[0]}" "$HOST_DNA_ANALYSIS_DIR/common_intervals.bed"
+    cp "${SORTED_BEDS[0]}" "$BED_FILES_DIR/common_intervals.bed"
 else
-    bedtools multiinter -header -i "${SORTED_BEDS[@]}" > "$HOST_DNA_ANALYSIS_DIR/common_intervals.bed"
+    bedtools multiinter -header -i "${SORTED_BEDS[@]}" > "$BED_FILES_DIR/common_intervals.bed"
 fi
 
 echo "Generating karyotype plot..."
-Rscript "$ROOT_DIR/scripts/karyotype.R" "$HOST_DNA_ANALYSIS_DIR/common_intervals.bed" && \
+Rscript "$ROOT_DIR/scripts/karyotype.R" "$BED_FILES_DIR/common_intervals.bed" && \
 echo "✅ Karyotype plot generated."
     
 echo -e "\n================================================== BLAST =================================================="
