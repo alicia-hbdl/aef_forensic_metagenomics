@@ -108,18 +108,22 @@ while [[ $# -gt 0 ]]; do
           shift
           ;;            
         
-      # Process host DNA Bowtie2 index prefix
-      -r|--remove-host-dna)  
-          if [[ -z "$2" || "$2" == -* || ! -f "$2.1.bt2" || ! -f "$2.2.bt2" || ! -f "$2.3.bt2" || ! -f "$2.4.bt2" || ! -f "$2.rev.1.bt2" || ! -f "$2.rev.2.bt2" ]]; then
-              echo "⚠️ Warning: Incomplete or missing Bowtie2 index. Using default: $BOWTIE_PREFIX"
-          else
-              BOWTIE_PREFIX="$2"
-              echo "✅ Bowtie2 index set to: $BOWTIE_PREFIX"
-          fi
-          REMOVE_HOST_DNA=true
-          shift 2
-          ;;        
-        
+    # Process host DNA Bowtie2 index prefix
+    --r|--remove-host-dna)
+        if [[ -z "$2" || "$2" == -* ]]; then
+            echo "⚠️ Warning: No argument provided. Using default: $BOWTIE_PREFIX"
+            shift 
+        elif [[ ! -f "$2.1.bt2" || ! -f "$2.2.bt2" || ! -f "$2.3.bt2" || ! -f "$2.4.bt2" || ! -f "$2.rev.1.bt2" || ! -f "$2.rev.2.bt2" ]]; then
+            echo "⚠️ Warning: Incomplete or missing Bowtie2 index. Using default: $BOWTIE_PREFIX"
+            shift 2
+        else
+            BOWTIE_PREFIX="$2"
+            echo "✅ Bowtie2 index set to: $BOWTIE_PREFIX"
+            shift 2
+        fi
+        REMOVE_HOST_DNA=true
+        ;;       
+         
       # Handle unknown arguments
       *) 
           echo "❌ Unknown argument: $1. Usage: $0 --raw-fastq/-fq <reads_dir> [--database/-db <database_path>] [-t | --trim] [-r | --remove-host-dna <index_path>]"
