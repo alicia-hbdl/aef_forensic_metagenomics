@@ -1,0 +1,86 @@
+---
+title: "Forensics Final Project MSc Applied Bioinformatics"
+format: html
+editor: visual
+---
+
+# Forensics Final Project MSc Applied Bioinformatics
+
+## Entropy
+
+```{r}
+# Load required libraries
+library(tidyverse)       # Data manipulation
+library(karyoploteR)     # Karyotype visualization
+library(GenomicRanges)   # Handling genomic ranges
+library(Biostrings)      # Sequence extraction
+library(BSgenome.Hsapiens.UCSC.hg38)  # Human genome reference (hg38)
+
+# Define file path for the input BED file
+bed_file <- "/Users/aliciahobdell/Desktop/forensic_bioinformatics_project/metagenome_analysis/zymobiomics_folder/outputs/alignment_similarity/common_intersections.bed"
+
+# Load and filter the BED file
+bed_data <- read.table(bed_file, header=TRUE, sep="\t", stringsAsFactors=FALSE) %>%
+  select(chrom, start, end, num) %>%  # Keep only relevant columns
+  filter(chrom %in% c(paste0("chr", 1:22), "chrX", "chrY")) %>%  # Keep only standard chromosomes
+  filter(num > 1) %>% # Remove low-similarity regions
+  arrange(chrom, start) # Sort data to prepare for merging
+
+# Merge consecutive regions where `end == start` of the next row
+merged_regions <- bed_data %>%
+  group_by(chrom) %>%
+  mutate(
+    group = cumsum(start != lag(end, default = start[1])) 
+  ) %>%
+  group_by(chrom, group) %>%
+  summarise(
+    start = min(start),
+    end = max(end),
+    num = max(num),  # Keep the highest read count
+    .groups = "drop"
+  ) %>%
+  select(-group)  # Remove helper column
+
+# Convert to GRanges object for sequence extraction
+regions <- GRanges(seqnames = merged_regions$chrom,
+                   ranges = IRanges(start = merged_regions$start, end = merged_regions$end))
+
+# Extract sequences from the reference genome
+merged_regions$sequence <- as.character(getSeq(BSgenome.Hsapiens.UCSC.hg38, regions))
+
+# Compute sequence length statistics
+sequence_sizes <- nchar(merged_regions$sequence)
+
+hist(sequence_sizes)
+head(merged_regions)
+
+
+# Function to compute Shannon entropy for a sequence
+shannon_entropy <- function(seq) {
+  bases <- strsplit(seq, "")[[1]]  # Split sequence into nucleotides
+  freqs <- table(bases) / length(bases)  # Compute nucleotide frequencies
+  entropy <- -sum(freqs * log2(freqs), na.rm = TRUE)  # Shannon entropy formula
+  return(entropy)
+}
+
+# Add entropy column to merged_regions
+merged_regions <- merged_regions %>%
+  mutate(entropy = sapply(sequence, shannon_entropy))  # Compute entropy for each sequence
+# Low entropy (~0 to 1.0): Highly repetitive sequences (e.g., "AAAAAAAAA")
+# High entropy (~1.8 to 2.0): More complex sequences with diverse bases
+# The human genome (~3.2 billion bases) is relatively complex, with a near-random distribution of A, T, C, G in coding regions.
+# Whole-genome entropy estimates range between 1.9 - 2.0 bits per base.
+# Some highly repetitive regions (e.g., telomeres, centromeres, microsatellites) have much lower entropy (~0.5 - 1.5).
+
+# Display updated dataframe
+print(merged_regions)
+mean(merged_regions$entropy)
+min(merged_regions$entropy)
+max(merged_regions$entropy)
+
+high_entropy_regions <- merged_regions %>%
+  filter(entropy > 1.5)  # Keep only rows with high entropy
+
+print(high_entropy_regions)
+
+```

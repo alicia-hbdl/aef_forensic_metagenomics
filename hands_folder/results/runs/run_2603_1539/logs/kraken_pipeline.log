@@ -1,0 +1,794 @@
+
+================================================= CONDA ENVIRONMENT ACTIVATION ==================================================
+
+================================================= ARGUMENT PARSING & VALIDATION =================================================
+Raw FASTQ directory path: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/raw_data/
+Database path: /scratch/grp/msc_appbio/recovered/core_nt_database
+
+======================================================= PIPELINE SUMMARY ========================================================
+Quality Control & Trimming: Disabled ❌
+⚠️ This step is optional, but it must have been performed at least once on the raw reads for the rest of the pipeline to function correctly.
+
+Host DNA Removal: Disabled ❌
+Host DNA Bowtie2 Index Prefix: /scratch/users/k24087895/final_project/metagenome_analysis/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as
+⚠️ This step is optional, but it must have been performed at least once on the trimmed reads for the rest of the pipeline to function correctly.
+
+Kraken2/Bracken Database Path: /scratch/grp/msc_appbio/recovered/core_nt_database
+=================================================================================================================================
+
+====================================================== DIRECTORY STRUCTURE ======================================================
+✅ All output directories created successfully.
+
+================================================= METAGENOMIC ABUNDANCE ESTIMATION =================================================
+⚠️ This step assumes reads have already been trimmed with Trimmomatic and host DNA removed with Bowtie2. Processed reads must be in the correct directory.
+
+Processing sample: BR1_S10
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/BR1_S10.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/classified/BR1_S10_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/unclassified/BR1_S10_unclassified#.fastq"                "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/BR1_S10_metagenomic.1.gz" "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/BR1_S10_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/kraken2/BR1_S10.kraken2" --use-names 2>&1
+Loading database information... done.
+109162 sequences (15.30 Mbp) processed in 0.591s (11082.8 Kseq/m, 1552.90 Mbp/m).
+  52244 sequences classified (47.86%)
+  56918 sequences unclassified (52.14%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/BR1_S10.k2report -o /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/BR1_S10.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/BR1_S10.k2report
+PROGRAM START TIME: 03-26-2025 15:43:03
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/BR1_S10.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 409 
+	  >> Number of species with reads > threshold: 31 
+	  >> Number of species with reads < threshold: 378 
+    >>> Total reads in sample: 109162
+	  >> Total reads kept at species level (reads > threshold): 16353
+	  >> Total reads discarded (species reads < threshold): 683
+	  >> Reads distributed: 34582
+	  >> Reads not distributed (eg. no species above threshold): 626
+	  >> Unclassified reads: 56918
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/BR1_S10.bracken
+PROGRAM END TIME: 03-26-2025 15:43:11
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/krona/BR1_S10.krona.html...
+✅ Krona plot generated.
+
+Processing sample: BR2_S11
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/BR2_S11.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/classified/BR2_S11_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/unclassified/BR2_S11_unclassified#.fastq"                "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/BR2_S11_metagenomic.1.gz" "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/BR2_S11_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/kraken2/BR2_S11.kraken2" --use-names 2>&1
+Loading database information... done.
+133783 sequences (21.98 Mbp) processed in 0.763s (10517.5 Kseq/m, 1728.20 Mbp/m).
+  118406 sequences classified (88.51%)
+  15377 sequences unclassified (11.49%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/BR2_S11.k2report -o /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/BR2_S11.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/BR2_S11.k2report
+PROGRAM START TIME: 03-26-2025 15:46:49
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/BR2_S11.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 144 
+	  >> Number of species with reads > threshold: 8 
+	  >> Number of species with reads < threshold: 136 
+    >>> Total reads in sample: 133783
+	  >> Total reads kept at species level (reads > threshold): 80933
+	  >> Total reads discarded (species reads < threshold): 188
+	  >> Reads distributed: 35023
+	  >> Reads not distributed (eg. no species above threshold): 2262
+	  >> Unclassified reads: 15377
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/BR2_S11.bracken
+PROGRAM END TIME: 03-26-2025 15:46:57
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/krona/BR2_S11.krona.html...
+✅ Krona plot generated.
+
+Processing sample: BR3_S12
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/BR3_S12.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/classified/BR3_S12_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/unclassified/BR3_S12_unclassified#.fastq"                "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/BR3_S12_metagenomic.1.gz" "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/BR3_S12_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/kraken2/BR3_S12.kraken2" --use-names 2>&1
+Loading database information... done.
+121363 sequences (15.97 Mbp) processed in 0.577s (12626.6 Kseq/m, 1661.96 Mbp/m).
+  92218 sequences classified (75.99%)
+  29145 sequences unclassified (24.01%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/BR3_S12.k2report -o /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/BR3_S12.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/BR3_S12.k2report
+PROGRAM START TIME: 03-26-2025 15:50:35
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/BR3_S12.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 264 
+	  >> Number of species with reads > threshold: 40 
+	  >> Number of species with reads < threshold: 224 
+    >>> Total reads in sample: 121363
+	  >> Total reads kept at species level (reads > threshold): 4606
+	  >> Total reads discarded (species reads < threshold): 440
+	  >> Reads distributed: 87121
+	  >> Reads not distributed (eg. no species above threshold): 51
+	  >> Unclassified reads: 29145
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/BR3_S12.bracken
+PROGRAM END TIME: 03-26-2025 15:50:43
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/krona/BR3_S12.krona.html...
+✅ Krona plot generated.
+
+Processing sample: BS1_S1
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/BS1_S1.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/classified/BS1_S1_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/unclassified/BS1_S1_unclassified#.fastq"                "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/BS1_S1_metagenomic.1.gz" "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/BS1_S1_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/kraken2/BS1_S1.kraken2" --use-names 2>&1
+Loading database information... done.
+967 sequences (0.12 Mbp) processed in 0.034s (1717.9 Kseq/m, 220.84 Mbp/m).
+  515 sequences classified (53.26%)
+  452 sequences unclassified (46.74%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/BS1_S1.k2report -o /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/BS1_S1.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/BS1_S1.k2report
+PROGRAM START TIME: 03-26-2025 15:54:20
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/BS1_S1.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 109 
+	  >> Number of species with reads > threshold: 4 
+	  >> Number of species with reads < threshold: 105 
+    >>> Total reads in sample: 967
+	  >> Total reads kept at species level (reads > threshold): 229
+	  >> Total reads discarded (species reads < threshold): 136
+	  >> Reads distributed: 69
+	  >> Reads not distributed (eg. no species above threshold): 81
+	  >> Unclassified reads: 452
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/BS1_S1.bracken
+PROGRAM END TIME: 03-26-2025 15:54:27
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/krona/BS1_S1.krona.html...
+✅ Krona plot generated.
+
+Processing sample: BS2_S2
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/BS2_S2.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/classified/BS2_S2_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/unclassified/BS2_S2_unclassified#.fastq"                "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/BS2_S2_metagenomic.1.gz" "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/BS2_S2_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/kraken2/BS2_S2.kraken2" --use-names 2>&1
+Loading database information... done.
+643 sequences (0.09 Mbp) processed in 0.031s (1237.2 Kseq/m, 174.13 Mbp/m).
+  351 sequences classified (54.59%)
+  292 sequences unclassified (45.41%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/BS2_S2.k2report -o /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/BS2_S2.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/BS2_S2.k2report
+PROGRAM START TIME: 03-26-2025 15:58:03
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/BS2_S2.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 106 
+	  >> Number of species with reads > threshold: 4 
+	  >> Number of species with reads < threshold: 102 
+    >>> Total reads in sample: 643
+	  >> Total reads kept at species level (reads > threshold): 135
+	  >> Total reads discarded (species reads < threshold): 122
+	  >> Reads distributed: 29
+	  >> Reads not distributed (eg. no species above threshold): 65
+	  >> Unclassified reads: 292
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/BS2_S2.bracken
+PROGRAM END TIME: 03-26-2025 15:58:11
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/krona/BS2_S2.krona.html...
+✅ Krona plot generated.
+
+Processing sample: BS3_S3
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/BS3_S3.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/classified/BS3_S3_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/unclassified/BS3_S3_unclassified#.fastq"                "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/BS3_S3_metagenomic.1.gz" "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/BS3_S3_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/kraken2/BS3_S3.kraken2" --use-names 2>&1
+Loading database information... done.
+364 sequences (0.05 Mbp) processed in 0.026s (835.1 Kseq/m, 122.16 Mbp/m).
+  195 sequences classified (53.57%)
+  169 sequences unclassified (46.43%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/BS3_S3.k2report -o /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/BS3_S3.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/BS3_S3.k2report
+PROGRAM START TIME: 03-26-2025 16:01:47
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/BS3_S3.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 62 
+	  >> Number of species with reads > threshold: 2 
+	  >> Number of species with reads < threshold: 60 
+    >>> Total reads in sample: 364
+	  >> Total reads kept at species level (reads > threshold): 53
+	  >> Total reads discarded (species reads < threshold): 76
+	  >> Reads distributed: 30
+	  >> Reads not distributed (eg. no species above threshold): 36
+	  >> Unclassified reads: 169
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/BS3_S3.bracken
+PROGRAM END TIME: 03-26-2025 16:01:55
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/krona/BS3_S3.krona.html...
+✅ Krona plot generated.
+
+Processing sample: DR1_S13
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/DR1_S13.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/classified/DR1_S13_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/unclassified/DR1_S13_unclassified#.fastq"                "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/DR1_S13_metagenomic.1.gz" "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/DR1_S13_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/kraken2/DR1_S13.kraken2" --use-names 2>&1
+Loading database information... done.
+154174 sequences (22.72 Mbp) processed in 0.788s (11743.1 Kseq/m, 1730.53 Mbp/m).
+  116100 sequences classified (75.30%)
+  38074 sequences unclassified (24.70%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/DR1_S13.k2report -o /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/DR1_S13.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/DR1_S13.k2report
+PROGRAM START TIME: 03-26-2025 16:05:33
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/DR1_S13.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 270 
+	  >> Number of species with reads > threshold: 24 
+	  >> Number of species with reads < threshold: 246 
+    >>> Total reads in sample: 154174
+	  >> Total reads kept at species level (reads > threshold): 112087
+	  >> Total reads discarded (species reads < threshold): 362
+	  >> Reads distributed: 1807
+	  >> Reads not distributed (eg. no species above threshold): 1844
+	  >> Unclassified reads: 38074
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/DR1_S13.bracken
+PROGRAM END TIME: 03-26-2025 16:05:40
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/krona/DR1_S13.krona.html...
+✅ Krona plot generated.
+
+Processing sample: DR2_S14
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/DR2_S14.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/classified/DR2_S14_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/unclassified/DR2_S14_unclassified#.fastq"                "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/DR2_S14_metagenomic.1.gz" "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/DR2_S14_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/kraken2/DR2_S14.kraken2" --use-names 2>&1
+Loading database information... done.
+139219 sequences (24.92 Mbp) processed in 0.919s (9084.8 Kseq/m, 1626.03 Mbp/m).
+  125940 sequences classified (90.46%)
+  13279 sequences unclassified (9.54%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/DR2_S14.k2report -o /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/DR2_S14.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/DR2_S14.k2report
+PROGRAM START TIME: 03-26-2025 16:09:18
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/DR2_S14.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 255 
+	  >> Number of species with reads > threshold: 32 
+	  >> Number of species with reads < threshold: 223 
+    >>> Total reads in sample: 139219
+	  >> Total reads kept at species level (reads > threshold): 99484
+	  >> Total reads discarded (species reads < threshold): 360
+	  >> Reads distributed: 25850
+	  >> Reads not distributed (eg. no species above threshold): 246
+	  >> Unclassified reads: 13279
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/DR2_S14.bracken
+PROGRAM END TIME: 03-26-2025 16:09:26
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/krona/DR2_S14.krona.html...
+✅ Krona plot generated.
+
+Processing sample: DR3_S15
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/DR3_S15.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/classified/DR3_S15_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/unclassified/DR3_S15_unclassified#.fastq"                "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/DR3_S15_metagenomic.1.gz" "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/DR3_S15_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/kraken2/DR3_S15.kraken2" --use-names 2>&1
+Loading database information... done.
+112146 sequences (20.69 Mbp) processed in 0.805s (8362.3 Kseq/m, 1543.07 Mbp/m).
+  84510 sequences classified (75.36%)
+  27636 sequences unclassified (24.64%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/DR3_S15.k2report -o /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/DR3_S15.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/DR3_S15.k2report
+PROGRAM START TIME: 03-26-2025 16:13:03
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/DR3_S15.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 342 
+	  >> Number of species with reads > threshold: 45 
+	  >> Number of species with reads < threshold: 297 
+    >>> Total reads in sample: 112146
+	  >> Total reads kept at species level (reads > threshold): 55461
+	  >> Total reads discarded (species reads < threshold): 556
+	  >> Reads distributed: 28385
+	  >> Reads not distributed (eg. no species above threshold): 108
+	  >> Unclassified reads: 27636
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/DR3_S15.bracken
+PROGRAM END TIME: 03-26-2025 16:13:11
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/krona/DR3_S15.krona.html...
+✅ Krona plot generated.
+
+Processing sample: DS1_S4
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/DS1_S4.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/classified/DS1_S4_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/unclassified/DS1_S4_unclassified#.fastq"                "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/DS1_S4_metagenomic.1.gz" "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/DS1_S4_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/kraken2/DS1_S4.kraken2" --use-names 2>&1
+Loading database information... done.
+1828 sequences (0.28 Mbp) processed in 0.058s (1898.9 Kseq/m, 288.73 Mbp/m).
+  1293 sequences classified (70.73%)
+  535 sequences unclassified (29.27%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/DS1_S4.k2report -o /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/DS1_S4.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/DS1_S4.k2report
+PROGRAM START TIME: 03-26-2025 16:16:47
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/DS1_S4.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 156 
+	  >> Number of species with reads > threshold: 7 
+	  >> Number of species with reads < threshold: 149 
+    >>> Total reads in sample: 1828
+	  >> Total reads kept at species level (reads > threshold): 708
+	  >> Total reads discarded (species reads < threshold): 242
+	  >> Reads distributed: 257
+	  >> Reads not distributed (eg. no species above threshold): 86
+	  >> Unclassified reads: 535
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/DS1_S4.bracken
+PROGRAM END TIME: 03-26-2025 16:16:55
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/krona/DS1_S4.krona.html...
+✅ Krona plot generated.
+
+Processing sample: DS2_S5
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/DS2_S5.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/classified/DS2_S5_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/unclassified/DS2_S5_unclassified#.fastq"                "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/DS2_S5_metagenomic.1.gz" "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/DS2_S5_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/kraken2/DS2_S5.kraken2" --use-names 2>&1
+Loading database information... done.
+3104 sequences (0.52 Mbp) processed in 0.102s (1834.1 Kseq/m, 310.13 Mbp/m).
+  2344 sequences classified (75.52%)
+  760 sequences unclassified (24.48%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/DS2_S5.k2report -o /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/DS2_S5.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/DS2_S5.k2report
+PROGRAM START TIME: 03-26-2025 16:20:33
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/DS2_S5.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 265 
+	  >> Number of species with reads > threshold: 15 
+	  >> Number of species with reads < threshold: 250 
+    >>> Total reads in sample: 3104
+	  >> Total reads kept at species level (reads > threshold): 1313
+	  >> Total reads discarded (species reads < threshold): 377
+	  >> Reads distributed: 543
+	  >> Reads not distributed (eg. no species above threshold): 111
+	  >> Unclassified reads: 760
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/DS2_S5.bracken
+PROGRAM END TIME: 03-26-2025 16:20:41
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/krona/DS2_S5.krona.html...
+✅ Krona plot generated.
+
+Processing sample: DS3_S6
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/DS3_S6.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/classified/DS3_S6_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/unclassified/DS3_S6_unclassified#.fastq"                "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/DS3_S6_metagenomic.1.gz" "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/DS3_S6_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/kraken2/DS3_S6.kraken2" --use-names 2>&1
+Loading database information... done.
+716 sequences (0.11 Mbp) processed in 0.032s (1329.7 Kseq/m, 202.49 Mbp/m).
+  529 sequences classified (73.88%)
+  187 sequences unclassified (26.12%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/DS3_S6.k2report -o /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/DS3_S6.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/DS3_S6.k2report
+PROGRAM START TIME: 03-26-2025 16:24:16
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/DS3_S6.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 83 
+	  >> Number of species with reads > threshold: 3 
+	  >> Number of species with reads < threshold: 80 
+    >>> Total reads in sample: 716
+	  >> Total reads kept at species level (reads > threshold): 246
+	  >> Total reads discarded (species reads < threshold): 129
+	  >> Reads distributed: 104
+	  >> Reads not distributed (eg. no species above threshold): 50
+	  >> Unclassified reads: 187
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/DS3_S6.bracken
+PROGRAM END TIME: 03-26-2025 16:24:24
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/krona/DS3_S6.krona.html...
+✅ Krona plot generated.
+
+Processing sample: LR1_S16
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/LR1_S16.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/classified/LR1_S16_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/unclassified/LR1_S16_unclassified#.fastq"                "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/LR1_S16_metagenomic.1.gz" "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/LR1_S16_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/kraken2/LR1_S16.kraken2" --use-names 2>&1
+Loading database information... done.
+189616 sequences (34.20 Mbp) processed in 1.299s (8760.7 Kseq/m, 1579.93 Mbp/m).
+  168258 sequences classified (88.74%)
+  21358 sequences unclassified (11.26%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/LR1_S16.k2report -o /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/LR1_S16.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/LR1_S16.k2report
+PROGRAM START TIME: 03-26-2025 16:28:02
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/LR1_S16.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 944 
+	  >> Number of species with reads > threshold: 72 
+	  >> Number of species with reads < threshold: 872 
+    >>> Total reads in sample: 189616
+	  >> Total reads kept at species level (reads > threshold): 104120
+	  >> Total reads discarded (species reads < threshold): 1508
+	  >> Reads distributed: 62286
+	  >> Reads not distributed (eg. no species above threshold): 344
+	  >> Unclassified reads: 21358
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/LR1_S16.bracken
+PROGRAM END TIME: 03-26-2025 16:28:09
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/krona/LR1_S16.krona.html...
+✅ Krona plot generated.
+
+Processing sample: LR2_S17
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/LR2_S17.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/classified/LR2_S17_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/unclassified/LR2_S17_unclassified#.fastq"                "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/LR2_S17_metagenomic.1.gz" "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/LR2_S17_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/kraken2/LR2_S17.kraken2" --use-names 2>&1
+Loading database information... done.
+152868 sequences (21.84 Mbp) processed in 0.883s (10391.1 Kseq/m, 1484.46 Mbp/m).
+  125965 sequences classified (82.40%)
+  26903 sequences unclassified (17.60%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/LR2_S17.k2report -o /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/LR2_S17.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/LR2_S17.k2report
+PROGRAM START TIME: 03-26-2025 16:31:46
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/LR2_S17.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 620 
+	  >> Number of species with reads > threshold: 53 
+	  >> Number of species with reads < threshold: 567 
+    >>> Total reads in sample: 152868
+	  >> Total reads kept at species level (reads > threshold): 88020
+	  >> Total reads discarded (species reads < threshold): 891
+	  >> Reads distributed: 36796
+	  >> Reads not distributed (eg. no species above threshold): 258
+	  >> Unclassified reads: 26903
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/LR2_S17.bracken
+PROGRAM END TIME: 03-26-2025 16:31:54
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/krona/LR2_S17.krona.html...
+✅ Krona plot generated.
+
+Processing sample: LR3_S18
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/LR3_S18.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/classified/LR3_S18_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/unclassified/LR3_S18_unclassified#.fastq"                "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/LR3_S18_metagenomic.1.gz" "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/LR3_S18_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/kraken2/LR3_S18.kraken2" --use-names 2>&1
+Loading database information... done.
+877494 sequences (130.95 Mbp) processed in 4.596s (11455.7 Kseq/m, 1709.61 Mbp/m).
+  780268 sequences classified (88.92%)
+  97226 sequences unclassified (11.08%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/LR3_S18.k2report -o /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/LR3_S18.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/LR3_S18.k2report
+PROGRAM START TIME: 03-26-2025 16:35:37
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/LR3_S18.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 1961 
+	  >> Number of species with reads > threshold: 144 
+	  >> Number of species with reads < threshold: 1817 
+    >>> Total reads in sample: 877494
+	  >> Total reads kept at species level (reads > threshold): 518896
+	  >> Total reads discarded (species reads < threshold): 3506
+	  >> Reads distributed: 255992
+	  >> Reads not distributed (eg. no species above threshold): 1874
+	  >> Unclassified reads: 97226
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/LR3_S18.bracken
+PROGRAM END TIME: 03-26-2025 16:35:45
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/krona/LR3_S18.krona.html...
+✅ Krona plot generated.
+
+Processing sample: LS1_S7
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/LS1_S7.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/classified/LS1_S7_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/unclassified/LS1_S7_unclassified#.fastq"                "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/LS1_S7_metagenomic.1.gz" "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/LS1_S7_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/kraken2/LS1_S7.kraken2" --use-names 2>&1
+Loading database information... done.
+109951 sequences (16.31 Mbp) processed in 0.896s (7366.4 Kseq/m, 1092.82 Mbp/m).
+  100264 sequences classified (91.19%)
+  9687 sequences unclassified (8.81%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/LS1_S7.k2report -o /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/LS1_S7.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/LS1_S7.k2report
+PROGRAM START TIME: 03-26-2025 16:39:24
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/LS1_S7.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 1041 
+	  >> Number of species with reads > threshold: 60 
+	  >> Number of species with reads < threshold: 981 
+    >>> Total reads in sample: 109951
+	  >> Total reads kept at species level (reads > threshold): 63967
+	  >> Total reads discarded (species reads < threshold): 1576
+	  >> Reads distributed: 34345
+	  >> Reads not distributed (eg. no species above threshold): 376
+	  >> Unclassified reads: 9687
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/LS1_S7.bracken
+PROGRAM END TIME: 03-26-2025 16:39:32
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/krona/LS1_S7.krona.html...
+✅ Krona plot generated.
+
+Processing sample: LS2_S8
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/LS2_S8.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/classified/LS2_S8_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/unclassified/LS2_S8_unclassified#.fastq"                "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/LS2_S8_metagenomic.1.gz" "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/LS2_S8_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/kraken2/LS2_S8.kraken2" --use-names 2>&1
+Loading database information... done.
+108327 sequences (16.39 Mbp) processed in 0.853s (7619.3 Kseq/m, 1153.12 Mbp/m).
+  99582 sequences classified (91.93%)
+  8745 sequences unclassified (8.07%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/LS2_S8.k2report -o /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/LS2_S8.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/LS2_S8.k2report
+PROGRAM START TIME: 03-26-2025 16:43:10
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/LS2_S8.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 1091 
+	  >> Number of species with reads > threshold: 60 
+	  >> Number of species with reads < threshold: 1031 
+    >>> Total reads in sample: 108327
+	  >> Total reads kept at species level (reads > threshold): 63450
+	  >> Total reads discarded (species reads < threshold): 1604
+	  >> Reads distributed: 34203
+	  >> Reads not distributed (eg. no species above threshold): 325
+	  >> Unclassified reads: 8745
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/LS2_S8.bracken
+PROGRAM END TIME: 03-26-2025 16:43:17
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/krona/LS2_S8.krona.html...
+✅ Krona plot generated.
+
+Processing sample: LS3_S9
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/LS3_S9.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/classified/LS3_S9_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/unclassified/LS3_S9_unclassified#.fastq"                "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/LS3_S9_metagenomic.1.gz" "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/LS3_S9_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/kraken2/LS3_S9.kraken2" --use-names 2>&1
+Loading database information... done.
+115112 sequences (19.82 Mbp) processed in 1.090s (6336.1 Kseq/m, 1091.09 Mbp/m).
+  107966 sequences classified (93.79%)
+  7146 sequences unclassified (6.21%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/LS3_S9.k2report -o /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/LS3_S9.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/LS3_S9.k2report
+PROGRAM START TIME: 03-26-2025 16:46:58
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/LS3_S9.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 1216 
+	  >> Number of species with reads > threshold: 63 
+	  >> Number of species with reads < threshold: 1153 
+    >>> Total reads in sample: 115112
+	  >> Total reads kept at species level (reads > threshold): 70378
+	  >> Total reads discarded (species reads < threshold): 1831
+	  >> Reads distributed: 35403
+	  >> Reads not distributed (eg. no species above threshold): 354
+	  >> Unclassified reads: 7146
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/LS3_S9.bracken
+PROGRAM END TIME: 03-26-2025 16:47:06
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/krona/LS3_S9.krona.html...
+✅ Krona plot generated.
+
+Processing sample: NR1_S22
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/NR1_S22.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/classified/NR1_S22_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/unclassified/NR1_S22_unclassified#.fastq"                "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/NR1_S22_metagenomic.1.gz" "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/NR1_S22_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/kraken2/NR1_S22.kraken2" --use-names 2>&1
+Loading database information... done.
+44141 sequences (4.24 Mbp) processed in 0.172s (15390.1 Kseq/m, 1480.03 Mbp/m).
+  2882 sequences classified (6.53%)
+  41259 sequences unclassified (93.47%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/NR1_S22.k2report -o /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/NR1_S22.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/NR1_S22.k2report
+PROGRAM START TIME: 03-26-2025 16:50:44
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/NR1_S22.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 126 
+	  >> Number of species with reads > threshold: 8 
+	  >> Number of species with reads < threshold: 118 
+    >>> Total reads in sample: 44141
+	  >> Total reads kept at species level (reads > threshold): 2529
+	  >> Total reads discarded (species reads < threshold): 181
+	  >> Reads distributed: 118
+	  >> Reads not distributed (eg. no species above threshold): 54
+	  >> Unclassified reads: 41259
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/NR1_S22.bracken
+PROGRAM END TIME: 03-26-2025 16:50:52
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/krona/NR1_S22.krona.html...
+✅ Krona plot generated.
+
+Processing sample: NR2_S23
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/NR2_S23.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/classified/NR2_S23_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/unclassified/NR2_S23_unclassified#.fastq"                "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/NR2_S23_metagenomic.1.gz" "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/NR2_S23_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/kraken2/NR2_S23.kraken2" --use-names 2>&1
+Loading database information... done.
+89842 sequences (11.40 Mbp) processed in 0.378s (14257.9 Kseq/m, 1809.07 Mbp/m).
+  5836 sequences classified (6.50%)
+  84006 sequences unclassified (93.50%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/NR2_S23.k2report -o /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/NR2_S23.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/NR2_S23.k2report
+PROGRAM START TIME: 03-26-2025 16:54:30
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/NR2_S23.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 224 
+	  >> Number of species with reads > threshold: 10 
+	  >> Number of species with reads < threshold: 214 
+    >>> Total reads in sample: 89842
+	  >> Total reads kept at species level (reads > threshold): 3298
+	  >> Total reads discarded (species reads < threshold): 396
+	  >> Reads distributed: 2051
+	  >> Reads not distributed (eg. no species above threshold): 91
+	  >> Unclassified reads: 84006
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/NR2_S23.bracken
+PROGRAM END TIME: 03-26-2025 16:54:38
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/krona/NR2_S23.krona.html...
+✅ Krona plot generated.
+
+Processing sample: NR3_S24
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/NR3_S24.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/classified/NR3_S24_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/unclassified/NR3_S24_unclassified#.fastq"                "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/NR3_S24_metagenomic.1.gz" "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/filtered_fastq/NR3_S24_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/kraken2/NR3_S24.kraken2" --use-names 2>&1
+Loading database information... done.
+55551 sequences (8.87 Mbp) processed in 0.337s (9880.2 Kseq/m, 1577.21 Mbp/m).
+  764 sequences classified (1.38%)
+  54787 sequences unclassified (98.62%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/NR3_S24.k2report -o /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/NR3_S24.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/NR3_S24.k2report
+PROGRAM START TIME: 03-26-2025 16:58:17
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/reports/NR3_S24.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 143 
+	  >> Number of species with reads > threshold: 11 
+	  >> Number of species with reads < threshold: 132 
+    >>> Total reads in sample: 55551
+	  >> Total reads kept at species level (reads > threshold): 296
+	  >> Total reads discarded (species reads < threshold): 206
+	  >> Reads distributed: 105
+	  >> Reads not distributed (eg. no species above threshold): 157
+	  >> Unclassified reads: 54787
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/bracken/NR3_S24.bracken
+PROGRAM END TIME: 03-26-2025 16:58:25
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/krona/NR3_S24.krona.html...
+✅ Krona plot generated.
+
+Metagenomic classification completed in: 01:19:00
+
+================================================= METAGENOMIC DIVERSITY ANALYSIS =================================================
+Calculating alpha and beta diversity...
+✅ Alpha diversity calculated for all samples.
+null device 
+          1 
+Heatmap saved to: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/results/runs/run_2603_1539/diversity/beta_diversity_heatmap.png 
+✅ Beta diversity heatmap generated.
+
+==================================================== TOTAL READ EXTRACTION ====================================================
+✅ Total read counts saved to: /scratch/users/k24087895/final_project/metagenome_analysis/hands_folder/processed_data/metagenomic/total_reads.csv
+
+✅ Pipeline completed successfully.

@@ -1,0 +1,43 @@
+# Exclude all .bed files except common_intersections.bed
+*.bed
+!common_intersections.bed
+
+# Ignore FASTQ files
+*.fastq
+*.fq
+*.gz
+
+# Ignore paired-end files explicitly
+*.1
+*.2
+
+# Ignore zip files
+*.zip
+
+# Ignore intermediate sequencing files
+*.sam
+*human.bam
+
+# Ignore Kraken2, Bracken, and Krona output files
+*.kraken2
+*.bracken
+*.krona.txt
+
+# Ignore analysis and indexing tools
+tools/
+databases/
+bowtie_index/
+
+# Ignore macOS system file
+.DS_Store
+
+# Ignore RStudio project metadata
+.Rproj.user/
+.RData
+.Rhistory
+final_project.Rproj
+*.html
+!**/multiqc_report.html
+!**/*krona.html
+*.out
+
