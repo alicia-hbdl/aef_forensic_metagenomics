@@ -1,0 +1,1122 @@
+
+================================================= CONDA ENVIRONMENT ACTIVATION ==================================================
+
+✅ 'final_project' environment activated successfully.
+
+================================================= ARGUMENT PARSING & VALIDATION =================================================
+
+Raw FASTQ directory path: /scratch/users/k24087895/final_project/hands_folder/raw_data/
+✅ Trimming enabled.
+
+======================================================= PIPELINE SUMMARY ========================================================
+Quality Control & Trimming: Enabled ✅
+⚠️ Optional, but must be done at least once on the raw reads for the pipeline to work.
+
+Host DNA Removal: Disabled ❌
+⚠️ Optional, but must be done at least once on the trimmed reads for the pipeline to work.
+
+Kraken2/Bracken Database: /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228
+=================================================================================================================================
+
+====================================================== PROJECT STRUCTURE ======================================================
+
+/scratch/users/k24087895/final_project/hands_folder
+├── processed_data
+│   ├── human
+│   │   ├── aligned_sam
+│   │   ├── bed_files
+│   │   └── sorted_bam
+│   ├── metagenomic
+│   │   ├── bracken
+│   │   ├── classified
+│   │   ├── filtered_fastq
+│   │   ├── kraken
+│   │   ├── kraken2
+│   │   └── unclassified
+│   └── trimmed
+│       ├── paired
+│       └── unpaired
+├── raw_data
+└── results
+    ├── diversity
+    ├── fastqc
+    │   ├── post_trimming
+    │   └── pre_trimming
+    ├── host_dna_analysis
+    ├── krona
+    └── runs
+        ├── run_0504_1913
+        ├── run_2603_1337
+        └── run_2603_1539
+
+27 directories
+Human DNA-related files (SAM, BAM, and BED) in the 'human' directory are created once per sub-project and remain unchanged across runs.
+Intermediate metagenomic files in the 'metagenomic' directory are overwritten with each run and should be inspected beforehand if desired.
+Results are stored in the 'results' directory (including FastQC, host DNA analysis, and run-specific results like Kraken2 and Bracken).
+
+=================================================== QUALITY CONTROL & TRIMMING ===================================================
+
+
+Running FastQC on all raw reads...
+✅ FastQC completed successfully.
+
+/// MultiQC 🔍 v1.27.1
+
+     version_check | MultiQC Version v1.28 now available!
+       file_search | Search path: /scratch/users/k24087895/final_project/hands_folder/results/fastqc/pre_trimming
+
+            fastqc | Found 42 reports
+
+     write_results | Data        : None
+     write_results | Report      : /cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/hands_folder/results/fastqc/pre_trimming/multiqc_report.html   (overwritten)
+           multiqc | MultiQC complete
+✅ MultiQC report generated successfully.
+
+Running Trimmomatic...
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/hands_folder/raw_data//BR1_S10_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//BR1_S10_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/BR1_S10_R1_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/BR1_S10_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/BR1_S10_R2_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/BR1_S10_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 139632 Both Surviving: 98006 (70.19%) Forward Only Surviving: 1444 (1.03%) Reverse Only Surviving: 375 (0.27%) Dropped: 39807 (28.51%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed BR1_S10!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/hands_folder/raw_data//BR2_S11_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//BR2_S11_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/BR2_S11_R1_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/BR2_S11_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/BR2_S11_R2_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/BR2_S11_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 145571 Both Surviving: 127857 (87.83%) Forward Only Surviving: 2311 (1.59%) Reverse Only Surviving: 339 (0.23%) Dropped: 15064 (10.35%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed BR2_S11!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/hands_folder/raw_data//BR3_S12_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//BR3_S12_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/BR3_S12_R1_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/BR3_S12_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/BR3_S12_R2_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/BR3_S12_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 176248 Both Surviving: 102387 (58.09%) Forward Only Surviving: 1831 (1.04%) Reverse Only Surviving: 436 (0.25%) Dropped: 71594 (40.62%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed BR3_S12!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/hands_folder/raw_data//BS1_S1_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//BS1_S1_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/BS1_S1_R1_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/BS1_S1_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/BS1_S1_R2_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/BS1_S1_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 1841 Both Surviving: 927 (50.35%) Forward Only Surviving: 16 (0.87%) Reverse Only Surviving: 5 (0.27%) Dropped: 893 (48.51%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed BS1_S1!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/hands_folder/raw_data//BS2_S2_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//BS2_S2_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/BS2_S2_R1_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/BS2_S2_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/BS2_S2_R2_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/BS2_S2_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 1022 Both Surviving: 620 (60.67%) Forward Only Surviving: 5 (0.49%) Reverse Only Surviving: 3 (0.29%) Dropped: 394 (38.55%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed BS2_S2!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/hands_folder/raw_data//BS3_S3_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//BS3_S3_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/BS3_S3_R1_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/BS3_S3_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/BS3_S3_R2_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/BS3_S3_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 694 Both Surviving: 342 (49.28%) Forward Only Surviving: 4 (0.58%) Reverse Only Surviving: 3 (0.43%) Dropped: 345 (49.71%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed BS3_S3!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/hands_folder/raw_data//DR1_S13_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//DR1_S13_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/DR1_S13_R1_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/DR1_S13_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/DR1_S13_R2_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/DR1_S13_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 177649 Both Surviving: 142933 (80.46%) Forward Only Surviving: 2470 (1.39%) Reverse Only Surviving: 454 (0.26%) Dropped: 31792 (17.90%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed DR1_S13!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/hands_folder/raw_data//DR2_S14_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//DR2_S14_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/DR2_S14_R1_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/DR2_S14_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/DR2_S14_R2_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/DR2_S14_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 154960 Both Surviving: 132447 (85.47%) Forward Only Surviving: 2541 (1.64%) Reverse Only Surviving: 324 (0.21%) Dropped: 19648 (12.68%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed DR2_S14!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/hands_folder/raw_data//DR3_S15_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//DR3_S15_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/DR3_S15_R1_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/DR3_S15_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/DR3_S15_R2_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/DR3_S15_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 124512 Both Surviving: 107406 (86.26%) Forward Only Surviving: 2006 (1.61%) Reverse Only Surviving: 327 (0.26%) Dropped: 14773 (11.86%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed DR3_S15!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/hands_folder/raw_data//DS1_S4_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//DS1_S4_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/DS1_S4_R1_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/DS1_S4_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/DS1_S4_R2_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/DS1_S4_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 2736 Both Surviving: 1761 (64.36%) Forward Only Surviving: 37 (1.35%) Reverse Only Surviving: 9 (0.33%) Dropped: 929 (33.95%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed DS1_S4!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/hands_folder/raw_data//DS2_S5_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//DS2_S5_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/DS2_S5_R1_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/DS2_S5_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/DS2_S5_R2_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/DS2_S5_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 3952 Both Surviving: 3049 (77.15%) Forward Only Surviving: 51 (1.29%) Reverse Only Surviving: 9 (0.23%) Dropped: 843 (21.33%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed DS2_S5!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/hands_folder/raw_data//DS3_S6_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//DS3_S6_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/DS3_S6_R1_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/DS3_S6_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/DS3_S6_R2_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/DS3_S6_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 1112 Both Surviving: 696 (62.59%) Forward Only Surviving: 9 (0.81%) Reverse Only Surviving: 2 (0.18%) Dropped: 405 (36.42%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed DS3_S6!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/hands_folder/raw_data//LR1_S16_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//LR1_S16_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/LR1_S16_R1_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/LR1_S16_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/LR1_S16_R2_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/LR1_S16_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 208829 Both Surviving: 191320 (91.62%) Forward Only Surviving: 3841 (1.84%) Reverse Only Surviving: 821 (0.39%) Dropped: 12847 (6.15%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed LR1_S16!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/hands_folder/raw_data//LR2_S17_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//LR2_S17_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/LR2_S17_R1_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/LR2_S17_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/LR2_S17_R2_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/LR2_S17_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 165701 Both Surviving: 147430 (88.97%) Forward Only Surviving: 2417 (1.46%) Reverse Only Surviving: 650 (0.39%) Dropped: 15204 (9.18%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed LR2_S17!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/hands_folder/raw_data//LR3_S18_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//LR3_S18_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/LR3_S18_R1_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/LR3_S18_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/LR3_S18_R2_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/LR3_S18_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 976075 Both Surviving: 862088 (88.32%) Forward Only Surviving: 14978 (1.53%) Reverse Only Surviving: 3307 (0.34%) Dropped: 95702 (9.80%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed LR3_S18!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/hands_folder/raw_data//LS1_S7_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//LS1_S7_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/LS1_S7_R1_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/LS1_S7_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/LS1_S7_R2_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/LS1_S7_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 128411 Both Surviving: 111388 (86.74%) Forward Only Surviving: 1451 (1.13%) Reverse Only Surviving: 410 (0.32%) Dropped: 15162 (11.81%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed LS1_S7!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/hands_folder/raw_data//LS2_S8_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//LS2_S8_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/LS2_S8_R1_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/LS2_S8_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/LS2_S8_R2_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/LS2_S8_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 120136 Both Surviving: 109991 (91.56%) Forward Only Surviving: 1595 (1.33%) Reverse Only Surviving: 397 (0.33%) Dropped: 8153 (6.79%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed LS2_S8!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/hands_folder/raw_data//LS3_S9_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//LS3_S9_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/LS3_S9_R1_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/LS3_S9_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/LS3_S9_R2_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/LS3_S9_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 127244 Both Surviving: 119004 (93.52%) Forward Only Surviving: 1724 (1.35%) Reverse Only Surviving: 351 (0.28%) Dropped: 6165 (4.85%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed LS3_S9!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/hands_folder/raw_data//NR1_S22_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//NR1_S22_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/NR1_S22_R1_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/NR1_S22_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/NR1_S22_R2_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/NR1_S22_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 90149 Both Surviving: 18592 (20.62%) Forward Only Surviving: 483 (0.54%) Reverse Only Surviving: 189 (0.21%) Dropped: 70885 (78.63%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed NR1_S22!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/hands_folder/raw_data//NR2_S23_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//NR2_S23_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/NR2_S23_R1_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/NR2_S23_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/NR2_S23_R2_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/NR2_S23_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 156085 Both Surviving: 51710 (33.13%) Forward Only Surviving: 1037 (0.66%) Reverse Only Surviving: 278 (0.18%) Dropped: 103060 (66.03%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed NR2_S23!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/hands_folder/raw_data//NR3_S24_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//NR3_S24_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/NR3_S24_R1_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/NR3_S24_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/paired/NR3_S24_R2_paired.fastq.gz /scratch/users/k24087895/final_project/hands_folder/raw_data//../processed_data/trimmed/unpaired/NR3_S24_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 78621 Both Surviving: 45443 (57.80%) Forward Only Surviving: 935 (1.19%) Reverse Only Surviving: 171 (0.22%) Dropped: 32072 (40.79%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed NR3_S24!
+
+
+Running FastQC on paired trimmed reads...
+✅ FastQC completed successfully.
+
+/// MultiQC 🔍 v1.27.1
+
+     version_check | MultiQC Version v1.28 now available!
+       file_search | Search path: /scratch/users/k24087895/final_project/hands_folder/results/fastqc/post_trimming
+
+            fastqc | Found 42 reports
+
+     write_results | Data        : None
+     write_results | Report      : /cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/hands_folder/results/fastqc/post_trimming/multiqc_report.html   (overwritten)
+           multiqc | MultiQC complete
+✅ MultiQC report generated successfully.
+
+✅ All processing steps completed successfully.
+✅ QC and trimming completed successfully.
+
+================================================= METAGENOMIC ABUNDANCE ESTIMATION =================================================
+⚠️ This step assumes reads have already been trimmed with Trimmomatic and host DNA removed with Bowtie2. Processed reads must be in the correct directory.
+
+Processing sample: BR1_S10
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228" --threads 8 --report "/scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/BR1_S10.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/classified/BR1_S10_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/unclassified/BR1_S10_unclassified#.fastq"                "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/BR1_S10_metagenomic.1.gz" "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/BR1_S10_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/kraken2/BR1_S10.kraken2" --use-names 2>&1
+Loading database information... done.
+109162 sequences (15.30 Mbp) processed in 0.594s (11020.4 Kseq/m, 1544.15 Mbp/m).
+  36381 sequences classified (33.33%)
+  72781 sequences unclassified (66.67%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/BR1_S10.k2report -o /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/BR1_S10.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/BR1_S10.k2report
+PROGRAM START TIME: 04-05-2025 18:17:58
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/BR1_S10.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 71 
+	  >> Number of species with reads > threshold: 11 
+	  >> Number of species with reads < threshold: 60 
+    >>> Total reads in sample: 109162
+	  >> Total reads kept at species level (reads > threshold): 12910
+	  >> Total reads discarded (species reads < threshold): 125
+	  >> Reads distributed: 21359
+	  >> Reads not distributed (eg. no species above threshold): 1987
+	  >> Unclassified reads: 72781
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/BR1_S10.bracken
+PROGRAM END TIME: 04-05-2025 18:17:58
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/krona/BR1_S10.krona.html...
+✅ Krona plot generated.
+
+Processing sample: BR2_S11
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228" --threads 8 --report "/scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/BR2_S11.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/classified/BR2_S11_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/unclassified/BR2_S11_unclassified#.fastq"                "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/BR2_S11_metagenomic.1.gz" "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/BR2_S11_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/kraken2/BR2_S11.kraken2" --use-names 2>&1
+Loading database information... done.
+133783 sequences (21.98 Mbp) processed in 0.757s (10602.9 Kseq/m, 1742.22 Mbp/m).
+  80752 sequences classified (60.36%)
+  53031 sequences unclassified (39.64%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/BR2_S11.k2report -o /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/BR2_S11.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/BR2_S11.k2report
+PROGRAM START TIME: 04-05-2025 18:18:11
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/BR2_S11.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 25 
+	  >> Number of species with reads > threshold: 5 
+	  >> Number of species with reads < threshold: 20 
+    >>> Total reads in sample: 133783
+	  >> Total reads kept at species level (reads > threshold): 54097
+	  >> Total reads discarded (species reads < threshold): 31
+	  >> Reads distributed: 235
+	  >> Reads not distributed (eg. no species above threshold): 26389
+	  >> Unclassified reads: 53031
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/BR2_S11.bracken
+PROGRAM END TIME: 04-05-2025 18:18:11
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/krona/BR2_S11.krona.html...
+✅ Krona plot generated.
+
+Processing sample: BR3_S12
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228" --threads 8 --report "/scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/BR3_S12.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/classified/BR3_S12_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/unclassified/BR3_S12_unclassified#.fastq"                "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/BR3_S12_metagenomic.1.gz" "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/BR3_S12_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/kraken2/BR3_S12.kraken2" --use-names 2>&1
+Loading database information... done.
+121363 sequences (15.97 Mbp) processed in 0.617s (11810.3 Kseq/m, 1554.51 Mbp/m).
+  58226 sequences classified (47.98%)
+  63137 sequences unclassified (52.02%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/BR3_S12.k2report -o /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/BR3_S12.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/BR3_S12.k2report
+PROGRAM START TIME: 04-05-2025 18:18:21
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/BR3_S12.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 75 
+	  >> Number of species with reads > threshold: 13 
+	  >> Number of species with reads < threshold: 62 
+    >>> Total reads in sample: 121363
+	  >> Total reads kept at species level (reads > threshold): 1555
+	  >> Total reads discarded (species reads < threshold): 134
+	  >> Reads distributed: 56496
+	  >> Reads not distributed (eg. no species above threshold): 41
+	  >> Unclassified reads: 63137
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/BR3_S12.bracken
+PROGRAM END TIME: 04-05-2025 18:18:21
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/krona/BR3_S12.krona.html...
+✅ Krona plot generated.
+
+Processing sample: BS1_S1
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228" --threads 8 --report "/scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/BS1_S1.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/classified/BS1_S1_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/unclassified/BS1_S1_unclassified#.fastq"                "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/BS1_S1_metagenomic.1.gz" "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/BS1_S1_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/kraken2/BS1_S1.kraken2" --use-names 2>&1
+Loading database information... done.
+967 sequences (0.12 Mbp) processed in 0.061s (948.4 Kseq/m, 121.92 Mbp/m).
+  283 sequences classified (29.27%)
+  684 sequences unclassified (70.73%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/BS1_S1.k2report -o /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/BS1_S1.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/BS1_S1.k2report
+PROGRAM START TIME: 04-05-2025 18:18:31
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/BS1_S1.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 35 
+	  >> Number of species with reads > threshold: 3 
+	  >> Number of species with reads < threshold: 32 
+    >>> Total reads in sample: 967
+	  >> Total reads kept at species level (reads > threshold): 197
+	  >> Total reads discarded (species reads < threshold): 35
+	  >> Reads distributed: 6
+	  >> Reads not distributed (eg. no species above threshold): 45
+	  >> Unclassified reads: 684
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/BS1_S1.bracken
+PROGRAM END TIME: 04-05-2025 18:18:31
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/krona/BS1_S1.krona.html...
+✅ Krona plot generated.
+
+Processing sample: BS2_S2
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228" --threads 8 --report "/scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/BS2_S2.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/classified/BS2_S2_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/unclassified/BS2_S2_unclassified#.fastq"                "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/BS2_S2_metagenomic.1.gz" "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/BS2_S2_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/kraken2/BS2_S2.kraken2" --use-names 2>&1
+Loading database information... done.
+643 sequences (0.09 Mbp) processed in 0.044s (873.9 Kseq/m, 123.00 Mbp/m).
+  192 sequences classified (29.86%)
+  451 sequences unclassified (70.14%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/BS2_S2.k2report -o /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/BS2_S2.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/BS2_S2.k2report
+PROGRAM START TIME: 04-05-2025 18:18:42
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/BS2_S2.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 38 
+	  >> Number of species with reads > threshold: 2 
+	  >> Number of species with reads < threshold: 36 
+    >>> Total reads in sample: 643
+	  >> Total reads kept at species level (reads > threshold): 103
+	  >> Total reads discarded (species reads < threshold): 50
+	  >> Reads distributed: 0
+	  >> Reads not distributed (eg. no species above threshold): 39
+	  >> Unclassified reads: 451
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/BS2_S2.bracken
+PROGRAM END TIME: 04-05-2025 18:18:42
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/krona/BS2_S2.krona.html...
+✅ Krona plot generated.
+
+Processing sample: BS3_S3
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228" --threads 8 --report "/scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/BS3_S3.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/classified/BS3_S3_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/unclassified/BS3_S3_unclassified#.fastq"                "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/BS3_S3_metagenomic.1.gz" "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/BS3_S3_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/kraken2/BS3_S3.kraken2" --use-names 2>&1
+Loading database information... done.
+364 sequences (0.05 Mbp) processed in 0.065s (334.7 Kseq/m, 48.95 Mbp/m).
+  102 sequences classified (28.02%)
+  262 sequences unclassified (71.98%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/BS3_S3.k2report -o /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/BS3_S3.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/BS3_S3.k2report
+PROGRAM START TIME: 04-05-2025 18:18:52
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/BS3_S3.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 17 
+	  >> Number of species with reads > threshold: 2 
+	  >> Number of species with reads < threshold: 15 
+    >>> Total reads in sample: 364
+	  >> Total reads kept at species level (reads > threshold): 58
+	  >> Total reads discarded (species reads < threshold): 22
+	  >> Reads distributed: 4
+	  >> Reads not distributed (eg. no species above threshold): 18
+	  >> Unclassified reads: 262
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/BS3_S3.bracken
+PROGRAM END TIME: 04-05-2025 18:18:52
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/krona/BS3_S3.krona.html...
+✅ Krona plot generated.
+
+Processing sample: DR1_S13
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228" --threads 8 --report "/scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/DR1_S13.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/classified/DR1_S13_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/unclassified/DR1_S13_unclassified#.fastq"                "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/DR1_S13_metagenomic.1.gz" "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/DR1_S13_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/kraken2/DR1_S13.kraken2" --use-names 2>&1
+Loading database information... done.
+154174 sequences (22.72 Mbp) processed in 0.751s (12318.4 Kseq/m, 1815.30 Mbp/m).
+  54279 sequences classified (35.21%)
+  99895 sequences unclassified (64.79%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/DR1_S13.k2report -o /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/DR1_S13.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/DR1_S13.k2report
+PROGRAM START TIME: 04-05-2025 18:19:03
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/DR1_S13.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 27 
+	  >> Number of species with reads > threshold: 4 
+	  >> Number of species with reads < threshold: 23 
+    >>> Total reads in sample: 154174
+	  >> Total reads kept at species level (reads > threshold): 53509
+	  >> Total reads discarded (species reads < threshold): 45
+	  >> Reads distributed: 678
+	  >> Reads not distributed (eg. no species above threshold): 47
+	  >> Unclassified reads: 99895
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/DR1_S13.bracken
+PROGRAM END TIME: 04-05-2025 18:19:03
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/krona/DR1_S13.krona.html...
+✅ Krona plot generated.
+
+Processing sample: DR2_S14
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228" --threads 8 --report "/scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/DR2_S14.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/classified/DR2_S14_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/unclassified/DR2_S14_unclassified#.fastq"                "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/DR2_S14_metagenomic.1.gz" "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/DR2_S14_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/kraken2/DR2_S14.kraken2" --use-names 2>&1
+Loading database information... done.
+139219 sequences (24.92 Mbp) processed in 0.868s (9624.6 Kseq/m, 1722.64 Mbp/m).
+  97721 sequences classified (70.19%)
+  41498 sequences unclassified (29.81%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/DR2_S14.k2report -o /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/DR2_S14.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/DR2_S14.k2report
+PROGRAM START TIME: 04-05-2025 18:19:14
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/DR2_S14.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 55 
+	  >> Number of species with reads > threshold: 19 
+	  >> Number of species with reads < threshold: 36 
+    >>> Total reads in sample: 139219
+	  >> Total reads kept at species level (reads > threshold): 79913
+	  >> Total reads discarded (species reads < threshold): 77
+	  >> Reads distributed: 17678
+	  >> Reads not distributed (eg. no species above threshold): 53
+	  >> Unclassified reads: 41498
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/DR2_S14.bracken
+PROGRAM END TIME: 04-05-2025 18:19:14
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/krona/DR2_S14.krona.html...
+✅ Krona plot generated.
+
+Processing sample: DR3_S15
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228" --threads 8 --report "/scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/DR3_S15.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/classified/DR3_S15_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/unclassified/DR3_S15_unclassified#.fastq"                "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/DR3_S15_metagenomic.1.gz" "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/DR3_S15_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/kraken2/DR3_S15.kraken2" --use-names 2>&1
+Loading database information... done.
+112146 sequences (20.69 Mbp) processed in 0.705s (9548.1 Kseq/m, 1761.89 Mbp/m).
+  65206 sequences classified (58.14%)
+  46940 sequences unclassified (41.86%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/DR3_S15.k2report -o /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/DR3_S15.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/DR3_S15.k2report
+PROGRAM START TIME: 04-05-2025 18:19:26
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/DR3_S15.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 61 
+	  >> Number of species with reads > threshold: 19 
+	  >> Number of species with reads < threshold: 42 
+    >>> Total reads in sample: 112146
+	  >> Total reads kept at species level (reads > threshold): 62189
+	  >> Total reads discarded (species reads < threshold): 87
+	  >> Reads distributed: 2889
+	  >> Reads not distributed (eg. no species above threshold): 41
+	  >> Unclassified reads: 46940
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/DR3_S15.bracken
+PROGRAM END TIME: 04-05-2025 18:19:26
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/krona/DR3_S15.krona.html...
+✅ Krona plot generated.
+
+Processing sample: DS1_S4
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228" --threads 8 --report "/scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/DS1_S4.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/classified/DS1_S4_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/unclassified/DS1_S4_unclassified#.fastq"                "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/DS1_S4_metagenomic.1.gz" "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/DS1_S4_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/kraken2/DS1_S4.kraken2" --use-names 2>&1
+Loading database information... done.
+1828 sequences (0.28 Mbp) processed in 0.071s (1554.6 Kseq/m, 236.38 Mbp/m).
+  899 sequences classified (49.18%)
+  929 sequences unclassified (50.82%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/DS1_S4.k2report -o /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/DS1_S4.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/DS1_S4.k2report
+PROGRAM START TIME: 04-05-2025 18:19:37
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/DS1_S4.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 66 
+	  >> Number of species with reads > threshold: 5 
+	  >> Number of species with reads < threshold: 61 
+    >>> Total reads in sample: 1828
+	  >> Total reads kept at species level (reads > threshold): 715
+	  >> Total reads discarded (species reads < threshold): 95
+	  >> Reads distributed: 45
+	  >> Reads not distributed (eg. no species above threshold): 44
+	  >> Unclassified reads: 929
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/DS1_S4.bracken
+PROGRAM END TIME: 04-05-2025 18:19:38
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/krona/DS1_S4.krona.html...
+✅ Krona plot generated.
+
+Processing sample: DS2_S5
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228" --threads 8 --report "/scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/DS2_S5.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/classified/DS2_S5_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/unclassified/DS2_S5_unclassified#.fastq"                "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/DS2_S5_metagenomic.1.gz" "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/DS2_S5_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/kraken2/DS2_S5.kraken2" --use-names 2>&1
+Loading database information... done.
+3104 sequences (0.52 Mbp) processed in 0.139s (1339.3 Kseq/m, 226.47 Mbp/m).
+  1709 sequences classified (55.06%)
+  1395 sequences unclassified (44.94%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/DS2_S5.k2report -o /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/DS2_S5.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/DS2_S5.k2report
+PROGRAM START TIME: 04-05-2025 18:19:48
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/DS2_S5.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 113 
+	  >> Number of species with reads > threshold: 6 
+	  >> Number of species with reads < threshold: 107 
+    >>> Total reads in sample: 3104
+	  >> Total reads kept at species level (reads > threshold): 1333
+	  >> Total reads discarded (species reads < threshold): 177
+	  >> Reads distributed: 93
+	  >> Reads not distributed (eg. no species above threshold): 106
+	  >> Unclassified reads: 1395
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/DS2_S5.bracken
+PROGRAM END TIME: 04-05-2025 18:19:48
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/krona/DS2_S5.krona.html...
+✅ Krona plot generated.
+
+Processing sample: DS3_S6
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228" --threads 8 --report "/scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/DS3_S6.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/classified/DS3_S6_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/unclassified/DS3_S6_unclassified#.fastq"                "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/DS3_S6_metagenomic.1.gz" "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/DS3_S6_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/kraken2/DS3_S6.kraken2" --use-names 2>&1
+Loading database information... done.
+716 sequences (0.11 Mbp) processed in 0.073s (587.6 Kseq/m, 89.48 Mbp/m).
+  368 sequences classified (51.40%)
+  348 sequences unclassified (48.60%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/DS3_S6.k2report -o /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/DS3_S6.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/DS3_S6.k2report
+PROGRAM START TIME: 04-05-2025 18:19:58
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/DS3_S6.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 37 
+	  >> Number of species with reads > threshold: 3 
+	  >> Number of species with reads < threshold: 34 
+    >>> Total reads in sample: 716
+	  >> Total reads kept at species level (reads > threshold): 278
+	  >> Total reads discarded (species reads < threshold): 55
+	  >> Reads distributed: 4
+	  >> Reads not distributed (eg. no species above threshold): 31
+	  >> Unclassified reads: 348
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/DS3_S6.bracken
+PROGRAM END TIME: 04-05-2025 18:19:58
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/krona/DS3_S6.krona.html...
+✅ Krona plot generated.
+
+Processing sample: LR1_S16
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228" --threads 8 --report "/scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/LR1_S16.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/classified/LR1_S16_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/unclassified/LR1_S16_unclassified#.fastq"                "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/LR1_S16_metagenomic.1.gz" "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/LR1_S16_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/kraken2/LR1_S16.kraken2" --use-names 2>&1
+Loading database information... done.
+189616 sequences (34.20 Mbp) processed in 1.170s (9727.1 Kseq/m, 1754.22 Mbp/m).
+  142629 sequences classified (75.22%)
+  46987 sequences unclassified (24.78%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/LR1_S16.k2report -o /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/LR1_S16.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/LR1_S16.k2report
+PROGRAM START TIME: 04-05-2025 18:20:10
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/LR1_S16.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 31 
+	  >> Number of species with reads > threshold: 8 
+	  >> Number of species with reads < threshold: 23 
+    >>> Total reads in sample: 189616
+	  >> Total reads kept at species level (reads > threshold): 141763
+	  >> Total reads discarded (species reads < threshold): 34
+	  >> Reads distributed: 803
+	  >> Reads not distributed (eg. no species above threshold): 29
+	  >> Unclassified reads: 46987
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/LR1_S16.bracken
+PROGRAM END TIME: 04-05-2025 18:20:10
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/krona/LR1_S16.krona.html...
+✅ Krona plot generated.
+
+Processing sample: LR2_S17
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228" --threads 8 --report "/scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/LR2_S17.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/classified/LR2_S17_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/unclassified/LR2_S17_unclassified#.fastq"                "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/LR2_S17_metagenomic.1.gz" "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/LR2_S17_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/kraken2/LR2_S17.kraken2" --use-names 2>&1
+Loading database information... done.
+152868 sequences (21.84 Mbp) processed in 0.769s (11932.4 Kseq/m, 1704.66 Mbp/m).
+  89384 sequences classified (58.47%)
+  63484 sequences unclassified (41.53%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/LR2_S17.k2report -o /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/LR2_S17.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/LR2_S17.k2report
+PROGRAM START TIME: 04-05-2025 18:20:22
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/LR2_S17.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 31 
+	  >> Number of species with reads > threshold: 6 
+	  >> Number of species with reads < threshold: 25 
+    >>> Total reads in sample: 152868
+	  >> Total reads kept at species level (reads > threshold): 88393
+	  >> Total reads discarded (species reads < threshold): 46
+	  >> Reads distributed: 905
+	  >> Reads not distributed (eg. no species above threshold): 40
+	  >> Unclassified reads: 63484
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/LR2_S17.bracken
+PROGRAM END TIME: 04-05-2025 18:20:22
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/krona/LR2_S17.krona.html...
+✅ Krona plot generated.
+
+Processing sample: LR3_S18
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228" --threads 8 --report "/scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/LR3_S18.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/classified/LR3_S18_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/unclassified/LR3_S18_unclassified#.fastq"                "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/LR3_S18_metagenomic.1.gz" "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/LR3_S18_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/kraken2/LR3_S18.kraken2" --use-names 2>&1
+Loading database information... done.
+877494 sequences (130.95 Mbp) processed in 3.885s (13552.8 Kseq/m, 2022.56 Mbp/m).
+  588327 sequences classified (67.05%)
+  289167 sequences unclassified (32.95%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/LR3_S18.k2report -o /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/LR3_S18.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/LR3_S18.k2report
+PROGRAM START TIME: 04-05-2025 18:20:36
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/LR3_S18.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 87 
+	  >> Number of species with reads > threshold: 8 
+	  >> Number of species with reads < threshold: 79 
+    >>> Total reads in sample: 877494
+	  >> Total reads kept at species level (reads > threshold): 585346
+	  >> Total reads discarded (species reads < threshold): 129
+	  >> Reads distributed: 2788
+	  >> Reads not distributed (eg. no species above threshold): 64
+	  >> Unclassified reads: 289167
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/LR3_S18.bracken
+PROGRAM END TIME: 04-05-2025 18:20:36
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/krona/LR3_S18.krona.html...
+✅ Krona plot generated.
+
+Processing sample: LS1_S7
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228" --threads 8 --report "/scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/LS1_S7.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/classified/LS1_S7_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/unclassified/LS1_S7_unclassified#.fastq"                "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/LS1_S7_metagenomic.1.gz" "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/LS1_S7_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/kraken2/LS1_S7.kraken2" --use-names 2>&1
+Loading database information... done.
+109951 sequences (16.31 Mbp) processed in 0.665s (9915.9 Kseq/m, 1471.05 Mbp/m).
+  76639 sequences classified (69.70%)
+  33312 sequences unclassified (30.30%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/LS1_S7.k2report -o /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/LS1_S7.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/LS1_S7.k2report
+PROGRAM START TIME: 04-05-2025 18:20:48
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/LS1_S7.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 216 
+	  >> Number of species with reads > threshold: 16 
+	  >> Number of species with reads < threshold: 200 
+    >>> Total reads in sample: 109951
+	  >> Total reads kept at species level (reads > threshold): 75496
+	  >> Total reads discarded (species reads < threshold): 370
+	  >> Reads distributed: 476
+	  >> Reads not distributed (eg. no species above threshold): 297
+	  >> Unclassified reads: 33312
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/LS1_S7.bracken
+PROGRAM END TIME: 04-05-2025 18:20:48
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/krona/LS1_S7.krona.html...
+✅ Krona plot generated.
+
+Processing sample: LS2_S8
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228" --threads 8 --report "/scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/LS2_S8.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/classified/LS2_S8_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/unclassified/LS2_S8_unclassified#.fastq"                "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/LS2_S8_metagenomic.1.gz" "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/LS2_S8_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/kraken2/LS2_S8.kraken2" --use-names 2>&1
+Loading database information... done.
+108327 sequences (16.39 Mbp) processed in 0.703s (9241.4 Kseq/m, 1398.61 Mbp/m).
+  77671 sequences classified (71.70%)
+  30656 sequences unclassified (28.30%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/LS2_S8.k2report -o /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/LS2_S8.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/LS2_S8.k2report
+PROGRAM START TIME: 04-05-2025 18:21:00
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/LS2_S8.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 202 
+	  >> Number of species with reads > threshold: 14 
+	  >> Number of species with reads < threshold: 188 
+    >>> Total reads in sample: 108327
+	  >> Total reads kept at species level (reads > threshold): 76556
+	  >> Total reads discarded (species reads < threshold): 340
+	  >> Reads distributed: 518
+	  >> Reads not distributed (eg. no species above threshold): 257
+	  >> Unclassified reads: 30656
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/LS2_S8.bracken
+PROGRAM END TIME: 04-05-2025 18:21:00
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/krona/LS2_S8.krona.html...
+✅ Krona plot generated.
+
+Processing sample: LS3_S9
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228" --threads 8 --report "/scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/LS3_S9.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/classified/LS3_S9_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/unclassified/LS3_S9_unclassified#.fastq"                "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/LS3_S9_metagenomic.1.gz" "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/LS3_S9_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/kraken2/LS3_S9.kraken2" --use-names 2>&1
+Loading database information... done.
+115112 sequences (19.82 Mbp) processed in 0.744s (9282.2 Kseq/m, 1598.42 Mbp/m).
+  89353 sequences classified (77.62%)
+  25759 sequences unclassified (22.38%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/LS3_S9.k2report -o /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/LS3_S9.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/LS3_S9.k2report
+PROGRAM START TIME: 04-05-2025 18:21:11
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/LS3_S9.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 240 
+	  >> Number of species with reads > threshold: 18 
+	  >> Number of species with reads < threshold: 222 
+    >>> Total reads in sample: 115112
+	  >> Total reads kept at species level (reads > threshold): 88146
+	  >> Total reads discarded (species reads < threshold): 410
+	  >> Reads distributed: 528
+	  >> Reads not distributed (eg. no species above threshold): 269
+	  >> Unclassified reads: 25759
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/LS3_S9.bracken
+PROGRAM END TIME: 04-05-2025 18:21:11
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/krona/LS3_S9.krona.html...
+✅ Krona plot generated.
+
+Processing sample: NR1_S22
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228" --threads 8 --report "/scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/NR1_S22.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/classified/NR1_S22_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/unclassified/NR1_S22_unclassified#.fastq"                "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/NR1_S22_metagenomic.1.gz" "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/NR1_S22_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/kraken2/NR1_S22.kraken2" --use-names 2>&1
+Loading database information... done.
+44141 sequences (4.24 Mbp) processed in 0.205s (12902.6 Kseq/m, 1240.81 Mbp/m).
+  302 sequences classified (0.68%)
+  43839 sequences unclassified (99.32%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/NR1_S22.k2report -o /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/NR1_S22.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/NR1_S22.k2report
+PROGRAM START TIME: 04-05-2025 18:21:21
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/NR1_S22.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 11 
+	  >> Number of species with reads > threshold: 4 
+	  >> Number of species with reads < threshold: 7 
+    >>> Total reads in sample: 44141
+	  >> Total reads kept at species level (reads > threshold): 251
+	  >> Total reads discarded (species reads < threshold): 18
+	  >> Reads distributed: 30
+	  >> Reads not distributed (eg. no species above threshold): 3
+	  >> Unclassified reads: 43839
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/NR1_S22.bracken
+PROGRAM END TIME: 04-05-2025 18:21:22
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/krona/NR1_S22.krona.html...
+✅ Krona plot generated.
+
+Processing sample: NR2_S23
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228" --threads 8 --report "/scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/NR2_S23.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/classified/NR2_S23_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/unclassified/NR2_S23_unclassified#.fastq"                "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/NR2_S23_metagenomic.1.gz" "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/NR2_S23_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/kraken2/NR2_S23.kraken2" --use-names 2>&1
+Loading database information... done.
+89842 sequences (11.40 Mbp) processed in 0.408s (13197.2 Kseq/m, 1674.49 Mbp/m).
+  3157 sequences classified (3.51%)
+  86685 sequences unclassified (96.49%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/NR2_S23.k2report -o /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/NR2_S23.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/NR2_S23.k2report
+PROGRAM START TIME: 04-05-2025 18:21:32
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/NR2_S23.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 21 
+	  >> Number of species with reads > threshold: 3 
+	  >> Number of species with reads < threshold: 18 
+    >>> Total reads in sample: 89842
+	  >> Total reads kept at species level (reads > threshold): 1354
+	  >> Total reads discarded (species reads < threshold): 40
+	  >> Reads distributed: 1752
+	  >> Reads not distributed (eg. no species above threshold): 11
+	  >> Unclassified reads: 86685
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/NR2_S23.bracken
+PROGRAM END TIME: 04-05-2025 18:21:33
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/krona/NR2_S23.krona.html...
+✅ Krona plot generated.
+
+Processing sample: NR3_S24
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228" --threads 8 --report "/scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/NR3_S24.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/classified/NR3_S24_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/unclassified/NR3_S24_unclassified#.fastq"                "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/NR3_S24_metagenomic.1.gz" "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/filtered_fastq/NR3_S24_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/kraken2/NR3_S24.kraken2" --use-names 2>&1
+Loading database information... done.
+55551 sequences (8.87 Mbp) processed in 0.346s (9636.0 Kseq/m, 1538.24 Mbp/m).
+  127 sequences classified (0.23%)
+  55424 sequences unclassified (99.77%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/NR3_S24.k2report -o /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/NR3_S24.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/NR3_S24.k2report
+PROGRAM START TIME: 04-05-2025 18:21:42
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/reports/NR3_S24.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 6 
+	  >> Number of species with reads > threshold: 2 
+	  >> Number of species with reads < threshold: 4 
+    >>> Total reads in sample: 55551
+	  >> Total reads kept at species level (reads > threshold): 59
+	  >> Total reads discarded (species reads < threshold): 5
+	  >> Reads distributed: 10
+	  >> Reads not distributed (eg. no species above threshold): 53
+	  >> Unclassified reads: 55424
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/bracken/NR3_S24.bracken
+PROGRAM END TIME: 04-05-2025 18:21:42
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/krona/NR3_S24.krona.html...
+✅ Krona plot generated.
+
+Metagenomic classification completed in: 00:04:22
+
+================================================= TAXONOMY HEATMAP =================================================
+
+================================================= METAGENOMIC DIVERSITY ANALYSIS =================================================
+Calculating alpha and beta diversity...
+✅ Alpha diversity calculated for all samples.
+null device 
+          1 
+Heatmap saved to: /scratch/users/k24087895/final_project/hands_folder/results/runs/run_0504_1913/diversity/beta_diversity_heatmap.png 
+✅ Beta diversity heatmap generated.
+
+==================================================== TOTAL READ EXTRACTION ====================================================
+✅ Total read counts saved to: /scratch/users/k24087895/final_project/hands_folder/processed_data/metagenomic/total_reads.csv
+
+✅ Pipeline completed successfully.
+Storing log file...
