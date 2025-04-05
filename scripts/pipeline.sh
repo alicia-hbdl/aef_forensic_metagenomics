@@ -4,11 +4,12 @@
 #SBATCH --output=logs/pipeline.log 
 #SBATCH --error=logs/pipeline.err
 #SBATCH --time=02:00:00
-#SBATCH --mem=44G # Check sacct to determine appropriate values 
-#SBATCH --cpus-per-task=8  # Match requested threads 
+#SBATCH --mem=44G  
+#SBATCH --cpus-per-task=8 
 #SBATCH --ntasks=1  
 #SBATCH --partition=cpu 
 
+# TO DO: match the usage with the mac mini and requirements + allow user to specify adaptor file 
 set -e # Exit on error 
 set -x  # Print each command and its arguments as it is executed for debugging 
 

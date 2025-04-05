@@ -1,11 +1,18 @@
 
 ================================================= CONDA ENVIRONMENT ACTIVATION ==================================================
 
+ done.
+293458 sequences (43.16 Mbp) processed in 1.344s (13103.2 Kseq/m, 1926.97 Mbp/m).
+  197863 sequences classified (67.42%)
+  95595 sequences unclassified (32.58%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
 ✅ 'final_project' environment activated successfully.
 
 ================================================= ARGUMENT PARSING & VALIDATION =================================================
 
-Raw FASTQ directory path: /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/
+Raw FASTQ directory path: /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data
 ✅ Trimming enabled.
 
 ======================================================= PIPELINE SUMMARY ========================================================
@@ -63,6 +70,9 @@ Kraken2/Bracken Database: /scratch/users/k24087895/final_project/data/databases/
         ├── run_0504_1824
         ├── run_0504_1833
         ├── run_0504_1837
+        ├── run_0504_1843
+        ├── run_0504_1846
+        ├── run_0504_1851
         ├── run_2603_1200
         ├── run_2603_1216
         ├── run_2603_1225
@@ -70,12 +80,138 @@ Kraken2/Bracken Database: /scratch/users/k24087895/final_project/data/databases/
         ├── run_2603_1236
         └── run_2603_1257
 
-48 directories
+51 directories
 Human DNA-related files (SAM, BAM, and BED) in the 'human' directory are created once per sub-project and remain unchanged across runs.
 Intermediate metagenomic files in the 'metagenomic' directory are overwritten with each run and should be inspected beforehand if desired.
 Results are stored in the 'results' directory (including FastQC, host DNA analysis, and run-specific results like Kraken2 and Bracken).
 
 =================================================== QUALITY CONTROL & TRIMMING ===================================================
 
-❌ Error: Invalid or missing FASTQ directory. Ensure it contains .fq, .fastq, .fq.gz, or .fastq.gz files.
-❌ Quality control and trimming failed!
+
+Running FastQC on all raw reads...
+✅ FastQC completed successfully.
+
+/// MultiQC 🔍 v1.27.1
+
+     version_check | MultiQC Version v1.28 now available!
+       file_search | Search path: /scratch/users/k24087895/final_project/zymobiomics_folder/results/fastqc/pre_trimming
+
+            fastqc | Found 14 reports
+
+     write_results | Data        : None
+     write_results | Report      : /cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/zymobiomics_folder/results/fastqc/pre_trimming/multiqc_report.html   (overwritten)
+           multiqc | MultiQC complete
+✅ MultiQC report generated successfully.
+
+Running Trimmomatic...
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ZC1_S4_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ZC1_S4_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/paired/ZC1_S4_R1_paired.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/unpaired/ZC1_S4_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/paired/ZC1_S4_R2_paired.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/unpaired/ZC1_S4_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 327187 Both Surviving: 287711 (87.93%) Forward Only Surviving: 4646 (1.42%) Reverse Only Surviving: 1206 (0.37%) Dropped: 33624 (10.28%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed ZC1_S4!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ZC2_S5_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ZC2_S5_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/paired/ZC2_S5_R1_paired.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/unpaired/ZC2_S5_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/paired/ZC2_S5_R2_paired.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/unpaired/ZC2_S5_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 331292 Both Surviving: 267582 (80.77%) Forward Only Surviving: 3491 (1.05%) Reverse Only Surviving: 1313 (0.40%) Dropped: 58906 (17.78%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed ZC2_S5!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ZC3_S6_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ZC3_S6_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/paired/ZC3_S6_R1_paired.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/unpaired/ZC3_S6_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/paired/ZC3_S6_R2_paired.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/unpaired/ZC3_S6_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 328660 Both Surviving: 273943 (83.35%) Forward Only Surviving: 3540 (1.08%) Reverse Only Surviving: 1306 (0.40%) Dropped: 49871 (15.17%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed ZC3_S6!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ZC4_S7_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ZC4_S7_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/paired/ZC4_S7_R1_paired.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/unpaired/ZC4_S7_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/paired/ZC4_S7_R2_paired.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/unpaired/ZC4_S7_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 298033 Both Surviving: 238875 (80.15%) Forward Only Surviving: 3147 (1.06%) Reverse Only Surviving: 1202 (0.40%) Dropped: 54809 (18.39%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed ZC4_S7!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ZP1_S20_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ZP1_S20_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/paired/ZP1_S20_R1_paired.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/unpaired/ZP1_S20_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/paired/ZP1_S20_R2_paired.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/unpaired/ZP1_S20_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 349154 Both Surviving: 299533 (85.79%) Forward Only Surviving: 4651 (1.33%) Reverse Only Surviving: 1387 (0.40%) Dropped: 43583 (12.48%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed ZP1_S20!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ZP2_S21_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ZP2_S21_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/paired/ZP2_S21_R1_paired.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/unpaired/ZP2_S21_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/paired/ZP2_S21_R2_paired.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/unpaired/ZP2_S21_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 358936 Both Surviving: 293443 (81.75%) Forward Only Surviving: 6427 (1.79%) Reverse Only Surviving: 1577 (0.44%) Dropped: 57489 (16.02%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed ZP2_S21!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ZP3_S22_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ZP3_S22_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/paired/ZP3_S22_R1_paired.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/unpaired/ZP3_S22_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/paired/ZP3_S22_R2_paired.fastq.gz /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/../processed_data/trimmed/unpaired/ZP3_S22_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 404941 Both Surviving: 326857 (80.72%) Forward Only Surviving: 3655 (0.90%) Reverse Only Surviving: 1642 (0.41%) Dropped: 72787 (17.97%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed ZP3_S22!
+
+
+Running FastQC on paired trimmed reads...
+✅ FastQC completed successfully.
+
+/// MultiQC 🔍 v1.27.1
+
+     version_check | MultiQC Version v1.28 now available!
+       file_search | Search path: /scratch/users/k24087895/final_project/zymobiomics_folder/results/fastqc/post_trimming
+
+            fastqc | Found 14 reports
+
+     write_results | Data        : None
+     write_results | Report      : /cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/zymobiomics_folder/results/fastqc/post_trimming/multiqc_report.html   (overwritten)
+           multiqc | MultiQC complete
+✅ MultiQC report generated successfully.
+
+✅ All processing steps completed successfully.
+✅ QC and trimming completed successfully.
+
+================================================= METAGENOMIC ABUNDANCE ESTIMATION =================================================
+⚠️ This step assumes reads have already been trimmed with Trimmomatic and host DNA removed with Bowtie2. Processed reads must be in the correct directory.
+
+Processing sample: ZC1_S4
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228" --threads 8 --report "/scratch/users/k24087895/final_project/zymobiomics_folder/results/runs/run_0504_1851/reports/ZC1_S4.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/classified/ZC1_S4_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/unclassified/ZC1_S4_unclassified#.fastq"                "/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.1.gz" "/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/kraken2/ZC1_S4.kraken2" --use-names 2>&1
+Loading database information...
