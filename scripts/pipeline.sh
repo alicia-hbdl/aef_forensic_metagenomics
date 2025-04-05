@@ -210,7 +210,7 @@ echo "Results are stored in the 'results' directory (including FastQC, host DNA 
 if [[ "$TRIM" == true ]]; then
     echo -e "\n=================================================== QUALITY CONTROL & TRIMMING ===================================================\n"
 
-    "$ROOT_DIR/scripts/qc_trim.sh" "$RAW_FASTQ_DIR" || { echo "❌ Quality control and trimming failed!"; exit 1; }
+    "$ROOT_DIR/scripts/helper_scriptsqc_trim.sh" "$RAW_FASTQ_DIR" || { echo "❌ Quality control and trimming failed!"; exit 1; }
     echo -e "✅ QC and trimming completed successfully."
 fi
 
@@ -278,20 +278,19 @@ echo -e "\n================================================= COMPARISON TO GROUN
 
 # Combine Bracken reports for all samples
 echo -e "\nCombining Bracken reports..."
-Rscript "$ROOT_DIR/scripts/combine_breports.R" "$REPORTS_DIR/*.breport"
+Rscript "$ROOT_DIR/scripts/helper_scriptscombine_breports.R" "$REPORTS_DIR/*.breport"
 
 if [[ "$GROUND_TRUTH" == true ]]; then
 # Add a flag to the command line to indicate that the ground truth is available
 
-
 # Generate the heatmap that looks at how the run differs from the groundn truth 
-#Rscript "$ROOT_DIR/scripts/phylo_classification_comparison.R" "$READ_COUNTS"
+Rscript "$ROOT_DIR/scripts/helper_scriptsphylo_classification_comparison.R" "$RESULTS_DIR/combined_breports.csv"
 
 # Run the summary shell script to generate the summary table
-#bash "$ROOT_DIR"/scripts/runs_summary.sh
+#bash "$ROOT_DIR"/scripts/helper_scriptsruns_summary.sh
 
 # Generate the precision-recall and l2 distance plots for all the runs so far 
-#python "$ROOT_DIR/scripts/precision_recall_L2distance.ipynb" 
+#python "$ROOT_DIR/scripts/evaluation_metrics.py" 
 fi 
 echo -e "\n================================================= METAGENOMIC DIVERSITY ANALYSIS ================================================="
 
@@ -334,7 +333,7 @@ else
     python "$ROOT_DIR/tools/KrakenTools/DiversityTools/beta_diversity.py" -i "${INPUT_FILES[@]}" --type bracken > "$DIVERSITY_DIR/beta_diversity_matrix.tsv"
 
     # Generate beta diversity heatmap
-    Rscript "$ROOT_DIR/scripts/b_diversity_heatmap.R" "$DIVERSITY_DIR/beta_diversity_matrix.tsv"
+    Rscript "$ROOT_DIR/scripts/helper_scriptsb_diversity_heatmap.R" "$DIVERSITY_DIR/beta_diversity_matrix.tsv"
     echo "✅ Beta diversity heatmap generated."
 
 fi
@@ -344,7 +343,7 @@ fi
 if [[ "$REMOVE_HOST_DNA" == true ]]; then    
     echo -e "\n====================================================== HUMAN DNA ANALYSIS ======================================================"
     
-    "$ROOT_DIR/scripts/host_dna_analysis.sh" "$ALIGNED_SAM_DIR" || { echo "❌ Host DNA analysis failed!"; exit 1; }
+    "$ROOT_DIR/scripts/helper_scriptshost_dna_analysis.sh" "$ALIGNED_SAM_DIR" || { echo "❌ Host DNA analysis failed!"; exit 1; }
     echo -e "✅ Host DNA analysis completed successfully."
 fi 
 
