@@ -16,7 +16,6 @@ mkdir -p "$FASTQC_DIR/pre_trimming" "$FASTQC_DIR/post_trimming"
 TRIMMED_DIR="$RAW_FASTQ_DIR/../processed_data/trimmed"
 mkdir -p "$TRIMMED_DIR/paired" "$TRIMMED_DIR/unpaired"
 
-
 # Run FastQC on all raw reads
 echo -e "\nRunning FastQC on all raw reads..."
 fastqc "$RAW_FASTQ_DIR"/*.fastq.gz --outdir "$FASTQC_DIR/pre_trimming" &>/dev/null || {
