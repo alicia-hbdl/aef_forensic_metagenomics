@@ -29,12 +29,22 @@ COMMENT
 
 echo -e "\n================================================= CONDA ENVIRONMENT ACTIVATION =================================================="
 
-# Check for Conda and activate the environment
+# Check for Conda installation and initialize shell integration
 if ! command -v conda &> /dev/null; then
     echo "❌ Conda not found. Please install Conda."
     exit 1
 fi
+
 eval "$(conda shell.bash hook)" || { echo "❌ Conda shell integration not initialized. Run 'conda init bash'."; exit 1; }
+
+# Create environment if it doesn't exist
+if ! conda env list | grep -q "final_project"; then
+    echo "❌ 'final_project' environment not found. Creating from environment.yml..."
+    conda env create -f environment.yml || { echo "❌ Failed to create 'final_project' environment."; exit 1; }
+    echo "✅ 'final_project' environment created."
+fi 
+
+# Activate the environment
 conda activate final_project || { echo "❌ Failed to activate 'final_project' environment."; exit 1; }
 echo "✅ 'final_project' environment activated successfully."
 
@@ -69,9 +79,10 @@ while [[ $# -gt 0 ]]; do
             RAW_FASTQ_DIR="$2" && echo "Raw FASTQ directory path: $RAW_FASTQ_DIR" 
             
             # Define project root directory and default database/index paths
-            ROOTDIR=$(dirname "$(dirname "$RAW_FASTQ_DIR")")
-            DATABASE="$ROOTDIR/data/databases/k2_standard_16gb_20241228"
-            BOWTIE_PREFIX="$ROOTDIR/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as"           
+            PROJ_DIR=$(dirname "$RAW_FASTQ_DIR")  # Current subproject directory
+            ROOT_DIR=$(dirname "$PROJ_DIR")  # Root directory with all subprojects and tools
+            DATABASE="$ROOT_DIR/data/databases/k2_standard_16gb_20241228"
+            BOWTIE_PREFIX="$ROOT_DIR/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as"           
             
             shift 2
             ;;
@@ -142,54 +153,49 @@ echo ""
 echo "Kraken2/Bracken Database: $DATABASE"
 echo "================================================================================================================================="
 
-echo -e "\n====================================================== DIRECTORY STRUCTURE ======================================================"
-# Define base directory for results and processed data
-BASE_DIR="$(dirname "$RAW_FASTQ_DIR")"
+echo -e "\n====================================================== PROJECT STRUCTURE ======================================================"
+# Define output directories
+RESULTS_DIR="$PROJ_DIR/results"  # Stores general results of the entire project
+FASTQC_DIR="$RESULTS_DIR/fastqc"  # Stores FastQC reports for quality control analysis
+HOST_DNA_ANALYSIS_DIR="$RESULTS_DIR/host_dna_analysis"  # Stores host DNA-related outputs like BLAST, karyotype, etc.
+echo "Results are in $RESULTS_DIR (FastQC: $FASTQC_DIR, Host DNA: $HOST_DNA_ANALYSIS_DIR)."
 
-# Top-level output folders
-RESULTS_DIR="$(dirname "$RAW_FASTQ_DIR")/results" # For general results
-FASTQC_DIR="$RESULTS_DIR/fastqc" # For FastQC reports
-HOST_DNA_ANALYSIS_DIR="$RESULTS_DIR/host_dna_analysis" # BLAST, karyotype, and other host DNA results
+PROCESSED_DIR="$(dirname "$RAW_FASTQ_DIR")/processed_data"  # Root directory for processed data
+TRIMMED_DIR="$PROCESSED_DIR/trimmed"  # Stores trimmed FASTQ files
 
-TRIMMED_DIR="$(dirname "$RAW_FASTQ_DIR")/processed_data/trimmed" # Trimmed FASTQ files
-METAGENOMIC_DIR="$(dirname "$TRIMMED_DIR")/metagenomic" # Host-filtered reads and classification
-HUMAN_DIR="$(dirname "$TRIMMED_DIR")/human" # Human DNA-related outputs
+# Define human DNA alignment outputs
+# These directories store files that are created once for the entire sub-project, not for each individual run.
+HUMAN_DIR="$PROCESSED_DIR/human"  # Stores human DNA-related outputs
+ALIGNED_SAM_DIR="$HUMAN_DIR/aligned_sam"  # Stores SAM files of host-aligned reads
+SORTED_BAM_DIR="$HUMAN_DIR/sorted_bam"  # Stores sorted BAM files of host-alignments
+BED_FILES_DIR="$HUMAN_DIR/bed_files"  # Stores BED files for host DNA reads
+echo "Human DNA-related files (SAM, BAM, and BED) in $HUMAN_DIR are created once per sub-project and do not change with each pipeline run."
 
-# Human read filtering
-FILTERED_FASTQ_DIR="$METAGENOMIC_DIR/filtered_fastq" # Host-removed paired reads
-ALIGNED_SAM_DIR="$HUMAN_DIR/aligned_sam" # SAMs of host-aligned reads
+# Define metagenomic Kraken2/Bracken output directories
+# Unlike the files in $HUMAN_DIR, these files are generated and overwritten with each pipeline execution.
+METAGENOMIC_DIR="$PROCESSED_DIR/metagenomic"  # Stores host-filtered reads and metagenomic classification results
+FILTERED_FASTQ_DIR="$METAGENOMIC_DIR/filtered_fastq"  # Stores host-removed paired FASTQ files
+KRAKEN2_DIR="$METAGENOMIC_DIR/kraken2"  # Stores Kraken2 classification results
+CLASSIFIED_DIR="$METAGENOMIC_DIR/classified"  # Stores classified reads after Kraken2
+UNCLASSIFIED_DIR="$METAGENOMIC_DIR/unclassified"  # Stores unclassified reads from Kraken2
+BRACKEN_DIR="$METAGENOMIC_DIR/bracken"  # Stores Bracken abundance estimation results
+echo "Intermediate metagenomic files in $METAGENOMIC_DIR are generated and overwritten with each pipeline execution and should be inspected beforehand if desired."
 
-# Kraken2 classification output
-KRAKEN2_DIR="$METAGENOMIC_DIR/kraken2"
-CLASSIFIED_DIR="$METAGENOMIC_DIR/classified"
-UNCLASSIFIED_DIR="$METAGENOMIC_DIR/unclassified"
+# Define run-specific directories
+# These directories store final output for each run (e.g., Kraken2 classification, Bracken results, and others).
+RUN_DIR="$RESULTS_DIR/runs/$(date +"run_%d%m_%H%M")"  # Unique directory for each pipeline run, based on timestamp
+REPORTS_DIR="$RUN_DIR/reports"  # Stores Kraken2 and Bracken reports (k2report, breport, etc.)
+KRONA_DIR="$RUN_DIR/krona"  # Stores Krona plots for visualizing taxonomic classification
+DIVERSITY_DIR="$RUN_DIR/diversity"  # Stores diversity analysis results (e.g., alpha/beta diversity)
+echo "Run-specific results (e.g., Kraken2, Bracken) are in $RUN_DIR."
 
-# Bracken abundance estimation
-BRACKEN_DIR="$METAGENOMIC_DIR/bracken"
-
-# Run-specific results 
-RUN_DIR="$RESULTS_DIR/runs/$(date +"run_%d%m_%H%M")"
-REPORTS_DIR="$RUN_DIR/reports" #k2report and breport
-KRONA_DIR="$RUN_DIR/krona"  # Krona plots
-DIVERSITY_DIR="$RUN_DIR/diversity" # Alpha/beta diversity analysis
-
-# Human DNA alignment outputs
-SORTED_BAM_DIR="$HUMAN_DIR/sorted_bam" # Sorted BAMs of host-alignments
-BED_FILES_DIR="$HUMAN_DIR/bed_files" # BED files for host reads
-
-# Create all required directories
-mkdir -p \
-"$RESULTS_DIR" "$HOST_DNA_ANALYSIS_DIR"\
-"$FASTQC_DIR/pre_trimming" "$FASTQC_DIR/post_trimming" \
-"$TRIMMED_DIR/paired" "$TRIMMED_DIR/unpaired" \
-"$ALIGNED_SAM_DIR" "$FILTERED_FASTQ_DIR" \
-"$KRAKEN2_DIR" "$CLASSIFIED_DIR" "$UNCLASSIFIED_DIR" \
-"$BRACKEN_DIR" \
-"$REPORTS_DIR" "$KRONA_DIR" "$DIVERSITY_DIR" \
-"$SORTED_BAM_DIR" "$BED_FILES_DIR"
+# Create all necessary directories
+mkdir -p "$RESULTS_DIR" "$HOST_DNA_ANALYSIS_DIR" "$FASTQC_DIR/pre_trimming" "$FASTQC_DIR/post_trimming" \
+    "$TRIMMED_DIR/paired" "$TRIMMED_DIR/unpaired" "$ALIGNED_SAM_DIR" "$FILTERED_FASTQ_DIR" \
+    "$KRAKEN2_DIR" "$CLASSIFIED_DIR" "$UNCLASSIFIED_DIR" "$BRACKEN_DIR" "$REPORTS_DIR" \
+    "$KRONA_DIR" "$DIVERSITY_DIR" "$SORTED_BAM_DIR" "$BED_FILES_DIR"
 
 echo "✅ All output directories created successfully."
-
 if [[ "$TRIM" == true ]]; then
     
     echo -e "\n=================================================== QUALITY CONTROL & TRIMMING ==================================================="
@@ -209,7 +215,7 @@ if [[ "$TRIM" == true ]]; then
     rm -f "$FASTQC_DIR/pre_trimming"/*.zip  
     
     # Define Trimmomatic adapter file, trimming parameters, and steps
-    ADAPT_FA="$ROOTDIR/data/adapters/zymobiomics_adaptors.fa"
+    ADAPT_FA="$ROOT_DIR/data/adapters/zymobiomics_adaptors.fa"
     TRIM_PARAM="PE -phred33 -threads 4"
     STEPS="ILLUMINACLIP:$ADAPT_FA:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35"
 ## EVENTUALLY, LOOK AT WHICH MINLEN IS NECESSARY FOR ACCURATE CLASSIFICATION WITH KRAKEN2
@@ -305,8 +311,8 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
     echo "✅ Abundance estimated."
     # Generate Krona interactive plot
     echo -e "\nGenerating Krona visualization..."
-    python "$ROOTDIR/tools/KrakenTools/kreport2krona.py" -r "$REPORTS_DIR/${base}.breport" -o "$KRONA_DIR/${base}.krona.txt" --no-intermediate-ranks && \
-    "$ROOTDIR/tools/Krona/KronaTools/scripts/ImportText.pl" "$KRONA_DIR/${base}.krona.txt" -o "$KRONA_DIR/${base}.krona.html" && rm "$KRONA_DIR/${base}.krona.txt" && \
+    python "$ROOT_DIR/tools/KrakenTools/kreport2krona.py" -r "$REPORTS_DIR/${base}.breport" -o "$KRONA_DIR/${base}.krona.txt" --no-intermediate-ranks && \
+    "$ROOT_DIR/tools/Krona/KronaTools/scripts/ImportText.pl" "$KRONA_DIR/${base}.krona.txt" -o "$KRONA_DIR/${base}.krona.html" && rm "$KRONA_DIR/${base}.krona.txt" && \
     echo "✅ Krona plot generated."
 done
 
@@ -344,7 +350,7 @@ for file in "$BRACKEN_DIR"/*.bracken; do
     
     # Compute each alpha diversity metric
     for METRIC in "${METRICS[@]}"; do  
-        VALUE=$(python "$ROOTDIR/tools/KrakenTools/DiversityTools/alpha_diversity.py" -f "$file" -a "$METRIC" | awk -F': ' '{if (NF>1) print $2}')
+        VALUE=$(python "$ROOT_DIR/tools/KrakenTools/DiversityTools/alpha_diversity.py" -f "$file" -a "$METRIC" | awk -F': ' '{if (NF>1) print $2}')
         DIVERSITY_RESULTS+=("$VALUE")
     done  
 
@@ -361,17 +367,17 @@ echo "✅ Alpha diversity calculated for all samples."
 if (( ${#INPUT_FILES[@]} < 2 )); then
   echo "⚠️ Skipping beta diversity – fewer than 2 samples."
 else
-    python "$ROOTDIR/tools/KrakenTools/DiversityTools/beta_diversity.py" -i "${INPUT_FILES[@]}" --type bracken > "$DIVERSITY_DIR/beta_diversity_matrix.tsv"
+    python "$ROOT_DIR/tools/KrakenTools/DiversityTools/beta_diversity.py" -i "${INPUT_FILES[@]}" --type bracken > "$DIVERSITY_DIR/beta_diversity_matrix.tsv"
 
     # Generate beta diversity heatmap
-    Rscript "$ROOTDIR/homemade_scripts/b_diversity_heatmap.R" "$DIVERSITY_DIR/beta_diversity_matrix.tsv"
+    Rscript "$ROOT_DIR/homemade_scripts/b_diversity_heatmap.R" "$DIVERSITY_DIR/beta_diversity_matrix.tsv"
     echo "✅ Beta diversity heatmap generated."
 
 fi
 
 echo -e "\n==================================================== TOTAL READ EXTRACTION ===================================================="
 
-LOG_FILE="$ROOTDIR/homemade_scripts/logs/kraken_pipeline.log"
+LOG_FILE="$ROOT_DIR/homemade_scripts/logs/kraken_pipeline.log"
 TOTAL_READS="$METAGENOMIC_DIR/total_reads.csv"
 
 # Extract total read counts from the log file for normalization
@@ -420,7 +426,7 @@ if [[ "$REMOVE_HOST_DNA" == true ]]; then
     fi
 
     echo "Generating karyotype plot..."
-    Rscript "$ROOTDIR/homemade_scripts/karyotype.R" "$HOST_DNA_ANALYSIS_DIR/common_intervals.bed" && 
+    Rscript "$ROOT_DIR/homemade_scripts/karyotype.R" "$HOST_DNA_ANALYSIS_DIR/common_intervals.bed" && 
     echo "✅ Karyotype plot generated."
     
     echo -e "\n================================================== BLAST =================================================="
@@ -457,7 +463,7 @@ if [[ "$REMOVE_HOST_DNA" == true ]]; then
             echo "✅ BLAST completed."
 
             echo "Generating taxonomy tree..."
-            Rscript "$ROOTDIR/homemade_scripts/human_aligned_tree.R" "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" && 
+            Rscript "$ROOT_DIR/homemade_scripts/human_aligned_tree.R" "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" && 
             echo "✅ Taxonomy tree generated."
         else
             echo "❌ Query file >100KB. Skipping BLAST. Use: https://blast.ncbi.nlm.nih.gov/Blast.cgi"
@@ -484,7 +490,7 @@ if [[ "$REMOVE_HOST_DNA" == true ]]; then
         done
         
         echo "Generating Jaccard similarity heatmap..."
-        Rscript "$ROOTDIR/homemade_scripts/jaccard_similarity_heatmap.R" "$HOST_DNA_ANALYSIS_DIR/jaccard_results.txt"
+        Rscript "$ROOT_DIR/homemade_scripts/jaccard_similarity_heatmap.R" "$HOST_DNA_ANALYSIS_DIR/jaccard_results.txt"
         echo "✅ Jaccard analysis complete."
     fi
 fi 
