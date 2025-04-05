@@ -27,7 +27,7 @@ Notes:
 =============================================================================================
 COMMENT
 
-echo -e "\n================================================= CONDA ENVIRONMENT ACTIVATION =================================================="
+echo -e "\n================================================= CONDA ENVIRONMENT ACTIVATION ==================================================\n"
 
 # Check for Conda installation and initialize shell integration
 if ! command -v conda &> /dev/null; then
@@ -52,7 +52,7 @@ echo "✅ 'final_project' environment activated successfully."
 export PATH="/users/k24087895/.conda/envs/final_project/bin:$PATH"
 export PYTHONPATH="/users/k24087895/.conda/envs/final_project/lib/python3.13/site-packages:$PYTHONPATH"
 
-echo -e "\n================================================= ARGUMENT PARSING & VALIDATION ================================================="
+echo -e "\n================================================= ARGUMENT PARSING & VALIDATION =================================================\n"
 
 # Default values
 TRIM=false
@@ -153,7 +153,7 @@ echo ""
 echo "Kraken2/Bracken Database: $DATABASE"
 echo "================================================================================================================================="
 
-echo -e "\n====================================================== PROJECT STRUCTURE ======================================================"
+echo -e "\n====================================================== PROJECT STRUCTURE ======================================================\n"
 # Define output directories
 RESULTS_DIR="$PROJ_DIR/results"  # General results of the entire project
 FASTQC_DIR="$RESULTS_DIR/fastqc"  # FastQC reports for quality control analysis
@@ -192,13 +192,12 @@ mkdir -p "$RESULTS_DIR" "$HOST_DNA_ANALYSIS_DIR" "$FASTQC_DIR/pre_trimming" "$FA
     "$KRONA_DIR" "$DIVERSITY_DIR" "$SORTED_BAM_DIR" "$BED_FILES_DIR"
 
 # Display the directory structure of the project
-tree -d "$PROJ_DIR"
+tree -L 3 -d "$PROJ_DIR"
 
 # Inform the user about the project structure
 echo "Human DNA-related files (SAM, BAM, and BED) in the 'human' directory are created once per sub-project and remain unchanged across runs."
 echo "Intermediate metagenomic files in the 'metagenomic' directory are overwritten with each run and should be inspected beforehand if desired."
 echo "Results are stored in the 'results' directory (including FastQC, host DNA analysis, and run-specific results like Kraken2 and Bracken)."
-echo "✅ All output directories created successfully."
 
 if [[ "$TRIM" == true ]]; then
     
