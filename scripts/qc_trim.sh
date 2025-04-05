@@ -1,14 +1,13 @@
 #!/bin/bash
-echo "$1" "$2"
 
 # Ensure the FASTQ directory is provided and valid
-if [[ -z "$2" || "$2" == -* || ! -d "$2" || -z "$(find "$2" -maxdepth 1 -type f \( -name "*.fq" -o -name "*.fastq" -o -name "*.fq.gz" -o -name "*.fastq.gz" \) 2>/dev/null)" ]]; then
+if [[ -z "$1" || "$1" == -* || ! -d "$1" || -z "$(find "$1" -maxdepth 1 -type f \( -name "*.fq" -o -name "*.fastq" -o -name "*.fq.gz" -o -name "*.fastq.gz" \) 2>/dev/null)" ]]; then
     echo "❌ Error: Invalid or missing FASTQ directory. Ensure it contains .fq, .fastq, .fq.gz, or .fastq.gz files."
     exit 1
 fi
 
 # Set the RAW_FASTQ_DIR to the directory passed as argument
-RAW_FASTQ_DIR="$2"
+RAW_FASTQ_DIR="$1"
 
 # Define and create output directories for FastQC and trimmed data
 # These are created in the main script but are also initialized here for standalone use
