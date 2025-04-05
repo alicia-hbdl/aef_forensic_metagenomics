@@ -275,11 +275,14 @@ printf -v FORMATTED_DURATION '%02d:%02d:%02d' $((DURATION/3600)) $(( (DURATION%3
 echo -e "\nMetagenomic classification completed in: $FORMATTED_DURATION"
 
 echo -e "\n================================================= COMPARISON TO GROUND TRUTH ================================================="
+
+# Combine Bracken reports for all samples
+echo -e "\nCombining Bracken reports..."
+Rscript "$ROOT_DIR/scripts/combine_breports.R" "$REPORTS_DIR/*.breport"
+
 if [[ "$GROUND_TRUTH" == true ]]; then
 # Add a flag to the command line to indicate that the ground truth is available
 
-#Rscript "$ROOT_DIR/scripts/combine_breports.R" "$REPORTS_DIR/*.breport"
-# Create a script that generates a formatted table (READ_COUNTS)from the Bracken output file.
 
 # Generate the heatmap that looks at how the run differs from the groundn truth 
 #Rscript "$ROOT_DIR/scripts/phylo_classification_comparison.R" "$READ_COUNTS"
