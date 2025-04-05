@@ -200,12 +200,12 @@ echo "Intermediate metagenomic files in the 'metagenomic' directory are overwrit
 echo "Results are stored in the 'results' directory (including FastQC, host DNA analysis, and run-specific results like Kraken2 and Bracken)."
 
 if [[ "$TRIM" == true ]]; then
-    
     echo -e "\n=================================================== QUALITY CONTROL & TRIMMING ===================================================\n"
 
     "$ROOT_DIR/scripts/qc_trim.sh" "$RAW_FASTQ_DIR" || {echo "❌ Quality control and trimming failed!"; exit 1;}
     echo -e "✅ QC and trimming completed successfully."
 fi
+
 echo -e "\n================================================= METAGENOMIC ABUNDANCE ESTIMATION ================================================="
 
 echo "⚠️ This step assumes reads have already been trimmed with Trimmomatic and host DNA removed with Bowtie2. Processed reads must be in the correct directory."
