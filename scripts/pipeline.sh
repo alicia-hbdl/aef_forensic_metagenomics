@@ -60,6 +60,7 @@ echo -e "\n================================================= ARGUMENT PARSING & 
 # Default values
 TRIM=false
 REMOVE_HOST_DNA=false
+GROUND_TRUTH=false
 
 # Parse command-line arguments
 while [[ $# -gt 0 ]]; do 
@@ -109,7 +110,7 @@ while [[ $# -gt 0 ]]; do
           ;;            
         
     # Process host DNA Bowtie2 index prefix
-    --r|--remove-host-dna)
+    -r|--remove-host-dna)
         if [[ -z "$2" || "$2" == -* ]]; then
             echo "⚠️ Warning: No argument provided. Using default: $BOWTIE_PREFIX"
             shift 
@@ -123,7 +124,7 @@ while [[ $# -gt 0 ]]; do
         fi
         REMOVE_HOST_DNA=true
         ;;       
-         
+
       # Handle unknown arguments
       *) 
           echo "❌ Unknown argument: $1. Usage: $0 --raw-fastq/-fq <reads_dir> [--database/-db <database_path>] [-t | --trim] [-r | --remove-host-dna <index_path>]"
@@ -273,10 +274,22 @@ printf -v FORMATTED_DURATION '%02d:%02d:%02d' $((DURATION/3600)) $(( (DURATION%3
 
 echo -e "\nMetagenomic classification completed in: $FORMATTED_DURATION"
 
-echo -e "\n================================================= TAXONOMY HEATMAP ================================================="
+echo -e "\n================================================= COMPARISON TO GROUND TRUTH ================================================="
+if [[ "$GROUND_TRUTH" == true ]]; then
+# Add a flag to the command line to indicate that the ground truth is available
 
-# GENERATE THE TAXONOMY HEATMAP 
+#Rscript "$ROOT_DIR/scripts/combine_breports.R" "$REPORTS_DIR/*.breport"
+# Create a script that generates a formatted table (READ_COUNTS)from the Bracken output file.
 
+# Generate the heatmap that looks at how the run differs from the groundn truth 
+#Rscript "$ROOT_DIR/scripts/phylo_classification_comparison.R" "$READ_COUNTS"
+
+# Run the summary shell script to generate the summary table
+#bash "$ROOT_DIR"/scripts/runs_summary.sh
+
+# Generate the precision-recall and l2 distance plots for all the runs so far 
+#python "$ROOT_DIR/scripts/precision_recall_L2distance.ipynb" 
+fi 
 echo -e "\n================================================= METAGENOMIC DIVERSITY ANALYSIS ================================================="
 
 # Define alpha diversity metrics
@@ -323,21 +336,6 @@ else
 
 fi
 
-echo -e "\n==================================================== TOTAL READ EXTRACTION ===================================================="
-
-LOG_FILE="$ROOT_DIR/scripts/logs/kraken_pipeline.log"
-TOTAL_READS="$METAGENOMIC_DIR/total_reads.csv"
-
-# Extract total read counts from the log file for normalization
-awk '
-  BEGIN { print "sample,total_reads" }
-  /Processing sample:/ {sample = $NF}  # Capture the sample name
-  /sequences \(/ && sample {
-    print sample "," $1  # Print sample name and number of reads
-    sample = ""  # Reset sample after use
-  }
-' "$LOG_FILE" > "$TOTAL_READS"
-echo "✅ Total read counts saved to: $TOTAL_READS"
 
 # Proceed if host DNA removal was performed
 if [[ "$REMOVE_HOST_DNA" == true ]]; then    
