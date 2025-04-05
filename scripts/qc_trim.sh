@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# This is a pipeline that performs quality control and trimming of FASTQ files using FastQC and Trimmomatic.
+# It generates reports before and after trimming, and handles paired-end reads.
+# Usage: ./qc_trim.sh <FASTQ_DIR>
+
 # Ensure the FASTQ directory is provided and valid
 if [[ -z "$1" || "$1" == -* || ! -d "$1" || -z "$(find "$1" -maxdepth 1 -type f \( -name "*.fq" -o -name "*.fastq" -o -name "*.fq.gz" -o -name "*.fastq.gz" \) 2>/dev/null)" ]]; then
     echo "❌ Error: Invalid or missing FASTQ directory. Ensure it contains .fq, .fastq, .fq.gz, or .fastq.gz files."
