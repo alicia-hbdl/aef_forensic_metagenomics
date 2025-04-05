@@ -55,7 +55,9 @@ fi
 echo "Generating karyotype plot..."
 Rscript "$ROOT_DIR/scripts/karyotype.R" "$BED_FILES_DIR/common_intervals.bed" && \
 echo "✅ Karyotype plot generated."
-    
+
+awk '$4 > 1' "$BED_FILES_DIR/common_intervals.bed" > "$BED_FILES_DIR/common_intervals_filtered.bed"
+
 echo -e "\n================================================== BLAST =================================================="
     
 # Prepare BLAST query file
@@ -63,17 +65,15 @@ BLAST_QUERY="$HOST_DNA_ANALYSIS_DIR/blast_query.fasta"
 > "$BLAST_QUERY"
 
 echo -e "\nExtracting sequences for BLAST query..."
-while IFS=$'\t' read -r chrom start end num; do
-    if (( num > 2 )); then  # Only process rows where num > 2
-        for FILE in "$SORTED_BAM_DIR"/*.sorted.bam; do
-            samtools view "$FILE" "$chrom:$start-$end" | awk '{print ">" $1 "\n" $10}' >> "$BLAST_QUERY"
-        done
-    fi
-done < <(tail -n +2 "$BED_FILES_DIR/common_intervals.bed")
+while IFS=$'\t' read -r chrom start end _; do
+    for FILE in "$SORTED_BAM_DIR"/*.sorted.bam; do
+        samtools view "$FILE" "$chrom:$start-$end" | awk '{print ">" $1 "\n" $10}' >> "$BLAST_QUERY"
+    done
+done < <(tail -n +2 "$BED_FILES_DIR/common_intervals_filtered.bed")
 echo "✅ Sequences saved to BLAST query."
 
 # Skip BLAST if BED region file is empty
-if [ $(tail -n +2 "$BED_FILES_DIR/common_intervals.bed" | wc -l) -eq 0 ]; then
+if [ $(tail -n +2 "$BED_FILES_DIR/common_intervals_filtered.bed" | wc -l) -eq 0 ]; then
     echo "❌ No regions found. Skipping BLAST."
 else
     # Deduplicate sequences
