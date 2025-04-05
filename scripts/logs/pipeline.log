@@ -61,6 +61,8 @@ Kraken2/Bracken Database: /scratch/users/k24087895/final_project/data/databases/
         ├── run_0504_1753
         ├── run_0504_1814
         ├── run_0504_1824
+        ├── run_0504_1833
+        ├── run_0504_1837
         ├── run_2603_1200
         ├── run_2603_1216
         ├── run_2603_1225
@@ -68,7 +70,12 @@ Kraken2/Bracken Database: /scratch/users/k24087895/final_project/data/databases/
         ├── run_2603_1236
         └── run_2603_1257
 
-46 directories
+48 directories
 Human DNA-related files (SAM, BAM, and BED) in the 'human' directory are created once per sub-project and remain unchanged across runs.
 Intermediate metagenomic files in the 'metagenomic' directory are overwritten with each run and should be inspected beforehand if desired.
 Results are stored in the 'results' directory (including FastQC, host DNA analysis, and run-specific results like Kraken2 and Bracken).
+
+=================================================== QUALITY CONTROL & TRIMMING ===================================================
+
+❌ Error: Invalid or missing FASTQ directory. Ensure it contains .fq, .fastq, .fq.gz, or .fastq.gz files.
+❌ Quality control and trimming failed!

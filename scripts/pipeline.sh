@@ -10,6 +10,7 @@
 #SBATCH --partition=cpu 
 
 set -e # Exit on error 
+set -x  # Print each command and its arguments as it is executed for debugging 
 
 << 'COMMENT'
 =============================================================================================
@@ -202,7 +203,7 @@ echo "Results are stored in the 'results' directory (including FastQC, host DNA 
 if [[ "$TRIM" == true ]]; then
     echo -e "\n=================================================== QUALITY CONTROL & TRIMMING ===================================================\n"
 
-    "$ROOT_DIR/scripts/qc_trim.sh" "$RAW_FASTQ_DIR" || {echo "❌ Quality control and trimming failed!"; exit 1;}
+    "$ROOT_DIR/scripts/qc_trim.sh" "$RAW_FASTQ_DIR" || { echo "❌ Quality control and trimming failed!"; exit 1; }
     echo -e "✅ QC and trimming completed successfully."
 fi
 
