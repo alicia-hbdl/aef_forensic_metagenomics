@@ -169,11 +169,12 @@ export CONDA_PYTHON_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.0
 ++ '[' -n '' ']'
 ++ hash -r
 + conda env list
-+ grep -q final_project
++ echo '✅ Classification complete.'
 + local cmd=env
-+ case "$cmd" in
++ echo -e '\nEstimating species abundance with Bracken...'
 + __conda_exe env list
 + /software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda env list
+slurmstepd: error: *** JOB 24901576 ON erc-hpc-comp007 CANCELLED AT 2025-04-05T18:51:07 ***
 + conda activate final_project
 + local cmd=activate
 + case "$cmd" in
@@ -288,10 +289,10 @@ export CONDA_PYTHON_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.0
 + REMOVE_HOST_DNA=false
 + [[ 3 -gt 0 ]]
 + case "$1" in
-+ [[ -z /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ ]]
-+ [[ /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ == -* ]]
-+ [[ ! -d /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ ]]
-++ find /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ -maxdepth 1 -type f '(' -name '*.fq' -o -name '*.fastq' -o -name '*.fq.gz' -o -name '*.fastq.gz' ')'
++ [[ -z /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data ]]
++ [[ /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data == -* ]]
++ [[ ! -d /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data ]]
+++ find /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data -maxdepth 1 -type f '(' -name '*.fq' -o -name '*.fastq' -o -name '*.fq.gz' -o -name '*.fastq.gz' ')'
 + [[ -z /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ZC2_S5_L001_R1_001.fastq.gz
 /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ZC3_S6_L001_R2_001.fastq.gz
 /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ZC1_S4_L001_R1_001.fastq.gz
@@ -307,14 +308,14 @@ export CONDA_PYTHON_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.0
 /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ZP3_S22_L001_R2_001.fastq.gz
 /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ZC3_S6_L001_R1_001.fastq.gz ]]
 + for file in "$2"/*.{fq,fastq}
-+ [[ -f /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data//*.fq ]]
++ [[ -f /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/*.fq ]]
 + for file in "$2"/*.{fq,fastq}
-+ [[ -f /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data//*.fastq ]]
++ [[ -f /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/*.fastq ]]
 + for file in "$2"/*.fq.gz
-+ [[ -f /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data//*.fq.gz ]]
-+ RAW_FASTQ_DIR=/scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/
-+ echo 'Raw FASTQ directory path: /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/'
-++ dirname /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/
++ [[ -f /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/*.fq.gz ]]
++ RAW_FASTQ_DIR=/scratch/users/k24087895/final_project/zymobiomics_folder/raw_data
++ echo 'Raw FASTQ directory path: /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data'
+++ dirname /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data
 + PROJ_DIR=/scratch/users/k24087895/final_project/zymobiomics_folder
 ++ dirname /scratch/users/k24087895/final_project/zymobiomics_folder
 + ROOT_DIR=/scratch/users/k24087895/final_project
@@ -327,7 +328,7 @@ export CONDA_PYTHON_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.0
 + echo '✅ Trimming enabled.'
 + shift
 + [[ 0 -gt 0 ]]
-+ [[ -z /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ ]]
++ [[ -z /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data ]]
 + echo -e '\n======================================================= PIPELINE SUMMARY ========================================================'
 ++ [[ true == true ]]
 ++ echo 'Enabled ✅'
@@ -344,7 +345,7 @@ export CONDA_PYTHON_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.0
 + RESULTS_DIR=/scratch/users/k24087895/final_project/zymobiomics_folder/results
 + FASTQC_DIR=/scratch/users/k24087895/final_project/zymobiomics_folder/results/fastqc
 + HOST_DNA_ANALYSIS_DIR=/scratch/users/k24087895/final_project/zymobiomics_folder/results/host_dna_analysis
-++ dirname /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/
+++ dirname /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data
 + PROCESSED_DIR=/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data
 + TRIMMED_DIR=/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/trimmed
 + HUMAN_DIR=/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/human
@@ -358,17 +359,30 @@ export CONDA_PYTHON_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.0
 + UNCLASSIFIED_DIR=/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/unclassified
 + BRACKEN_DIR=/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/bracken
 ++ date +run_%d%m_%H%M
-+ RUN_DIR=/scratch/users/k24087895/final_project/zymobiomics_folder/results/runs/run_0504_1837
-+ REPORTS_DIR=/scratch/users/k24087895/final_project/zymobiomics_folder/results/runs/run_0504_1837/reports
-+ KRONA_DIR=/scratch/users/k24087895/final_project/zymobiomics_folder/results/runs/run_0504_1837/krona
-+ DIVERSITY_DIR=/scratch/users/k24087895/final_project/zymobiomics_folder/results/runs/run_0504_1837/diversity
-+ mkdir -p /scratch/users/k24087895/final_project/zymobiomics_folder/results /scratch/users/k24087895/final_project/zymobiomics_folder/results/host_dna_analysis /scratch/users/k24087895/final_project/zymobiomics_folder/results/fastqc/pre_trimming /scratch/users/k24087895/final_project/zymobiomics_folder/results/fastqc/post_trimming /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/trimmed/paired /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/trimmed/unpaired /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/human/aligned_sam /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/filtered_fastq /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/kraken2 /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/classified /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/unclassified /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/bracken /scratch/users/k24087895/final_project/zymobiomics_folder/results/runs/run_0504_1837/reports /scratch/users/k24087895/final_project/zymobiomics_folder/results/runs/run_0504_1837/krona /scratch/users/k24087895/final_project/zymobiomics_folder/results/runs/run_0504_1837/diversity /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/human/sorted_bam /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/human/bed_files
++ RUN_DIR=/scratch/users/k24087895/final_project/zymobiomics_folder/results/runs/run_0504_1851
++ REPORTS_DIR=/scratch/users/k24087895/final_project/zymobiomics_folder/results/runs/run_0504_1851/reports
++ KRONA_DIR=/scratch/users/k24087895/final_project/zymobiomics_folder/results/runs/run_0504_1851/krona
++ DIVERSITY_DIR=/scratch/users/k24087895/final_project/zymobiomics_folder/results/runs/run_0504_1851/diversity
++ mkdir -p /scratch/users/k24087895/final_project/zymobiomics_folder/results /scratch/users/k24087895/final_project/zymobiomics_folder/results/host_dna_analysis /scratch/users/k24087895/final_project/zymobiomics_folder/results/fastqc/pre_trimming /scratch/users/k24087895/final_project/zymobiomics_folder/results/fastqc/post_trimming /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/trimmed/paired /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/trimmed/unpaired /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/human/aligned_sam /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/filtered_fastq /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/kraken2 /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/classified /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/unclassified /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/bracken /scratch/users/k24087895/final_project/zymobiomics_folder/results/runs/run_0504_1851/reports /scratch/users/k24087895/final_project/zymobiomics_folder/results/runs/run_0504_1851/krona /scratch/users/k24087895/final_project/zymobiomics_folder/results/runs/run_0504_1851/diversity /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/human/sorted_bam /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/human/bed_files
 + tree -L 3 -d /scratch/users/k24087895/final_project/zymobiomics_folder
 + echo 'Human DNA-related files (SAM, BAM, and BED) in the '\''human'\'' directory are created once per sub-project and remain unchanged across runs.'
 + echo 'Intermediate metagenomic files in the '\''metagenomic'\'' directory are overwritten with each run and should be inspected beforehand if desired.'
 + echo 'Results are stored in the '\''results'\'' directory (including FastQC, host DNA analysis, and run-specific results like Kraken2 and Bracken).'
 + [[ true == true ]]
 + echo -e '\n=================================================== QUALITY CONTROL & TRIMMING ===================================================\n'
-+ /scratch/users/k24087895/final_project/scripts/qc_trim.sh /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/
-+ echo '❌ Quality control and trimming failed!'
-+ exit 1
++ /scratch/users/k24087895/final_project/scripts/qc_trim.sh /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data
++ echo -e '✅ QC and trimming completed successfully.'
++ echo -e '\n================================================= METAGENOMIC ABUNDANCE ESTIMATION ================================================='
++ echo '⚠️ This step assumes reads have already been trimmed with Trimmomatic and host DNA removed with Bowtie2. Processed reads must be in the correct directory.'
+++ date +%s
++ START_TIME=1743875616
++ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz
+++ basename /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R1_paired.fastq.gz _R1_paired.fastq.gz
++ base=ZC1_S4
++ echo -e '\nProcessing sample: ZC1_S4'
++ [[ false == true ]]
++ echo -e '\nClassifying metagenomic reads with Kraken2...'
++ KRAKEN_CMD='kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228" --threads 8 --report "/scratch/users/k24087895/final_project/zymobiomics_folder/results/runs/run_0504_1851/reports/ZC1_S4.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/classified/ZC1_S4_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/unclassified/ZC1_S4_unclassified#.fastq"                "/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.1.gz" "/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/kraken2/ZC1_S4.kraken2" --use-names 2>&1'
++ echo 'kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228" --threads 8 --report "/scratch/users/k24087895/final_project/zymobiomics_folder/results/runs/run_0504_1851/reports/ZC1_S4.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/classified/ZC1_S4_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/unclassified/ZC1_S4_unclassified#.fastq"                "/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.1.gz" "/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/kraken2/ZC1_S4.kraken2" --use-names 2>&1'
++ eval kraken2 --db '"/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228"' --threads 8 --report '"/scratch/users/k24087895/final_project/zymobiomics_folder/results/runs/run_0504_1851/reports/ZC1_S4.k2report"' --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out '"/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/classified/ZC1_S4_classified#.fastq"' --unclassified-out '"/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/unclassified/ZC1_S4_unclassified#.fastq"' '"/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.1.gz"' '"/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.2.gz"' --output '"/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/kraken2/ZC1_S4.kraken2"' --use-names '2>&1'
+++ kraken2 --db /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228 --threads 8 --report /scratch/users/k24087895/final_project/zymobiomics_folder/results/runs/run_0504_1851/reports/ZC1_S4.k2report --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/classified/ZC1_S4_classified#.fastq --unclassified-out /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/unclassified/ZC1_S4_unclassified#.fastq /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.1.gz /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.2.gz --output /scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/kraken2/ZC1_S4.kraken2 --use-names
