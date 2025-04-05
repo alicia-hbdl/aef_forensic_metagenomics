@@ -16,7 +16,7 @@ ALIGNED_SAM_DIR="$1"  # Set the ALIGNED_SAM_DIR to the directory passed as argum
 # These are created in the main script but are also initialized here for standalone use
 SORTED_BAM_DIR="$ALIGNED_SAM_DIR/../sorted_bam"  
 BED_FILES_DIR="$ALIGNED_SAM_DIR/../bed_files"  
-HOST_DNA_ANALYSIS_DIR="$ALIGNED_SAM_DIR/../../results/host_dna_analysis"  
+HOST_DNA_ANALYSIS_DIR="$ALIGNED_SAM_DIR/../../../results/host_dna_analysis"  
 mkdir -p "$SORTED_BAM_DIR" "$BED_FILES_DIR" "$HOST_DNA_ANALYSIS_DIR"
 ROOT_DIR="$ALIGNED_SAM_DIR/../../../.."
 
