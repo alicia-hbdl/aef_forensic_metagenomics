@@ -201,72 +201,10 @@ echo "Results are stored in the 'results' directory (including FastQC, host DNA 
 
 if [[ "$TRIM" == true ]]; then
     
-    echo -e "\n=================================================== QUALITY CONTROL & TRIMMING ==================================================="
+    echo -e "\n=================================================== QUALITY CONTROL & TRIMMING ===================================================\n"
 
-    # Run FastQC on all raw reads
-    echo -e "\nRunning FastQC on all raw reads..."
-    fastqc "$RAW_FASTQ_DIR"/*.fastq.gz --outdir "$FASTQC_DIR/pre_trimming" &>/dev/null || {
-        echo "❌ FastQC failed!"; exit 1;
-    }
-    echo "✅ FastQC completed successfully."
-
-    # Run MultiQC to summarize FastQC reports and clean up zip files
-    multiqc "$FASTQC_DIR/pre_trimming" --no-data-dir -o "$FASTQC_DIR/pre_trimming" --force 2>&1 || {
-        echo "❌ MultiQC failed!"; exit 1;
-    }
-    echo -e "✅ MultiQC report generated successfully.\n"
-    rm -f "$FASTQC_DIR/pre_trimming"/*.zip  
-    
-    # Define Trimmomatic adapter file, trimming parameters, and steps
-    ADAPT_FA="$ROOT_DIR/data/adapters/zymobiomics_adaptors.fa"
-    TRIM_PARAM="PE -phred33 -threads 4"
-    STEPS="ILLUMINACLIP:$ADAPT_FA:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35"
-## EVENTUALLY, LOOK AT WHICH MINLEN IS NECESSARY FOR ACCURATE CLASSIFICATION WITH KRAKEN2
-    echo -e "Running Trimmomatic..."
-    for R1 in "$RAW_FASTQ_DIR"//*_R1*.fastq.gz; do # Handle variations of sample names 
-        [[ -f "$R1" ]] || { 
-          echo "❌ Error: No matching files found in $RAW_FASTQ_DIR"; exit 1; 
-        }
-        
-        # Extract the base sample name by removing lane, read, and other suffixes
-        base=$(basename "$R1" | sed -E 's/_L[0-9]+_R[12]_?[0-9]*\.fastq\.gz$//; s/_R[12]_?[0-9]*\.fastq\.gz$//')
-        R2=$(echo "$R1" | sed 's/_R1/_R2/')     # Identify the corresponding reverse read
-
-        # Check that the reverse read file exists
-        if [[ ! -f "$R2" ]]; then
-            echo "⚠️ Warning: Reverse read missing for $R1. Skipping..."
-            continue
-        fi
-
-        # Define output file paths for paired and unpaired reads
-        R1_paired="$TRIMMED_DIR/paired/${base}_R1_paired.fastq.gz"
-        R1_unpaired="$TRIMMED_DIR/unpaired/${base}_R1_unpaired.fastq.gz"
-        R2_paired="$TRIMMED_DIR/paired/${base}_R2_paired.fastq.gz"
-        R2_unpaired="$TRIMMED_DIR/unpaired/${base}_R2_unpaired.fastq.gz"
-
-        # Run Trimmomatic and log success or failure
-        if trimmomatic $TRIM_PARAM "$R1" "$R2" "$R1_paired" "$R1_unpaired" "$R2_paired" "$R2_unpaired" $STEPS 2>&1; then
-            echo -e "✅ Trimmed $base!\n"
-        else
-            echo -e "❌ Trimmomatic failed for $base!"
-            exit 1
-        fi
-    done
-    
-    # Run FastQC on trimmed paired reads
-    echo -e "\nRunning FastQC on paired trimmed reads..."
-    fastqc "$TRIMMED_DIR/paired"/*.fastq.gz --outdir "$FASTQC_DIR/post_trimming" &>/dev/null || {
-        echo "❌ FastQC failed!"; exit 1;
-    }
-    echo "✅ FastQC completed successfully."
-  
-    # Run MultiQC to summarize post-trimming FastQC results and clean up
-    multiqc "$FASTQC_DIR/post_trimming" --no-data-dir -o "$FASTQC_DIR/post_trimming" --force 2>&1 || {
-        echo "❌ MultiQC failed!"; exit 1;
-    }
-    echo -e "✅ MultiQC report generated successfully.\n"
-    rm -f "$FASTQC_DIR/post_trimming"/*.zip  
-fi 
+    "$ROOT_DIR/scripts/qc_trim.sh" "$RAW_FASTQ_DIR" || {echo "❌ Quality control and trimming failed!"; exit 1;}
+    echo -e "✅ Quality control and trimming completed successfully."
 
 echo -e "\n================================================= METAGENOMIC ABUNDANCE ESTIMATION ================================================="
 
@@ -373,14 +311,14 @@ else
     python "$ROOT_DIR/tools/KrakenTools/DiversityTools/beta_diversity.py" -i "${INPUT_FILES[@]}" --type bracken > "$DIVERSITY_DIR/beta_diversity_matrix.tsv"
 
     # Generate beta diversity heatmap
-    Rscript "$ROOT_DIR/homemade_scripts/b_diversity_heatmap.R" "$DIVERSITY_DIR/beta_diversity_matrix.tsv"
+    Rscript "$ROOT_DIR/scripts/b_diversity_heatmap.R" "$DIVERSITY_DIR/beta_diversity_matrix.tsv"
     echo "✅ Beta diversity heatmap generated."
 
 fi
 
 echo -e "\n==================================================== TOTAL READ EXTRACTION ===================================================="
 
-LOG_FILE="$ROOT_DIR/homemade_scripts/logs/kraken_pipeline.log"
+LOG_FILE="$ROOT_DIR/scripts/logs/kraken_pipeline.log"
 TOTAL_READS="$METAGENOMIC_DIR/total_reads.csv"
 
 # Extract total read counts from the log file for normalization
@@ -429,7 +367,7 @@ if [[ "$REMOVE_HOST_DNA" == true ]]; then
     fi
 
     echo "Generating karyotype plot..."
-    Rscript "$ROOT_DIR/homemade_scripts/karyotype.R" "$HOST_DNA_ANALYSIS_DIR/common_intervals.bed" && 
+    Rscript "$ROOT_DIR/scripts/karyotype.R" "$HOST_DNA_ANALYSIS_DIR/common_intervals.bed" && 
     echo "✅ Karyotype plot generated."
     
     echo -e "\n================================================== BLAST =================================================="
@@ -466,7 +404,7 @@ if [[ "$REMOVE_HOST_DNA" == true ]]; then
             echo "✅ BLAST completed."
 
             echo "Generating taxonomy tree..."
-            Rscript "$ROOT_DIR/homemade_scripts/human_aligned_tree.R" "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" && 
+            Rscript "$ROOT_DIR/scripts/human_aligned_tree.R" "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" && 
             echo "✅ Taxonomy tree generated."
         else
             echo "❌ Query file >100KB. Skipping BLAST. Use: https://blast.ncbi.nlm.nih.gov/Blast.cgi"
@@ -493,7 +431,7 @@ if [[ "$REMOVE_HOST_DNA" == true ]]; then
         done
         
         echo "Generating Jaccard similarity heatmap..."
-        Rscript "$ROOT_DIR/homemade_scripts/jaccard_similarity_heatmap.R" "$HOST_DNA_ANALYSIS_DIR/jaccard_results.txt"
+        Rscript "$ROOT_DIR/scripts/jaccard_similarity_heatmap.R" "$HOST_DNA_ANALYSIS_DIR/jaccard_results.txt"
         echo "✅ Jaccard analysis complete."
     fi
 fi 
@@ -501,6 +439,6 @@ fi
 echo -e "\n✅ Pipeline completed successfully."
 
 echo "Storing log file..."
-cp -r "$RAW_FASTQ_DIR/../../homemade_scripts/logs" "$RUN_DIR"
+cp -r "$RAW_FASTQ_DIR/../../scripts/logs" "$RUN_DIR"
 
 echo "SLURM JOB ID: $SLURM_JOB_ID"
