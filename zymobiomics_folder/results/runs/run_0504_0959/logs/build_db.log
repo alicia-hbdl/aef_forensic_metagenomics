@@ -1,0 +1,79 @@
+✅ Conda environment 'final_project' activated.
+📦 Downloading NCBI taxonomy to: /scratch/users/k24087895/final_project/metagenome_analysis/data/databases/custom
+✅ NCBI taxonomy downloaded to: /scratch/users/k24087895/final_project/metagenome_analysis/data/databases/custom
+📥 Downloading genomes...
+🧬 Tagging genome headers with taxIDs...
+Tagging GCF_000005845.2_ASM584v2_genomic.fna with taxid 562...
+Tagging GCF_000006765.1_ASM676v1_genomic.fna with taxid 208964...
+Tagging GCF_000006945.2_ASM694v2_genomic.fna with taxid 28901...
+Tagging GCF_000008865.2_ASM886v2_genomic.fna with taxid 562...
+Tagging GCF_000009045.1_ASM904v1_genomic.fna with taxid 224308...
+Tagging GCF_000013425.1_ASM1342v1_genomic.fna with taxid 1280...
+Tagging GCF_000091045.1_ASM9104v1_genomic.fna with taxid 5207...
+Tagging GCF_000146045.2_R64_genomic.fna with taxid 4932...
+Tagging GCF_000196035.1_ASM19603v1_genomic.fna with taxid 169963...
+Tagging GCF_000393015.1_Ente_faec_T5_V1_genomic.fna with taxid 1351...
+Tagging GCF_029961225.1_ASM2996122v1_genomic.fna with taxid 1613...
+📒 Adding genomes to Kraken2 DB...
+✅ All genomes added to Kraken2 DB.
+🧬 Building Kraken2 database...
+Creating sequence ID to taxonomy ID map (step 1)...
+Sequence ID to taxonomy ID map complete. [0.015s]
+Estimating required capacity (step 2)...
+Estimated hash table requirement: 113135908 bytes
+Capacity estimation complete. [1.105s]
+Building database files (step 3)...
+Database files completed. [21.151s]
+Database construction complete. [Total: 22.297s]
+✅ Kraken2 database built successfully!
+🔄 Building Bracken database for read length 50...
+Usage: bracken_build -v -k KMER_LEN -l READ_LEN -d MY_DB -x K_INSTALLATION -y K_TYPE -t THREADS
+  -v             Echoes the current software version and exits
+  KMER_LEN       kmer length used to build the kraken database (default: 35)
+  THREADS        the number of threads to use when running kraken classification and the bracken scripts
+  READ_LEN       read length to get all classifications for (default: 100)
+  MY_DB          location of Kraken database
+  K_INSTALLATION location of the installed kraken/kraken-build scripts (default assumes scripts can be run from the user path)
+  K_TYPE         version of kraken to use (default = kraken2 - other options: kraken, krakenuniq)
+✅ Bracken database for read length 50 built.
+🔄 Building Bracken database for read length 100...
+Usage: bracken_build -v -k KMER_LEN -l READ_LEN -d MY_DB -x K_INSTALLATION -y K_TYPE -t THREADS
+  -v             Echoes the current software version and exits
+  KMER_LEN       kmer length used to build the kraken database (default: 35)
+  THREADS        the number of threads to use when running kraken classification and the bracken scripts
+  READ_LEN       read length to get all classifications for (default: 100)
+  MY_DB          location of Kraken database
+  K_INSTALLATION location of the installed kraken/kraken-build scripts (default assumes scripts can be run from the user path)
+  K_TYPE         version of kraken to use (default = kraken2 - other options: kraken, krakenuniq)
+✅ Bracken database for read length 100 built.
+🔄 Building Bracken database for read length 150...
+Usage: bracken_build -v -k KMER_LEN -l READ_LEN -d MY_DB -x K_INSTALLATION -y K_TYPE -t THREADS
+  -v             Echoes the current software version and exits
+  KMER_LEN       kmer length used to build the kraken database (default: 35)
+  THREADS        the number of threads to use when running kraken classification and the bracken scripts
+  READ_LEN       read length to get all classifications for (default: 100)
+  MY_DB          location of Kraken database
+  K_INSTALLATION location of the installed kraken/kraken-build scripts (default assumes scripts can be run from the user path)
+  K_TYPE         version of kraken to use (default = kraken2 - other options: kraken, krakenuniq)
+✅ Bracken database for read length 150 built.
+🔄 Building Bracken database for read length 200...
+Usage: bracken_build -v -k KMER_LEN -l READ_LEN -d MY_DB -x K_INSTALLATION -y K_TYPE -t THREADS
+  -v             Echoes the current software version and exits
+  KMER_LEN       kmer length used to build the kraken database (default: 35)
+  THREADS        the number of threads to use when running kraken classification and the bracken scripts
+  READ_LEN       read length to get all classifications for (default: 100)
+  MY_DB          location of Kraken database
+  K_INSTALLATION location of the installed kraken/kraken-build scripts (default assumes scripts can be run from the user path)
+  K_TYPE         version of kraken to use (default = kraken2 - other options: kraken, krakenuniq)
+✅ Bracken database for read length 200 built.
+🔄 Building Bracken database for read length 250...
+Usage: bracken_build -v -k KMER_LEN -l READ_LEN -d MY_DB -x K_INSTALLATION -y K_TYPE -t THREADS
+  -v             Echoes the current software version and exits
+  KMER_LEN       kmer length used to build the kraken database (default: 35)
+  THREADS        the number of threads to use when running kraken classification and the bracken scripts
+  READ_LEN       read length to get all classifications for (default: 100)
+  MY_DB          location of Kraken database
+  K_INSTALLATION location of the installed kraken/kraken-build scripts (default assumes scripts can be run from the user path)
+  K_TYPE         version of kraken to use (default = kraken2 - other options: kraken, krakenuniq)
+✅ Bracken database for read length 250 built.
+🎉 All Bracken databases built successfully!

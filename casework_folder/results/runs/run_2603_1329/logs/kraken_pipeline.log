@@ -1,0 +1,147 @@
+
+================================================= CONDA ENVIRONMENT ACTIVATION ==================================================
+
+================================================= ARGUMENT PARSING & VALIDATION =================================================
+Raw FASTQ directory path: /scratch/users/k24087895/final_project/metagenome_analysis/casework_folder/raw_data
+Database path: /scratch/grp/msc_appbio/recovered/core_nt_database
+⚠️ Warning: No Bowtie2 index prefix provided. Using default prefix: /scratch/users/k24087895/final_project/metagenome_analysis/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as
+✅ Trimming enabled.
+
+======================================================= PIPELINE SUMMARY ========================================================
+Quality Control & Trimming: Enabled ✅
+⚠️ This step is optional, but it must have been performed at least once on the raw reads for the rest of the pipeline to function correctly.
+
+Host DNA Removal: Enabled ✅
+Host DNA Bowtie2 Index Prefix: /scratch/users/k24087895/final_project/metagenome_analysis/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as
+⚠️ This step is optional, but it must have been performed at least once on the trimmed reads for the rest of the pipeline to function correctly.
+
+Kraken2/Bracken Database Path: /scratch/grp/msc_appbio/recovered/core_nt_database
+=================================================================================================================================
+
+====================================================== DIRECTORY STRUCTURE ======================================================
+✅ All output directories created successfully.
+
+=================================================== QUALITY CONTROL & TRIMMING ===================================================
+
+Running FastQC on all raw reads...
+✅ FastQC completed successfully.
+
+/// MultiQC 🔍 v1.27.1
+
+     version_check | MultiQC Version v1.28 now available!
+       file_search | Search path: /scratch/users/k24087895/final_project/metagenome_analysis/casework_folder/results/fastqc/pre_trimming
+
+            fastqc | Found 2 reports
+
+     write_results | Data        : None
+     write_results | Report      : /cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/metagenome_analysis/casework_folder/results/fastqc/pre_trimming/multiqc_report.html   (overwritten)
+           multiqc | MultiQC complete
+✅ MultiQC report generated successfully.
+
+Running Trimmomatic...
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/users/k24087895/final_project/metagenome_analysis/casework_folder/raw_data//Heart_S16_L001_R1_001.fastq.gz /scratch/users/k24087895/final_project/metagenome_analysis/casework_folder/raw_data//Heart_S16_L001_R2_001.fastq.gz /scratch/users/k24087895/final_project/metagenome_analysis/casework_folder/processed_data/trimmed/paired/Heart_S16_R1_paired.fastq.gz /scratch/users/k24087895/final_project/metagenome_analysis/casework_folder/processed_data/trimmed/unpaired/Heart_S16_R1_unpaired.fastq.gz /scratch/users/k24087895/final_project/metagenome_analysis/casework_folder/processed_data/trimmed/paired/Heart_S16_R2_paired.fastq.gz /scratch/users/k24087895/final_project/metagenome_analysis/casework_folder/processed_data/trimmed/unpaired/Heart_S16_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/metagenome_analysis/data/adapters/zymobiomics_adaptors.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:30
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT'
+ILLUMINACLIP: Using 0 prefix pairs, 2 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 173122 Both Surviving: 75418 (43.56%) Forward Only Surviving: 6149 (3.55%) Reverse Only Surviving: 3829 (2.21%) Dropped: 87726 (50.67%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed Heart_S16!
+
+
+Running FastQC on paired trimmed reads...
+✅ FastQC completed successfully.
+
+/// MultiQC 🔍 v1.27.1
+
+     version_check | MultiQC Version v1.28 now available!
+       file_search | Search path: /scratch/users/k24087895/final_project/metagenome_analysis/casework_folder/results/fastqc/post_trimming
+
+            fastqc | Found 2 reports
+
+     write_results | Data        : None
+     write_results | Report      : /cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/metagenome_analysis/casework_folder/results/fastqc/post_trimming/multiqc_report.html   (overwritten)
+           multiqc | MultiQC complete
+✅ MultiQC report generated successfully.
+
+
+================================================= METAGENOMIC ABUNDANCE ESTIMATION =================================================
+⚠️ This step assumes reads have already been trimmed with Trimmomatic and host DNA removed with Bowtie2. Processed reads must be in the correct directory.
+
+Processing sample: Heart_S16
+
+Removing human reads with Bowtie2...
+75418 reads; of these:
+  75418 (100.00%) were paired; of these:
+    73906 (98.00%) aligned concordantly 0 times
+    455 (0.60%) aligned concordantly exactly 1 time
+    1057 (1.40%) aligned concordantly >1 times
+2.00% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "/scratch/users/k24087895/final_project/metagenome_analysis/casework_folder/results/runs/run_2603_1329/reports/Heart_S16.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "/scratch/users/k24087895/final_project/metagenome_analysis/casework_folder/processed_data/metagenomic/classified/Heart_S16_classified#.fastq" --unclassified-out "/scratch/users/k24087895/final_project/metagenome_analysis/casework_folder/processed_data/metagenomic/unclassified/Heart_S16_unclassified#.fastq"                "/scratch/users/k24087895/final_project/metagenome_analysis/casework_folder/processed_data/metagenomic/filtered_fastq/Heart_S16_metagenomic.1.gz" "/scratch/users/k24087895/final_project/metagenome_analysis/casework_folder/processed_data/metagenomic/filtered_fastq/Heart_S16_metagenomic.2.gz"                --output "/scratch/users/k24087895/final_project/metagenome_analysis/casework_folder/processed_data/metagenomic/kraken2/Heart_S16.kraken2" --use-names 2>&1
+Loading database information... done.
+73906 sequences (10.00 Mbp) processed in 0.684s (6484.3 Kseq/m, 877.73 Mbp/m).
+  29357 sequences classified (39.72%)
+  44549 sequences unclassified (60.28%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/users/k24087895/final_project/metagenome_analysis/casework_folder/results/runs/run_2603_1329/reports/Heart_S16.k2report -o /scratch/users/k24087895/final_project/metagenome_analysis/casework_folder/processed_data/metagenomic/bracken/Heart_S16.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: /scratch/users/k24087895/final_project/metagenome_analysis/casework_folder/results/runs/run_2603_1329/reports/Heart_S16.k2report
+PROGRAM START TIME: 03-26-2025 13:33:33
+BRACKEN SUMMARY (Kraken report: /scratch/users/k24087895/final_project/metagenome_analysis/casework_folder/results/runs/run_2603_1329/reports/Heart_S16.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 3547 
+	  >> Number of species with reads > threshold: 165 
+	  >> Number of species with reads < threshold: 3382 
+    >>> Total reads in sample: 73906
+	  >> Total reads kept at species level (reads > threshold): 11459
+	  >> Total reads discarded (species reads < threshold): 5680
+	  >> Reads distributed: 11304
+	  >> Reads not distributed (eg. no species above threshold): 914
+	  >> Unclassified reads: 44549
+BRACKEN OUTPUT PRODUCED: /scratch/users/k24087895/final_project/metagenome_analysis/casework_folder/processed_data/metagenomic/bracken/Heart_S16.bracken
+PROGRAM END TIME: 03-26-2025 13:33:41
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/users/k24087895/final_project/metagenome_analysis/casework_folder/results/runs/run_2603_1329/krona/Heart_S16.krona.html...
+✅ Krona plot generated.
+
+Metagenomic classification completed in: 00:04:04
+
+================================================= METAGENOMIC DIVERSITY ANALYSIS =================================================
+Calculating alpha and beta diversity...
+✅ Alpha diversity calculated for all samples.
+⚠️ Skipping beta diversity – fewer than 2 samples.
+
+==================================================== TOTAL READ EXTRACTION ====================================================
+✅ Total read counts saved to: /scratch/users/k24087895/final_project/metagenome_analysis/casework_folder/processed_data/metagenomic/total_reads.csv
+
+====================================================== HUMAN DNA ANALYSIS ======================================================
+
+Processing host reads from sample: Heart_S16
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+=============================================== KARYOTYPE ================================================
+Identifying overlapping regions across samples...
+⚠️ Only one BED file found – skipping multiinter and using it directly.
+Generating karyotype plot...
+
+================================================== BLAST ==================================================
+
+Extracting sequences for BLAST query...
+✅ Sequences saved to BLAST query.
+❌ No regions found. Skipping BLAST.
+
+=========================================== JACCARD SIMILARITY ===========================================
+⚠️ Skipping Jaccard similarity – only one sample found.
+
+✅ Pipeline completed successfully.
