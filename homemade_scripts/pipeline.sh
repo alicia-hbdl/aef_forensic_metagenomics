@@ -1,10 +1,10 @@
 #!/bin/bash
 
-#SBATCH --job-name=kraken_pipeline
-#SBATCH --output=logs/kraken_pipeline.log 
-#SBATCH --error=logs/kraken_pipeline.err
+#SBATCH --job-name=pipeline
+#SBATCH --output=logs/pipeline.log 
+#SBATCH --error=logs/pipeline.err
 #SBATCH --time=02:00:00
-#SBATCH --mem=44G
+#SBATCH --mem=44G # Check sacct to determine appropriate values 
 #SBATCH --cpus-per-task=8  # Match requested threads 
 #SBATCH --ntasks=1  
 #SBATCH --partition=cpu 
@@ -14,7 +14,7 @@ set -e # Exit on error
 << 'COMMENT'
 =============================================================================================
 Usage:
-    ./pipeline.sh ---raw-fastq/-fq <reads_dir> [--database/-db <database_path>] [-t | --trim] [-r | --remove-host-dna <index_path>]
+    ./pipeline.sh --raw-fastq/-fq <reads_dir> [--database/-db <database_path>] [-t | --trim] [-r | --remove-host-dna <index_path>]
 
 Arguments:
     -fq, --raw-fastq <path>       Path to the directory containing raw FASTQ reads to process.
@@ -29,19 +29,16 @@ COMMENT
 
 echo -e "\n================================================= CONDA ENVIRONMENT ACTIVATION =================================================="
 
-# Ensure Conda is available
+# Check for Conda and activate the environment
 if ! command -v conda &> /dev/null; then
-    echo "Error: Conda not found. Exiting."
+    echo "❌ Conda not found. Please install Conda."
     exit 1
 fi
+eval "$(conda shell.bash hook)" || { echo "❌ Conda shell integration not initialized. Run 'conda init bash'."; exit 1; }
+conda activate final_project || { echo "❌ Failed to activate 'final_project' environment."; exit 1; }
+echo "✅ 'final_project' environment activated successfully."
 
-# Initialize Conda 
-eval "$(conda shell.bash hook)"
-
-# Activate the project's Conda environment
-conda activate final_project
-
-# Force using Conda's Python instead of system Python
+# Use Conda's Python and libraries instead of the system's Python
 export PATH="/users/k24087895/.conda/envs/final_project/bin:$PATH"
 export PYTHONPATH="/users/k24087895/.conda/envs/final_project/lib/python3.13/site-packages:$PYTHONPATH"
 
@@ -51,136 +48,103 @@ echo -e "\n================================================= ARGUMENT PARSING & 
 TRIM=false
 REMOVE_HOST_DNA=false
 
-# Loop through all command-line arguments
+# Parse command-line arguments
 while [[ $# -gt 0 ]]; do 
     case "$1" in
-    
-        # Process the raw FASTQ directory argument
+    # Process raw FASTQ directory
         -fq|--raw-fastq) 
-            if [[ -z "$2" || "$2" == -* ]]; then  
-                echo "❌ Error: --raw-fastq/-fq requires a directory path."
-                exit 1
-            elif [[ ! -d "$2" ]]; then  
-                echo "❌ Error: FASTQ directory '$2' does not exist."
-                exit 1
-            elif [[ -z "$(find "$2" -maxdepth 1 -type f \( -name "*.fq" -o -name "*.fastq" -o -name "*.fq.gz" -o -name "*.fastq.gz" \) 2>/dev/null)" ]]; then  
-                echo "❌ Error: No FASTQ files found in '$2'. Ensure it contains .fq, .fastq, .fq.gz, or .fastq.gz files."
-                exit 1
+            # Validate FASTQ directory and its contents
+            if [[ -z "$2" || "$2" == -* || ! -d "$2" || -z "$(find "$2" -maxdepth 1 -type f \( -name "*.fq" -o -name "*.fastq" -o -name "*.fq.gz" -o -name "*.fastq.gz" \) 2>/dev/null)" ]]; then
+              echo "❌ Error: Invalid or missing FASTQ directory. Ensure it contains .fq, .fastq, .fq.gz, or .fastq.gz files."
+              exit 1
             fi
             
-            # Compress any uncompressed FASTQ files (if present)
-            for file in "$2"/*.{fq,fastq}; do 
-                [[ -f "$file" ]] || continue  
-                echo "Compressing '$file'..." && gzip "$file" 
-            done
+            # Compress uncompressed FASTQ files
+            for file in "$2"/*.{fq,fastq}; do [[ -f "$file" ]] && gzip "$file" && echo "Compressing '$file'..."; done
             
-            # Standardize compressed files to .fastq.gz extension
-            for file in "$2"/*.fq.gz; do 
-                [[ -f "$file" ]] || continue  
-                echo "Renaming '$file'..." && mv "$file" "${file%.*}.fastq.gz"
-            done            
-            
-            # Set the raw FASTQ directory path
+            # Standardize file extension to .fastq.gz
+            for file in "$2"/*.fq.gz; do [[ -f "$file" ]] && mv "$file" "${file%.*}.fastq.gz" && echo "Renaming '$file'..."; done
+                    
+            # Set raw FASTQ directory path
             RAW_FASTQ_DIR="$2" && echo "Raw FASTQ directory path: $RAW_FASTQ_DIR" 
             
-            # Define the project root directory (two levels up)
+            # Define project root directory and default database/index paths
             ROOTDIR=$(dirname "$(dirname "$RAW_FASTQ_DIR")")
-            
-            # Set default paths for the Kraken2 database and Bowtie2 index
             DATABASE="$ROOTDIR/data/databases/k2_standard_16gb_20241228"
             BOWTIE_PREFIX="$ROOTDIR/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as"           
             
             shift 2
             ;;
     
-        # Process the Kraken2/Bracken database directory argument
+        # Process Kraken2/Bracken database directory argument
         -db|--database) 
-            if [[ -z "$2" || "$2" == -* ]]; then  
-                echo "⚠️ Warning: No database path provided. Using default database: $DATABASE"
-            elif [[ ! -d "$2" ]]; then  
-                echo "⚠️ Warning: The provided database path '$2' does not exist. Using default database: $DATABASE"
-                shift 2
-            elif [[ ! -f "$2/hash.k2d" || ! -f "$2/taxo.k2d" || ! -f "$2/opts.k2d" ]]; then  
-                echo "⚠️ Warning: The database directory '$2' is missing required Kraken2 files. Using default database: $DATABASE"
-                shift 2
+            if [[ -z "$2" || "$2" == -* || ! -d "$2" || ! -f "$2/hash.k2d" || ! -f "$2/taxo.k2d" || ! -f "$2/opts.k2d" || ! -f "$2/*kmer_distrib" ]]; then
+                echo "⚠️ Warning: Invalid or missing database. Using default: $DATABASE"
             else
-                # Set the user-provided database path
                 DATABASE="$2"
-                shift 2
+                echo "✅ Database set to: $DATABASE"
             fi
-            echo "Database path: $DATABASE"
+            shift 2
             ;;
-
-        # Enable adapter and quality trimming
-        -t|--trim)
-            TRIM=true
-            echo "✅ Trimming enabled."
-            shift
-            ;;  
             
-        # Process the host DNA Bowtie2 index prefix
-        -r|--remove-host-dna)  
-            if [[ -z "$2" || "$2" == -* ]]; then  
-                echo "⚠️ Warning: No Bowtie2 index prefix provided. Using default prefix: $BOWTIE_PREFIX"
-                shift
-            else  
-                # Check if all required Bowtie2 index files exist
-                MISSING_INDEX=false
-                for i in 1 2 3 4 rev.1 rev.2; do
-                    if [[ ! -f "$2.$i.bt2" ]]; then
-                        echo "⚠️ Warning: Missing Bowtie2 index file: $2.$i.bt2"
-                        MISSING_INDEX=true
-                    fi
-                done
+      # Enable trimming
+      -t|--trim)
+          TRIM=true
+          echo "✅ Trimming enabled."
+          shift
+          ;;            
         
-                if [[ "$MISSING_INDEX" == true ]]; then
-                    echo "⚠️ Warning: Incomplete Bowtie2 index at '$2'. Using default prefix: $BOWTIE_PREFIX"
-                else
-                    BOWTIE_PREFIX="$2"
-                    echo "✅ Bowtie2 index set to: $BOWTIE_PREFIX"
-                fi
-                shift 2
-            fi
-            REMOVE_HOST_DNA=true
-            ;;
+      # Process host DNA Bowtie2 index prefix
+      -r|--remove-host-dna)  
+          if [[ -z "$2" || "$2" == -* || ! -f "$2.1.bt2" || ! -f "$2.2.bt2" || ! -f "$2.3.bt2" || ! -f "$2.4.bt2" || ! -f "$2.rev.1.bt2" || ! -f "$2.rev.2.bt2" ]]; then
+              echo "⚠️ Warning: Incomplete or missing Bowtie2 index. Using default: $BOWTIE_PREFIX"
+          else
+              BOWTIE_PREFIX="$2"
+              echo "✅ Bowtie2 index set to: $BOWTIE_PREFIX"
+          fi
+          REMOVE_HOST_DNA=true
+          shift 2
+          ;;        
         
-        # Handle unknown or unsupported arguments    
-        *) 
-            echo "❌ Unknown argument: $1"
-            echo "Usage: $0 --raw-fastq/-fq <reads_dir> [--database/-db <database_path>] [-t | --trim] [-r | --remove-host-dna <index_path>]"
-            exit 1
-            ;;
+      # Handle unknown arguments
+      *) 
+          echo "❌ Unknown argument: $1. Usage: $0 --raw-fastq/-fq <reads_dir> [--database/-db <database_path>] [-t | --trim] [-r | --remove-host-dna <index_path>]"
+          exit 1
+          ;;    
     esac
 done
 
 # Ensure --raw-fastq is provided
 if [[ -z "$RAW_FASTQ_DIR" ]]; then  
-    echo "❌ Error: --raw-fastq/-fq is required."
-    echo "Usage: $0 --raw-fastq/-fq <reads_dir> [--database/-db <database_path>] [-t | --trim] [-r | --remove-host-dna <index_path>]"
+    echo "❌ Error: --raw-fastq/-fq is required. Usage: $0 --raw-fastq/-fq <reads_dir> [--database/-db <database_path>] [-t | --trim] [-r | --remove-host-dna <index_path>]"
     exit 1
 fi
 
 echo -e "\n======================================================= PIPELINE SUMMARY ========================================================" 
 
-# Display the quality control and trimming status
-echo "Quality Control & Trimming: $([[ $TRIM == true ]] && echo 'Enabled ✅' || echo 'Disabled ❌')"
-echo "⚠️ This step is optional, but it must have been performed at least once on the raw reads for the rest of the pipeline to function correctly."
+# Display quality control and trimming status
+echo -e "Quality Control & Trimming: $( [[ $TRIM == true ]] && echo 'Enabled ✅' || echo 'Disabled ❌' )"
+echo "⚠️ Optional, but must be done at least once on the raw reads for the pipeline to work."
 
 echo ""
 
-# Display the host DNA removal status and index
-echo "Host DNA Removal: $([[ $REMOVE_HOST_DNA == true ]] && echo 'Enabled ✅' || echo 'Disabled ❌')"
-echo "Host DNA Bowtie2 Index Prefix: $BOWTIE_PREFIX"
-echo "⚠️ This step is optional, but it must have been performed at least once on the trimmed reads for the rest of the pipeline to function correctly."
-
+# Display host DNA removal status and index
+if [[ $REMOVE_HOST_DNA == true ]]; then
+    echo -e "Host DNA Removal: Enabled ✅"
+    echo "Bowtie2 Index Prefix: $BOWTIE_PREFIX"
+else
+    echo -e "Host DNA Removal: Disabled ❌"
+fi
+echo "⚠️ Optional, but must be done at least once on the trimmed reads for the pipeline to work."
 echo ""
 
-# Display the database being used
-echo "Kraken2/Bracken Database Path: $DATABASE"
-
+# Display Kraken2/Bracken database path
+echo "Kraken2/Bracken Database: $DATABASE"
 echo "================================================================================================================================="
 
 echo -e "\n====================================================== DIRECTORY STRUCTURE ======================================================"
+# Define base directory for results and processed data
+BASE_DIR="$(dirname "$RAW_FASTQ_DIR")"
 
 # Top-level output folders
 RESULTS_DIR="$(dirname "$RAW_FASTQ_DIR")/results" # For general results
