@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "$1" "$2"
 
 # Ensure the FASTQ directory is provided and valid
 if [[ -z "$2" || "$2" == -* || ! -d "$2" || -z "$(find "$2" -maxdepth 1 -type f \( -name "*.fq" -o -name "*.fastq" -o -name "*.fq.gz" -o -name "*.fastq.gz" \) 2>/dev/null)" ]]; then
