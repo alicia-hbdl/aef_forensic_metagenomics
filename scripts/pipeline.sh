@@ -30,31 +30,6 @@ Notes:
 =============================================================================================
 COMMENT
 
-echo -e "\n================================================= CONDA ENVIRONMENT ACTIVATION ==================================================\n"
-
-# Check for Conda installation and initialize shell integration
-if ! command -v conda &> /dev/null; then
-    echo "❌ Conda not found. Please install Conda."
-    exit 1
-fi
-
-eval "$(conda shell.bash hook)" || { echo "❌ Conda shell integration not initialized. Run 'conda init bash'."; exit 1; }
-
-# Create environment if it doesn't exist
-if ! conda env list | grep -q "final_project"; then
-    echo "❌ 'final_project' environment not found. Creating from environment.yml..."
-    conda env create -f environment.yml || { echo "❌ Failed to create 'final_project' environment."; exit 1; }
-    echo "✅ 'final_project' environment created."
-fi 
-
-# Activate the environment
-conda activate final_project || { echo "❌ Failed to activate 'final_project' environment."; exit 1; }
-echo "✅ 'final_project' environment activated successfully."
-
-# Use Conda's Python and libraries instead of the system's Python
-export PATH="/users/k24087895/.conda/envs/final_project/bin:$PATH"
-export PYTHONPATH="/users/k24087895/.conda/envs/final_project/lib/python3.13/site-packages:$PYTHONPATH"
-
 echo -e "\n================================================= ARGUMENT PARSING & VALIDATION =================================================\n"
 
 # Default values
@@ -139,7 +114,7 @@ if [[ -z "$RAW_FASTQ_DIR" ]]; then
     exit 1
 fi
 
-echo -e "\n======================================================= PIPELINE SUMMARY ========================================================" 
+echo -e "\nPIPELINE SUMMARY: " 
 
 # Display quality control and trimming status
 echo -e "Quality Control & Trimming: $( [[ $TRIM == true ]] && echo 'Enabled ✅' || echo 'Disabled ❌' )"
@@ -159,7 +134,10 @@ echo ""
 
 # Display Kraken2/Bracken database path
 echo "Kraken2/Bracken Database: $DATABASE"
-echo "================================================================================================================================="
+
+echo -e "\n================================================= CONDA ENVIRONMENT ACTIVATION ==================================================\n"
+
+"$ROOT_DIR/scripts/helper_scripts/environment_setup.sh" "$ROOT_DIR/scripts/final_project.yml" || { echo "❌ Failed to set up Conda environment."; exit 1; }
 
 echo -e "\n====================================================== PROJECT STRUCTURE ======================================================\n"
 # Define output directories
@@ -350,6 +328,5 @@ fi
 echo -e "\n✅ Pipeline completed successfully."
 
 echo "Storing log file..."
-cp -r "$RAW_FASTQ_DIR/../../scripts/logs" "$RUN_DIR"
-
+cp -r "$ROOT_DIR/scripts/logs" "$RUN_DIR"
 echo "SLURM JOB ID: $SLURM_JOB_ID"
