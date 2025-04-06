@@ -35,7 +35,7 @@ echo -e "\n================================================= ARGUMENT PARSING & 
 # Default values
 TRIM=false
 REMOVE_HOST_DNA=false
-GROUND_TRUTH=false
+GROUND_TRUTH=true
 
 # Parse command-line arguments
 while [[ $# -gt 0 ]]; do 
@@ -262,7 +262,7 @@ if [[ "$GROUND_TRUTH" == true ]]; then
 # Add a flag to the command line to indicate that the ground truth is available
 
 # Generate the heatmap that looks at how the run differs from the groundn truth 
-Rscript "$ROOT_DIR/scripts/helper_scripts/phylo_classification_comparison.R" "$RESULTS_DIR/combined_breports.csv"
+Rscript "$ROOT_DIR/scripts/helper_scripts/phylo_classification_comparison.R" -r "$RESULTS_DIR/combined_breports.csv" -g "$RAW_FASTQ_DIR/ground_truth.csv" 
 
 # Run the summary shell script to generate the summary table
 #bash "$ROOT_DIR"/scripts/helper_scripts/runs_summary.sh
