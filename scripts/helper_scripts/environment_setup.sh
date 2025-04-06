@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This script sets up a Conda environment based on a provided YAML file.
+
 # Check if an argument is passed and if it ends with .yml
 if [[ -z "$1" || "$1" != *.yml || ! -f "$1" ]]; then
     echo "❌ Error: No valid environment YAML file provided. Usage: $0 <path/to/environment.yml>"
