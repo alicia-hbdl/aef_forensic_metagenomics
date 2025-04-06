@@ -278,7 +278,7 @@ echo -e "\n================================================= COMPARISON TO GROUN
 
 # Combine Bracken reports for all samples
 echo -e "\nCombining Bracken reports..."
-Rscript "$ROOT_DIR/scripts/helper_scripts/combine_breports.R" "$REPORTS_DIR/*.breport"
+Rscript "$ROOT_DIR/scripts/helper_scripts/combine_breports.R" $REPORTS_DIR/*.breport
 
 if [[ "$GROUND_TRUTH" == true ]]; then
 # Add a flag to the command line to indicate that the ground truth is available

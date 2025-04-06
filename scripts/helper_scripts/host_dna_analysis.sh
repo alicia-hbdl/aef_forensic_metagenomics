@@ -53,7 +53,7 @@ else
 fi
 
 echo "Generating karyotype plot..."
-Rscript "$ROOT_DIR/scripts/karyotype.R" "$BED_FILES_DIR/common_intervals.bed" && \
+Rscript "$ROOT_DIR/scripts/helper_scripts/karyotype.R" "$BED_FILES_DIR/common_intervals.bed" && \
 echo "✅ Karyotype plot generated."
 
 awk '$4 > 1' "$BED_FILES_DIR/common_intervals.bed" > "$BED_FILES_DIR/common_intervals_filtered.bed"
@@ -92,7 +92,7 @@ else
         echo "✅ BLAST completed."
 
         echo "Generating taxonomy tree..."
-        Rscript "$ROOT_DIR/scripts/human_aligned_tree.R" "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" && \
+        Rscript "$ROOT_DIR/scripts/helper_scripts/human_aligned_tree.R" "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" && \
         echo "✅ Taxonomy tree generated."
     else
         echo "❌ Query file >100KB. Skipping BLAST."
@@ -119,6 +119,6 @@ else
     done
     
     echo "Generating Jaccard similarity heatmap..."
-    Rscript "$ROOT_DIR/scripts/jaccard_similarity_heatmap.R" "$HOST_DNA_ANALYSIS_DIR/jaccard_results.txt"
+    Rscript "$ROOT_DIR/scripts/helper_scripts/jaccard_similarity_heatmap.R" "$HOST_DNA_ANALYSIS_DIR/jaccard_results.txt"
     echo "✅ Jaccard analysis complete."
 fi
