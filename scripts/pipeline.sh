@@ -137,7 +137,7 @@ echo "Kraken2/Bracken Database: $DATABASE"
 
 echo -e "\n================================================= CONDA ENVIRONMENT ACTIVATION ==================================================\n"
 
-"$ROOT_DIR/scripts/helper_scripts/environment_setup.sh" "$ROOT_DIR/scripts/final_project.yml" || { echo "❌ Failed to set up Conda environment."; exit 1; }
+source "$ROOT_DIR/scripts/helper_scripts/environment_setup.sh" "$ROOT_DIR/scripts/final_project.yml" || { echo "❌ Failed to set up Conda environment."; exit 1; }
 
 echo -e "\n====================================================== PROJECT STRUCTURE ======================================================\n"
 # Define output directories
