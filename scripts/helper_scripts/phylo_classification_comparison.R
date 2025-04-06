@@ -32,35 +32,42 @@ if (is.null(opt$reports) || is.null(opt$`ground-truth`)) {
   stop("Usage: Rscript script.R -r/--reports <path/to/combined_reports.csv> -t/--ground-truth <path/to/ground_truth.csv>")
 }
 
-# Load ground truth species
-if (file.exists(opt$`ground-truth`)) {
-  ground_truth <- read_csv(opt$`ground-truth`, show_col_types = FALSE)
-  highlight_species <- ground_truth$species
-} else {
-  stop("❌ Ground truth file not found.")
-}
-
-print(ground_truth)
-print(highlight_species)
 
 # Load and clean combined Bracken reports
 if (file.exists(opt$reports)) {
   read_counts <- read_csv(opt$reports, show_col_types = FALSE) %>%
     mutate(
       species = recode(species,
-                              "Bacillus intestinalis" = "Bacillus spizizenii",
-                              "Cryptococcus gattii VGI" = "Cryptococcus gattii",
-                              "Cryptococcus gattii VGII" = "Cryptococcus deuterogattii"
+                       "Bacillus intestinalis" = "Bacillus spizizenii",
+                       "Cryptococcus gattii VGI" = "Cryptococcus gattii",
+                       "Cryptococcus gattii VGII" = "Cryptococcus deuterogattii"
       )
     ) %>%
     replace(is.na(.), 0) %>%
     filter(rowMeans(select(., -species)) > 10)
+  
   total_reads <- colSums(select(read_counts, -species))  # Fix missing total_reads
 } else {
   stop("❌ Combined reports file not found.")
 }
-print(read_counts)
 
+# Load ground truth species
+if (file.exists(opt$`ground-truth`)) {
+  ground_truth <- read_csv(opt$`ground-truth`, show_col_types = FALSE)
+  highlight_species <- ground_truth$species
+  
+  # Find species present in ground truth but missing in read_counts
+  zero_abundance <- setdiff(highlight_species, read_counts$species)
+  
+  # Add missing species to read_counts with zero abundance
+  if (length(zero_abundance) > 0) {
+    read_counts <- read_counts %>%
+      bind_rows(data.frame(species = zero_abundance, matrix(0, nrow = length(zero_abundance), ncol = ncol(read_counts) - 1))) %>%
+      arrange(match(species, highlight_species))
+  }
+} else {
+  stop("❌ Ground truth file not found.")
+}
 
 # Retrieve taxonomic hierarchy
 tax_ids <- get_uid(read_counts$species)  # Get taxonomic IDs
