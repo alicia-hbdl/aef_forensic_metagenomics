@@ -9,7 +9,7 @@ while [[ $# -gt 0 ]]; do
         exit 1
       fi
       BRACKEN_DIR="$2"
-      ROOT_DIR="$(dirname "$(dirname "$(dirname "$BRACKEN_DIR")")")"
+      ROOT_DIR=$(realpath "$BRACKEN_DIR/../../../..")
       shift 2
       ;;
     -d|--diversity-dir)

@@ -114,8 +114,6 @@ if [[ -z "$RAW_FASTQ_DIR" ]]; then
     exit 1
 fi
 
-echo -e "\nPIPELINE SUMMARY: " 
-
 # Display quality control and trimming status
 echo -e "Quality Control & Trimming: $( [[ $TRIM == true ]] && echo 'Enabled ✅' || echo 'Disabled ❌' )"
 echo "⚠️ Optional, but must be done at least once on the raw reads for the pipeline to work."
@@ -263,7 +261,7 @@ if [[ "$GROUND_TRUTH" == true ]]; then
 # Add a flag to the command line to indicate that the ground truth is available
 
 # Generate the heatmap that looks at how the run differs from the groundn truth 
-Rscript "$ROOT_DIR/scripts/helper_scripts/phylo_classification_comparison.R" -r "$RESULTS_DIR/combined_breports.csv" -g "$RAW_FASTQ_DIR/ground_truth.csv" 
+Rscript "$ROOT_DIR/scripts/helper_scripts/phylo_classification_comparison.R" -r "$REPORTS_DIR/../combined_breports.csv" -t "$RAW_FASTQ_DIR/ground_truth.csv" 
 
 # Copy SLURM logs to run directory after metagenomic classification
 cp "$ROOT_DIR"/scripts/logs/*_"$SLURM_JOB_ID".* "$LOG_DIR" || { echo "❌ Copying log files failed!"; exit 1; }
