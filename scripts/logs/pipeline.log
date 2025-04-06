@@ -60,6 +60,7 @@ Kraken2/Bracken Database: ../data/databases/k2_standard_16gb_20241228
         ├── run_0504_2344
         ├── run_0504_2353
         ├── run_0604_1809
+        ├── run_0604_1813
         ├── run_2603_1200
         ├── run_2603_1216
         ├── run_2603_1225
@@ -67,7 +68,7 @@ Kraken2/Bracken Database: ../data/databases/k2_standard_16gb_20241228
         ├── run_2603_1236
         └── run_2603_1257
 
-45 directories
+46 directories
 Human DNA-related files (SAM, BAM, and BED) in the 'human' directory are created once per sub-project and remain unchanged across runs.
 Intermediate metagenomic files in the 'metagenomic' directory are overwritten with each run and should be inspected beforehand if desired.
 Results are stored in the 'results' directory (including FastQC, host DNA analysis, and run-specific results like Kraken2 and Bracken).
@@ -78,4 +79,14 @@ Results are stored in the 'results' directory (including FastQC, host DNA analys
 Processing sample: ZC1_S4
 
 Removing human reads with Bowtie2...
-/var/lib/slurm/slurmd/job24930079/slurm_script: line 209: bowtie2: command not found
+287711 reads; of these:
+  287711 (100.00%) were paired; of these:
+    287710 (100.00%) aligned concordantly 0 times
+    0 (0.00%) aligned concordantly exactly 1 time
+    1 (0.00%) aligned concordantly >1 times
+0.00% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_0604_1813/reports/ZC1_S4.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZC1_S4_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC1_S4_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC1_S4.kraken2" --use-names 2>&1
+Loading database information...
