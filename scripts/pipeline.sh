@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #SBATCH --job-name=pipeline
-#SBATCH --output=logs/pipeline.log 
-#SBATCH --error=logs/pipeline.err
+#SBATCH --output=logs/pipeline_%j.log
+#SBATCH --error=logs/pipeline_%j.err
 #SBATCH --time=02:00:00
 #SBATCH --mem=44G  
 #SBATCH --cpus-per-task=8 
@@ -170,12 +170,13 @@ RUN_DIR="$RESULTS_DIR/runs/$(date +"run_%d%m_%H%M")"  # Unique directory for eac
 REPORTS_DIR="$RUN_DIR/reports"  # Kraken2 and Bracken reports (k2report, breport, etc.)
 KRONA_DIR="$RUN_DIR/krona"  # Krona plots for taxonomic classification
 DIVERSITY_DIR="$RUN_DIR/diversity"  # Diversity analysis results (e.g., alpha/beta diversity)
+LOG_DIR="$RUN_DIR/logs"  # Log files for the pipeline run
 
 # Create all necessary directories
 mkdir -p "$RESULTS_DIR" "$HOST_DNA_ANALYSIS_DIR" "$FASTQC_DIR/pre_trimming" "$FASTQC_DIR/post_trimming" \
     "$TRIMMED_DIR/paired" "$TRIMMED_DIR/unpaired" "$ALIGNED_SAM_DIR" "$FILTERED_FASTQ_DIR" \
     "$KRAKEN2_DIR" "$CLASSIFIED_DIR" "$UNCLASSIFIED_DIR" "$BRACKEN_DIR" "$REPORTS_DIR" \
-    "$KRONA_DIR" "$DIVERSITY_DIR" "$SORTED_BAM_DIR" "$BED_FILES_DIR"
+    "$KRONA_DIR" "$DIVERSITY_DIR" "$LOG_DIR" "$SORTED_BAM_DIR" "$BED_FILES_DIR"
 
 # Display the directory structure of the project
 tree -L 3 -d "$PROJ_DIR"
@@ -264,6 +265,9 @@ if [[ "$GROUND_TRUTH" == true ]]; then
 # Generate the heatmap that looks at how the run differs from the groundn truth 
 Rscript "$ROOT_DIR/scripts/helper_scripts/phylo_classification_comparison.R" -r "$RESULTS_DIR/combined_breports.csv" -g "$RAW_FASTQ_DIR/ground_truth.csv" 
 
+# Copy SLURM logs to run directory after metagenomic classification
+cp "$ROOT_DIR"/scripts/logs/*_"$SLURM_JOB_ID".* "$LOG_DIR" || { echo "❌ Copying log files failed!"; exit 1; }
+
 # Run the summary shell script to generate the summary table
 #bash "$ROOT_DIR"/scripts/helper_scripts/runs_summary.sh
 
@@ -273,7 +277,7 @@ fi
 echo -e "\n================================================= METAGENOMIC DIVERSITY ANALYSIS ================================================="
 
 "$ROOT_DIR/scripts/helper_scripts/diversity_analysis.sh" -b  "$BRACKEN_DIR" -d "$DIVERSITY_DIR" || { echo "❌ Diversity analysis failed!"; exit 1; }
-
+echo -e "✅ Diversity analysis completed successfully."
 
 # Proceed if host DNA removal was performed
 if [[ "$REMOVE_HOST_DNA" == true ]]; then    
@@ -285,6 +289,11 @@ fi
 
 echo -e "\n✅ Pipeline completed successfully."
 
+# Move final SLURM logs to run directory and clean up originals
 echo "Storing log file..."
-cp -r "$ROOT_DIR/scripts/logs" "$RUN_DIR"
-echo "SLURM JOB ID: $SLURM_JOB_ID"
+if cp $ROOT_DIR/scripts/logs/*_"$SLURM_JOB_ID".* "$LOG_DIR"; then
+  rm $ROOT_DIR/scripts/logs/*_"$SLURM_JOB_ID".*
+else
+  echo "❌ Copying log files failed!"
+  exit 1
+fi
