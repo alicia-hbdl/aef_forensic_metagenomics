@@ -56,19 +56,19 @@ if (file.exists(opt$`ground-truth`)) {
   ground_truth <- read_csv(opt$`ground-truth`, show_col_types = FALSE)
   highlight_species <- ground_truth$species
   
-  # Find species present in ground truth but missing in read_counts
-  zero_abundance <- setdiff(highlight_species, read_counts$species)
+  # Find species present in read_counts but missing in ground_truth
+  missing_species <- setdiff(read_counts$species, highlight_species)
   
-  # Add missing species to read_counts with zero abundance
-  if (length(zero_abundance) > 0) {
-    read_counts <- read_counts %>%
-      bind_rows(data.frame(species = zero_abundance, matrix(0, nrow = length(zero_abundance), ncol = ncol(read_counts) - 1))) %>%
-      arrange(match(species, highlight_species))
+  # Add missing species to ground_truth with 0 abundance
+  if (length(missing_species) > 0) {
+    ground_truth <- bind_rows(
+      ground_truth,
+      tibble(species = missing_species, abundance = 0)
+    )
   }
 } else {
   stop("❌ Ground truth file not found.")
 }
-
 # Retrieve taxonomic hierarchy
 tax_ids <- get_uid(read_counts$species)  # Get taxonomic IDs
 taxonomy_data <- classification(tax_ids)  # Fetch taxonomy data
