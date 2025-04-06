@@ -272,49 +272,7 @@ Rscript "$ROOT_DIR/scripts/helper_scripts/phylo_classification_comparison.R" -r 
 fi 
 echo -e "\n================================================= METAGENOMIC DIVERSITY ANALYSIS ================================================="
 
-# Define alpha diversity metrics
-METRICS=("BP" "Sh" "F" "Si" "ISi") # Shannon's, Berger-Parker's, Simpson's, Inverse Simpson's, Fisher's
-
-# Create output file with header
-echo -e "Sample\t${METRICS[*]}" | tr ' ' '\t' > "$DIVERSITY_DIR/alpha_diversity.tsv"
-
-echo -e "Calculating alpha and beta diversity..."
-
-INPUT_FILES=()  # Initialize input file array for beta diversity
-
-# Loop over all Bracken files to compute diversity
-for file in "$BRACKEN_DIR"/*.bracken; do  
-    [[ -f "$file" ]] || { echo "❌ Error: No Bracken files found in $BRACKEN_DIR"; exit 1; }
-    
-    base=$(basename "$file" ".bracken")
-    DIVERSITY_RESULTS=("$base")  # Start with sample name
-    
-    # Compute each alpha diversity metric
-    for METRIC in "${METRICS[@]}"; do  
-        VALUE=$(python "$ROOT_DIR/tools/KrakenTools/DiversityTools/alpha_diversity.py" -f "$file" -a "$METRIC" | awk -F': ' '{if (NF>1) print $2}')
-        DIVERSITY_RESULTS+=("$VALUE")
-    done  
-
-    # Save results to TSV
-    echo -e "${DIVERSITY_RESULTS[*]}" | tr ' ' '\t' >> "$DIVERSITY_DIR/alpha_diversity.tsv"
-
-    # Collect files for beta diversity
-    INPUT_FILES+=("$file")
-done  
-
-echo "✅ Alpha diversity calculated for all samples."
-
-# Run beta diversity analysis (Bray-Curtis dissimilarity beta diversity)
-if (( ${#INPUT_FILES[@]} < 2 )); then
-  echo "⚠️ Skipping beta diversity – fewer than 2 samples."
-else
-    python "$ROOT_DIR/tools/KrakenTools/DiversityTools/beta_diversity.py" -i "${INPUT_FILES[@]}" --type bracken > "$DIVERSITY_DIR/beta_diversity_matrix.tsv"
-
-    # Generate beta diversity heatmap
-    Rscript "$ROOT_DIR/scripts/helper_scripts/b_diversity_heatmap.R" "$DIVERSITY_DIR/beta_diversity_matrix.tsv"
-    echo "✅ Beta diversity heatmap generated."
-
-fi
+"$ROOT_DIR/scripts/helper_scripts/diversity_analysis.sh" -b  "$BRACKEN_DIR" -d "$DIVERSITY_DIR" || { echo "❌ Diversity analysis failed!"; exit 1; }
 
 
 # Proceed if host DNA removal was performed
