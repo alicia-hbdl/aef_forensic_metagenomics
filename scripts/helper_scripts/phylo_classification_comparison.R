@@ -1,59 +1,69 @@
-# Load required libraries
-library(scales)
-library(readr)       # Read tabular data
-library(dplyr)       # Data manipulation
-library(tidyr)       # Data tidying
-library(stringr)     # String operations
-library(ggplot2)     # Data visualization
-library(reshape2)    # Data reshaping
-library(tibble)      # Tidy data structures
-library(taxize)      # Retrieve taxonomic IDs
-library(ape)         # Phylogenetic analysis
-library(treeio)      # Manipulate tree data
-library(ggtree)      # Visualize phylogenetic trees
-library(pheatmap)    # Generate heatmaps
-library(patchwork)   # Combine multiple plots
-library(ggtext)      # Required for element_markdown()
+#!/usr/bin/env Rscript
+
+# Now libraries
+suppressPackageStartupMessages({
+  library(optparse)
+  library(scales)
+  library(readr)
+  library(dplyr)
+  library(tidyr)
+  library(stringr)
+  library(ggplot2)
+  library(reshape2)
+  library(tibble)
+  library(taxize)
+  library(ape)
+  library(treeio)
+  library(ggtree)
+  library(pheatmap)
+  library(patchwork)
+  library(ggtext)
+})
 
 # Set NCBI API key for taxonomic queries
 options(ENTREZ_KEY = "5a8133264ac32a3f11c0f1e666a90d96c908")
 
-# Parse command-line argument (input file path)
-args <- commandArgs(trailingOnly = TRUE)
-if (length(args) != 1) stop("Usage: Rscript phylo_classification_comparison.R <path/to/pavian/combined_breports.csv>")
-file_path <- args[1]
-if (!file.exists(file_path)) stop("Error: Comparison table not found!")
+opt <- parse_args(OptionParser(option_list=list(
+  make_option(c("-r", "--reports"), type="character"),
+  make_option(c("-t", "--ground-truth"), type="character")
+)))
 
-# Define the species that should be bold
-# Make sure these are the ground_truth species
-highlight_species <- c("Bacillus subtilis", "Enterococcus faecalis", "Escherichia coli", 
-                       "Limosilactobacillus fermentum", "Listeria monocytogenes", 
-                       "Pseudomonas aeruginosa", "Salmonella enterica", 
-                       "Staphylococcus aureus", "Saccharomyces cerevisiae", 
-                       "Cryptococcus neoformans")
+if (is.null(opt$reports) || is.null(opt$`ground-truth`)) {
+  stop("Usage: Rscript script.R -r/--reports <path/to/combined_reports.csv> -t/--ground-truth <path/to/ground_truth.csv>")
+}
 
-# Load and clean combined breport table
-read_counts <- read_csv(file_path, show_col_types = FALSE) %>%
-  mutate(
-    species = recode(species,
-                     "Bacillus intestinalis" = "Bacillus spizizenii",  # Standardize taxonomic names (ensures consistency between the phylogenetic tree and species heatmap)
-                     "Cryptococcus gattii VGI" = "Cryptococcus gattii",
-                     "Cryptococcus gattii VGII" = "Cryptococcus deuterogattii")
-  ) %>%
-  # Replace all NAs with 0
-  replace(is.na(.), 0) %>%
-  # Filter rows where the average of the numeric columns (excluding species) is greater than 3
-  filter(rowMeans(select(., -species)) > 10) # Plot how precision varies across thresholds for this one
+# Load ground truth species
+if (file.exists(opt$`ground-truth`)) {
+  ground_truth <- read_csv(opt$`ground-truth`, show_col_types = FALSE)
+  highlight_species <- ground_truth$species
+} else {
+  stop("❌ Ground truth file not found.")
+}
 
+print(ground_truth)
+print(highlight_species)
+
+# Load and clean combined Bracken reports
+if (file.exists(opt$reports)) {
+  read_counts <- read_csv(opt$reports, show_col_types = FALSE) %>%
+    mutate(
+      species = recode(species,
+                              "Bacillus intestinalis" = "Bacillus spizizenii",
+                              "Cryptococcus gattii VGI" = "Cryptococcus gattii",
+                              "Cryptococcus gattii VGII" = "Cryptococcus deuterogattii"
+      )
+    ) %>%
+    replace(is.na(.), 0) %>%
+    filter(rowMeans(select(., -species)) > 10)
+  total_reads <- colSums(select(read_counts, -species))  # Fix missing total_reads
+} else {
+  stop("❌ Combined reports file not found.")
+}
 print(read_counts)
 
-# Read CSV and transform using pipes
-total_reads_path <- file.path(dirname(file_path), "../../../../processed_data/metagenomic/total_reads.csv")
-total_reads <- read_csv(total_reads_path) %>%
-  pivot_wider(names_from = sample, values_from = total_reads)  # Ensure correct column names
 
 # Retrieve taxonomic hierarchy
-tax_ids <- get_uid(read_counts$name)  # Get taxonomic IDs
+tax_ids <- get_uid(read_counts$species)  # Get taxonomic IDs
 taxonomy_data <- classification(tax_ids)  # Fetch taxonomy data
 
 # Construct phylogenetic tree
@@ -93,35 +103,25 @@ phylum_order <- taxonomy_lookup %>%
   pull(phylum) %>%
   unique()
 
-# Define expected species composition
-species_percentages <- tibble(species = read_counts$name) %>%
-  mutate(
-    expected_percentage = case_when(
-      species %in% c("Bacillus subtilis", "Enterococcus faecalis", "Escherichia coli",
-                     "Limosilactobacillus fermentum", "Listeria monocytogenes",
-                     "Pseudomonas aeruginosa", "Salmonella enterica", "Staphylococcus aureus") ~ 12,  # Bacterial composition
-      species %in% c("Saccharomyces cerevisiae", "Cryptococcus neoformans") ~ 2,  # Yeast composition
-      TRUE ~ 0))  # Default for others
-
 # Aggregate expected percentages at genus level
 genus_percentages <- taxonomy_lookup %>%
-  inner_join(species_percentages, by = "species") %>%
+  inner_join(ground_truth, by = "species") %>%
   group_by(genus) %>%
-  summarise(expected_percentage = sum(expected_percentage, na.rm = TRUE))
+  summarise(abundance = sum(abundance, na.rm = TRUE))
 
 # Aggregate expected percentages at phylum level
 phylum_percentages <- taxonomy_lookup %>%
-  inner_join(species_percentages, by = "species") %>%
+  inner_join(ground_truth, by = "species") %>%
   group_by(phylum) %>%
-  summarise(expected_percentage = sum(expected_percentage, na.rm = TRUE))
+  summarise(abundance = sum(abundance, na.rm = TRUE))
 
 # Compute species-level differences between observed and expected abundance
 species_differences <- read_counts %>%
-  mutate(across(-name, ~ . / total_reads[[cur_column()]] * 100)) %>% # Convert counts to percentages
-  inner_join(species_percentages, by = c("name" = "species")) %>%  # Match species
-  rename(species = name) %>%
-  mutate(across(-c(species, expected_percentage), ~ (.-expected_percentage)))  %>%  # Compute deviation
-  select(-expected_percentage) %>%
+  mutate(across(-species, ~ . / total_reads[[cur_column()]] * 100)) %>% # Convert counts to percentages
+  inner_join(ground_truth, by = c("species" = "species")) %>%  # Match species
+  rename(species = species) %>%
+  mutate(across(-c(species, abundance), ~ (.-abundance)))  %>%  # Compute deviation
+  select(-abundance) %>%
   mutate(AVERAGE = rowMeans(across(-species), na.rm = TRUE)) %>%  # Compute row-wise average
   pivot_longer(-species, names_to = "variable", values_to = "value") %>%
   mutate(species = factor(species, levels = rev(species_order), ordered = TRUE))  # Order species for heatmap
@@ -186,5 +186,5 @@ patchwork <- tree_plot + species_heatmap + genus_heatmap + phylum_heatmap + plot
       plot.caption = element_markdown(hjust = 0, size = 12, lineheight=1.2)))
 
 # Save combined plot as an image
-output_path <- file.path(dirname(file_path), "phylo_classification_comparison.png")
+output_path <- file.path(dirname(opt$reports), "phylo_classification_comparison.png")
 ggsave(output_path, plot = patchwork, width = 20, height = 16, dpi = 300)
