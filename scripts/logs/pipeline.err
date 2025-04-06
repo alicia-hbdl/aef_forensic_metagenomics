@@ -58,7 +58,241 @@
 + echo ''
 + echo 'Kraken2/Bracken Database: ../data/databases/k2_standard_16gb_20241228'
 + echo -e '\n================================================= CONDA ENVIRONMENT ACTIVATION ==================================================\n'
-+ ../scripts/helper_scripts/environment_setup.sh ../scripts/final_project.yml
++ source ../scripts/helper_scripts/environment_setup.sh ../scripts/final_project.yml
+++ [[ -z ../scripts/final_project.yml ]]
+++ [[ ../scripts/final_project.yml != *.yml ]]
+++ [[ ! -f ../scripts/final_project.yml ]]
+++ ENV_FILE=../scripts/final_project.yml
++++ basename ../scripts/final_project.yml .yml
+++ ENV_NAME=final_project
+++ command -v conda
++++ conda shell.bash hook
+++ eval 'export CONDA_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python'\''
+
+# Copyright (C) 2012 Anaconda, Inc
+# SPDX-License-Identifier: BSD-3-Clause
+
+__conda_exe() (
+    "$CONDA_EXE" $_CE_M $_CE_CONDA "$@"
+)
+
+__conda_hashr() {
+    if [ -n "${ZSH_VERSION:+x}" ]; then
+        \rehash
+    elif [ -n "${POSH_VERSION:+x}" ]; then
+        :  # pass
+    else
+        \hash -r
+    fi
+}
+
+__conda_activate() {
+    if [ -n "${CONDA_PS1_BACKUP:+x}" ]; then
+        # Handle transition from shell activated with conda <= 4.3 to a subsequent activation
+        # after conda updated to >= 4.4. See issue #6173.
+        PS1="$CONDA_PS1_BACKUP"
+        \unset CONDA_PS1_BACKUP
+    fi
+    \local ask_conda
+    ask_conda="$(PS1="${PS1:-}" __conda_exe shell.posix "$@")" || \return
+    \eval "$ask_conda"
+    __conda_hashr
+}
+
+__conda_reactivate() {
+    \local ask_conda
+    ask_conda="$(PS1="${PS1:-}" __conda_exe shell.posix reactivate)" || \return
+    \eval "$ask_conda"
+    __conda_hashr
+}
+
+conda() {
+    \local cmd="${1-__missing__}"
+    case "$cmd" in
+        activate|deactivate)
+            __conda_activate "$@"
+            ;;
+        install|update|upgrade|remove|uninstall)
+            __conda_exe "$@" || \return
+            __conda_reactivate
+            ;;
+        *)
+            __conda_exe "$@"
+            ;;
+    esac
+}
+
+if [ -z "${CONDA_SHLVL+x}" ]; then
+    \export CONDA_SHLVL=0
+    # In dev-mode CONDA_EXE is python.exe and on Windows
+    # it is in a different relative location to condabin.
+    if [ -n "${_CE_CONDA:+x}" ] && [ -n "${WINDIR+x}" ]; then
+        PATH="$(\dirname "$CONDA_EXE")/condabin${PATH:+":${PATH}"}"
+    else
+        PATH="$(\dirname "$(\dirname "$CONDA_EXE")")/condabin${PATH:+":${PATH}"}"
+    fi
+    \export PATH
+
+    # We'\''re not allowing PS1 to be unbound. It must at least be set.
+    # However, we'\''re not exporting it, which can cause problems when starting a second shell
+    # via a first shell (i.e. starting zsh from bash).
+    if [ -z "${PS1+x}" ]; then
+        PS1=
+    fi
+fi
+
+conda activate base'
++++ export CONDA_EXE=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda
++++ CONDA_EXE=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda
++++ export _CE_M=
++++ _CE_M=
++++ export _CE_CONDA=
++++ _CE_CONDA=
++++ export CONDA_PYTHON_EXE=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python
++++ CONDA_PYTHON_EXE=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python
++++ '[' -z x ']'
++++ conda activate base
++++ local cmd=activate
++++ case "$cmd" in
++++ __conda_activate activate base
++++ '[' -n '' ']'
++++ local ask_conda
+++++ PS1=
+++++ __conda_exe shell.posix activate base
+++++ /software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda shell.posix activate base
++++ ask_conda='PS1='\''(base) '\''
+export PATH='\''/users/k24087895/.local/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin'\''
+export CONDA_SHLVL='\''1'\''
+export CONDA_PROMPT_MODIFIER='\''(base) '\'''
++++ eval 'PS1='\''(base) '\''
+export PATH='\''/users/k24087895/.local/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin'\''
+export CONDA_SHLVL='\''1'\''
+export CONDA_PROMPT_MODIFIER='\''(base) '\'''
+++++ PS1='(base) '
+++++ export PATH=/users/k24087895/.local/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin
+++++ PATH=/users/k24087895/.local/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin
+++++ export CONDA_SHLVL=1
+++++ CONDA_SHLVL=1
+++++ export 'CONDA_PROMPT_MODIFIER=(base) '
+++++ CONDA_PROMPT_MODIFIER='(base) '
++++ __conda_hashr
++++ '[' -n '' ']'
++++ '[' -n '' ']'
++++ hash -r
+++ conda env list
+++ local cmd=env
+++ case "$cmd" in
+++ __conda_exe env list
+++ grep -q final_project
+++ /software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda env list
+++ conda activate final_project
+++ local cmd=activate
+++ case "$cmd" in
+++ __conda_activate activate final_project
+++ '[' -n '' ']'
+++ local ask_conda
++++ PS1='(base) '
++++ __conda_exe shell.posix activate final_project
++++ /software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda shell.posix activate final_project
+++ ask_conda='PS1='\''(final_project) '\''
+export PATH='\''/users/k24087895/.local/bin:/users/k24087895/.conda/envs/final_project/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin'\''
+export CONDA_PREFIX='\''/users/k24087895/.conda/envs/final_project'\''
+export CONDA_SHLVL='\''2'\''
+export CONDA_DEFAULT_ENV='\''final_project'\''
+export CONDA_PROMPT_MODIFIER='\''(final_project) '\''
+export CONDA_PREFIX_1='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe'\''
+export CONDA_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python'\''
+. "/users/k24087895/.conda/envs/final_project/etc/conda/activate.d/activate-r-base.sh"
+. "/users/k24087895/.conda/envs/final_project/etc/conda/activate.d/libglib_activate.sh"
+. "/users/k24087895/.conda/envs/final_project/etc/conda/activate.d/libxml2_activate.sh"
+. "/users/k24087895/.conda/envs/final_project/etc/conda/activate.d/openjdk_activate.sh"'
+++ eval 'PS1='\''(final_project) '\''
+export PATH='\''/users/k24087895/.local/bin:/users/k24087895/.conda/envs/final_project/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin'\''
+export CONDA_PREFIX='\''/users/k24087895/.conda/envs/final_project'\''
+export CONDA_SHLVL='\''2'\''
+export CONDA_DEFAULT_ENV='\''final_project'\''
+export CONDA_PROMPT_MODIFIER='\''(final_project) '\''
+export CONDA_PREFIX_1='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe'\''
+export CONDA_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python'\''
+. "/users/k24087895/.conda/envs/final_project/etc/conda/activate.d/activate-r-base.sh"
+. "/users/k24087895/.conda/envs/final_project/etc/conda/activate.d/libglib_activate.sh"
+. "/users/k24087895/.conda/envs/final_project/etc/conda/activate.d/libxml2_activate.sh"
+. "/users/k24087895/.conda/envs/final_project/etc/conda/activate.d/openjdk_activate.sh"'
++++ PS1='(final_project) '
++++ export PATH=/users/k24087895/.local/bin:/users/k24087895/.conda/envs/final_project/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin
++++ PATH=/users/k24087895/.local/bin:/users/k24087895/.conda/envs/final_project/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin
++++ export CONDA_PREFIX=/users/k24087895/.conda/envs/final_project
++++ CONDA_PREFIX=/users/k24087895/.conda/envs/final_project
++++ export CONDA_SHLVL=2
++++ CONDA_SHLVL=2
++++ export CONDA_DEFAULT_ENV=final_project
++++ CONDA_DEFAULT_ENV=final_project
++++ export 'CONDA_PROMPT_MODIFIER=(final_project) '
++++ CONDA_PROMPT_MODIFIER='(final_project) '
++++ export CONDA_PREFIX_1=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe
++++ CONDA_PREFIX_1=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe
++++ export CONDA_EXE=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda
++++ CONDA_EXE=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda
++++ export _CE_M=
++++ _CE_M=
++++ export _CE_CONDA=
++++ _CE_CONDA=
++++ export CONDA_PYTHON_EXE=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python
++++ CONDA_PYTHON_EXE=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python
++++ . /users/k24087895/.conda/envs/final_project/etc/conda/activate.d/activate-r-base.sh
+++++ R CMD javareconf
+++++ '[' -n '' ']'
+++++ export RSTUDIO_WHICH_R=/users/k24087895/.conda/envs/final_project/bin/R
+++++ RSTUDIO_WHICH_R=/users/k24087895/.conda/envs/final_project/bin/R
++++ . /users/k24087895/.conda/envs/final_project/etc/conda/activate.d/libglib_activate.sh
+++++ export GSETTINGS_SCHEMA_DIR_CONDA_BACKUP=
+++++ GSETTINGS_SCHEMA_DIR_CONDA_BACKUP=
+++++ export GSETTINGS_SCHEMA_DIR=/users/k24087895/.conda/envs/final_project/share/glib-2.0/schemas
+++++ GSETTINGS_SCHEMA_DIR=/users/k24087895/.conda/envs/final_project/share/glib-2.0/schemas
++++ . /users/k24087895/.conda/envs/final_project/etc/conda/activate.d/libxml2_activate.sh
+++++ test -n ''
+++++ xml_catalog_files_libxml2=
+++++ XML_CATALOG_FILES=
+++++ conda_catalog_files=
+++++ ifs_libxml2=' 	
+'
+++++ IFS=' '
+++++ rem=/users/k24087895/.conda/envs/final_project
+++++ for pre in ${rem}
+++++ test '' = /users/k24087895/.conda/envs/final_project
+++++ conda_catalog_files=/users/k24087895/.conda/envs/final_project
+++++ rem=
+++++ IFS=' 	
+'
+++++ conda_catalog_files='file:///users/k24087895/.conda/envs/final_project/etc/xml/catalog file:///etc/xml/catalog'
+++++ export 'XML_CATALOG_FILES=file:///users/k24087895/.conda/envs/final_project/etc/xml/catalog file:///etc/xml/catalog'
+++++ XML_CATALOG_FILES='file:///users/k24087895/.conda/envs/final_project/etc/xml/catalog file:///etc/xml/catalog'
+++++ unset conda_catalog_files ifs_libxml2 rem
++++ . /users/k24087895/.conda/envs/final_project/etc/conda/activate.d/openjdk_activate.sh
+++++ '[' '' ']'
+++++ export JAVA_HOME=/users/k24087895/.conda/envs/final_project/lib/jvm
+++++ JAVA_HOME=/users/k24087895/.conda/envs/final_project/lib/jvm
+++++ '[' '' ']'
+++++ export JAVA_LD_LIBRARY_PATH=/users/k24087895/.conda/envs/final_project/lib/jvm/lib/server
+++++ JAVA_LD_LIBRARY_PATH=/users/k24087895/.conda/envs/final_project/lib/jvm/lib/server
+++ __conda_hashr
+++ '[' -n '' ']'
+++ '[' -n '' ']'
+++ hash -r
+++ echo '✅ '\''final_project'\'' environment activated successfully.'
+++ export PATH=/users/k24087895/.conda/envs/final_project/bin:/users/k24087895/.local/bin:/users/k24087895/.conda/envs/final_project/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin
+++ PATH=/users/k24087895/.conda/envs/final_project/bin:/users/k24087895/.local/bin:/users/k24087895/.conda/envs/final_project/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin
+++ export PYTHONPATH=/users/k24087895/.conda/envs/final_project/lib/python3.13/site-packages:
+++ PYTHONPATH=/users/k24087895/.conda/envs/final_project/lib/python3.13/site-packages:
 + echo -e '\n====================================================== PROJECT STRUCTURE ======================================================\n'
 + RESULTS_DIR=../zymobiomics_folder/results
 + FASTQC_DIR=../zymobiomics_folder/results/fastqc
@@ -77,11 +311,11 @@
 + UNCLASSIFIED_DIR=../zymobiomics_folder/processed_data/metagenomic/unclassified
 + BRACKEN_DIR=../zymobiomics_folder/processed_data/metagenomic/bracken
 ++ date +run_%d%m_%H%M
-+ RUN_DIR=../zymobiomics_folder/results/runs/run_0604_1809
-+ REPORTS_DIR=../zymobiomics_folder/results/runs/run_0604_1809/reports
-+ KRONA_DIR=../zymobiomics_folder/results/runs/run_0604_1809/krona
-+ DIVERSITY_DIR=../zymobiomics_folder/results/runs/run_0604_1809/diversity
-+ mkdir -p ../zymobiomics_folder/results ../zymobiomics_folder/results/host_dna_analysis ../zymobiomics_folder/results/fastqc/pre_trimming ../zymobiomics_folder/results/fastqc/post_trimming ../zymobiomics_folder/processed_data/trimmed/paired ../zymobiomics_folder/processed_data/trimmed/unpaired ../zymobiomics_folder/processed_data/human/aligned_sam ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq ../zymobiomics_folder/processed_data/metagenomic/kraken2 ../zymobiomics_folder/processed_data/metagenomic/classified ../zymobiomics_folder/processed_data/metagenomic/unclassified ../zymobiomics_folder/processed_data/metagenomic/bracken ../zymobiomics_folder/results/runs/run_0604_1809/reports ../zymobiomics_folder/results/runs/run_0604_1809/krona ../zymobiomics_folder/results/runs/run_0604_1809/diversity ../zymobiomics_folder/processed_data/human/sorted_bam ../zymobiomics_folder/processed_data/human/bed_files
++ RUN_DIR=../zymobiomics_folder/results/runs/run_0604_1813
++ REPORTS_DIR=../zymobiomics_folder/results/runs/run_0604_1813/reports
++ KRONA_DIR=../zymobiomics_folder/results/runs/run_0604_1813/krona
++ DIVERSITY_DIR=../zymobiomics_folder/results/runs/run_0604_1813/diversity
++ mkdir -p ../zymobiomics_folder/results ../zymobiomics_folder/results/host_dna_analysis ../zymobiomics_folder/results/fastqc/pre_trimming ../zymobiomics_folder/results/fastqc/post_trimming ../zymobiomics_folder/processed_data/trimmed/paired ../zymobiomics_folder/processed_data/trimmed/unpaired ../zymobiomics_folder/processed_data/human/aligned_sam ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq ../zymobiomics_folder/processed_data/metagenomic/kraken2 ../zymobiomics_folder/processed_data/metagenomic/classified ../zymobiomics_folder/processed_data/metagenomic/unclassified ../zymobiomics_folder/processed_data/metagenomic/bracken ../zymobiomics_folder/results/runs/run_0604_1813/reports ../zymobiomics_folder/results/runs/run_0604_1813/krona ../zymobiomics_folder/results/runs/run_0604_1813/diversity ../zymobiomics_folder/processed_data/human/sorted_bam ../zymobiomics_folder/processed_data/human/bed_files
 + tree -L 3 -d ../zymobiomics_folder
 + echo 'Human DNA-related files (SAM, BAM, and BED) in the '\''human'\'' directory are created once per sub-project and remain unchanged across runs.'
 + echo 'Intermediate metagenomic files in the '\''metagenomic'\'' directory are overwritten with each run and should be inspected beforehand if desired.'
@@ -90,7 +324,7 @@
 + echo -e '\n================================================= METAGENOMIC ABUNDANCE ESTIMATION ================================================='
 + echo '⚠️ This step assumes reads have already been trimmed with Trimmomatic and host DNA removed with Bowtie2. Processed reads must be in the correct directory.'
 ++ date +%s
-+ START_TIME=1743959391
++ START_TIME=1743959592
 + for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz
 ++ basename ../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R1_paired.fastq.gz _R1_paired.fastq.gz
 + base=ZC1_S4
@@ -98,3 +332,14 @@
 + [[ true == true ]]
 + echo -e '\nRemoving human reads with Bowtie2...'
 + bowtie2 -x ../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant -1 ../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R1_paired.fastq.gz -2 ../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R2_paired.fastq.gz --un-conc ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic -S ../zymobiomics_folder/processed_data/human/aligned_sam/ZC1_S4_human.sam
++ for i in 1 2
++ gzip -f ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.1
++ for i in 1 2
++ gzip -f ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.2
++ echo '✅ Host reads removed and filtered reads compressed.'
++ echo -e '\nClassifying metagenomic reads with Kraken2...'
++ KRAKEN_CMD='kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_0604_1813/reports/ZC1_S4.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZC1_S4_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC1_S4_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC1_S4.kraken2" --use-names 2>&1'
++ echo 'kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_0604_1813/reports/ZC1_S4.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZC1_S4_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC1_S4_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC1_S4.kraken2" --use-names 2>&1'
++ eval kraken2 --db '"../data/databases/k2_standard_16gb_20241228"' --threads 8 --report '"../zymobiomics_folder/results/runs/run_0604_1813/reports/ZC1_S4.k2report"' --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out '"../zymobiomics_folder/processed_data/metagenomic/classified/ZC1_S4_classified#.fastq"' --unclassified-out '"../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC1_S4_unclassified#.fastq"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.1.gz"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.2.gz"' --output '"../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC1_S4.kraken2"' --use-names '2>&1'
+++ kraken2 --db ../data/databases/k2_standard_16gb_20241228 --threads 8 --report ../zymobiomics_folder/results/runs/run_0604_1813/reports/ZC1_S4.k2report --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out ../zymobiomics_folder/processed_data/metagenomic/classified/ZC1_S4_classified#.fastq --unclassified-out ../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC1_S4_unclassified#.fastq ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.1.gz ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.2.gz --output ../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC1_S4.kraken2 --use-names
+slurmstepd: error: *** JOB 24930085 ON erc-hpc-comp023 CANCELLED AT 2025-04-06T18:14:18 ***
