@@ -1,12 +1,10 @@
 #!/bin/bash
 
-# Set the root comparison directory
+# Set the root comparison directory and output file path
 RUNS_DIR=$(realpath "../../zymobiomics_folder/results/runs")
-
-# Output CSV file path
 OUTPUT="$RUNS_DIR/new_runs_summary.csv"
 
-
+# Arrays to store metadata and other variables
 metadata_vars=(run_id db_name runtime)
 preqc_vars=(preqc_pct_dups_r1 preqc_pct_dups_r2 preqc_pct_gc_r1 preqc_pct_gc_r2 preqc_avg_len_r1 preqc_avg_len_r2 preqc_med_len_r1 preqc_med_len_r2 preqc_fail_r1 preqc_fail_r2)
 global_trim_vars=(trim_clip trim_head trim_lead trim_crop trim_sliding_win trim_trail trim_min_len)
@@ -18,9 +16,7 @@ kraken2_vars=(kraken2_min_hits kraken2_total kraken2_classified kraken2_unclassi
 bracken_vars=(bracken_thresh bracken_species bracken_species_above_thresh bracken_species_below_thresh bracken_kept bracken_discarded bracken_redistributed bracken_not_redistributed bracken_total)
 eval_metrics=(precision recall)
 
-# Store sample names to index arrays 
-
-# Write CSV header only if file doesn't exist
+# Create CSV header if file doesn't exist
 if [[ ! -f "$OUTPUT" ]]; then
   {
     IFS=,
@@ -34,11 +30,8 @@ LOG_FILES=$(find "$RUNS_DIR" -type f -name "kraken_pipeline.log")
 
 # Process each log file
 for log in $LOG_FILES; do
-
   # -- RUN METADATA -- 
-
-  # Get run ID from log file's grandparent directory
-  run_id=$(basename "$(dirname "$(dirname "$log")")") 
+  run_id=$(basename "$(dirname "$(dirname "$log")")") # Get run ID
 
   # Skip if run already exists in the output
   if grep -q "^$run_id," "$OUTPUT"; then
@@ -46,30 +39,25 @@ for log in $LOG_FILES; do
       continue
   fi
 
-  # Get database name 
+  # Get database and runtime info
   db_name=$(grep "Kraken2/Bracken Database Path:" "$log" | awk -F': ' '{print $2}' | xargs basename)
-
-  # Get runtime string
   runtime=$(grep "Metagenomic classification completed in:" "$log" | awk -F': ' '{print $2}')    
   
-  # -- KRAKEN & BRACKEN METADATA -- 
-
-  # Global variables 
-
+  # -- KRAKEN & BRACKEN METADATA --
+  # Process Kraken and Bracken metadata first to capture sample IDs, as this step is always executed.
   kraken2_min_hits=$(grep "kraken2" "$log" | grep -oE -- '--minimum-hit-groups[ =][0-9]+' | grep -oE '[0-9]+' | head -n1)
   bracken_thresh=$(grep "Threshold:" "$log" | sed -n 's/.*Threshold: \([0-9]*\).*/\1/p' | head -n1)
-  # Parse Kraken2 & Bracken summary blocks from log (split by "Processing sample: ")
-
+  
+  # Parse Kraken2 & Bracken summary blocks and store stats for each sample
+  kraken_stats=()
+  bracken_stats=()
+  sample_ids=()
   while IFS=',' read -r sample_id minhit total classified unclassified avg med \
                       thresh species above below kept discard redist notredist total_brack; do
-
     # Store sample-specific stats in associative arrays (corrected quotes)
     kraken_stats+=("$minhit,$total,$classified,$unclassified,$avg,$med")
     bracken_stats+=("$thresh,$species,$above,$below,$kept,$discard,$redist,$notredist,$total_brack")
-    # Add sample to sample array if it doesn't exist (to avoid adding at each log file)
-    if [[ ! " ${sample_ids[*]} " =~ " $sample_id " ]]; then
-      sample_ids+=("$sample_id")
-    fi
+    sample_ids+=("$sample_id")
   done < <(
     awk -v b_thresh="$bracken_thresh" -v minhits="$kraken2_min_hits" -v RS="Processing sample: " '    
     BEGIN { FS = "\n" }
@@ -110,6 +98,9 @@ for log in $LOG_FILES; do
         
         # Compute total reads considered at species level
         b_total = b_kept + b_redist
+
+        k_avg= "TODO"
+        k_med= "TODO"
       }
 
       # Output all values in a single CSV-formatted line
@@ -121,9 +112,8 @@ for log in $LOG_FILES; do
 
   # -- FASTQC & TRIMMING METADATA --
   trimming_stats=()
-
   if grep -q "Quality Control & Trimming: Enabled" "$log"; then
-    
+
     # Extract Trimmomatic arguments (from first occurrence)
     trimmomatic_args=$(grep -m1 "TrimmomaticPE: Started with arguments:" -A1 "$log" | tail -n1)
 
@@ -184,8 +174,8 @@ for log in $LOG_FILES; do
       [[ $line =~ exactly\ 1\ time ]] && bt_conc_1=$(echo "$line" | sed -E 's/^[[:space:]]*([0-9]+).*/\1/') && continue
       if [[ $line =~ \>1\ times ]]; then
         bt_conc_more=$(echo "$line" | sed -E 's/^[[:space:]]*([0-9]+).*/\1/')
-        bt_avg_len=""
-        bt_med_len=""
+        bt_avg_len="TODO"
+        bt_med_len="TODO"
       # Store stats in sample-specific variable once full block is complete       
       bowtie_stats+=("$bt_paired,$bt_conc_0,$bt_conc_1,$bt_conc_more,$bt_avg_len,$bt_med_len")
       fi        
@@ -193,7 +183,7 @@ for log in $LOG_FILES; do
     # done
   else 
     for i in "${!sample_ids[@]}"; do
-      bowtie_stats+=("NA,NA,NA,NA,NA")
+      bowtie_stats+=("NA,NA,NA,NA,NA,NA")
     done
   fi 
 
