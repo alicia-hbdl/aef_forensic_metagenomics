@@ -30,5 +30,7 @@ fi
 conda activate "$ENV_NAME" || { echo "❌ Failed to activate '$ENV_NAME' environment."; exit 1; }
 echo "✅ '$ENV_NAME' environment activated successfully."
 
-# Export Conda's Python and libraries instead of the system's Python
+# Ensure that any executable programs installed in the environment are used first when running commands
 export PATH="$HOME/.conda/envs/$ENV_NAME/bin:$PATH"
+# Ensure that Python will use the modules installed in the Conda environment’s site-packages directory first
+export PYTHONPATH="$HOME/.conda/envs/$ENV_NAME/lib/python3.13/site-packages:$PYTHONPATH"
