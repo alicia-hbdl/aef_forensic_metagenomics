@@ -33,4 +33,4 @@ echo "✅ '$ENV_NAME' environment activated successfully."
 # Ensure that any executable programs installed in the environment are used first when running commands
 export PATH="$HOME/.conda/envs/$ENV_NAME/bin:$PATH"
 # Ensure that Python will use the modules installed in the Conda environment’s site-packages directory first
-export PYTHONPATH="$HOME/.conda/envs/$ENV_NAME/lib/python3.13/site-packages:$PYTHONPATH"
+export PYTHONPATH="$HOME/.conda/envs/$ENV_NAME/lib/python$(python -c 'import sys; print(".".join(map(str, sys.version_info[:3])))')/site-packages:$PYTHONPATH"
