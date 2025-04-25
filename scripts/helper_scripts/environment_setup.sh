@@ -32,4 +32,3 @@ echo "✅ '$ENV_NAME' environment activated successfully."
 
 # Export Conda's Python and libraries instead of the system's Python
 export PATH="$HOME/.conda/envs/$ENV_NAME/bin:$PATH"
-export PYTHONPATH="$HOME/.conda/envs/$ENV_NAME/lib/python3.13/site-packages:$PYTHONPATH"
