@@ -1,0 +1,92 @@
+
+================================================= ARGUMENT PARSING & VALIDATION =================================================
+
+Raw FASTQ directory path: /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/
+⚠️ Warning: No argument provided. Using default: /scratch/users/k24087895/final_project/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as
+Quality Control & Trimming: Disabled ❌
+⚠️ Optional, but must be done at least once on the raw reads for the pipeline to work.
+
+Host DNA Removal: Enabled ✅
+Bowtie2 Index Prefix: /scratch/users/k24087895/final_project/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as
+⚠️ Optional, but must be done at least once on the trimmed reads for the pipeline to work.
+
+Kraken2/Bracken Database: /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20241228
+
+================================================= CONDA ENVIRONMENT ACTIVATION ==================================================
+
+✅ 'final_project' environment activated successfully.
+
+====================================================== PROJECT STRUCTURE ======================================================
+
+/scratch/users/k24087895/final_project/zymobiomics_folder
+├── processed_data
+│   ├── human
+│   │   ├── aligned_sam
+│   │   ├── bed_files
+│   │   └── sorted_bam
+│   ├── metagenomic
+│   │   ├── bracken
+│   │   ├── classified
+│   │   ├── filtered_fastq
+│   │   ├── kraken2
+│   │   └── unclassified
+│   └── trimmed
+│       ├── paired
+│       └── unpaired
+├── raw_data
+└── results
+    ├── fastqc
+    │   ├── post_trimming
+    │   └── pre_trimming
+    ├── host_dna_analysis
+    └── runs
+        ├── run_0204_1555
+        ├── run_0204_1559
+        ├── run_0204_1603
+        ├── run_0204_1606
+        ├── run_0204_1610
+        ├── run_0204_1625
+        ├── run_0204_1642
+        ├── run_0204_1653
+        ├── run_0304_1738
+        ├── run_0504_0954
+        ├── run_0504_0959
+        ├── run_0504_2014
+        ├── run_0504_2054
+        ├── run_0504_2327
+        ├── run_0504_2332
+        ├── run_0504_2344
+        ├── run_0504_2353
+        ├── run_0604_2043
+        ├── run_0604_2101
+        ├── run_0604_2112
+        ├── run_2504_1617
+        ├── run_2504_1620
+        ├── run_2504_1621
+        ├── run_2504_1626
+        ├── run_2504_1634
+        ├── run_2504_1650
+        ├── run_2504_1718
+        ├── run_2504_1724
+        ├── run_2603_1200
+        ├── run_2603_1216
+        ├── run_2603_1225
+        ├── run_2603_1231
+        ├── run_2603_1236
+        └── run_2603_1257
+
+55 directories
+Human DNA-related files (SAM, BAM, and BED) in the 'human' directory are created once per sub-project and remain unchanged across runs.
+Intermediate metagenomic files in the 'metagenomic' directory are overwritten with each run and should be inspected beforehand if desired.
+Results are stored in the 'results' directory (including FastQC, host DNA analysis, and run-specific results like Kraken2 and Bracken).
+
+================================================= METAGENOMIC ABUNDANCE ESTIMATION =================================================
+⚠️ This step assumes reads have already been trimmed with Trimmomatic and host DNA removed with Bowtie2. Processed reads must be in the correct directory.
+
+Processing sample: ZC1_S4
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/users/k24087895/final_project/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant                     -1 "/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R1_paired.fastq.gz" -2 "/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R2_paired.fastq.gz"                     --un-conc "/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic" -S "/scratch/users/k24087895/final_project/zymobiomics_folder/processed_data/human/aligned_sam/ZC1_S4_human.sam" 2>&1
+sh: 1: /users/k24087895/.conda/envs/final_project/bin/bowtie2-align-s: Exec format error
+(ERR): Description of arguments failed!
+Exiting now ...
