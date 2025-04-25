@@ -14,13 +14,12 @@ global_bt_vars=(bt_prefix bt_mode bt_sensitivity bt_mixed bt_discordant)
 local_bt_vars=(bt_paired bt_conc_0 bt_conc_1 bt_conc_more bt_avg_len bt_med_len)
 kraken2_vars=(kraken2_min_hits kraken2_total kraken2_classified kraken2_unclassified kraken2_avg_len kraken2_med_len)
 bracken_vars=(bracken_thresh bracken_species bracken_species_above_thresh bracken_species_below_thresh bracken_kept bracken_discarded bracken_redistributed bracken_not_redistributed bracken_total)
-eval_metrics=(precision recall)
 
 # Create CSV header if file doesn't exist
 if [[ ! -f "$OUTPUT" ]]; then
   {
     IFS=,
-    echo "${metadata_vars[*]},sample,${preqc_vars[*]},${global_trim_vars[*]},${local_trim_vars[*]},${postqc_vars[*]},${global_bt_vars[*]},${local_bt_vars[*]},${kraken2_vars[*]},${bracken_vars[*]},${eval_metrics[*]}"
+    echo "${metadata_vars[*]},sample,${preqc_vars[*]},${global_trim_vars[*]},${local_trim_vars[*]},${postqc_vars[*]},${global_bt_vars[*]},${local_bt_vars[*]},${kraken2_vars[*]},${bracken_vars[*]}"
     unset IFS
   } > "$OUTPUT"
 fi
@@ -111,8 +110,16 @@ for log in $LOG_FILES; do
   )
 
   # -- FASTQC & TRIMMING METADATA --
+  preqc_stats=()
   trimming_stats=()
+  postqc_stats=()
+
   if grep -q "Quality Control & Trimming: Enabled" "$log"; then
+    
+    for i in "${!sample_ids[@]}"; do
+      preqc_stats+=("TODO,TODO,TODO,TODO,TODO,TODO,TODO,TODO,TODO,TODO")
+      postqc_stats+=("TODO,TODO,TODO,TODO,TODO,TODO,TODO,TODO,TODO,TODO")
+    done
 
     # Extract Trimmomatic arguments (from first occurrence)
     trimmomatic_args=$(grep -m1 "TrimmomaticPE: Started with arguments:" -A1 "$log" | tail -n1)
@@ -154,9 +161,13 @@ for log in $LOG_FILES; do
       eval "$var='NA'"
     done
 
+    # Set local qc and trimming variables to "NA" for each sample
     for i in "${!sample_ids[@]}"; do
+      preqc_stats+=("NA,NA,NA,NA,NA,NA,NA,NA,NA,NA")
       trimming_stats+=("NA,NA,NA,NA,NA")
+      postqc_stats+=("NA,NA,NA,NA,NA,NA,NA,NA,NA,NA")
     done
+    
   fi
 
    # -- HOST-DNA REMOVAL METADATA --
@@ -165,6 +176,12 @@ for log in $LOG_FILES; do
   if grep -q "Host DNA Removal: Enabled" "$log"; then
 
     # Extract Bowtie2 arguments (from first occurrence)
+    bt_prefix="TODO"
+    bt_mode="TODO"
+    bt_sensitivity="TODO"
+    bt_mixed="TODO"
+    bt_discordant="TODO"
+
     # Parse Bowtie2 stats line-by-line for each sample
     while read -r line; do
     # grep -A7 "Processing sample:" "$log" | while read -r line; do
@@ -182,6 +199,11 @@ for log in $LOG_FILES; do
     done < <(grep -A7 "Processing sample:" "$log")
     # done
   else 
+
+    for var in "${global_bt_vars[@]}"; do
+      eval "$var='NA'"
+    done
+
     for i in "${!sample_ids[@]}"; do
       bowtie_stats+=("NA,NA,NA,NA,NA,NA")
     done
@@ -196,18 +218,18 @@ for i in "${!sample_ids[@]}"; do
     done
 
     # Print sample ID
-    printf "%s," "$i"
+    printf "%s," "${sample_ids[$i]}"
+
+    printf "%s," "${preqc_stats[$i]}"
 
     # Print other per-sample global and local stats
-    for var in "${preqc_vars[@]}" "${global_trim_vars[@]}"; do
+    for var in "${global_trim_vars[@]}"; do
       printf "%s," "${!var}"
     done
     
     printf "%s," "${trimming_stats[$i]}"
     
-    for var in "${postqc_vars[@]}"; do
-      printf "%s," "${!var}"
-    done
+    printf "%s," "${postqc_stats[$i]}"
 
     for var in "${global_bt_vars[@]}"; do
       printf "%s," "${!var}"
