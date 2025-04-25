@@ -246,6 +246,24 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
     echo "✅ Krona plot generated."
 done
 
+# Unzip all .gz files in "$FILTERED_FASTQ_DIR" and keep the 1 and 2 info in filenames
+for gz_file in "$FILTERED_FASTQ_DIR"/*.gz; do
+  # Unzip and rename the file
+  base_name=$(basename "$gz_file" .gz)  # Get the base name without .gz
+  new_name="$FILTERED_FASTQ_DIR/${base_name}.fastq"  # Create new .fastq filename
+
+  # Unzip the file only if it's a valid .gz file
+  if [[ -f "$gz_file" ]]; then
+    echo "Unzipping: $gz_file -> $new_name"
+    gunzip -c "$gz_file" > "$new_name"  # Unzip to the new name
+  fi
+done
+
+# Process all FASTQ files as desired using the get_fastq_stats.sh script
+"$ROOT_DIR/scripts/helper_scripts/get_fastq_stats.sh" "$FILTERED_FASTQ_DIR" 2>&1
+"$ROOT_DIR/scripts/helper_scripts/get_fastq_stats.sh" "$CLASSIFIED_DIR" 2>&1
+"$ROOT_DIR/scripts/helper_scripts/get_fastq_stats.sh" "$UNCLASSIFIED_DIR" 2>&1
+
 # End timer for metagenomic classification
 END_TIME=$(date +%s)
 DURATION=$((END_TIME - START_TIME))
