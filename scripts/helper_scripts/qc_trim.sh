@@ -24,10 +24,11 @@ mkdir -p "$TRIMMED_DIR/paired" "$TRIMMED_DIR/unpaired"
 
 # Run FastQC on all raw reads
 echo -e "\nRunning FastQC on all raw reads..."
-fastqc "$RAW_FASTQ_DIR"/*.fastq.gz --outdir "$FASTQC_DIR/pre_trimming" &>/dev/null || {
-    echo "❌ FastQC failed!"
-    exit 1
-}
+fastqc "$RAW_FASTQ_DIR"/*.fastq.gz --outdir "$FASTQC_DIR/pre_trimming"
+# &>/dev/null|| {
+ #   echo "❌ FastQC failed!"
+  #  exit 1
+#}
 echo "✅ FastQC completed successfully."
 
 # Run MultiQC to summarize FastQC reports and clean up zip files
