@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# To Do: 
+# Print QC stats to log file 
+# Get length of kraken classified and unclassified reads 
+ # Print bowtie command to log file
+
+
 # Set the root comparison directory and output file path
 RUNS_DIR=$(realpath "../../zymobiomics_folder/results/runs")
 OUTPUT="$RUNS_DIR/new_runs_summary.csv"
