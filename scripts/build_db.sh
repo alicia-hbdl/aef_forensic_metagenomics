@@ -10,7 +10,7 @@
 
 # Default values
 GENOMES=/scratch/users/k24087895/final_project/metagenome_analysis/data/genomes
-DBNAME=/scratch/users/k24087895/final_project/metagenome_analysis/data/databases/custom
+DBNAME=/scratch/users/k24087895/final_project/metagenome_analysis/data/databases/custom_notaxid
 
 THREADS=8
 KMER_LEN=35
@@ -22,7 +22,7 @@ if ! command -v conda &> /dev/null; then
     exit 1
 fi
 eval "$(conda shell.bash hook)" || { echo "❌ Conda shell integration not set up. Run 'conda init bash' and restart the shell. Exiting."; exit 1; }
-conda activate final_project || { echo "❌ Failed to activate Conda environment 'final_project'. Exiting."; exit 1; }
+conda activate metagenomics || { echo "❌ Failed to activate Conda environment 'metagenomics'. Exiting."; exit 1; }
 echo "✅ Conda environment 'final_project' activated."
 
 # Parse command-line arguments
@@ -97,22 +97,22 @@ declare -A taxids=(
 
 # Tag genome headers with taxIDs
 echo "🧬 Tagging genome headers with taxIDs..."
-for genome in "$GENOMES"/*.fna; do
-    base=$(basename "$genome")
-    taxid=${taxids["$base"]}
+#for genome in "$GENOMES"/*.fna; do
+ #   base=$(basename "$genome")
+  #  taxid=${taxids["$base"]}
     
-    if [ -z "$taxid" ]; then
-        echo "⚠️ Warning: No taxid found for $base. Skipping."
-        continue
-    fi
+   # if [ -z "$taxid" ]; then
+    #    echo "⚠️ Warning: No taxid found for $base. Skipping."
+     #   continue
+  #  fi
     
-    if ! grep -q "kraken:taxid" "$genome"; then
-        echo "Tagging $base with taxid $taxid..."
-        sed -i -E "s/^(>[^ ]+)/&|kraken:taxid|$taxid/" "$genome"
-    else
-        echo "⚠️ Skipping $base: already tagged."
-    fi
-done
+   # if ! grep -q "kraken:taxid" "$genome"; then
+    #    echo "Tagging $base with taxid $taxid..."
+     #   sed -i -E "s/^(>[^ ]+)/&|kraken:taxid|$taxid/" "$genome"
+   # else
+    #    echo "⚠️ Skipping $base: already tagged."
+   # fi
+#done
 
 # Add genomes to Kraken2 DB
 echo "📒 Adding genomes to Kraken2 DB..."
