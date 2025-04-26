@@ -10,7 +10,7 @@ fi
 DIRECTORY=$1
 
 # Extract read lengths from each FASTQ file in the provided directory and calculate mean and median
-for file in "$DIRECTORY"/*classified*.fastq; do
+for file in "$DIRECTORY"/*.fastq; do
   echo -n "$file: "  # Print the filename for reference
 
   # Process the FASTQ file
