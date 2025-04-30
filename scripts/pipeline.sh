@@ -207,10 +207,10 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
         echo -e "\nRemoving human reads with Bowtie2..."
 
         BOWTIE_CMD="bowtie2 -x \"$BOWTIE_PREFIX\" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant \
-                    -1 \"$TRIMMED_DIR/paired/${base}_R1_paired.fastq.gz\" -2 \"$TRIMMED_DIR/paired/${base}_R2_paired.fastq.gz\" \
-                    --un-conc \"$FILTERED_FASTQ_DIR/${base}_metagenomic\" -S \"$ALIGNED_SAM_DIR/${base}_human.sam\" 2>&1"
+	-1 \"$TRIMMED_DIR/paired/${base}_R1_paired.fastq.gz\" -2 \"$TRIMMED_DIR/paired/${base}_R2_paired.fastq.gz\" \
+	--un-conc \"$FILTERED_FASTQ_DIR/${base}_metagenomic\" -S \"$ALIGNED_SAM_DIR/${base}_human.sam\" 2>&1"
         
-        echo "$BOWTIE_CMD"
+	echo "$BOWTIE_CMD"
         eval $BOWTIE_CMD
         
         # Compress filtered metagenomic reads
@@ -247,6 +247,7 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
 done
 
 # Unzip all .gz files in "$FILTERED_FASTQ_DIR" and keep the 1 and 2 info in filenames
+echo "Unzipping filtered data for stats analysis..."
 for gz_file in "$FILTERED_FASTQ_DIR"/*.gz; do
   # Unzip and rename the file
   base_name=$(basename "$gz_file" .gz)  # Get the base name without .gz
@@ -254,14 +255,18 @@ for gz_file in "$FILTERED_FASTQ_DIR"/*.gz; do
 
   # Unzip the file only if it's a valid .gz file
   if [[ -f "$gz_file" ]]; then
-    echo "Unzipping: $gz_file -> $new_name"
     gunzip -c "$gz_file" > "$new_name"  # Unzip to the new name
   fi
 done
 
 # Process all FASTQ files as desired using the get_fastq_stats.sh script
+echo "Running get_fastq_stats.sh on filtered data..."
 "$ROOT_DIR/scripts/helper_scripts/get_fastq_stats.sh" "$FILTERED_FASTQ_DIR" 2>&1
+
+echo "Running get_fastq_stats.sh on classified data..."
 "$ROOT_DIR/scripts/helper_scripts/get_fastq_stats.sh" "$CLASSIFIED_DIR" 2>&1
+
+echo "Running get_fastq_stats.sh on unclassified data..."
 "$ROOT_DIR/scripts/helper_scripts/get_fastq_stats.sh" "$UNCLASSIFIED_DIR" 2>&1
 
 # End timer for metagenomic classification

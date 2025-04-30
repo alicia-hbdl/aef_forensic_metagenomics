@@ -2,7 +2,7 @@
 + TRIM=false
 + REMOVE_HOST_DNA=false
 + GROUND_TRUTH=true
-+ [[ 3 -gt 0 ]]
++ [[ 4 -gt 0 ]]
 + case "$1" in
 + [[ -z ../zymobiomics_folder/raw_data/ ]]
 + [[ ../zymobiomics_folder/raw_data/ == -* ]]
@@ -37,6 +37,13 @@
 + DATABASE=../data/databases/k2_standard_16gb_20241228
 + BOWTIE_PREFIX=../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as
 + shift 2
++ [[ 2 -gt 0 ]]
++ case "$1" in
++ [[ -z -t ]]
++ [[ -t == -* ]]
++ echo '⚠️ Warning: No argument provided. Using default: ../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as'
++ shift
++ REMOVE_HOST_DNA=true
 + [[ 1 -gt 0 ]]
 + case "$1" in
 + TRIM=true
@@ -49,8 +56,9 @@
 + echo -e 'Quality Control & Trimming: Enabled ✅'
 + echo '⚠️ Optional, but must be done at least once on the raw reads for the pipeline to work.'
 + echo ''
-+ [[ false == true ]]
-+ echo -e 'Host DNA Removal: Disabled ❌'
++ [[ true == true ]]
++ echo -e 'Host DNA Removal: Enabled ✅'
++ echo 'Bowtie2 Index Prefix: ../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as'
 + echo '⚠️ Optional, but must be done at least once on the trimmed reads for the pipeline to work.'
 + echo ''
 + echo 'Kraken2/Bracken Database: ../data/databases/k2_standard_16gb_20241228'
@@ -161,7 +169,6 @@ conda activate base'
 ++++ __conda_exe shell.posix activate base
 ++++ /software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda shell.posix activate base
 +++ ask_conda='. "/users/k24087895/.conda/envs/metagenomics/etc/conda/deactivate.d/openjdk_deactivate.sh"
-. "/users/k24087895/.conda/envs/metagenomics/etc/conda/deactivate.d/libxml2_deactivate.sh"
 . "/users/k24087895/.conda/envs/metagenomics/etc/conda/deactivate.d/libglib_deactivate.sh"
 . "/users/k24087895/.conda/envs/metagenomics/etc/conda/deactivate.d/deactivate-r-base.sh"
 PS1='\''(base) '\''
@@ -176,7 +183,6 @@ export _CE_M='\'''\''
 export _CE_CONDA='\'''\''
 export CONDA_PYTHON_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python'\'''
 +++ eval '. "/users/k24087895/.conda/envs/metagenomics/etc/conda/deactivate.d/openjdk_deactivate.sh"
-. "/users/k24087895/.conda/envs/metagenomics/etc/conda/deactivate.d/libxml2_deactivate.sh"
 . "/users/k24087895/.conda/envs/metagenomics/etc/conda/deactivate.d/libglib_deactivate.sh"
 . "/users/k24087895/.conda/envs/metagenomics/etc/conda/deactivate.d/deactivate-r-base.sh"
 PS1='\''(base) '\''
@@ -192,17 +198,13 @@ export _CE_CONDA='\'''\''
 export CONDA_PYTHON_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python'\'''
 ++++ . /users/k24087895/.conda/envs/metagenomics/etc/conda/deactivate.d/openjdk_deactivate.sh
 +++++ '[' x ']'
-+++++ export JAVA_HOME=
-+++++ JAVA_HOME=
++++++ export JAVA_HOME=/users/k24087895/.conda/envs/metagenomics/lib/jvm
++++++ JAVA_HOME=/users/k24087895/.conda/envs/metagenomics/lib/jvm
 +++++ unset JAVA_HOME_CONDA_BACKUP
 +++++ '[' x ']'
-+++++ export JAVA_LD_LIBRARY_PATH=
-+++++ JAVA_LD_LIBRARY_PATH=
++++++ export JAVA_LD_LIBRARY_PATH=/users/k24087895/.conda/envs/metagenomics/lib/jvm/lib/server
++++++ JAVA_LD_LIBRARY_PATH=/users/k24087895/.conda/envs/metagenomics/lib/jvm/lib/server
 +++++ unset JAVA_LD_LIBRARY_PATH_BACKUP
-++++ . /users/k24087895/.conda/envs/metagenomics/etc/conda/deactivate.d/libxml2_deactivate.sh
-+++++ test -n ''
-+++++ unset XML_CATALOG_FILES
-+++++ unset xml_catalog_files_libxml2
 ++++ . /users/k24087895/.conda/envs/metagenomics/etc/conda/deactivate.d/libglib_deactivate.sh
 +++++ export GSETTINGS_SCHEMA_DIR=
 +++++ GSETTINGS_SCHEMA_DIR=
@@ -239,9 +241,9 @@ export CONDA_PYTHON_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.0
 +++ hash -r
 ++ conda env list
 ++ local cmd=env
+++ grep -q metagenomics
 ++ case "$cmd" in
 ++ __conda_exe env list
-++ grep -q metagenomics
 ++ /software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda env list
 ++ conda activate metagenomics
 ++ local cmd=activate
@@ -265,7 +267,6 @@ export _CE_CONDA='\'''\''
 export CONDA_PYTHON_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python'\''
 . "/users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/activate-r-base.sh"
 . "/users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/libglib_activate.sh"
-. "/users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/libxml2_activate.sh"
 . "/users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/openjdk_activate.sh"'
 ++ eval 'PS1='\''(metagenomics) '\''
 export PATH='\''/users/k24087895/.local/bin:/users/k24087895/.conda/envs/metagenomics/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin'\''
@@ -280,7 +281,6 @@ export _CE_CONDA='\'''\''
 export CONDA_PYTHON_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python'\''
 . "/users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/activate-r-base.sh"
 . "/users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/libglib_activate.sh"
-. "/users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/libxml2_activate.sh"
 . "/users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/openjdk_activate.sh"'
 +++ PS1='(metagenomics) '
 +++ export PATH=/users/k24087895/.local/bin:/users/k24087895/.conda/envs/metagenomics/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin
@@ -313,34 +313,15 @@ export CONDA_PYTHON_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.0
 ++++ GSETTINGS_SCHEMA_DIR_CONDA_BACKUP=
 ++++ export GSETTINGS_SCHEMA_DIR=/users/k24087895/.conda/envs/metagenomics/share/glib-2.0/schemas
 ++++ GSETTINGS_SCHEMA_DIR=/users/k24087895/.conda/envs/metagenomics/share/glib-2.0/schemas
-+++ . /users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/libxml2_activate.sh
-++++ test -n ''
-++++ xml_catalog_files_libxml2=
-++++ XML_CATALOG_FILES=
-++++ conda_catalog_files=
-++++ ifs_libxml2=' 	
-'
-++++ IFS=' '
-++++ rem=/users/k24087895/.conda/envs/metagenomics
-++++ for pre in ${rem}
-++++ test '' = /users/k24087895/.conda/envs/metagenomics
-++++ conda_catalog_files=/users/k24087895/.conda/envs/metagenomics
-++++ rem=
-++++ IFS=' 	
-'
-++++ conda_catalog_files='file:///users/k24087895/.conda/envs/metagenomics/etc/xml/catalog file:///etc/xml/catalog'
-++++ export 'XML_CATALOG_FILES=file:///users/k24087895/.conda/envs/metagenomics/etc/xml/catalog file:///etc/xml/catalog'
-++++ XML_CATALOG_FILES='file:///users/k24087895/.conda/envs/metagenomics/etc/xml/catalog file:///etc/xml/catalog'
-++++ unset conda_catalog_files ifs_libxml2 rem
 +++ . /users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/openjdk_activate.sh
 ++++ '[' x ']'
-++++ export JAVA_HOME_CONDA_BACKUP=
-++++ JAVA_HOME_CONDA_BACKUP=
+++++ export JAVA_HOME_CONDA_BACKUP=/users/k24087895/.conda/envs/metagenomics/lib/jvm
+++++ JAVA_HOME_CONDA_BACKUP=/users/k24087895/.conda/envs/metagenomics/lib/jvm
 ++++ export JAVA_HOME=/users/k24087895/.conda/envs/metagenomics/lib/jvm
 ++++ JAVA_HOME=/users/k24087895/.conda/envs/metagenomics/lib/jvm
 ++++ '[' x ']'
-++++ export JAVA_LD_LIBRARY_PATH_BACKUP=
-++++ JAVA_LD_LIBRARY_PATH_BACKUP=
+++++ export JAVA_LD_LIBRARY_PATH_BACKUP=/users/k24087895/.conda/envs/metagenomics/lib/jvm/lib/server
+++++ JAVA_LD_LIBRARY_PATH_BACKUP=/users/k24087895/.conda/envs/metagenomics/lib/jvm/lib/server
 ++++ export JAVA_LD_LIBRARY_PATH=/users/k24087895/.conda/envs/metagenomics/lib/jvm/lib/server
 ++++ JAVA_LD_LIBRARY_PATH=/users/k24087895/.conda/envs/metagenomics/lib/jvm/lib/server
 ++ __conda_hashr
@@ -371,12 +352,12 @@ export CONDA_PYTHON_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.0
 + UNCLASSIFIED_DIR=../zymobiomics_folder/processed_data/metagenomic/unclassified
 + BRACKEN_DIR=../zymobiomics_folder/processed_data/metagenomic/bracken
 ++ date +run_%d%m_%H%M
-+ RUN_DIR=../zymobiomics_folder/results/runs/run_2604_0040
-+ REPORTS_DIR=../zymobiomics_folder/results/runs/run_2604_0040/reports
-+ KRONA_DIR=../zymobiomics_folder/results/runs/run_2604_0040/krona
-+ DIVERSITY_DIR=../zymobiomics_folder/results/runs/run_2604_0040/diversity
-+ LOG_DIR=../zymobiomics_folder/results/runs/run_2604_0040/logs
-+ mkdir -p ../zymobiomics_folder/results ../zymobiomics_folder/results/host_dna_analysis ../zymobiomics_folder/results/fastqc/pre_trimming ../zymobiomics_folder/results/fastqc/post_trimming ../zymobiomics_folder/processed_data/trimmed/paired ../zymobiomics_folder/processed_data/trimmed/unpaired ../zymobiomics_folder/processed_data/human/aligned_sam ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq ../zymobiomics_folder/processed_data/metagenomic/kraken2 ../zymobiomics_folder/processed_data/metagenomic/classified ../zymobiomics_folder/processed_data/metagenomic/unclassified ../zymobiomics_folder/processed_data/metagenomic/bracken ../zymobiomics_folder/results/runs/run_2604_0040/reports ../zymobiomics_folder/results/runs/run_2604_0040/krona ../zymobiomics_folder/results/runs/run_2604_0040/diversity ../zymobiomics_folder/results/runs/run_2604_0040/logs ../zymobiomics_folder/processed_data/human/sorted_bam ../zymobiomics_folder/processed_data/human/bed_files
++ RUN_DIR=../zymobiomics_folder/results/runs/run_3004_1556
++ REPORTS_DIR=../zymobiomics_folder/results/runs/run_3004_1556/reports
++ KRONA_DIR=../zymobiomics_folder/results/runs/run_3004_1556/krona
++ DIVERSITY_DIR=../zymobiomics_folder/results/runs/run_3004_1556/diversity
++ LOG_DIR=../zymobiomics_folder/results/runs/run_3004_1556/logs
++ mkdir -p ../zymobiomics_folder/results ../zymobiomics_folder/results/host_dna_analysis ../zymobiomics_folder/results/fastqc/pre_trimming ../zymobiomics_folder/results/fastqc/post_trimming ../zymobiomics_folder/processed_data/trimmed/paired ../zymobiomics_folder/processed_data/trimmed/unpaired ../zymobiomics_folder/processed_data/human/aligned_sam ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq ../zymobiomics_folder/processed_data/metagenomic/kraken2 ../zymobiomics_folder/processed_data/metagenomic/classified ../zymobiomics_folder/processed_data/metagenomic/unclassified ../zymobiomics_folder/processed_data/metagenomic/bracken ../zymobiomics_folder/results/runs/run_3004_1556/reports ../zymobiomics_folder/results/runs/run_3004_1556/krona ../zymobiomics_folder/results/runs/run_3004_1556/diversity ../zymobiomics_folder/results/runs/run_3004_1556/logs ../zymobiomics_folder/processed_data/human/sorted_bam ../zymobiomics_folder/processed_data/human/bed_files
 + tree -L 3 -d ../zymobiomics_folder
 + echo 'Human DNA-related files (SAM, BAM, and BED) in the '\''human'\'' directory are created once per sub-project and remain unchanged across runs.'
 + echo 'Intermediate metagenomic files in the '\''metagenomic'\'' directory are overwritten with each run and should be inspected beforehand if desired.'
@@ -668,140 +649,231 @@ Approx 95% complete for ZP3_S22_L001_R2_001.fastq.gz
 + echo -e '\n================================================= METAGENOMIC ABUNDANCE ESTIMATION ================================================='
 + echo '⚠️ This step assumes reads have already been trimmed with Trimmomatic and host DNA removed with Bowtie2. Processed reads must be in the correct directory.'
 ++ date +%s
-+ START_TIME=1745624613
++ START_TIME=1746025103
 + for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz
 ++ basename ../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R1_paired.fastq.gz _R1_paired.fastq.gz
 + base=ZC1_S4
 + echo -e '\nProcessing sample: ZC1_S4'
-+ [[ false == true ]]
++ [[ true == true ]]
++ echo -e '\nRemoving human reads with Bowtie2...'
++ BOWTIE_CMD='bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	-1 "../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R2_paired.fastq.gz" 	--un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZC1_S4_human.sam" 2>&1'
++ echo 'bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	-1 "../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R2_paired.fastq.gz" 	--un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZC1_S4_human.sam" 2>&1'
++ eval bowtie2 -x '"../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as"' -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant -1 '"../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R1_paired.fastq.gz"' -2 '"../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R2_paired.fastq.gz"' --un-conc '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic"' -S '"../zymobiomics_folder/processed_data/human/aligned_sam/ZC1_S4_human.sam"' '2>&1'
+++ bowtie2 -x ../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant -1 ../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R1_paired.fastq.gz -2 ../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R2_paired.fastq.gz --un-conc ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic -S ../zymobiomics_folder/processed_data/human/aligned_sam/ZC1_S4_human.sam
++ for i in 1 2
++ gzip -f ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.1
++ for i in 1 2
++ gzip -f ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.2
++ echo '✅ Host reads removed and filtered reads compressed.'
 + echo -e '\nClassifying metagenomic reads with Kraken2...'
-+ KRAKEN_CMD='kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC1_S4.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZC1_S4_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC1_S4_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC1_S4.kraken2" --use-names 2>&1'
-+ echo 'kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC1_S4.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZC1_S4_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC1_S4_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC1_S4.kraken2" --use-names 2>&1'
-+ eval kraken2 --db '"../data/databases/k2_standard_16gb_20241228"' --threads 8 --report '"../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC1_S4.k2report"' --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out '"../zymobiomics_folder/processed_data/metagenomic/classified/ZC1_S4_classified#.fastq"' --unclassified-out '"../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC1_S4_unclassified#.fastq"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.1.gz"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.2.gz"' --output '"../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC1_S4.kraken2"' --use-names '2>&1'
-++ kraken2 --db ../data/databases/k2_standard_16gb_20241228 --threads 8 --report ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC1_S4.k2report --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out ../zymobiomics_folder/processed_data/metagenomic/classified/ZC1_S4_classified#.fastq --unclassified-out ../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC1_S4_unclassified#.fastq ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.1.gz ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.2.gz --output ../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC1_S4.kraken2 --use-names
++ KRAKEN_CMD='kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC1_S4.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZC1_S4_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC1_S4_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC1_S4.kraken2" --use-names 2>&1'
++ echo 'kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC1_S4.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZC1_S4_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC1_S4_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC1_S4.kraken2" --use-names 2>&1'
++ eval kraken2 --db '"../data/databases/k2_standard_16gb_20241228"' --threads 8 --report '"../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC1_S4.k2report"' --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out '"../zymobiomics_folder/processed_data/metagenomic/classified/ZC1_S4_classified#.fastq"' --unclassified-out '"../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC1_S4_unclassified#.fastq"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.1.gz"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.2.gz"' --output '"../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC1_S4.kraken2"' --use-names '2>&1'
+++ kraken2 --db ../data/databases/k2_standard_16gb_20241228 --threads 8 --report ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC1_S4.k2report --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out ../zymobiomics_folder/processed_data/metagenomic/classified/ZC1_S4_classified#.fastq --unclassified-out ../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC1_S4_unclassified#.fastq ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.1.gz ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.2.gz --output ../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC1_S4.kraken2 --use-names
 + echo '✅ Classification complete.'
 + echo -e '\nEstimating species abundance with Bracken...'
-+ bracken -d ../data/databases/k2_standard_16gb_20241228 -i ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC1_S4.k2report -l S -r 100 -t 10 -w ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC1_S4.breport -o ../zymobiomics_folder/processed_data/metagenomic/bracken/ZC1_S4.bracken
++ bracken -d ../data/databases/k2_standard_16gb_20241228 -i ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC1_S4.k2report -l S -r 100 -t 10 -w ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC1_S4.breport -o ../zymobiomics_folder/processed_data/metagenomic/bracken/ZC1_S4.bracken
 + echo '✅ Abundance estimated.'
 + echo -e '\nGenerating Krona visualization...'
-+ python ../tools/KrakenTools/kreport2krona.py -r ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC1_S4.breport -o ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZC1_S4.krona.txt --no-intermediate-ranks
-+ ../tools/Krona/KronaTools/scripts/ImportText.pl ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZC1_S4.krona.txt -o ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZC1_S4.krona.html
-+ rm ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZC1_S4.krona.txt
++ python ../tools/KrakenTools/kreport2krona.py -r ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC1_S4.breport -o ../zymobiomics_folder/results/runs/run_3004_1556/krona/ZC1_S4.krona.txt --no-intermediate-ranks
++ ../tools/Krona/KronaTools/scripts/ImportText.pl ../zymobiomics_folder/results/runs/run_3004_1556/krona/ZC1_S4.krona.txt -o ../zymobiomics_folder/results/runs/run_3004_1556/krona/ZC1_S4.krona.html
++ rm ../zymobiomics_folder/results/runs/run_3004_1556/krona/ZC1_S4.krona.txt
 + echo '✅ Krona plot generated.'
 + for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz
 ++ basename ../zymobiomics_folder/processed_data/trimmed/paired/ZC2_S5_R1_paired.fastq.gz _R1_paired.fastq.gz
 + base=ZC2_S5
 + echo -e '\nProcessing sample: ZC2_S5'
-+ [[ false == true ]]
++ [[ true == true ]]
++ echo -e '\nRemoving human reads with Bowtie2...'
++ BOWTIE_CMD='bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	-1 "../zymobiomics_folder/processed_data/trimmed/paired/ZC2_S5_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZC2_S5_R2_paired.fastq.gz" 	--un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZC2_S5_human.sam" 2>&1'
++ echo 'bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	-1 "../zymobiomics_folder/processed_data/trimmed/paired/ZC2_S5_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZC2_S5_R2_paired.fastq.gz" 	--un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZC2_S5_human.sam" 2>&1'
++ eval bowtie2 -x '"../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as"' -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant -1 '"../zymobiomics_folder/processed_data/trimmed/paired/ZC2_S5_R1_paired.fastq.gz"' -2 '"../zymobiomics_folder/processed_data/trimmed/paired/ZC2_S5_R2_paired.fastq.gz"' --un-conc '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic"' -S '"../zymobiomics_folder/processed_data/human/aligned_sam/ZC2_S5_human.sam"' '2>&1'
+++ bowtie2 -x ../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant -1 ../zymobiomics_folder/processed_data/trimmed/paired/ZC2_S5_R1_paired.fastq.gz -2 ../zymobiomics_folder/processed_data/trimmed/paired/ZC2_S5_R2_paired.fastq.gz --un-conc ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic -S ../zymobiomics_folder/processed_data/human/aligned_sam/ZC2_S5_human.sam
++ for i in 1 2
++ gzip -f ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic.1
++ for i in 1 2
++ gzip -f ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic.2
++ echo '✅ Host reads removed and filtered reads compressed.'
 + echo -e '\nClassifying metagenomic reads with Kraken2...'
-+ KRAKEN_CMD='kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC2_S5.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZC2_S5_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC2_S5_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC2_S5.kraken2" --use-names 2>&1'
-+ echo 'kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC2_S5.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZC2_S5_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC2_S5_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC2_S5.kraken2" --use-names 2>&1'
-+ eval kraken2 --db '"../data/databases/k2_standard_16gb_20241228"' --threads 8 --report '"../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC2_S5.k2report"' --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out '"../zymobiomics_folder/processed_data/metagenomic/classified/ZC2_S5_classified#.fastq"' --unclassified-out '"../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC2_S5_unclassified#.fastq"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic.1.gz"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic.2.gz"' --output '"../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC2_S5.kraken2"' --use-names '2>&1'
-++ kraken2 --db ../data/databases/k2_standard_16gb_20241228 --threads 8 --report ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC2_S5.k2report --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out ../zymobiomics_folder/processed_data/metagenomic/classified/ZC2_S5_classified#.fastq --unclassified-out ../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC2_S5_unclassified#.fastq ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic.1.gz ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic.2.gz --output ../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC2_S5.kraken2 --use-names
++ KRAKEN_CMD='kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC2_S5.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZC2_S5_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC2_S5_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC2_S5.kraken2" --use-names 2>&1'
++ echo 'kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC2_S5.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZC2_S5_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC2_S5_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC2_S5.kraken2" --use-names 2>&1'
++ eval kraken2 --db '"../data/databases/k2_standard_16gb_20241228"' --threads 8 --report '"../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC2_S5.k2report"' --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out '"../zymobiomics_folder/processed_data/metagenomic/classified/ZC2_S5_classified#.fastq"' --unclassified-out '"../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC2_S5_unclassified#.fastq"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic.1.gz"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic.2.gz"' --output '"../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC2_S5.kraken2"' --use-names '2>&1'
+++ kraken2 --db ../data/databases/k2_standard_16gb_20241228 --threads 8 --report ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC2_S5.k2report --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out ../zymobiomics_folder/processed_data/metagenomic/classified/ZC2_S5_classified#.fastq --unclassified-out ../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC2_S5_unclassified#.fastq ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic.1.gz ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic.2.gz --output ../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC2_S5.kraken2 --use-names
 + echo '✅ Classification complete.'
 + echo -e '\nEstimating species abundance with Bracken...'
-+ bracken -d ../data/databases/k2_standard_16gb_20241228 -i ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC2_S5.k2report -l S -r 100 -t 10 -w ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC2_S5.breport -o ../zymobiomics_folder/processed_data/metagenomic/bracken/ZC2_S5.bracken
++ bracken -d ../data/databases/k2_standard_16gb_20241228 -i ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC2_S5.k2report -l S -r 100 -t 10 -w ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC2_S5.breport -o ../zymobiomics_folder/processed_data/metagenomic/bracken/ZC2_S5.bracken
 + echo '✅ Abundance estimated.'
 + echo -e '\nGenerating Krona visualization...'
-+ python ../tools/KrakenTools/kreport2krona.py -r ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC2_S5.breport -o ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZC2_S5.krona.txt --no-intermediate-ranks
-+ ../tools/Krona/KronaTools/scripts/ImportText.pl ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZC2_S5.krona.txt -o ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZC2_S5.krona.html
-+ rm ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZC2_S5.krona.txt
++ python ../tools/KrakenTools/kreport2krona.py -r ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC2_S5.breport -o ../zymobiomics_folder/results/runs/run_3004_1556/krona/ZC2_S5.krona.txt --no-intermediate-ranks
++ ../tools/Krona/KronaTools/scripts/ImportText.pl ../zymobiomics_folder/results/runs/run_3004_1556/krona/ZC2_S5.krona.txt -o ../zymobiomics_folder/results/runs/run_3004_1556/krona/ZC2_S5.krona.html
++ rm ../zymobiomics_folder/results/runs/run_3004_1556/krona/ZC2_S5.krona.txt
 + echo '✅ Krona plot generated.'
 + for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz
 ++ basename ../zymobiomics_folder/processed_data/trimmed/paired/ZC3_S6_R1_paired.fastq.gz _R1_paired.fastq.gz
 + base=ZC3_S6
 + echo -e '\nProcessing sample: ZC3_S6'
-+ [[ false == true ]]
++ [[ true == true ]]
++ echo -e '\nRemoving human reads with Bowtie2...'
++ BOWTIE_CMD='bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	-1 "../zymobiomics_folder/processed_data/trimmed/paired/ZC3_S6_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZC3_S6_R2_paired.fastq.gz" 	--un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZC3_S6_human.sam" 2>&1'
++ echo 'bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	-1 "../zymobiomics_folder/processed_data/trimmed/paired/ZC3_S6_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZC3_S6_R2_paired.fastq.gz" 	--un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZC3_S6_human.sam" 2>&1'
++ eval bowtie2 -x '"../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as"' -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant -1 '"../zymobiomics_folder/processed_data/trimmed/paired/ZC3_S6_R1_paired.fastq.gz"' -2 '"../zymobiomics_folder/processed_data/trimmed/paired/ZC3_S6_R2_paired.fastq.gz"' --un-conc '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic"' -S '"../zymobiomics_folder/processed_data/human/aligned_sam/ZC3_S6_human.sam"' '2>&1'
+++ bowtie2 -x ../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant -1 ../zymobiomics_folder/processed_data/trimmed/paired/ZC3_S6_R1_paired.fastq.gz -2 ../zymobiomics_folder/processed_data/trimmed/paired/ZC3_S6_R2_paired.fastq.gz --un-conc ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic -S ../zymobiomics_folder/processed_data/human/aligned_sam/ZC3_S6_human.sam
++ for i in 1 2
++ gzip -f ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic.1
++ for i in 1 2
++ gzip -f ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic.2
++ echo '✅ Host reads removed and filtered reads compressed.'
 + echo -e '\nClassifying metagenomic reads with Kraken2...'
-+ KRAKEN_CMD='kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC3_S6.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZC3_S6_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC3_S6_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC3_S6.kraken2" --use-names 2>&1'
-+ echo 'kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC3_S6.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZC3_S6_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC3_S6_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC3_S6.kraken2" --use-names 2>&1'
-+ eval kraken2 --db '"../data/databases/k2_standard_16gb_20241228"' --threads 8 --report '"../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC3_S6.k2report"' --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out '"../zymobiomics_folder/processed_data/metagenomic/classified/ZC3_S6_classified#.fastq"' --unclassified-out '"../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC3_S6_unclassified#.fastq"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic.1.gz"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic.2.gz"' --output '"../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC3_S6.kraken2"' --use-names '2>&1'
-++ kraken2 --db ../data/databases/k2_standard_16gb_20241228 --threads 8 --report ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC3_S6.k2report --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out ../zymobiomics_folder/processed_data/metagenomic/classified/ZC3_S6_classified#.fastq --unclassified-out ../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC3_S6_unclassified#.fastq ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic.1.gz ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic.2.gz --output ../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC3_S6.kraken2 --use-names
++ KRAKEN_CMD='kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC3_S6.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZC3_S6_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC3_S6_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC3_S6.kraken2" --use-names 2>&1'
++ echo 'kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC3_S6.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZC3_S6_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC3_S6_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC3_S6.kraken2" --use-names 2>&1'
++ eval kraken2 --db '"../data/databases/k2_standard_16gb_20241228"' --threads 8 --report '"../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC3_S6.k2report"' --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out '"../zymobiomics_folder/processed_data/metagenomic/classified/ZC3_S6_classified#.fastq"' --unclassified-out '"../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC3_S6_unclassified#.fastq"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic.1.gz"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic.2.gz"' --output '"../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC3_S6.kraken2"' --use-names '2>&1'
+++ kraken2 --db ../data/databases/k2_standard_16gb_20241228 --threads 8 --report ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC3_S6.k2report --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out ../zymobiomics_folder/processed_data/metagenomic/classified/ZC3_S6_classified#.fastq --unclassified-out ../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC3_S6_unclassified#.fastq ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic.1.gz ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic.2.gz --output ../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC3_S6.kraken2 --use-names
 + echo '✅ Classification complete.'
 + echo -e '\nEstimating species abundance with Bracken...'
-+ bracken -d ../data/databases/k2_standard_16gb_20241228 -i ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC3_S6.k2report -l S -r 100 -t 10 -w ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC3_S6.breport -o ../zymobiomics_folder/processed_data/metagenomic/bracken/ZC3_S6.bracken
++ bracken -d ../data/databases/k2_standard_16gb_20241228 -i ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC3_S6.k2report -l S -r 100 -t 10 -w ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC3_S6.breport -o ../zymobiomics_folder/processed_data/metagenomic/bracken/ZC3_S6.bracken
 + echo '✅ Abundance estimated.'
 + echo -e '\nGenerating Krona visualization...'
-+ python ../tools/KrakenTools/kreport2krona.py -r ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC3_S6.breport -o ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZC3_S6.krona.txt --no-intermediate-ranks
-+ ../tools/Krona/KronaTools/scripts/ImportText.pl ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZC3_S6.krona.txt -o ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZC3_S6.krona.html
-+ rm ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZC3_S6.krona.txt
++ python ../tools/KrakenTools/kreport2krona.py -r ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC3_S6.breport -o ../zymobiomics_folder/results/runs/run_3004_1556/krona/ZC3_S6.krona.txt --no-intermediate-ranks
++ ../tools/Krona/KronaTools/scripts/ImportText.pl ../zymobiomics_folder/results/runs/run_3004_1556/krona/ZC3_S6.krona.txt -o ../zymobiomics_folder/results/runs/run_3004_1556/krona/ZC3_S6.krona.html
++ rm ../zymobiomics_folder/results/runs/run_3004_1556/krona/ZC3_S6.krona.txt
 + echo '✅ Krona plot generated.'
 + for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz
 ++ basename ../zymobiomics_folder/processed_data/trimmed/paired/ZC4_S7_R1_paired.fastq.gz _R1_paired.fastq.gz
 + base=ZC4_S7
 + echo -e '\nProcessing sample: ZC4_S7'
-+ [[ false == true ]]
++ [[ true == true ]]
++ echo -e '\nRemoving human reads with Bowtie2...'
++ BOWTIE_CMD='bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	-1 "../zymobiomics_folder/processed_data/trimmed/paired/ZC4_S7_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZC4_S7_R2_paired.fastq.gz" 	--un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZC4_S7_human.sam" 2>&1'
++ echo 'bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	-1 "../zymobiomics_folder/processed_data/trimmed/paired/ZC4_S7_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZC4_S7_R2_paired.fastq.gz" 	--un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZC4_S7_human.sam" 2>&1'
++ eval bowtie2 -x '"../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as"' -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant -1 '"../zymobiomics_folder/processed_data/trimmed/paired/ZC4_S7_R1_paired.fastq.gz"' -2 '"../zymobiomics_folder/processed_data/trimmed/paired/ZC4_S7_R2_paired.fastq.gz"' --un-conc '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic"' -S '"../zymobiomics_folder/processed_data/human/aligned_sam/ZC4_S7_human.sam"' '2>&1'
+++ bowtie2 -x ../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant -1 ../zymobiomics_folder/processed_data/trimmed/paired/ZC4_S7_R1_paired.fastq.gz -2 ../zymobiomics_folder/processed_data/trimmed/paired/ZC4_S7_R2_paired.fastq.gz --un-conc ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic -S ../zymobiomics_folder/processed_data/human/aligned_sam/ZC4_S7_human.sam
++ for i in 1 2
++ gzip -f ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic.1
++ for i in 1 2
++ gzip -f ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic.2
++ echo '✅ Host reads removed and filtered reads compressed.'
 + echo -e '\nClassifying metagenomic reads with Kraken2...'
-+ KRAKEN_CMD='kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC4_S7.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZC4_S7_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC4_S7_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC4_S7.kraken2" --use-names 2>&1'
-+ echo 'kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC4_S7.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZC4_S7_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC4_S7_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC4_S7.kraken2" --use-names 2>&1'
-+ eval kraken2 --db '"../data/databases/k2_standard_16gb_20241228"' --threads 8 --report '"../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC4_S7.k2report"' --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out '"../zymobiomics_folder/processed_data/metagenomic/classified/ZC4_S7_classified#.fastq"' --unclassified-out '"../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC4_S7_unclassified#.fastq"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic.1.gz"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic.2.gz"' --output '"../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC4_S7.kraken2"' --use-names '2>&1'
-++ kraken2 --db ../data/databases/k2_standard_16gb_20241228 --threads 8 --report ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC4_S7.k2report --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out ../zymobiomics_folder/processed_data/metagenomic/classified/ZC4_S7_classified#.fastq --unclassified-out ../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC4_S7_unclassified#.fastq ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic.1.gz ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic.2.gz --output ../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC4_S7.kraken2 --use-names
++ KRAKEN_CMD='kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC4_S7.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZC4_S7_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC4_S7_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC4_S7.kraken2" --use-names 2>&1'
++ echo 'kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC4_S7.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZC4_S7_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC4_S7_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC4_S7.kraken2" --use-names 2>&1'
++ eval kraken2 --db '"../data/databases/k2_standard_16gb_20241228"' --threads 8 --report '"../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC4_S7.k2report"' --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out '"../zymobiomics_folder/processed_data/metagenomic/classified/ZC4_S7_classified#.fastq"' --unclassified-out '"../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC4_S7_unclassified#.fastq"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic.1.gz"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic.2.gz"' --output '"../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC4_S7.kraken2"' --use-names '2>&1'
+++ kraken2 --db ../data/databases/k2_standard_16gb_20241228 --threads 8 --report ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC4_S7.k2report --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out ../zymobiomics_folder/processed_data/metagenomic/classified/ZC4_S7_classified#.fastq --unclassified-out ../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC4_S7_unclassified#.fastq ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic.1.gz ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic.2.gz --output ../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC4_S7.kraken2 --use-names
 + echo '✅ Classification complete.'
 + echo -e '\nEstimating species abundance with Bracken...'
-+ bracken -d ../data/databases/k2_standard_16gb_20241228 -i ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC4_S7.k2report -l S -r 100 -t 10 -w ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC4_S7.breport -o ../zymobiomics_folder/processed_data/metagenomic/bracken/ZC4_S7.bracken
++ bracken -d ../data/databases/k2_standard_16gb_20241228 -i ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC4_S7.k2report -l S -r 100 -t 10 -w ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC4_S7.breport -o ../zymobiomics_folder/processed_data/metagenomic/bracken/ZC4_S7.bracken
 + echo '✅ Abundance estimated.'
 + echo -e '\nGenerating Krona visualization...'
-+ python ../tools/KrakenTools/kreport2krona.py -r ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC4_S7.breport -o ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZC4_S7.krona.txt --no-intermediate-ranks
-+ ../tools/Krona/KronaTools/scripts/ImportText.pl ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZC4_S7.krona.txt -o ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZC4_S7.krona.html
-+ rm ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZC4_S7.krona.txt
++ python ../tools/KrakenTools/kreport2krona.py -r ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZC4_S7.breport -o ../zymobiomics_folder/results/runs/run_3004_1556/krona/ZC4_S7.krona.txt --no-intermediate-ranks
++ ../tools/Krona/KronaTools/scripts/ImportText.pl ../zymobiomics_folder/results/runs/run_3004_1556/krona/ZC4_S7.krona.txt -o ../zymobiomics_folder/results/runs/run_3004_1556/krona/ZC4_S7.krona.html
++ rm ../zymobiomics_folder/results/runs/run_3004_1556/krona/ZC4_S7.krona.txt
 + echo '✅ Krona plot generated.'
 + for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz
 ++ basename ../zymobiomics_folder/processed_data/trimmed/paired/ZP1_S20_R1_paired.fastq.gz _R1_paired.fastq.gz
 + base=ZP1_S20
 + echo -e '\nProcessing sample: ZP1_S20'
-+ [[ false == true ]]
++ [[ true == true ]]
++ echo -e '\nRemoving human reads with Bowtie2...'
++ BOWTIE_CMD='bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	-1 "../zymobiomics_folder/processed_data/trimmed/paired/ZP1_S20_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZP1_S20_R2_paired.fastq.gz" 	--un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZP1_S20_human.sam" 2>&1'
++ echo 'bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	-1 "../zymobiomics_folder/processed_data/trimmed/paired/ZP1_S20_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZP1_S20_R2_paired.fastq.gz" 	--un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZP1_S20_human.sam" 2>&1'
++ eval bowtie2 -x '"../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as"' -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant -1 '"../zymobiomics_folder/processed_data/trimmed/paired/ZP1_S20_R1_paired.fastq.gz"' -2 '"../zymobiomics_folder/processed_data/trimmed/paired/ZP1_S20_R2_paired.fastq.gz"' --un-conc '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic"' -S '"../zymobiomics_folder/processed_data/human/aligned_sam/ZP1_S20_human.sam"' '2>&1'
+++ bowtie2 -x ../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant -1 ../zymobiomics_folder/processed_data/trimmed/paired/ZP1_S20_R1_paired.fastq.gz -2 ../zymobiomics_folder/processed_data/trimmed/paired/ZP1_S20_R2_paired.fastq.gz --un-conc ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic -S ../zymobiomics_folder/processed_data/human/aligned_sam/ZP1_S20_human.sam
++ for i in 1 2
++ gzip -f ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic.1
++ for i in 1 2
++ gzip -f ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic.2
++ echo '✅ Host reads removed and filtered reads compressed.'
 + echo -e '\nClassifying metagenomic reads with Kraken2...'
-+ KRAKEN_CMD='kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_2604_0040/reports/ZP1_S20.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZP1_S20_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP1_S20_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP1_S20.kraken2" --use-names 2>&1'
-+ echo 'kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_2604_0040/reports/ZP1_S20.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZP1_S20_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP1_S20_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP1_S20.kraken2" --use-names 2>&1'
-+ eval kraken2 --db '"../data/databases/k2_standard_16gb_20241228"' --threads 8 --report '"../zymobiomics_folder/results/runs/run_2604_0040/reports/ZP1_S20.k2report"' --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out '"../zymobiomics_folder/processed_data/metagenomic/classified/ZP1_S20_classified#.fastq"' --unclassified-out '"../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP1_S20_unclassified#.fastq"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic.1.gz"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic.2.gz"' --output '"../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP1_S20.kraken2"' --use-names '2>&1'
-++ kraken2 --db ../data/databases/k2_standard_16gb_20241228 --threads 8 --report ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZP1_S20.k2report --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out ../zymobiomics_folder/processed_data/metagenomic/classified/ZP1_S20_classified#.fastq --unclassified-out ../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP1_S20_unclassified#.fastq ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic.1.gz ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic.2.gz --output ../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP1_S20.kraken2 --use-names
++ KRAKEN_CMD='kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_3004_1556/reports/ZP1_S20.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZP1_S20_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP1_S20_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP1_S20.kraken2" --use-names 2>&1'
++ echo 'kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_3004_1556/reports/ZP1_S20.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZP1_S20_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP1_S20_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP1_S20.kraken2" --use-names 2>&1'
++ eval kraken2 --db '"../data/databases/k2_standard_16gb_20241228"' --threads 8 --report '"../zymobiomics_folder/results/runs/run_3004_1556/reports/ZP1_S20.k2report"' --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out '"../zymobiomics_folder/processed_data/metagenomic/classified/ZP1_S20_classified#.fastq"' --unclassified-out '"../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP1_S20_unclassified#.fastq"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic.1.gz"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic.2.gz"' --output '"../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP1_S20.kraken2"' --use-names '2>&1'
+++ kraken2 --db ../data/databases/k2_standard_16gb_20241228 --threads 8 --report ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZP1_S20.k2report --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out ../zymobiomics_folder/processed_data/metagenomic/classified/ZP1_S20_classified#.fastq --unclassified-out ../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP1_S20_unclassified#.fastq ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic.1.gz ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic.2.gz --output ../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP1_S20.kraken2 --use-names
 + echo '✅ Classification complete.'
 + echo -e '\nEstimating species abundance with Bracken...'
-+ bracken -d ../data/databases/k2_standard_16gb_20241228 -i ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZP1_S20.k2report -l S -r 100 -t 10 -w ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZP1_S20.breport -o ../zymobiomics_folder/processed_data/metagenomic/bracken/ZP1_S20.bracken
++ bracken -d ../data/databases/k2_standard_16gb_20241228 -i ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZP1_S20.k2report -l S -r 100 -t 10 -w ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZP1_S20.breport -o ../zymobiomics_folder/processed_data/metagenomic/bracken/ZP1_S20.bracken
 + echo '✅ Abundance estimated.'
 + echo -e '\nGenerating Krona visualization...'
-+ python ../tools/KrakenTools/kreport2krona.py -r ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZP1_S20.breport -o ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZP1_S20.krona.txt --no-intermediate-ranks
-+ ../tools/Krona/KronaTools/scripts/ImportText.pl ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZP1_S20.krona.txt -o ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZP1_S20.krona.html
-+ rm ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZP1_S20.krona.txt
-+ echo '✅ Krona plot generated.'
++ python ../tools/KrakenTools/kreport2krona.py -r ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZP1_S20.breport -o ../zymobiomics_folder/results/runs/run_3004_1556/krona/ZP1_S20.krona.txt --no-intermediate-ranks
+Traceback (most recent call last):
+  File "/cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/scripts/../tools/KrakenTools/kreport2krona.py", line 282, in <module>
+    main()
+  File "/cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/scripts/../tools/KrakenTools/kreport2krona.py", line 278, in main
+    kreport2krona_main(args.r_file,args.o_file) 
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/scripts/../tools/KrakenTools/kreport2krona.py", line 177, in kreport2krona_main
+    r_file = open(report_file, 'r')
+             ^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '../zymobiomics_folder/results/runs/run_3004_1556/reports/ZP1_S20.breport'
 + for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz
 ++ basename ../zymobiomics_folder/processed_data/trimmed/paired/ZP2_S21_R1_paired.fastq.gz _R1_paired.fastq.gz
 + base=ZP2_S21
 + echo -e '\nProcessing sample: ZP2_S21'
-+ [[ false == true ]]
++ [[ true == true ]]
++ echo -e '\nRemoving human reads with Bowtie2...'
++ BOWTIE_CMD='bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	-1 "../zymobiomics_folder/processed_data/trimmed/paired/ZP2_S21_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZP2_S21_R2_paired.fastq.gz" 	--un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZP2_S21_human.sam" 2>&1'
++ echo 'bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	-1 "../zymobiomics_folder/processed_data/trimmed/paired/ZP2_S21_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZP2_S21_R2_paired.fastq.gz" 	--un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZP2_S21_human.sam" 2>&1'
++ eval bowtie2 -x '"../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as"' -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant -1 '"../zymobiomics_folder/processed_data/trimmed/paired/ZP2_S21_R1_paired.fastq.gz"' -2 '"../zymobiomics_folder/processed_data/trimmed/paired/ZP2_S21_R2_paired.fastq.gz"' --un-conc '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic"' -S '"../zymobiomics_folder/processed_data/human/aligned_sam/ZP2_S21_human.sam"' '2>&1'
+++ bowtie2 -x ../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant -1 ../zymobiomics_folder/processed_data/trimmed/paired/ZP2_S21_R1_paired.fastq.gz -2 ../zymobiomics_folder/processed_data/trimmed/paired/ZP2_S21_R2_paired.fastq.gz --un-conc ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic -S ../zymobiomics_folder/processed_data/human/aligned_sam/ZP2_S21_human.sam
++ for i in 1 2
++ gzip -f ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic.1
++ for i in 1 2
++ gzip -f ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic.2
++ echo '✅ Host reads removed and filtered reads compressed.'
 + echo -e '\nClassifying metagenomic reads with Kraken2...'
-+ KRAKEN_CMD='kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_2604_0040/reports/ZP2_S21.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZP2_S21_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP2_S21_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP2_S21.kraken2" --use-names 2>&1'
-+ echo 'kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_2604_0040/reports/ZP2_S21.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZP2_S21_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP2_S21_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP2_S21.kraken2" --use-names 2>&1'
-+ eval kraken2 --db '"../data/databases/k2_standard_16gb_20241228"' --threads 8 --report '"../zymobiomics_folder/results/runs/run_2604_0040/reports/ZP2_S21.k2report"' --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out '"../zymobiomics_folder/processed_data/metagenomic/classified/ZP2_S21_classified#.fastq"' --unclassified-out '"../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP2_S21_unclassified#.fastq"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic.1.gz"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic.2.gz"' --output '"../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP2_S21.kraken2"' --use-names '2>&1'
-++ kraken2 --db ../data/databases/k2_standard_16gb_20241228 --threads 8 --report ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZP2_S21.k2report --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out ../zymobiomics_folder/processed_data/metagenomic/classified/ZP2_S21_classified#.fastq --unclassified-out ../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP2_S21_unclassified#.fastq ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic.1.gz ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic.2.gz --output ../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP2_S21.kraken2 --use-names
++ KRAKEN_CMD='kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_3004_1556/reports/ZP2_S21.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZP2_S21_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP2_S21_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP2_S21.kraken2" --use-names 2>&1'
++ echo 'kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_3004_1556/reports/ZP2_S21.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZP2_S21_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP2_S21_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP2_S21.kraken2" --use-names 2>&1'
++ eval kraken2 --db '"../data/databases/k2_standard_16gb_20241228"' --threads 8 --report '"../zymobiomics_folder/results/runs/run_3004_1556/reports/ZP2_S21.k2report"' --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out '"../zymobiomics_folder/processed_data/metagenomic/classified/ZP2_S21_classified#.fastq"' --unclassified-out '"../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP2_S21_unclassified#.fastq"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic.1.gz"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic.2.gz"' --output '"../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP2_S21.kraken2"' --use-names '2>&1'
+++ kraken2 --db ../data/databases/k2_standard_16gb_20241228 --threads 8 --report ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZP2_S21.k2report --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out ../zymobiomics_folder/processed_data/metagenomic/classified/ZP2_S21_classified#.fastq --unclassified-out ../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP2_S21_unclassified#.fastq ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic.1.gz ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic.2.gz --output ../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP2_S21.kraken2 --use-names
 + echo '✅ Classification complete.'
 + echo -e '\nEstimating species abundance with Bracken...'
-+ bracken -d ../data/databases/k2_standard_16gb_20241228 -i ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZP2_S21.k2report -l S -r 100 -t 10 -w ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZP2_S21.breport -o ../zymobiomics_folder/processed_data/metagenomic/bracken/ZP2_S21.bracken
++ bracken -d ../data/databases/k2_standard_16gb_20241228 -i ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZP2_S21.k2report -l S -r 100 -t 10 -w ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZP2_S21.breport -o ../zymobiomics_folder/processed_data/metagenomic/bracken/ZP2_S21.bracken
 + echo '✅ Abundance estimated.'
 + echo -e '\nGenerating Krona visualization...'
-+ python ../tools/KrakenTools/kreport2krona.py -r ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZP2_S21.breport -o ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZP2_S21.krona.txt --no-intermediate-ranks
-+ ../tools/Krona/KronaTools/scripts/ImportText.pl ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZP2_S21.krona.txt -o ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZP2_S21.krona.html
-+ rm ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZP2_S21.krona.txt
-+ echo '✅ Krona plot generated.'
++ python ../tools/KrakenTools/kreport2krona.py -r ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZP2_S21.breport -o ../zymobiomics_folder/results/runs/run_3004_1556/krona/ZP2_S21.krona.txt --no-intermediate-ranks
+Traceback (most recent call last):
+  File "/cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/scripts/../tools/KrakenTools/kreport2krona.py", line 282, in <module>
+    main()
+  File "/cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/scripts/../tools/KrakenTools/kreport2krona.py", line 278, in main
+    kreport2krona_main(args.r_file,args.o_file) 
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/scripts/../tools/KrakenTools/kreport2krona.py", line 177, in kreport2krona_main
+    r_file = open(report_file, 'r')
+             ^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '../zymobiomics_folder/results/runs/run_3004_1556/reports/ZP2_S21.breport'
 + for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz
 ++ basename ../zymobiomics_folder/processed_data/trimmed/paired/ZP3_S22_R1_paired.fastq.gz _R1_paired.fastq.gz
 + base=ZP3_S22
 + echo -e '\nProcessing sample: ZP3_S22'
-+ [[ false == true ]]
++ [[ true == true ]]
++ echo -e '\nRemoving human reads with Bowtie2...'
++ BOWTIE_CMD='bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	-1 "../zymobiomics_folder/processed_data/trimmed/paired/ZP3_S22_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZP3_S22_R2_paired.fastq.gz" 	--un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZP3_S22_human.sam" 2>&1'
++ echo 'bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	-1 "../zymobiomics_folder/processed_data/trimmed/paired/ZP3_S22_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZP3_S22_R2_paired.fastq.gz" 	--un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZP3_S22_human.sam" 2>&1'
++ eval bowtie2 -x '"../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as"' -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant -1 '"../zymobiomics_folder/processed_data/trimmed/paired/ZP3_S22_R1_paired.fastq.gz"' -2 '"../zymobiomics_folder/processed_data/trimmed/paired/ZP3_S22_R2_paired.fastq.gz"' --un-conc '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic"' -S '"../zymobiomics_folder/processed_data/human/aligned_sam/ZP3_S22_human.sam"' '2>&1'
+++ bowtie2 -x ../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant -1 ../zymobiomics_folder/processed_data/trimmed/paired/ZP3_S22_R1_paired.fastq.gz -2 ../zymobiomics_folder/processed_data/trimmed/paired/ZP3_S22_R2_paired.fastq.gz --un-conc ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic -S ../zymobiomics_folder/processed_data/human/aligned_sam/ZP3_S22_human.sam
++ for i in 1 2
++ gzip -f ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic.1
++ for i in 1 2
++ gzip -f ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic.2
++ echo '✅ Host reads removed and filtered reads compressed.'
 + echo -e '\nClassifying metagenomic reads with Kraken2...'
-+ KRAKEN_CMD='kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_2604_0040/reports/ZP3_S22.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZP3_S22_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP3_S22_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP3_S22.kraken2" --use-names 2>&1'
-+ echo 'kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_2604_0040/reports/ZP3_S22.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZP3_S22_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP3_S22_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP3_S22.kraken2" --use-names 2>&1'
-+ eval kraken2 --db '"../data/databases/k2_standard_16gb_20241228"' --threads 8 --report '"../zymobiomics_folder/results/runs/run_2604_0040/reports/ZP3_S22.k2report"' --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out '"../zymobiomics_folder/processed_data/metagenomic/classified/ZP3_S22_classified#.fastq"' --unclassified-out '"../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP3_S22_unclassified#.fastq"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic.1.gz"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic.2.gz"' --output '"../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP3_S22.kraken2"' --use-names '2>&1'
-++ kraken2 --db ../data/databases/k2_standard_16gb_20241228 --threads 8 --report ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZP3_S22.k2report --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out ../zymobiomics_folder/processed_data/metagenomic/classified/ZP3_S22_classified#.fastq --unclassified-out ../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP3_S22_unclassified#.fastq ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic.1.gz ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic.2.gz --output ../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP3_S22.kraken2 --use-names
++ KRAKEN_CMD='kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_3004_1556/reports/ZP3_S22.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZP3_S22_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP3_S22_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP3_S22.kraken2" --use-names 2>&1'
++ echo 'kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../zymobiomics_folder/results/runs/run_3004_1556/reports/ZP3_S22.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZP3_S22_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP3_S22_unclassified#.fastq"                "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic.1.gz" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic.2.gz"                --output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP3_S22.kraken2" --use-names 2>&1'
++ eval kraken2 --db '"../data/databases/k2_standard_16gb_20241228"' --threads 8 --report '"../zymobiomics_folder/results/runs/run_3004_1556/reports/ZP3_S22.k2report"' --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out '"../zymobiomics_folder/processed_data/metagenomic/classified/ZP3_S22_classified#.fastq"' --unclassified-out '"../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP3_S22_unclassified#.fastq"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic.1.gz"' '"../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic.2.gz"' --output '"../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP3_S22.kraken2"' --use-names '2>&1'
+++ kraken2 --db ../data/databases/k2_standard_16gb_20241228 --threads 8 --report ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZP3_S22.k2report --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed --classified-out ../zymobiomics_folder/processed_data/metagenomic/classified/ZP3_S22_classified#.fastq --unclassified-out ../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP3_S22_unclassified#.fastq ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic.1.gz ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic.2.gz --output ../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP3_S22.kraken2 --use-names
 + echo '✅ Classification complete.'
 + echo -e '\nEstimating species abundance with Bracken...'
-+ bracken -d ../data/databases/k2_standard_16gb_20241228 -i ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZP3_S22.k2report -l S -r 100 -t 10 -w ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZP3_S22.breport -o ../zymobiomics_folder/processed_data/metagenomic/bracken/ZP3_S22.bracken
++ bracken -d ../data/databases/k2_standard_16gb_20241228 -i ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZP3_S22.k2report -l S -r 100 -t 10 -w ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZP3_S22.breport -o ../zymobiomics_folder/processed_data/metagenomic/bracken/ZP3_S22.bracken
 + echo '✅ Abundance estimated.'
 + echo -e '\nGenerating Krona visualization...'
-+ python ../tools/KrakenTools/kreport2krona.py -r ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZP3_S22.breport -o ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZP3_S22.krona.txt --no-intermediate-ranks
-+ ../tools/Krona/KronaTools/scripts/ImportText.pl ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZP3_S22.krona.txt -o ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZP3_S22.krona.html
-+ rm ../zymobiomics_folder/results/runs/run_2604_0040/krona/ZP3_S22.krona.txt
-+ echo '✅ Krona plot generated.'
++ python ../tools/KrakenTools/kreport2krona.py -r ../zymobiomics_folder/results/runs/run_3004_1556/reports/ZP3_S22.breport -o ../zymobiomics_folder/results/runs/run_3004_1556/krona/ZP3_S22.krona.txt --no-intermediate-ranks
+Traceback (most recent call last):
+  File "/cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/scripts/../tools/KrakenTools/kreport2krona.py", line 282, in <module>
+    main()
+  File "/cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/scripts/../tools/KrakenTools/kreport2krona.py", line 278, in main
+    kreport2krona_main(args.r_file,args.o_file) 
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/scripts/../tools/KrakenTools/kreport2krona.py", line 177, in kreport2krona_main
+    r_file = open(report_file, 'r')
+             ^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '../zymobiomics_folder/results/runs/run_3004_1556/reports/ZP3_S22.breport'
 + for gz_file in "$FILTERED_FASTQ_DIR"/*.gz
 ++ basename ../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.1.gz .gz
 + base_name=ZC1_S4_metagenomic.1
@@ -904,12 +976,12 @@ Approx 95% complete for ZP3_S22_L001_R2_001.fastq.gz
 + ../scripts/helper_scripts/get_fastq_stats.sh ../zymobiomics_folder/processed_data/metagenomic/classified
 + ../scripts/helper_scripts/get_fastq_stats.sh ../zymobiomics_folder/processed_data/metagenomic/unclassified
 ++ date +%s
-+ END_TIME=1745624808
-+ DURATION=195
-+ printf -v FORMATTED_DURATION %02d:%02d:%02d 0 3 15
-+ echo -e '\nMetagenomic classification completed in: 00:03:15'
++ END_TIME=1746025321
++ DURATION=218
++ printf -v FORMATTED_DURATION %02d:%02d:%02d 0 3 38
++ echo -e '\nMetagenomic classification completed in: 00:03:38'
 + echo -e '\n================================================= COMPARISON TO GROUND TRUTH ================================================='
 + echo -e '\nCombining Bracken reports...'
-+ Rscript ../scripts/helper_scripts/combine_breports.R ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC1_S4.breport ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC2_S5.breport ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC3_S6.breport ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZC4_S7.breport ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZP1_S20.breport ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZP2_S21.breport ../zymobiomics_folder/results/runs/run_2604_0040/reports/ZP3_S22.breport
++ Rscript ../scripts/helper_scripts/combine_breports.R '../zymobiomics_folder/results/runs/run_3004_1556/reports/*.breport'
 Error in library(tidyverse) : there is no package called ‘tidyverse’
 Execution halted
