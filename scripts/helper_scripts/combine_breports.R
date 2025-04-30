@@ -1,4 +1,9 @@
 # Load necessary library
+# Check if the package is installed
+if (!requireNamespace("tidyverse", quietly = TRUE)) {
+  # Install the package if not already installed
+  install.packages("tidyverse")
+}
 library(tidyverse)
 
 # Parse command-line arguments
