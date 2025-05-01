@@ -1,0 +1,243 @@
+  9.79	2707	2707	0	0	U	0	unclassified
+ 90.21	24942	4018	1054267	582231	R	1	root
+ 75.32	20826	90	791625	439009	R1	131567	  cellular organisms
+ 52.88	14621	105	510490	275946	D	2759	    Eukaryota
+ 48.63	13445	7	472527	253895	D1	33154	      Opisthokonta
+ 45.93	12698	1	445785	235969	K	33208	        Metazoa
+ 45.92	12696	0	445770	235969	K1	6072	          Eumetazoa
+ 45.90	12691	26	445728	235720	K2	33213	            Bilateria
+ 45.22	12504	1	442585	233896	K3	33511	              Deuterostomia
+ 45.21	12500	1	442461	233896	P	7711	                Chordata
+ 45.21	12499	0	442444	233896	P1	89593	                  Craniata
+ 45.21	12499	1	442444	233896	P2	7742	                    Vertebrata
+ 45.19	12494	0	442399	233896	P3	7776	                      Gnathostomata
+ 45.18	12492	0	442328	233755	P4	117570	                        Teleostomi
+ 45.18	12492	8	442328	233755	P5	117571	                          Euteleostomi
+ 44.91	12417	0	441638	233702	P6	8287	                            Sarcopterygii
+ 44.91	12417	1	441629	233702	P7	1338369	                              Dipnotetrapodomorpha
+ 44.90	12415	3	441620	233702	P8	32523	                                Tetrapoda
+ 44.87	12407	12	441483	233501	P9	32524	                                  Amniota
+ 44.72	12365	0	440342	233073	C	40674	                                    Mammalia
+ 44.72	12364	1	440301	233073	C1	32525	                                      Theria
+ 44.71	12361	3	440144	233012	C2	9347	                                        Eutheria
+ 44.69	12356	31	439365	232269	C3	1437010	                                          Boreoeutheria
+ 44.32	12253	24	432814	228324	C4	314146	                                            Euarchontoglires
+ 44.08	12188	4	430790	227396	O	9443	                                              Primates
+ 44.06	12181	2	430481	227396	O1	376913	                                                Haplorrhini
+ 44.05	12179	47	430440	227396	O2	314293	                                                  Simiiformes
+ 43.83	12119	96	426811	226296	O3	9526	                                                    Catarrhini
+ 43.27	11965	52	411161	217851	O4	314295	                                                      Hominoidea
+ 43.05	11903	133	406164	215201	F	9604	                                                        Hominidae
+ 42.46	11740	824	393716	210045	F1	207598	                                                          Homininae
+ 38.95	10770	0	344798	182987	G	9605	                                                            Homo
+ 38.95	10770	10770	344798	182987	S	9606	                                                              Homo sapiens
+  0.49	136	3	1167	562	G	9596	                                                            Pan
+  0.46	127	127	1023	489	S	9598	                                                              Pan troglodytes
+  0.02	6	6	54	27	S	9597	                                                              Pan paniscus
+  0.04	10	0	130	67	G	9592	                                                            Gorilla
+  0.04	10	4	130	67	S	9593	                                                              Gorilla gorilla
+  0.02	6	6	85	46	S1	9595	                                                                Gorilla gorilla gorilla
+  0.11	30	0	275	150	F1	607660	                                                          Ponginae
+  0.11	30	2	275	150	G	9599	                                                            Pongo
+  0.09	25	25	238	128	S	9601	                                                              Pongo abelii
+  0.01	3	3	24	13	S	9600	                                                              Pongo pygmaeus
+  0.04	10	2	150	86	F	9577	                                                        Hylobatidae
+  0.02	5	0	36	21	G	325165	                                                          Nomascus
+  0.02	5	5	36	21	S	61853	                                                            Nomascus leucogenys
+  0.01	3	0	86	47	G	325166	                                                          Symphalangus
+  0.01	3	3	86	47	S	9590	                                                            Symphalangus syndactylus
+  0.21	58	0	435	245	O4	314294	                                                      Cercopithecoidea
+  0.21	58	4	435	245	F	9527	                                                        Cercopithecidae
+  0.18	51	7	393	222	F1	9528	                                                          Cercopithecinae
+  0.13	37	5	292	163	G	9539	                                                            Macaca
+  0.08	23	23	185	103	S	9544	                                                              Macaca mulatta
+  0.03	7	7	67	36	S	9541	                                                              Macaca fascicularis
+  0.01	2	0	14	9	S	54602	                                                              Macaca thibetana
+  0.01	2	2	14	9	S1	257877	                                                                Macaca thibetana thibetana
+  0.01	4	0	41	22	G	392815	                                                            Chlorocebus
+  0.01	3	3	34	18	S	9534	                                                              Chlorocebus aethiops
+  0.00	1	1	7	4	S	60711	                                                              Chlorocebus sabaeus
+  0.01	2	0	12	9	G	9554	                                                            Papio
+  0.01	2	2	11	8	S	9555	                                                              Papio anubis
+  0.00	1	0	6	6	G	9529	                                                            Cercocebus
+  0.00	1	1	6	6	S	9531	                                                              Cercocebus atys
+  0.01	3	1	11	7	F1	9569	                                                          Colobinae
+  0.00	1	0	2	2	G	542827	                                                            Rhinopithecus
+  0.00	1	1	1	1	S	61621	                                                              Rhinopithecus bieti
+  0.00	1	0	4	2	G	591932	                                                            Piliocolobus
+  0.00	1	1	4	2	S	591936	                                                              Piliocolobus tephrosceles
+  0.05	13	0	100	56	O3	9479	                                                    Platyrrhini
+  0.04	11	0	84	48	F	9498	                                                      Cebidae
+  0.03	8	0	59	35	F1	9480	                                                        Callitrichinae
+  0.03	8	0	59	35	G	9481	                                                          Callithrix
+  0.03	8	0	59	35	G1	1965096	                                                            Callithrix
+  0.03	8	8	59	35	S	9483	                                                              Callithrix jacchus
+  0.01	3	0	16	7	F1	378850	                                                        Saimiriinae
+  0.01	3	0	16	7	G	9520	                                                          Saimiri
+  0.01	3	0	16	7	S	27679	                                                            Saimiri boliviensis
+  0.01	3	3	16	7	S1	39432	                                                              Saimiri boliviensis boliviensis
+  0.01	2	0	10	5	F	376918	                                                      Aotidae
+  0.01	2	0	10	5	G	9504	                                                        Aotus
+  0.01	2	2	10	5	S	37293	                                                          Aotus nancymaae
+  0.01	3	0	13	8	O1	376911	                                                Strepsirrhini
+  0.01	2	1	6	4	O2	376915	                                                  Lemuriformes
+  0.00	1	0	2	1	F	30615	                                                    Cheirogaleidae
+  0.00	1	0	2	1	G	13149	                                                      Microcebus
+  0.00	1	1	2	1	S	30608	                                                        Microcebus murinus
+  0.00	1	0	7	4	O2	376917	                                                  Lorisiformes
+  0.00	1	0	5	3	F	9461	                                                    Lorisidae
+  0.00	1	0	5	3	G	9469	                                                      Nycticebus
+  0.00	1	1	5	3	S	9470	                                                        Nycticebus coucang
+  0.15	41	0	227	138	C5	314147	                                              Glires
+  0.14	39	2	220	133	O	9989	                                                Rodentia
+  0.10	29	0	171	100	O1	1963758	                                                  Myomorpha
+  0.10	29	0	169	99	O2	337687	                                                    Muroidea
+  0.10	27	0	148	86	F	10066	                                                      Muridae
+  0.10	27	0	146	85	F1	39107	                                                        Murinae
+  0.09	25	0	130	74	G	10088	                                                          Mus
+  0.09	25	0	128	73	G1	862507	                                                            Mus
+  0.09	25	25	128	73	S	10090	                                                              Mus musculus
+  0.01	2	0	14	10	G	10114	                                                          Rattus
+  0.01	2	2	14	10	S	10116	                                                            Rattus norvegicus
+  0.01	2	0	17	11	F	337677	                                                      Cricetidae
+  0.00	1	0	6	4	F1	10026	                                                        Cricetinae
+  0.00	1	0	1	1	G	10028	                                                          Cricetulus
+  0.00	1	1	1	1	S	10029	                                                            Cricetulus griseus
+  0.00	1	0	7	4	F1	337963	                                                        Neotominae
+  0.00	1	0	7	4	G	10040	                                                          Peromyscus
+  0.00	1	0	7	4	S	42520	                                                            Peromyscus californicus
+  0.00	1	1	7	4	S1	564181	                                                              Peromyscus californicus insignis
+  0.01	4	0	18	11	O1	33553	                                                  Sciuromorpha
+  0.01	4	0	18	11	F	55153	                                                    Sciuridae
+  0.01	3	0	15	9	F1	337726	                                                      Xerinae
+  0.01	3	0	15	9	F2	337730	                                                        Marmotini
+  0.01	2	2	9	5	G	9992	                                                          Marmota
+  0.00	1	0	5	3	G	1141640	                                                          Ictidomys
+  0.00	1	1	5	3	S	43179	                                                            Ictidomys tridecemlineatus
+  0.00	1	0	3	2	F1	9991	                                                      Sciurinae
+  0.00	1	0	3	2	F2	337752	                                                        Sciurini
+  0.00	1	0	3	2	G	10001	                                                          Sciurus
+  0.00	1	1	3	2	S	30640	                                                            Sciurus carolinensis
+  0.01	3	0	12	10	O1	33550	                                                  Hystricomorpha
+  0.01	2	0	6	5	F	10167	                                                    Bathyergidae
+  0.00	1	0	2	1	G	10180	                                                      Heterocephalus
+  0.00	1	1	2	1	S	10181	                                                        Heterocephalus glaber
+  0.00	1	0	4	4	G	423606	                                                      Fukomys
+  0.00	1	1	4	4	S	885580	                                                        Fukomys damarensis
+  0.00	1	0	5	4	F	10139	                                                    Caviidae
+  0.00	1	0	5	4	G	10140	                                                      Cavia
+  0.00	1	1	5	4	S	10141	                                                        Cavia porcellus
+  0.00	1	0	7	3	O1	1963757	                                                  Castorimorpha
+  0.00	1	0	7	3	F	10015	                                                    Heteromyidae
+  0.00	1	0	3	2	F1	38662	                                                      Dipodomyinae
+  0.00	1	1	3	2	G	10016	                                                        Dipodomys
+  0.01	2	0	7	5	O	9975	                                                Lagomorpha
+  0.01	2	0	6	4	F	9979	                                                  Leporidae
+  0.00	1	0	2	1	G	9980	                                                    Lepus
+  0.00	1	1	2	1	S	9983	                                                      Lepus europaeus
+  0.00	1	0	4	3	G	9984	                                                    Oryctolagus
+  0.00	1	1	4	3	S	9986	                                                      Oryctolagus cuniculus
+  0.26	72	6	706	403	C4	314145	                                            Laurasiatheria
+  0.10	29	0	190	101	O	9787	                                              Perissodactyla
+  0.10	29	0	190	101	F	9788	                                                Equidae
+  0.10	29	1	190	101	G	9789	                                                  Equus
+  0.10	28	28	179	94	S	9796	                                                    Equus caballus
+  0.06	16	1	156	99	O	91561	                                              Artiodactyla
+  0.03	7	0	81	57	O1	9845	                                                Ruminantia
+  0.03	7	1	81	57	O2	35500	                                                  Pecora
+  0.02	6	1	75	52	F	9895	                                                    Bovidae
+  0.01	3	0	6	4	F1	9963	                                                      Caprinae
+  0.01	3	0	6	4	G	9935	                                                        Ovis
+  0.01	2	2	2	2	S	37174	                                                          Ovis canadensis
+  0.00	1	1	4	2	S	9940	                                                          Ovis aries
+  0.01	2	0	61	43	F1	27592	                                                      Bovinae
+  0.01	2	1	43	26	G	9903	                                                        Bos
+  0.00	1	1	8	4	S	9913	                                                          Bos taurus
+  0.05	13	0	259	144	O	33554	                                              Carnivora
+  0.03	9	0	230	126	O1	379584	                                                Caniformia
+  0.02	6	0	198	108	F	9608	                                                  Canidae
+  0.02	6	2	134	74	G	9611	                                                    Canis
+  0.01	4	2	95	54	S	9612	                                                      Canis lupus
+  0.01	2	0	6	3	D1	2611341	      Metamonada
+  0.33	92	9	3574	2022	D	10239	  Viruses
+  0.26	71	0	2646	1463	D1	2731341	    Duplodnaviria
+  0.26	71	0	2646	1463	K	2731360	      Heunggongvirae
+  0.25	69	0	2642	1462	P	2731618	        Uroviricota
+  0.25	69	5	2642	1462	C	2731619	          Caudoviricetes
+  0.19	53	2	1884	1095	C1	2788787	            unclassified Caudoviricetes
+  0.17	48	48	1549	919	S	2832643	              Caudoviricetes sp.
+  0.00	1	1	2	1	S	2694064	              Marine virus AFVG_250M849
+  0.00	1	1	4	2	S	2827571	              Siphoviridae sp. ctNNQ1
+  0.00	1	1	2	1	S	3128134	              Leptolyngbya phage Lbo-JY16
+  0.03	9	4	122	44	G	1982251	            Pahexavirus
+  0.01	3	0	30	10	G1	2079398	              unclassified Pahexavirus
+  0.00	1	1	8	4	S	2079403	                Propionibacterium phage pa29399-1-D_2
+  0.00	1	1	11	2	S	2041558	                Propionibacterium phage Aquarius
+  0.00	1	1	3	2	S	2686216	                Cutibacterium phage P104B
+  0.01	2	2	24	6	S	1982270	              Pahexavirus pacnes201215
+  0.01	2	1	42	24	F	2842327	            Rountreeviridae
+  0.00	1	0	5	3	F1	2732588	              Rakietenvirinae
+  0.00	1	0	5	3	G	2732589	                Andhravirus
+  0.00	1	1	5	3	G1	2759400	                  unclassified Andhravirus
+  0.01	2	0	4	1	P	2731361	        Peploviricota
+  0.01	2	0	4	1	C	2731363	          Herviviricetes
+  0.01	2	0	4	1	O	548681	            Herpesvirales
+  0.01	2	0	4	1	F	3044472	              Orthoherpesviridae
+  0.01	2	0	4	1	F1	10357	                Betaherpesvirinae
+  0.01	2	0	4	1	G	10358	                  Cytomegalovirus
+  0.01	2	0	4	1	G1	342596	                    unclassified Cytomegalovirus
+  0.01	2	2	4	1	S	2795229	                      Japanese cytomegalovirus
+  0.02	6	1	274	193	D1	12333	    unclassified bacterial viruses
+  0.01	4	4	246	179	S	38018	      Bacteriophage sp.
+  0.00	1	1	2	1	S	3348355	      Caulobacter phage BL57
+  0.01	3	0	13	9	D1	2559587	    Riboviria
+  0.01	3	0	10	7	K	2732396	      Orthornavirae
+  0.00	1	0	3	2	P	2497569	        Negarnaviricota
+  0.00	1	0	2	1	P1	2497571	          Polyploviricotina
+  0.00	1	0	2	1	C	2497576	            Ellioviricetes
+  0.00	1	0	2	1	O	1980410	              Bunyavirales
+  0.00	1	0	2	1	F	1980419	                Tospoviridae
+  0.00	1	0	2	1	G	2560196	                  Orthotospovirus
+  0.00	1	1	2	1	S	3052585	                    Orthotospovirus tomatomaculae
+  0.00	1	0	3	2	P	2732405	        Duplornaviricota
+  0.00	1	0	2	1	C	2732459	          Resentoviricetes
+  0.00	1	0	2	1	O	2732541	            Reovirales
+  0.00	1	0	2	1	F	2946187	              Spinareoviridae
+  0.00	1	0	2	1	G	10882	                Orthoreovirus
+  0.00	1	1	2	1	S	351073	                  Mammalian orthoreovirus
+  0.00	1	0	3	2	P	2732407	        Lenarviricota
+  0.00	1	0	3	2	C	2842243	          Leviviricetes
+  0.00	1	0	3	2	O	2842247	            Norzivirales
+  0.00	1	0	3	2	F	2842319	              Fiersviridae
+  0.00	1	0	3	2	F1	2852980	                unclassified Fiersviridae
+  0.00	1	1	3	2	S	2027243	                  Leviviridae sp.
+  0.01	2	0	5	3	D1	12429	    unclassified viruses
+  0.01	2	0	4	2	D2	2204151	      unclassified DNA viruses
+  0.01	2	0	4	2	D3	51368	        unclassified dsDNA viruses
+  0.00	1	0	2	1	D4	2023203	          Pithoviruses
+  0.00	1	1	2	1	S	2506600	            Pithovirus LCDPAC01
+  0.00	1	0	2	1	G	2060084	          Pandoravirus
+  0.00	1	1	2	1	S	2823154	            Pandoravirus japonicus
+  0.00	1	0	38	21	D1	2731342	    Monodnaviria
+  0.00	1	0	38	21	K	2732092	      Shotokuvirae
+  0.00	1	0	36	20	P	2732415	        Cossaviricota
+  0.00	1	0	36	20	C	2732421	          Papovaviricetes
+  0.00	1	0	36	20	O	2732533	            Zurhausenvirales
+  0.00	1	0	36	20	F	151340	              Papillomaviridae
+  0.00	1	0	36	20	F1	2169595	                Firstpapillomavirinae
+  0.00	1	0	36	20	G	333750	                  Alphapapillomavirus
+  0.00	1	0	31	17	S	337043	                    Alphapapillomavirus 4
+  0.00	1	1	15	8	S1	333751	                      Human papillomavirus type 2
+  0.02	5	0	10	5	R1	2787854	  other entries
+  0.02	5	0	10	5	R2	28384	    other sequences
+  0.02	5	0	10	5	R3	81077	      artificial sequences
+  0.01	3	0	6	3	R4	111786	        eukaryotic synthetic constructs
+  0.01	3	3	6	3	S	111789	          eukaryotic synthetic construct
+  0.01	2	0	4	2	R4	29278	        vectors
+  0.00	1	1	2	1	S	751903	          Human artificial chromosome vector 21HAC4
+  0.00	1	1	2	1	S	1907831	          Shuttle vector pHY304
+  0.00	1	0	102	70	R1	2787823	  unclassified entries
+  0.00	1	0	102	70	R2	12908	    unclassified sequences
+  0.00	1	0	102	70	R3	151659	      environmental samples
+  0.00	1	0	102	70	R4	81490	        prokaryotic environmental samples
+  0.00	1	1	102	70	S	198431	          uncultured prokaryote
