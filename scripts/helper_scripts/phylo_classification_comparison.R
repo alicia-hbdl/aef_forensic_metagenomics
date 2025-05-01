@@ -3,7 +3,7 @@
 # This script generates a phylogenetic tree and heatmaps to visualize taxonomic differences at species, genus, and phylum levels.
 # The input requires a combined Bracken report and a ground truth species file, both in CSV format.
 
-# Usage: Rscript jaccard_similarity_heatmap.R -r/--reports <path/to/combined_reports.csv> -t/--ground-truth <path/to/ground_truth.csv>
+# Usage: Rscript script.R -r/--reports <path/to/combined_reports.csv> [-t/--ground-truth <path/to/ground_truth.csv>]
 
 # Load necessary libraries
 suppressPackageStartupMessages({
@@ -22,11 +22,12 @@ options(ENTREZ_KEY = "5a8133264ac32a3f11c0f1e666a90d96c908")
 # Parse command-line arguments
 opt <- parse_args(OptionParser(option_list=list(
   make_option(c("-r", "--reports"), type="character"),
-  make_option(c("-t", "--ground-truth"), type="character")
+  make_option(c("-t", "--ground-truth"), type="character", default = NULL)  # make ground-truth optional
 )))
 
-if (is.null(opt$reports) || is.null(opt$`ground-truth`)) {
-  stop("Usage: Rscript script.R -r/--reports <path/to/combined_reports.csv> -t/--ground-truth <path/to/ground_truth.csv>")
+# Check if the reports file is provided
+if (is.null(opt$reports)) {
+  stop("Usage: Rscript script.R -r/--reports <path/to/combined_reports.csv> [-t/--ground-truth <path/to/ground_truth.csv>]")
 }
 
 
@@ -48,7 +49,7 @@ if (file.exists(opt$reports)) {
   stop("❌ Combined reports file not found.")
 }
 
-# Load ground truth species
+# Load ground truth species if it exists, or assign an empty table
 if (file.exists(opt$`ground-truth`)) {
   ground_truth <- read_csv(opt$`ground-truth`, show_col_types = FALSE)
   highlight_species <- ground_truth$species
@@ -64,8 +65,10 @@ if (file.exists(opt$`ground-truth`)) {
     )
   }
 } else {
-  stop("❌ Ground truth file not found.")
+  # If no ground truth file, create an empty data frame with correct column names
+  ground_truth <- tibble(species = character(), abundance = numeric())
 }
+
 # Retrieve taxonomic hierarchy
 tax_ids <- get_uid(read_counts$species)  # Get taxonomic IDs
 taxonomy_data <- classification(tax_ids)  # Fetch taxonomy data
