@@ -1,14 +1,22 @@
-# Load required libraries
-library(tidyverse)  # Data manipulation
-library(ape)        # Phylogenetic tree manipulation
-library(ggtree)     # Tree visualization
-library(taxize)     # Taxonomic data retrieval
-library(treeio)     # Tree data structure
+#!/usr/bin/env Rscript
+
+# This script generates a phylogenetic tree based on BLAST results, highlighting key species.
+
+# Usage: Rscript human_aligned_tree.R <path/to/combined_blast_results.txt>
+
+# Load necessary libraries
+suppressPackageStartupMessages({
+  library(tidyverse)    # for data analysis, manipulation, and visualization (loads dplyr, tidyr, ggplot2, readr, stringr, etc.)
+  library(ape)          # for reading, writing, plotting, and manipulating phylogenetic trees
+  library(taxize)       # to interact with web APIs for taxonomic tasks
+  library(treeio)       # to import and store phylogenetic tree with associated data
+  library(ggtree)       # for visualization and annotation of phylogenetic trees
+})
 
 # Set NCBI API key for taxonomic queries
 options(ENTREZ_KEY = "5a8133264ac32a3f11c0f1e666a90d96c908")
 
-# Parse command-line argument (expects BLAST results file path)
+# Parse command-line arguments
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) != 1) stop("❗ Usage: Rscript human_aligned_tree.R <path/to/combined_blast_results.txt>")
 file_path <- args[1]

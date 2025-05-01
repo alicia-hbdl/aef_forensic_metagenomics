@@ -1,9 +1,16 @@
+#!/usr/bin/env Rscript
+
+# This script generates a karyotype plot showing the frequency (number of samples) each genomic interval appears in.
+# The input must be a BED file containing 'chrom', 'start', 'end', and 'num' columns.
+
 # Usage: Rscript karyotype.R <path/to/common_intersections.bed>
 
-# Load required libraries
-library(tidyverse)       # Data manipulation
-library(karyoploteR)     # Karyotype visualization
-library(GenomicRanges)   # Handling genomic ranges
+# Load necessary libraries
+suppressPackageStartupMessages({
+  library(tidyverse)        # for data analysis, manipulation, and visualization (loads dplyr, tidyr, ggplot2, readr, stringr, etc.)
+  library(karyoploteR)      # to create karyotype plots for genomes
+  library(GenomicRanges)    # for manipulating genomic intervals
+})
 
 # Parse command-line arguments
 args <- commandArgs(trailingOnly = TRUE)
