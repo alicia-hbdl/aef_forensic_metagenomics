@@ -17,11 +17,11 @@ set -x  # Print each command and its arguments as it is executed for debugging
 << 'COMMENT'
 =============================================================================================
 Usage:
-    ./pipeline.sh --raw-fastq/-fq <reads_dir> [--database/-db <database_path>] [-t | --trim] [-r | --remove-host-dna <index_path>]
+    ./pipeline.sh --raw-fastq/-f <reads_dir> [--database/-d <database_path>] [-t | --trim] [-r | --remove-host-dna <index_path>]
 
 Arguments:
-    -fq, --raw-fastq <path>       Path to the directory containing raw FASTQ reads to process.
-    -db, --database <path>        (Optional) Path to the Kraken2/Bracken database used for metagenomic classification.
+    -f, --raw-fastq <path>       Path to the directory containing raw FASTQ reads to process.
+    -d, --database <path>        (Optional) Path to the Kraken2/Bracken database used for metagenomic classification.
     -t, --trim                    (Optional) Enable adapter and quality trimming of reads.
     -r, --remove-host-dna <path>  (Optional) Remove host DNA contamination.
 
@@ -41,7 +41,7 @@ GROUND_TRUTH=true
 while [[ $# -gt 0 ]]; do 
     case "$1" in
     # Process raw FASTQ directory
-        -fq|--raw-fastq) 
+        -f|--raw-fastq) 
             # Validate FASTQ directory and its contents
             if [[ -z "$2" || "$2" == -* || ! -d "$2" || -z "$(find "$2" -maxdepth 1 -type f \( -name "*.fq" -o -name "*.fastq" -o -name "*.fq.gz" -o -name "*.fastq.gz" \) 2>/dev/null)" ]]; then
               echo "❌ Error: Invalid or missing FASTQ directory. Ensure it contains .fq, .fastq, .fq.gz, or .fastq.gz files."
@@ -67,9 +67,9 @@ while [[ $# -gt 0 ]]; do
             ;;
     
         # Process Kraken2/Bracken database directory argument
-        -db|--database) 
+        -d|--database) 
             if [[ -z "$2" || "$2" == -* || ! -d "$2" || ! -f "$2/hash.k2d" || ! -f "$2/taxo.k2d" || ! -f "$2/opts.k2d" || ! -f "$2/*kmer_distrib" ]]; then
-                echo "⚠️ Warning: Invalid or missing database. Using default: $DATABASE"
+                echo "⚠️ Warning:"$2" is an invalid or missing database. Using default: $DATABASE"
             else
                 DATABASE="$2"
                 echo "✅ Database set to: $DATABASE"
@@ -102,7 +102,7 @@ while [[ $# -gt 0 ]]; do
 
       # Handle unknown arguments
       *) 
-          echo "❌ Unknown argument: $1. Usage: $0 --raw-fastq/-fq <reads_dir> [--database/-db <database_path>] [-t | --trim] [-r | --remove-host-dna <index_path>]"
+          echo "❌ Unknown argument: $1. Usage: $0 --raw-fastq/-f <reads_dir> [--database/-d <database_path>] [-t | --trim] [-r | --remove-host-dna <index_path>]"
           exit 1
           ;;    
     esac
@@ -110,7 +110,7 @@ done
 
 # Ensure --raw-fastq is provided
 if [[ -z "$RAW_FASTQ_DIR" ]]; then  
-    echo "❌ Error: --raw-fastq/-fq is required. Usage: $0 --raw-fastq/-fq <reads_dir> [--database/-db <database_path>] [-t | --trim] [-r | --remove-host-dna <index_path>]"
+    echo "❌ Error: --raw-fastq/-f is required. Usage: $0 --raw-fastq/-f <reads_dir> [--database/-d <database_path>] [-t | --trim] [-r | --remove-host-dna <index_path>]"
     exit 1
 fi
 
@@ -223,7 +223,7 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
     # Taxonomic classification with Kraken2
     echo -e "\nClassifying metagenomic reads with Kraken2..."
     
-    KRAKEN_CMD="kraken2 --db \"$DATABASE\" --threads 8 --report \"$REPORTS_DIR/${base}.k2report\" \
+    KRAKEN_CMD="kraken2 --d \"$DATABASE\" --threads 8 --report \"$REPORTS_DIR/${base}.k2report\" \
                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed \
                --classified-out \"$CLASSIFIED_DIR/${base}_classified#.fastq\" --unclassified-out \"$UNCLASSIFIED_DIR/${base}_unclassified#.fastq\" \
                \"$FILTERED_FASTQ_DIR/${base}_metagenomic.1.gz\" \"$FILTERED_FASTQ_DIR/${base}_metagenomic.2.gz\" \
