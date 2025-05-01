@@ -1,10 +1,16 @@
+#!/usr/bin/env Rscript
+
+# This script generates a β-diversity heatmap to visualize the differences in microbial community composition across samples.
+# The input file should be a beta diversity matrix in TSV format. 
+
 # Usage: Rscript b_diversity_heatmap.R <path/to/beta_diversity_matrix.tsv>
 
-# Load required libraries
-library(ggplot2)      # Visualization
-library(reshape2)     # Data transformation (melt function)
-library(viridis)      # Color scale
-library(dplyr)        # Data manipulation
+# Load necessary libraries
+suppressPackageStartupMessages({
+  library(tidyverse)    # for data analysis, manipulation, and visualization (loads dplyr, tidyr, ggplot2, readr, stringr, etc.)
+  library(reshape2)     # to restructure and aggregate data
+  library(viridis)      # for generating the color maps
+})
 
 # Parse command-line arguments
 args <- commandArgs(trailingOnly = TRUE)

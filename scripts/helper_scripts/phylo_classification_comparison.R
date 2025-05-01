@@ -1,28 +1,25 @@
 #!/usr/bin/env Rscript
 
-# Now libraries
+# This script generates a phylogenetic tree and heatmaps to visualize taxonomic differences at species, genus, and phylum levels.
+# The input requires a combined Bracken report and a ground truth species file, both in CSV format.
+
+# Usage: Rscript jaccard_similarity_heatmap.R -r/--reports <path/to/combined_reports.csv> -t/--ground-truth <path/to/ground_truth.csv>
+
+# Load necessary libraries
 suppressPackageStartupMessages({
-  library(optparse)
-  library(scales)
-  library(readr)
-  library(dplyr)
-  library(tidyr)
-  library(stringr)
-  library(ggplot2)
-  library(reshape2)
-  library(tibble)
-  library(taxize)
-  library(ape)
-  library(treeio)
-  library(ggtree)
-  library(pheatmap)
-  library(patchwork)
-  library(ggtext)
+  library(tidyverse)    # for data analysis, manipulation, and visualization (loads dplyr, tidyr, ggplot2, readr, stringr, etc.)
+  library(patchwork)    # for combining multiple plots
+  library(ape)          # for reading, writing, plotting, and manipulating phylogenetic trees
+  library(taxize)       # to interact with web APIs for taxonomic tasks
+  library(ggtree)       # for visualization and annotation of phylogenetic trees
+  library(treeio)       # to import and store phylogenetic tree with associated data
+  library(pheatmap)     # to implement heatmaps with control over dimensions and appearance  library(ggtext)
 })
 
 # Set NCBI API key for taxonomic queries
 options(ENTREZ_KEY = "5a8133264ac32a3f11c0f1e666a90d96c908")
 
+# Parse command-line arguments
 opt <- parse_args(OptionParser(option_list=list(
   make_option(c("-r", "--reports"), type="character"),
   make_option(c("-t", "--ground-truth"), type="character")

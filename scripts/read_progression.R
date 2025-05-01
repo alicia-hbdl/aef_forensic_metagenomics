@@ -1,6 +1,9 @@
-library(tidyverse)
-library(scales)
-library(patchwork)
+# Load necessary libraries
+suppressPackageStartupMessages({
+  library(tidyverse)    # for data analysis, manipulation, and visualization (loads dplyr, tidyr, ggplot2, readr, stringr, etc.)
+  library(scales)       # for ggplot2 aesthetics
+  library(patchwork)    # for combining multiple plots
+})
 
 # -- LOAD AND CLEAN DATA --
 

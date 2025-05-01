@@ -1,11 +1,15 @@
-# Usage: Rscript jaccard_similarity_heatmap.R <path/to/jaccard_results.txt>
+#!/usr/bin/env Rscript
 
-# Load required libraries
-library(ggplot2)      # Visualization
-library(reshape2)     # Data transformation (melt function)
-library(viridis)      # Color scale
-library(stringr)      # String manipulation (mutate function)
-library(dplyr)        # Data manipulation
+# This script generates a Jaccard similarity heatmap from a given Jaccard results file.
+# The input file must be a tab-separated text file with columns: Sample1, Sample2, Jaccard.
+
+# Usage: Rscript jaccard_similarity_heatmap.R <path/to/jaccard_results.txt>
+# Load necessary libraries
+suppressPackageStartupMessages({
+  library(tidyverse)    # for data analysis, manipulation, and visualization (loads dplyr, tidyr, ggplot2, readr, stringr, etc.)
+  library(reshape2)     # to restructure and aggregate data
+  library(viridis)      # for generating the color maps
+})
 
 # Parse command-line arguments
 args <- commandArgs(trailingOnly = TRUE)
