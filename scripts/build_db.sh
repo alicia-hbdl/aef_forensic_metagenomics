@@ -9,8 +9,8 @@
 #SBATCH --partition=cpu
 
 # Default values
-GENOMES=/scratch/users/k24087895/final_project/metagenome_analysis/data/genomes
-DBNAME=/scratch/users/k24087895/final_project/metagenome_analysis/data/databases/custom_notaxid
+GENOMES=/scratch/users/k24087895/final_project/data/genomes
+DBNAME=/scratch/users/k24087895/final_project/data/databases/custom_notaxid
 
 THREADS=8
 KMER_LEN=35
