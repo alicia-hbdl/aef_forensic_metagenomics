@@ -1,14 +1,5 @@
-#!/usr/bin/env Rscript
-
-# Combines multiple Bracken TSV reports into a single CSV, filtering for species-level data.
-
-# Usage: Rscript combine_breports.R <path/to/breports>
-
-# Load necessary libraries
-suppressPackageStartupMessages({
-  library(tidyverse)    # for data analysis, manipulation, and visualization (loads dplyr, tidyr, ggplot2, readr, stringr, etc.)
-})
-  
+# Load necessary library
+library(tidyverse)
 
 # Parse command-line arguments
 args <- commandArgs(trailingOnly = TRUE)
