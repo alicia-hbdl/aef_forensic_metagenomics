@@ -4,7 +4,7 @@
 #SBATCH --output=logs/pipeline_%j.log
 #SBATCH --error=logs/pipeline_%j.err
 #SBATCH --time=02:00:00
-#SBATCH --mem=44G  
+#SBATCH --mem=200G  
 #SBATCH --cpus-per-task=8 
 #SBATCH --ntasks=1  
 #SBATCH --partition=cpu 
@@ -44,7 +44,7 @@ while [[ $# -gt 0 ]]; do
         -f|--raw-fastq) 
             # Validate FASTQ directory and its contents
             if [[ -z "$2" || "$2" == -* || ! -d "$2" || -z "$(find "$2" -maxdepth 1 -type f \( -name "*.fq" -o -name "*.fastq" -o -name "*.fq.gz" -o -name "*.fastq.gz" \) 2>/dev/null)" ]]; then
-              echo "❌ Error: Invalid or missing FASTQ directory. Ensure it contains .fq, .fastq, .fq.gz, or .fastq.gz files."
+              echo "❌ Error: "$2" is an invalid/missing FASTQ directory. Ensure it contains .fq, .fastq, .fq.gz, or .fastq.gz files."
               exit 1
             fi
             
@@ -68,8 +68,8 @@ while [[ $# -gt 0 ]]; do
     
         # Process Kraken2/Bracken database directory argument
         -d|--database) 
-            if [[ -z "$2" || "$2" == -* || ! -d "$2" || ! -f "$2/hash.k2d" || ! -f "$2/taxo.k2d" || ! -f "$2/opts.k2d" || ! -f "$2/*kmer_distrib" ]]; then
-                echo "⚠️ Warning:"$2" is an invalid or missing database. Using default: $DATABASE"
+            if [[ -z "$2" || "$2" == -* || ! -d "$2" || ! -f "$2/hash.k2d" || ! -f "$2/taxo.k2d" || ! -f "$2/opts.k2d" || ! $(ls "$2"/*kmer_distrib 2>/dev/null) ]]; then
+                echo "⚠️ Warning: "$2" is an invalid/missing database. Using default: $DATABASE"
             else
                 DATABASE="$2"
                 echo "✅ Database set to: $DATABASE"
@@ -87,10 +87,10 @@ while [[ $# -gt 0 ]]; do
     # Process host DNA Bowtie2 index prefix
     -r|--remove-host-dna)
         if [[ -z "$2" || "$2" == -* ]]; then
-            echo "⚠️ Warning: No argument provided. Using default: $BOWTIE_PREFIX"
+            echo "⚠️ Warning: No Bowtie2 index provided. Using default: $BOWTIE_PREFIX"
             shift 
         elif [[ ! -f "$2.1.bt2" || ! -f "$2.2.bt2" || ! -f "$2.3.bt2" || ! -f "$2.4.bt2" || ! -f "$2.rev.1.bt2" || ! -f "$2.rev.2.bt2" ]]; then
-            echo "⚠️ Warning: Incomplete or missing Bowtie2 index. Using default: $BOWTIE_PREFIX"
+            echo "⚠️ Warning: "$2" is an incomplete/ missing Bowtie2 index. Using default: $BOWTIE_PREFIX"
             shift 2
         else
             BOWTIE_PREFIX="$2"
