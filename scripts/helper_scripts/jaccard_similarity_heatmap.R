@@ -4,6 +4,7 @@
 # The input file must be a tab-separated text file with columns: Sample1, Sample2, Jaccard.
 
 # Usage: Rscript jaccard_similarity_heatmap.R <path/to/jaccard_results.txt>
+
 # Load necessary libraries
 suppressPackageStartupMessages({
   library(tidyverse)    # for data analysis, manipulation, and visualization (loads dplyr, tidyr, ggplot2, readr, stringr, etc.)
