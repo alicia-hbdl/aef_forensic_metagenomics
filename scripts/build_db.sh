@@ -10,7 +10,7 @@
 
 # Default values
 GENOMES=/scratch/users/k24087895/final_project/data/genomes
-DBNAME=/scratch/users/k24087895/final_project/data/databases/custom_notaxid
+DBNAME=/scratch/users/k24087895/final_project/data/databases/custom_taxid
 
 THREADS=8
 KMER_LEN=35
@@ -97,22 +97,22 @@ declare -A taxids=(
 
 # Tag genome headers with taxIDs
 echo "🧬 Tagging genome headers with taxIDs..."
-#for genome in "$GENOMES"/*.fna; do
- #   base=$(basename "$genome")
-  #  taxid=${taxids["$base"]}
+for genome in "$GENOMES"/*.fna; do
+   base=$(basename "$genome")
+   taxid=${taxids["$base"]}
     
-   # if [ -z "$taxid" ]; then
-    #    echo "⚠️ Warning: No taxid found for $base. Skipping."
-     #   continue
-  #  fi
+    if [ -z "$taxid" ]; then
+        echo "⚠️ Warning: No taxid found for $base. Skipping."
+       continue
+    fi
     
-   # if ! grep -q "kraken:taxid" "$genome"; then
-    #    echo "Tagging $base with taxid $taxid..."
-     #   sed -i -E "s/^(>[^ ]+)/&|kraken:taxid|$taxid/" "$genome"
-   # else
-    #    echo "⚠️ Skipping $base: already tagged."
-   # fi
-#done
+    if ! grep -q "kraken:taxid" "$genome"; then
+       echo "Tagging $base with taxid $taxid..."
+        sed -i -E "s/^(>[^ ]+)/&|kraken:taxid|$taxid/" "$genome"
+    else
+        echo "⚠️ Skipping $base: already tagged."
+    fi
+done
 
 # Add genomes to Kraken2 DB
 echo "📒 Adding genomes to Kraken2 DB..."

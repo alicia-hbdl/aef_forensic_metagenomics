@@ -363,4 +363,191 @@ bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-
 
 Classifying metagenomic reads with Kraken2...
 kraken2 --d "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "../exposure_folder/results/runs/run_0105_1558/reports/D1RP_S9.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../exposure_folder/processed_data/metagenomic/classified/D1RP_S9_classified#.fastq" --unclassified-out "../exposure_folder/processed_data/metagenomic/unclassified/D1RP_S9_unclassified#.fastq"                "../exposure_folder/processed_data/metagenomic/filtered_fastq/D1RP_S9_metagenomic.1.gz" "../exposure_folder/processed_data/metagenomic/filtered_fastq/D1RP_S9_metagenomic.2.gz"                --output "../exposure_folder/processed_data/metagenomic/kraken2/D1RP_S9.kraken2" --use-names 2>&1
-Loading database information...
+Loading database information... done.
+124006 sequences (32.63 Mbp) processed in 0.913s (8149.1 Kseq/m, 2144.36 Mbp/m).
+  45288 sequences classified (36.52%)
+  78718 sequences unclassified (63.48%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../exposure_folder/results/runs/run_0105_1558/reports/D1RP_S9.k2report -o ../exposure_folder/processed_data/metagenomic/bracken/D1RP_S9.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: ../exposure_folder/results/runs/run_0105_1558/reports/D1RP_S9.k2report
+PROGRAM START TIME: 05-01-2025 15:12:29
+BRACKEN SUMMARY (Kraken report: ../exposure_folder/results/runs/run_0105_1558/reports/D1RP_S9.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 1940 
+	  >> Number of species with reads > threshold: 286 
+	  >> Number of species with reads < threshold: 1654 
+    >>> Total reads in sample: 116798
+	  >> Total reads kept at species level (reads > threshold): 28679
+	  >> Total reads discarded (species reads < threshold): 3402
+	  >> Reads distributed: 5174
+	  >> Reads not distributed (eg. no species above threshold): 825
+	  >> Unclassified reads: 78718
+BRACKEN OUTPUT PRODUCED: ../exposure_folder/processed_data/metagenomic/bracken/D1RP_S9.bracken
+PROGRAM END TIME: 05-01-2025 15:12:39
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../exposure_folder/results/runs/run_0105_1558/krona/D1RP_S9.krona.html...
+✅ Krona plot generated.
+
+Processing sample: D1SG_S1
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	-1 "../exposure_folder/processed_data/trimmed/paired/D1SG_S1_R1_paired.fastq.gz" -2 "../exposure_folder/processed_data/trimmed/paired/D1SG_S1_R2_paired.fastq.gz" 	--un-conc "../exposure_folder/processed_data/metagenomic/filtered_fastq/D1SG_S1_metagenomic" -S "../exposure_folder/processed_data/human/aligned_sam/D1SG_S1_human.sam" 2>&1
+157991 reads; of these:
+  157991 (100.00%) were paired; of these:
+    155364 (98.34%) aligned concordantly 0 times
+    2030 (1.28%) aligned concordantly exactly 1 time
+    597 (0.38%) aligned concordantly >1 times
+1.66% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --d "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "../exposure_folder/results/runs/run_0105_1558/reports/D1SG_S1.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../exposure_folder/processed_data/metagenomic/classified/D1SG_S1_classified#.fastq" --unclassified-out "../exposure_folder/processed_data/metagenomic/unclassified/D1SG_S1_unclassified#.fastq"                "../exposure_folder/processed_data/metagenomic/filtered_fastq/D1SG_S1_metagenomic.1.gz" "../exposure_folder/processed_data/metagenomic/filtered_fastq/D1SG_S1_metagenomic.2.gz"                --output "../exposure_folder/processed_data/metagenomic/kraken2/D1SG_S1.kraken2" --use-names 2>&1
+Loading database information... done.
+155364 sequences (39.82 Mbp) processed in 1.131s (8242.1 Kseq/m, 2112.35 Mbp/m).
+  76384 sequences classified (49.16%)
+  78980 sequences unclassified (50.84%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../exposure_folder/results/runs/run_0105_1558/reports/D1SG_S1.k2report -o ../exposure_folder/processed_data/metagenomic/bracken/D1SG_S1.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: ../exposure_folder/results/runs/run_0105_1558/reports/D1SG_S1.k2report
+PROGRAM START TIME: 05-01-2025 15:14:56
+BRACKEN SUMMARY (Kraken report: ../exposure_folder/results/runs/run_0105_1558/reports/D1SG_S1.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 9563 
+	  >> Number of species with reads > threshold: 798 
+	  >> Number of species with reads < threshold: 8765 
+    >>> Total reads in sample: 155346
+	  >> Total reads kept at species level (reads > threshold): 30025
+	  >> Total reads discarded (species reads < threshold): 23683
+	  >> Reads distributed: 20078
+	  >> Reads not distributed (eg. no species above threshold): 2582
+	  >> Unclassified reads: 78980
+BRACKEN OUTPUT PRODUCED: ../exposure_folder/processed_data/metagenomic/bracken/D1SG_S1.bracken
+PROGRAM END TIME: 05-01-2025 15:15:03
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../exposure_folder/results/runs/run_0105_1558/krona/D1SG_S1.krona.html...
+✅ Krona plot generated.
+
+Processing sample: D2RP_S10
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	-1 "../exposure_folder/processed_data/trimmed/paired/D2RP_S10_R1_paired.fastq.gz" -2 "../exposure_folder/processed_data/trimmed/paired/D2RP_S10_R2_paired.fastq.gz" 	--un-conc "../exposure_folder/processed_data/metagenomic/filtered_fastq/D2RP_S10_metagenomic" -S "../exposure_folder/processed_data/human/aligned_sam/D2RP_S10_human.sam" 2>&1
+127020 reads; of these:
+  127020 (100.00%) were paired; of these:
+    122720 (96.61%) aligned concordantly 0 times
+    4108 (3.23%) aligned concordantly exactly 1 time
+    192 (0.15%) aligned concordantly >1 times
+3.39% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --d "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "../exposure_folder/results/runs/run_0105_1558/reports/D2RP_S10.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../exposure_folder/processed_data/metagenomic/classified/D2RP_S10_classified#.fastq" --unclassified-out "../exposure_folder/processed_data/metagenomic/unclassified/D2RP_S10_unclassified#.fastq"                "../exposure_folder/processed_data/metagenomic/filtered_fastq/D2RP_S10_metagenomic.1.gz" "../exposure_folder/processed_data/metagenomic/filtered_fastq/D2RP_S10_metagenomic.2.gz"                --output "../exposure_folder/processed_data/metagenomic/kraken2/D2RP_S10.kraken2" --use-names 2>&1
+Loading database information... done.
+122720 sequences (31.55 Mbp) processed in 1.210s (6083.1 Kseq/m, 1563.71 Mbp/m).
+  107988 sequences classified (88.00%)
+  14732 sequences unclassified (12.00%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../exposure_folder/results/runs/run_0105_1558/reports/D2RP_S10.k2report -o ../exposure_folder/processed_data/metagenomic/bracken/D2RP_S10.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: ../exposure_folder/results/runs/run_0105_1558/reports/D2RP_S10.k2report
+PROGRAM START TIME: 05-01-2025 15:17:15
+BRACKEN SUMMARY (Kraken report: ../exposure_folder/results/runs/run_0105_1558/reports/D2RP_S10.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 314 
+	  >> Number of species with reads > threshold: 39 
+	  >> Number of species with reads < threshold: 275 
+    >>> Total reads in sample: 122718
+	  >> Total reads kept at species level (reads > threshold): 98359
+	  >> Total reads discarded (species reads < threshold): 431
+	  >> Reads distributed: 9085
+	  >> Reads not distributed (eg. no species above threshold): 112
+	  >> Unclassified reads: 14732
+BRACKEN OUTPUT PRODUCED: ../exposure_folder/processed_data/metagenomic/bracken/D2RP_S10.bracken
+PROGRAM END TIME: 05-01-2025 15:17:23
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../exposure_folder/results/runs/run_0105_1558/krona/D2RP_S10.krona.html...
+✅ Krona plot generated.
+
+Processing sample: D2SG_S2
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	-1 "../exposure_folder/processed_data/trimmed/paired/D2SG_S2_R1_paired.fastq.gz" -2 "../exposure_folder/processed_data/trimmed/paired/D2SG_S2_R2_paired.fastq.gz" 	--un-conc "../exposure_folder/processed_data/metagenomic/filtered_fastq/D2SG_S2_metagenomic" -S "../exposure_folder/processed_data/human/aligned_sam/D2SG_S2_human.sam" 2>&1
+32665 reads; of these:
+  32665 (100.00%) were paired; of these:
+    27649 (84.64%) aligned concordantly 0 times
+    3793 (11.61%) aligned concordantly exactly 1 time
+    1223 (3.74%) aligned concordantly >1 times
+15.36% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --d "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "../exposure_folder/results/runs/run_0105_1558/reports/D2SG_S2.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../exposure_folder/processed_data/metagenomic/classified/D2SG_S2_classified#.fastq" --unclassified-out "../exposure_folder/processed_data/metagenomic/unclassified/D2SG_S2_unclassified#.fastq"                "../exposure_folder/processed_data/metagenomic/filtered_fastq/D2SG_S2_metagenomic.1.gz" "../exposure_folder/processed_data/metagenomic/filtered_fastq/D2SG_S2_metagenomic.2.gz"                --output "../exposure_folder/processed_data/metagenomic/kraken2/D2SG_S2.kraken2" --use-names 2>&1
+Loading database information... done.
+27649 sequences (6.00 Mbp) processed in 0.427s (3888.5 Kseq/m, 843.72 Mbp/m).
+  24942 sequences classified (90.21%)
+  2707 sequences unclassified (9.79%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../exposure_folder/results/runs/run_0105_1558/reports/D2SG_S2.k2report -o ../exposure_folder/processed_data/metagenomic/bracken/D2SG_S2.bracken -k /scratch/grp/msc_appbio/recovered/core_nt_database/database100mers.kmer_distrib -l S -t 10
+>> Checking report file: ../exposure_folder/results/runs/run_0105_1558/reports/D2SG_S2.k2report
+PROGRAM START TIME: 05-01-2025 15:19:31
+BRACKEN SUMMARY (Kraken report: ../exposure_folder/results/runs/run_0105_1558/reports/D2SG_S2.k2report)
+    >>> Threshold: 10 
+    >>> Number of species in sample: 59 
+	  >> Number of species with reads > threshold: 8 
+	  >> Number of species with reads < threshold: 51 
+    >>> Total reads in sample: 19414
+	  >> Total reads kept at species level (reads > threshold): 11056
+	  >> Total reads discarded (species reads < threshold): 96
+	  >> Reads distributed: 5537
+	  >> Reads not distributed (eg. no species above threshold): 20
+	  >> Unclassified reads: 2707
+BRACKEN OUTPUT PRODUCED: ../exposure_folder/processed_data/metagenomic/bracken/D2SG_S2.bracken
+PROGRAM END TIME: 05-01-2025 15:19:39
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../exposure_folder/results/runs/run_0105_1558/krona/D2SG_S2.krona.html...
+✅ Krona plot generated.
+
+Processing sample: DE3_S7
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	-1 "../exposure_folder/processed_data/trimmed/paired/DE3_S7_R1_paired.fastq.gz" -2 "../exposure_folder/processed_data/trimmed/paired/DE3_S7_R2_paired.fastq.gz" 	--un-conc "../exposure_folder/processed_data/metagenomic/filtered_fastq/DE3_S7_metagenomic" -S "../exposure_folder/processed_data/human/aligned_sam/DE3_S7_human.sam" 2>&1
+162544 reads; of these:
+  162544 (100.00%) were paired; of these:
+    162543 (100.00%) aligned concordantly 0 times
+    0 (0.00%) aligned concordantly exactly 1 time
+    1 (0.00%) aligned concordantly >1 times
+0.00% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --d "/scratch/grp/msc_appbio/recovered/core_nt_database" --threads 8 --report "../exposure_folder/results/runs/run_0105_1558/reports/DE3_S7.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed                --classified-out "../exposure_folder/processed_data/metagenomic/classified/DE3_S7_classified#.fastq" --unclassified-out "../exposure_folder/processed_data/metagenomic/unclassified/DE3_S7_unclassified#.fastq"                "../exposure_folder/processed_data/metagenomic/filtered_fastq/DE3_S7_metagenomic.1.gz" "../exposure_folder/processed_data/metagenomic/filtered_fastq/DE3_S7_metagenomic.2.gz"                --output "../exposure_folder/processed_data/metagenomic/kraken2/DE3_S7.kraken2" --use-names 2>&1
+Loading database information... done.
+162543 sequences (43.70 Mbp) processed in 1.327s (7347.4 Kseq/m, 1975.52 Mbp/m).
+  161563 sequences classified (99.40%)
+  980 sequences unclassified (0.60%)
