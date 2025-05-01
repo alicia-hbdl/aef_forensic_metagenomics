@@ -1,3 +1,9 @@
+#!/usr/bin/env Rscript
+
+# This script generates two plots to visualize read number and read length progression across pipeline stages from a runs summary CSV.
+
+# Usage: Rscript read_progression.R <path/to/runs_summary.csv># Load necessary libraries
+
 # Load necessary libraries
 suppressPackageStartupMessages({
   library(tidyverse)    # for data analysis, manipulation, and visualization (loads dplyr, tidyr, ggplot2, readr, stringr, etc.)
@@ -7,11 +13,14 @@ suppressPackageStartupMessages({
 
 # -- LOAD AND CLEAN DATA --
 
-# Path to input file
-filepath <- "/Users/aliciahobdell/Desktop/final_project/zymobiomics_folder/results/runs/new_runs_summary.csv"
+# Parse command-line arguments
+args <- commandArgs(trailingOnly = TRUE)
+if (length(args) != 1) stop("Usage: Rscript read_progression.R <path/to/runs_summary.csv>")
+file_path <- args[1]
+if (!file.exists(file_path)) stop("Error: Run summary file not found!")
 
 # Load main data
-runs_summary <- read.csv(filepath, header = TRUE, stringsAsFactors = FALSE)
+runs_summary <- read.csv(file_path, header = TRUE, stringsAsFactors = FALSE)
 
 # -- PLOT 1: READ NUMBER PROGRESSION --
 
