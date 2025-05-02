@@ -25,7 +25,7 @@ GENOMES="/scratch/users/k24087895/final_project/data/genomes"
 DBNAME="/scratch/users/k24087895/final_project/data/databases/k2_custom_$(date +"%Y%m%d")"
 
 # --- ACTIVATE CONDA ENVIRONMENT --- 
-source "$(dirname "$0")/helper_scripts/environment_setup.sh" "$(dirname "$0")/metagenomics.yml" || { echo "❌ Failed to set up Conda environment."; exit 1; }
+source "$(pwd)/helper_scripts/environment_setup.sh" "$(pwd)/metagenomics.yml" || { echo "❌ Failed to set up Conda environment."; exit 1; }
 
 # --- PARSE COMMAND LINE ARGUMENTS ---
 

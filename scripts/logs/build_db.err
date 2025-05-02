@@ -928,3 +928,5 @@ Untarring taxonomy tree data... done.
 + echo 'Downloading human reference library to: /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502'
 + kraken2-build --download-library human --db /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 --threads 8
 Step 1/2: Performing rsync file transfer of requested files
+Rsync file transfer complete.
+Step 2/2: Assigning taxonomic IDs to sequences
