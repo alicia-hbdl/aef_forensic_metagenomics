@@ -100,12 +100,18 @@ else
     blastn -query "$BLAST_QUERY.selected" -db nt -out "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" \
            -evalue 1e-5 -max_target_seqs 15 -outfmt "6 qseqid staxids pident evalue bitscore" -remote || { echo "❌ BLAST failed."; exit 1; }
     echo "✅ BLAST completed."
-
-    # Generate taxonomy tree from BLAST results
-    Rscript "$ROOT_DIR/scripts/helper_scripts/human_aligned_tree.R" "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" || { echo "❌ Error generating taxonomy tree."; exit 1; }
-    echo "✅ Taxonomy tree generated."
+    
+    # Run taxonomy tree only if ≥ 3 unique tax IDs (column 2) exist
+    if [ "$(cut -f2 "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" | sort -u | wc -l)" -ge 3 ]; then
+        # Generate taxonomy tree from BLAST results
+       # Rscript "$ROOT_DIR/scripts/helper_scripts/human_aligned_tree.R" "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" || { echo "❌ Error generating taxonomy tree."; exit 1; }
+        echo "✅ Taxonomy tree generated."
+    else
+        echo "⚠️ Skipping taxonomy tree: fewer than 3 unique tax IDs."
+        echo "Unique tax IDs found:"
+        cut -f2 "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" | sort -u
+    fi
 fi
-
 echo -e "\n=========================================== JACCARD SIMILARITY ==========================================="
   
 if (( ${#SORTED_BEDS[@]} < 2 )); then
