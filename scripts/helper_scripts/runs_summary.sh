@@ -1,14 +1,24 @@
 #!/bin/bash
 
+# This script processes Kraken2 pipeline log files, extracting relevant statistics for each sample, including metadata, quality control, trimming, Bowtie2 alignment, Kraken2 classification, and Bracken abundance estimation, and saves the data into a CSV file for further analysis.
+
+# Usage: ./runs_summary.sh <path/to/runs/directory>
+
 # To Do: 
-# Print QC stats to log file 
-# Get length of kraken classified and unclassified reads 
- # Print bowtie command to log file
+# - Print QC stats to log file
+# - Get length of Kraken classified and unclassified reads
+# - Print Bowtie2 command to log file
 
+# --- Argument Parsing ---
+# Ensure that the `rundir` argument is provided
+if [ -z "$1" ]; then
+  echo "❌ Error: Missing 'rundir' argument. Usage: $0 <path/to/runs/directory>"
+  exit 1
+fi
 
-# Set the root comparison directory and output file path
-RUNS_DIR=$(realpath "../../zymobiomics_folder/results/runs")
-OUTPUT="$RUNS_DIR/new_runs_summary.csv"
+# Set the run directory to the provided argument
+RUNS_DIR=$(realpath "$1")
+OUTPUT="$RUNS_DIR/runs_summary.csv"
 
 # Arrays to store metadata and other variables
 metadata_vars=(run_id db_name runtime)
@@ -31,7 +41,7 @@ if [[ ! -f "$OUTPUT" ]]; then
 fi
 
 # Find all kraken_pipeline.log files
-LOG_FILES=$(find "$RUNS_DIR" -type f -name "kraken_pipeline.log")
+LOG_FILES=$(find "$RUNS_DIR" -type f -name "*.log")
 
 # Process each log file
 for log in $LOG_FILES; do

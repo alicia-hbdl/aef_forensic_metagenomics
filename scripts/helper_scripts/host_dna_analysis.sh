@@ -79,25 +79,24 @@ if [ $(tail -n +2 "$BED_FILES_DIR/common_intervals_filtered.bed" | wc -l) -eq 0 
 else
     # Deduplicate sequences
     awk '
-        NR % 2 == 1 { id = $0; next }
+        NR % 2 == 1 { id = $0; next }  # Skip sequence identifiers
         { seq = $0; pair = id "\n" seq }
-        !seen[pair]++ { print id; print seq }
-    ' "$BLAST_QUERY" > "$BLAST_QUERY.tmp" && mv "$BLAST_QUERY.tmp" "$BLAST_QUERY"
+        !seen[pair]++ { print id; print seq }  # Print unique sequences
+    ' "$BLAST_QUERY" > "$BLAST_QUERY.tmp" && mv "$BLAST_QUERY.tmp" "$BLAST_QUERY" || { echo "❌ Failed to remove duplicates."; exit 1; }
     echo "✅ Duplicate sequences removed."
     
-    # Run BLAST if query size is reasonable
-    if [ $(stat -c%s "$BLAST_QUERY") -lt $((100 * 1024)) ]; then
-        echo "Running BLAST search..."
-        blastn -query "$BLAST_QUERY" -db nt -out "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" \
-               -evalue 1e-5 -max_target_seqs 5 -outfmt "6 qseqid staxids pident evalue bitscore" -remote 
-        echo "✅ BLAST completed."
+    # Shuffle sequences in blocks of 4 lines and select the first 15 sequences (60 lines)
+    awk 'NR%4==1{a=$0} NR%4==2{b=$0} NR%4==3{c=$0} NR%4==0{d=$0; print a; print b; print c; print d}' "$BLAST_QUERY" | \
+    shuf | head -n 60 > "$BLAST_QUERY.limited" || { echo "❌ Failed to shuffle sequences."; exit 1; }
+        
+    # Run BLAST with the limited query (15 random sequences)
+    blastn -query "$BLAST_QUERY.limited" -db nt -out "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" \
+            -evalue 1e-5 -max_target_seqs 15 -outfmt "6 qseqid staxids pident evalue bitscore" -remote || { echo "❌ BLAST failed."; exit 1; }
+    echo "✅ BLAST completed."
 
-        echo "Generating taxonomy tree..."
-        Rscript "$ROOT_DIR/scripts/helper_scripts/human_aligned_tree.R" "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" && \
-        echo "✅ Taxonomy tree generated."
-    else
-        echo "❌ Query file >100KB. Skipping BLAST."
-    fi
+    # Generate taxonomy tree from BLAST results
+    Rscript "$ROOT_DIR/scripts/helper_scripts/human_aligned_tree.R" "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" || { echo "❌ Error generating taxonomy tree."; exit 1; }
+    echo "✅ Taxonomy tree generated."
 fi 
     
 echo -e "\n=========================================== JACCARD SIMILARITY ==========================================="
