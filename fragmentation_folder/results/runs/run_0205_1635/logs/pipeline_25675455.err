@@ -663,3 +663,10 @@ Approx 95% complete for DT4_S16_L001_R2_001.fastq.gz
 + echo -e '\nCombining Bracken reports...'
 + Rscript ../scripts/helper_scripts/combine_breports.R ../fragmentation_folder/results/runs/run_0205_1635/reports/DE3_S7.breport ../fragmentation_folder/results/runs/run_0205_1635/reports/DE4_S8.breport ../fragmentation_folder/results/runs/run_0205_1635/reports/DT3_S15.breport ../fragmentation_folder/results/runs/run_0205_1635/reports/DT4_S16.breport
 + cp ../scripts/logs/pipeline_25675455.err ../scripts/logs/pipeline_25675455.log ../fragmentation_folder/results/runs/run_0205_1635/logs
++ echo -e '\n================================================= METAGENOMIC DIVERSITY ANALYSIS ================================================='
++ ../scripts/helper_scripts/diversity_analysis.sh -b ../fragmentation_folder/processed_data/metagenomic/bracken -d ../fragmentation_folder/results/runs/run_0205_1635/diversity
++ echo -e '✅ Diversity analysis completed successfully.'
++ [[ true == true ]]
++ echo -e '\n====================================================== HUMAN DNA ANALYSIS ======================================================'
++ ../scripts/helper_scripts/host_dna_analysis.sh ../fragmentation_folder/processed_data/human/aligned_sam
+Plot saved as: ../fragmentation_folder/processed_data/human/aligned_sam/../bed_files/karyotype_frequency.jpg
