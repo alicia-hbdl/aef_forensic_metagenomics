@@ -137,7 +137,7 @@ echo "✅ NCBI taxonomy downloaded."
 echo "Adding custom genomes..."
 for file in "$GENOMES"/*.fna; do
     head -n 1 "$file"
-    kraken2-build --add-to-library "$file" --db "$DBNAME" --threads "$THREADS" & # Run in background
+    kraken2-build --add-to-library "$file" --db "$DBNAME" --threads "$THREADS" &  # Run in background
 done
 wait
 echo "✅ Custom genomes added."
