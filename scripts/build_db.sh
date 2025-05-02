@@ -167,8 +167,29 @@ KRAKEN2_DIR=$(dirname $(which kraken2))  # Get the directory of the Kraken2 exec
 # Build Bracken databases for different read lengths
 for READ_LEN in 50 100 150 200 250 300; do
     echo "Building Bracken DB for read length $READ_LEN..."
+    echo " $KMER_LEN $READ_LEN $DBNAME $KRAKEN2_DIR $THREADS"
+    # Try to build Bracken DB using bracken-build
     if ! bracken-build -k "$KMER_LEN" -l "$READ_LEN" -d "$DBNAME" -x "$KRAKEN2_DIR" -y kraken2 -t "$THREADS"; then
-        echo "❌ Failed for $READ_LEN."
+
+        # Rebuild Kraken DB and use kmer2read_distr for Bracken database creation
+        echo "❌ Bracken DB build failed. Rebuilding Kraken DB for $READ_LEN..."
+        
+        if ! kraken2 --db="${DBNAME}" --threads=10 <(find -L "${DBNAME}/library" \( -name "*.fna" -o -name "*.fasta" -o -name "*.fa" \) -exec cat {} + ) > database.kraken; then
+            echo "❌ Error rebuilding Kraken DB."
+            continue  # Skip to the next iteration of the loop
+        fi
+
+        # Run kmer2read_distr with the newly rebuilt Kraken DB
+        if ! ./kmer2read_distr --seqid2taxid "${DBNAME}/seqid2taxid.map" --taxonomy "${DBNAME}/taxonomy" --kraken database.kraken --output "database${READ_LEN}mers.kraken" -k "${KMER_LEN}" -l "${READ_LEN}" -t "${THREADS}"; then
+            echo "❌ Error running kmer2read_distr."
+            continue  
+        fi
+
+        # Generate kmer distribution using Python script
+        if ! python generate_kmer_distribution.py -i "database${READ_LEN}mers.kraken" -o "database${READ_LEN}mers.kmer_distrib"; then
+            echo "❌ Error generating kmer distribution."
+            continue  
+        fi        
         continue
     fi
     echo "✅ Bracken DB for $READ_LEN built."

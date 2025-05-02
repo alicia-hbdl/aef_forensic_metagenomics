@@ -204,34 +204,23 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
     # Host DNA removal with Bowtie2
     if [[ "$REMOVE_HOST_DNA" == true ]]; then
         echo -e "\nRemoving human reads with Bowtie2..."
-
         BOWTIE_CMD="bowtie2 -x \"$BOWTIE_PREFIX\" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant \
-	-1 \"$TRIMMED_DIR/paired/${base}_R1_paired.fastq.gz\" -2 \"$TRIMMED_DIR/paired/${base}_R2_paired.fastq.gz\" \
-	--un-conc \"$FILTERED_FASTQ_DIR/${base}_metagenomic\" -S \"$ALIGNED_SAM_DIR/${base}_human.sam\" 2>&1"
-   
-        # Echo the command to the log/output for debugging
+	                -1 \"$TRIMMED_DIR/paired/${base}_R1_paired.fastq.gz\" -2 \"$TRIMMED_DIR/paired/${base}_R2_paired.fastq.gz\" \
+	                --un-conc \"$FILTERED_FASTQ_DIR/${base}_metagenomic\" -S \"$ALIGNED_SAM_DIR/${base}_human.sam\" 2>&1"
         echo "$BOWTIE_CMD"
-
-        # Execute the command using eval to interpret the string as a shell command
         eval "$BOWTIE_CMD"
         echo "✅ Host reads removed and filtered reads compressed."
     fi
     
     # Taxonomic classification with Kraken2
     echo -e "\nClassifying metagenomic reads with Kraken2..."
-    
     KRAKEN_CMD="kraken2 --d \"$DATABASE\" --threads 8 --report \"$REPORTS_DIR/${base}.k2report\" \
-               --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed \
+               --report-minimizer-data --paired --minimum-hit-groups 2 \
                --classified-out \"$CLASSIFIED_DIR/${base}_classified#.fastq\" --unclassified-out \"$UNCLASSIFIED_DIR/${base}_unclassified#.fastq\" \
                \"$FILTERED_FASTQ_DIR/${base}_metagenomic.1\" \"$FILTERED_FASTQ_DIR/${base}_metagenomic.2\" \
                --output \"$KRAKEN2_DIR/${base}.kraken2\" --use-names 2>&1"
-
-    # Echo the command to the log/output for debugging
     echo "$KRAKEN_CMD"
-
-    # Execute the command using eval to interpret the string as a shell command
     eval "$KRAKEN_CMD"  
-      
     echo "✅ Classification complete."
 
     # Abundance estimation with Bracken
@@ -239,6 +228,7 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
     bracken -d "$DATABASE" -i "$REPORTS_DIR/${base}.k2report" -l S \
             -r 100 -t 10 -w "$REPORTS_DIR/${base}.breport" -o "$BRACKEN_DIR/${base}.bracken" 2>&1 
     echo "✅ Abundance estimated."
+    
     # Generate Krona interactive plot
     echo -e "\nGenerating Krona visualization..."
     python "$ROOT_DIR/tools/KrakenTools/kreport2krona.py" -r "$REPORTS_DIR/${base}.breport" -o "$KRONA_DIR/${base}.krona.txt" --no-intermediate-ranks && \
