@@ -211,7 +211,7 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
 	--un-conc \"$FILTERED_FASTQ_DIR/${base}_metagenomic\" -S \"$ALIGNED_SAM_DIR/${base}_human.sam\" 2>&1"
         
 	echo "$BOWTIE_CMD"
-        eval $BOWTIE_CMD
+        "$BOWTIE_CMD"
         
         # Compress filtered metagenomic reads
         for i in 1 2; do # Compress and rename metagenomic reads
@@ -230,7 +230,7 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
                --output \"$KRAKEN2_DIR/${base}.kraken2\" --use-names 2>&1"
     
     echo "$KRAKEN_CMD" 
-    eval $KRAKEN_CMD
+    "$KRAKEN_CMD"
     
     echo "✅ Classification complete."
 
