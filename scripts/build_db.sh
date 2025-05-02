@@ -146,7 +146,7 @@ fi
 # Add genomes to the Kraken2 database
 echo "Adding genomes to Kraken2 DB..."
 for genome in "$GENOMES"/*.fna; do
-    ADD_TO_LIB = "kraken2-build --add-to-library "$genome" --db "$DBNAME" --threads $THREADS" 
+    ADD_TO_LIB="kraken2-build --add-to-library \"$genome\" --db \"$DBNAME\" --threads $THREADS" 
     echo "$ADD_TO_LIB"
     eval "$ADD_TO_LIB" & # Run in background
 done
