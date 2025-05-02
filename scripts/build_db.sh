@@ -8,54 +8,66 @@
 #SBATCH --time=12:00:00
 #SBATCH --partition=cpu
 
-# Default values
-GENOMES=/scratch/users/k24087895/final_project/data/genomes
-DBNAME=/scratch/users/k24087895/final_project/data/databases/custom_taxid
+# Usage: ./build_db.sh [-g/--genomes <path/to/genomes>] [-d/--database <path/to/database>]
 
+set -e # Exit on error 
+set -x  # Print each command and its arguments as it is executed for debugging 
+
+# This script builds a Kraken2 database.
+# Arguments:
+#   -g, --genomes    Path to the directory containing genome files (default: /scratch/users/k24087895/final_project/data/genomes)
+#   -d, --database   Path to the Kraken2 database directory (default: /scratch/users/k24087895/final_project/data/databases/k2_custom_[date])
+
+# Default values
 THREADS=8
 KMER_LEN=35
+GENOMES="/scratch/users/k24087895/final_project/data/genomes"
+DBNAME="/scratch/users/k24087895/final_project/data/databases/k2_custom_$(date +"%Y%m%d")"
 
+# --- ACTIVATE CONDA ENVIRONMENT --- 
+source "$(dirname "$0")/helper_scripts/environment_setup.sh" "$(dirname "$0")/metagenomics.yml" || { echo "❌ Failed to set up Conda environment."; exit 1; }
 
-# Check if Conda is installed and activate the environment
-if ! command -v conda &> /dev/null; then
-    echo "❌ Conda not found. Exiting."
-    exit 1
-fi
-eval "$(conda shell.bash hook)" || { echo "❌ Conda shell integration not set up. Run 'conda init bash' and restart the shell. Exiting."; exit 1; }
-conda activate metagenomics || { echo "❌ Failed to activate Conda environment 'metagenomics'. Exiting."; exit 1; }
-echo "✅ Conda environment 'final_project' activated."
+# --- PARSE COMMAND LINE ARGUMENTS ---
 
-# Parse command-line arguments
-# Ensure required arguments are provided
-if [ -z "$DBNAME" ] || [ -z "$GENOMES" ]; then
-    echo "❌ Missing required arguments. Using default values:"
-    echo "    DBNAME: $DBNAME"
-    echo "    GENOMES: $GENOMES"
+# Check if any arguments are passed
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -g|--genomes)
+            GENOMES="$2"  # Assign the next argument to GENOMES
+            shift 2  # Move past the argument and value
+            ;;
+        -d|--database)
+            DBNAME="$2"  # Assign the next argument to DBNAME
+            shift 2  # Move past the argument and value
+            ;;
+        *)
+            echo "❌ Unknown option: $1"
+            echo "Usage: ./build_db.sh [-g/--genomes <path/to/genomes>] [-d/--database <path/to/database>]"
+            exit 1
+            ;;
+    esac
+done
+
+# Otherwise use default values
+if [ -z "$GENOMES" ] || [ -z "$DBNAME" ]; then
+    echo "❌ Missing required arguments."
+    echo "Usage: ./build_db.sh [-g/--genomes <path/to/genomes>] [-d/--database <path/to/database>]"
+    echo "Using default values:"
 else
     echo "✅ Arguments provided:"
-    echo "    DBNAME: $DBNAME"
-    echo "    GENOMES: $GENOMES"
 fi
+echo "    DBNAME: $DBNAME"
+echo "    GENOMES: $GENOMES"
 
-# Create necessary directories and navigate to GENOMES
-mkdir -p "$DBNAME" "$GENOMES"
-cd "$GENOMES" || { echo "❌ Failed to change directory to '$GENOMES'. Exiting."; exit 1; }
+# Remove existing directories if they exist 
+[ -d "$GENOMES" ] && echo "⚠️ Removing existing Genomes directory." && rm -rf "$GENOMES"
+[ -d "$DBNAME" ] && echo "⚠️ Removing existing Database directory." && rm -rf "$DBNAME"
 
-# Download NCBI Taxonomy
-echo "📦 Downloading NCBI taxonomy to: $DBNAME"
-if ! kraken2-build --download-taxonomy --db "$DBNAME" --threads $THREADS; then
-    echo "❌ Error: Failed to download NCBI taxonomy. Exiting."
-    exit 1
-fi
-echo "✅ NCBI taxonomy downloaded to: $DBNAME"
+# Create new directories 
+mkdir -p "$DBNAME" "$GENOMES" && cd "$GENOMES" || { echo "❌ Failed to change directory to '$GENOMES'."; exit 1; }
 
-# Optional: Download Human Reference Library
-echo "📦 Downloading human reference library to: $DBNAME"
-if ! kraken2-build --download-library human --db "$DBNAME" --threads $THREADS; then
-    echo "⚠️ Warning: Failed to download human reference library. Skipping."
-else
-    echo "✅ Human reference library downloaded."
-fi
+# --- DOWNLOAD AND TAG GENOMES ---
+# This section can be commented out if the $GENOMES directory already contains the genomes in the correct format.
 
 # List of genome URLs to download
 genomes_urls=(
@@ -73,72 +85,93 @@ genomes_urls=(
 )
 
 # Download and decompress genomes
-echo "📥 Downloading genomes..."
+echo "Downloading genomes..."
 for url in "${genomes_urls[@]}"; do
-    wget -nc --tries=3 "$url"  # Retry download if needed
+    wget -nc --tries=3 "$url"       # Retry download if needed
     filename=$(basename "$url")
-    gunzip -f "$filename"  # Decompress downloaded genome
+    gunzip -f "$filename"           # Decompress the downloaded genome file
 done
 
-# Map file names to correct taxIDs
+# Tag genome headers with appropriate taxIDs from the provided list
 declare -A taxids=(
-    [GCF_000196035.1_ASM19603v1_genomic.fna]=169963  # Listeria monocytogenes EGD-e
-    [GCF_000006765.1_ASM676v1_genomic.fna]=208964  # Pseudomonas aeruginosa PAO1
-    [GCF_000009045.1_ASM904v1_genomic.fna]=224308  # Bacillus subtilis subsp. subtilis str. 168
-    [GCF_000005845.2_ASM584v2_genomic.fna]=562      # Escherichia coli
-    [GCF_000008865.2_ASM886v2_genomic.fna]=562      # Escherichia coli
-    [GCF_029961225.1_ASM2996122v1_genomic.fna]=1613  # Limosilactobacillus fermentum
-    [GCF_000006945.2_ASM694v2_genomic.fna]=28901    # Salmonella enterica
-    [GCF_000393015.1_Ente_faec_T5_V1_genomic.fna]=1351 # Enterococcus faecalis
-    [GCF_000013425.1_ASM1342v1_genomic.fna]=1280     # Staphylococcus aureus
-    [GCF_000146045.2_R64_genomic.fna]=4932           # Saccharomyces cerevisiae
-    [GCF_000091045.1_ASM9104v1_genomic.fna]=5207     # Cryptococcus neoformans
+    [GCF_000196035.1_ASM19603v1_genomic.fna]=169963     # Listeria monocytogenes EGD-e
+    [GCF_000006765.1_ASM676v1_genomic.fna]=208964       # Pseudomonas aeruginosa PAO1
+    [GCF_000009045.1_ASM904v1_genomic.fna]=224308       # Bacillus subtilis subsp. subtilis str. 168
+    [GCF_000005845.2_ASM584v2_genomic.fna]=562          # Escherichia coli
+    [GCF_000008865.2_ASM886v2_genomic.fna]=562          # Escherichia coli
+    [GCF_029961225.1_ASM2996122v1_genomic.fna]=1613     # Limosilactobacillus fermentum
+    [GCF_000006945.2_ASM694v2_genomic.fna]=28901        # Salmonella enterica
+    [GCF_000393015.1_Ente_faec_T5_V1_genomic.fna]=1351  # Enterococcus faecalis
+    [GCF_000013425.1_ASM1342v1_genomic.fna]=1280        # Staphylococcus aureus
+    [GCF_000146045.2_R64_genomic.fna]=4932              # Saccharomyces cerevisiae
+    [GCF_000091045.1_ASM9104v1_genomic.fna]=5207        # Cryptococcus neoformans
 )
 
 # Tag genome headers with taxIDs
-echo "🧬 Tagging genome headers with taxIDs..."
+echo "Tagging genome headers with taxIDs..."
 for genome in "$GENOMES"/*.fna; do
-   base=$(basename "$genome")
-   taxid=${taxids["$base"]}
-    
-    if [ -z "$taxid" ]; then
+    base=$(basename "$genome")  
+    taxid=${taxids["$base"]}    
+    if [ -z "$taxid" ]; then # Skip if no taxid
         echo "⚠️ Warning: No taxid found for $base. Skipping."
-       continue
+        continue
     fi
-    
-    if ! grep -q "kraken:taxid" "$genome"; then
-       echo "Tagging $base with taxid $taxid..."
-        sed -i -E "s/^(>[^ ]+)/&|kraken:taxid|$taxid/" "$genome"
+    if ! grep -q "kraken:taxid" "$genome"; then # Skip if already tagged
+        echo "Tagging $base with taxid $taxid..."
+        sed -i -E "s/^(>[^ ]+)/&|kraken:taxid|$taxid/" "$genome"  # Tagging with taxid
     else
         echo "⚠️ Skipping $base: already tagged."
     fi
 done
 
-# Add genomes to Kraken2 DB
-echo "📒 Adding genomes to Kraken2 DB..."
+# --- BUILD KRAKEN DATABASE ---
+
+# Download NCBI taxonomyecho "📦 Downloading NCBI taxonomy to: $DBNAME"
+if kraken2-build --download-taxonomy --db "$DBNAME" --threads $THREADS; then
+    echo "✅ NCBI taxonomy downloaded to: $DBNAME"
+else
+    echo "❌ Error: Failed to download NCBI taxonomy. Exiting."
+    exit 1
+fi
+
+# Download human reference library
+echo "Downloading human reference library to: $DBNAME"
+if kraken2-build --download-library human --db "$DBNAME" --threads $THREADS; then
+    echo "✅ Human reference library downloaded."
+else
+    echo "❌ Error: Failed to download human reference library.  Exiting."
+    exit 1
+fi
+
+# Add genomes to the Kraken2 database
+echo "Adding genomes to Kraken2 DB..."
 for genome in "$GENOMES"/*.fna; do
-    kraken2-build --add-to-library "$genome" --db "$DBNAME" --threads $THREADS &
+    kraken2-build --add-to-library "$genome" --db "$DBNAME" --threads $THREADS &  # Run in background
 done
-wait
+wait  # Wait for all background jobs to finish
 echo "✅ All genomes added to Kraken2 DB."
 
 # Build Kraken2 database
-echo "🧬 Building Kraken2 database..."
+echo "Building Kraken2 database..."
 if ! kraken2-build --build --db "$DBNAME" --threads $THREADS; then
-    echo "❌ Error: Failed to build Kraken2 database. Exiting."
+    echo "❌ Failed to build Kraken2 database."
     exit 1
 fi
-echo "✅ Kraken2 database built successfully!"
+echo "✅ Kraken2 database built."
+
+
+# --- BUILD BRACKEN DATABASE ---
 
 KRAKEN2_DIR=$(dirname $(which kraken2))  # Get the directory of the Kraken2 executable
 
-# Build Bracken database for different read lengths
+# Build Bracken databases for different read lengths
 for READ_LEN in 50 100 150 200 250 300; do
-    echo "🔄 Building Bracken database for read length $READ_LEN..."
-    if ! bracken-build -k "$KMER_LEN" -l "$READ_LEN" -d "$DBNAME" -x "$KRAKEN2_DIR" -y kraken2 -t "$THREADS" ; then
-        echo "❌ Error: Failed to build Bracken database for read length $READ_LEN. Exiting."
+    echo "Building Bracken DB for read length $READ_LEN..."
+    if ! bracken-build -k "$KMER_LEN" -l "$READ_LEN" -d "$DBNAME" -x "$KRAKEN2_DIR" -y kraken2 -t "$THREADS"; then
+        echo "❌ Failed for $READ_LEN."
+        continue
     fi
-    echo "✅ Bracken database for read length $READ_LEN built."
+    echo "✅ Bracken DB for $READ_LEN built."
 done
 
-echo "🎉 All Bracken databases built successfully!"
+echo "All Bracken databases built successfully!"
