@@ -1006,3 +1006,42 @@ Loading database information... done.
 0 sequences (0.00 Mbp) processed in 0.107s (0.0 Kseq/m, 0.00 Mbp/m).
   0 sequences classified (-nan%)
   0 sequences unclassified (-nan%)
+		0 sequences converted...		8 sequences converted
++ echo '✅ Bracken DB for 100 built.'
++ for READ_LEN in 50 100 150 200 250 300
++ echo 'Building Bracken DB for read length 150...'
++ bracken-build -k 35 -l 150 -d /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 -x /users/k24087895/.conda/envs/metagenomics/bin -y kraken2 -t 8
+Loading database information... done.
+0 sequences (0.00 Mbp) processed in 0.122s (0.0 Kseq/m, 0.00 Mbp/m).
+  0 sequences classified (-nan%)
+  0 sequences unclassified (-nan%)
+		0 sequences converted...		8 sequences converted
++ echo '✅ Bracken DB for 150 built.'
++ for READ_LEN in 50 100 150 200 250 300
++ echo 'Building Bracken DB for read length 200...'
++ bracken-build -k 35 -l 200 -d /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 -x /users/k24087895/.conda/envs/metagenomics/bin -y kraken2 -t 8
+Loading database information... done.
+0 sequences (0.00 Mbp) processed in 0.168s (0.0 Kseq/m, 0.00 Mbp/m).
+  0 sequences classified (-nan%)
+  0 sequences unclassified (-nan%)
+		0 sequences converted...		8 sequences converted
++ echo '✅ Bracken DB for 200 built.'
++ for READ_LEN in 50 100 150 200 250 300
++ echo 'Building Bracken DB for read length 250...'
++ bracken-build -k 35 -l 250 -d /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 -x /users/k24087895/.conda/envs/metagenomics/bin -y kraken2 -t 8
+Loading database information... done.
+0 sequences (0.00 Mbp) processed in 0.001s (0.0 Kseq/m, 0.00 Mbp/m).
+  0 sequences classified (-nan%)
+  0 sequences unclassified (-nan%)
+		0 sequences converted...		8 sequences converted
++ echo '✅ Bracken DB for 250 built.'
++ for READ_LEN in 50 100 150 200 250 300
++ echo 'Building Bracken DB for read length 300...'
++ bracken-build -k 35 -l 300 -d /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 -x /users/k24087895/.conda/envs/metagenomics/bin -y kraken2 -t 8
+Loading database information... done.
+0 sequences (0.00 Mbp) processed in 0.001s (0.0 Kseq/m, 0.00 Mbp/m).
+  0 sequences classified (-nan%)
+  0 sequences unclassified (-nan%)
+		0 sequences converted...		8 sequences converted
++ echo '✅ Bracken DB for 300 built.'
++ echo 'All Bracken databases built successfully!'
