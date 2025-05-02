@@ -988,3 +988,158 @@ Untarring taxonomy tree data... done.
 Step 1/2: Performing rsync file transfer of requested files
 Rsync file transfer complete.
 Step 2/2: Assigning taxonomic IDs to sequences
+All files processed, cleaning up extra sequence files... done, library complete.
+Masking low-complexity regions of downloaded library... done.
++ echo '✅ Human reference library downloaded.'
++ echo 'Adding genomes to Kraken2 DB...'
++ for genome in "$GENOMES"/*.fna
++ ADD_TO_LIB='kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000005845.2_ASM584v2_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
++ echo 'kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000005845.2_ASM584v2_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
++ for genome in "$GENOMES"/*.fna
++ eval 'kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000005845.2_ASM584v2_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
++ ADD_TO_LIB='kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000006765.1_ASM676v1_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
+++ kraken2-build --add-to-library /scratch/users/k24087895/final_project/data/genomes/GCF_000005845.2_ASM584v2_genomic.fna --db /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 --threads 8
++ echo 'kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000006765.1_ASM676v1_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
++ for genome in "$GENOMES"/*.fna
++ eval 'kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000006765.1_ASM676v1_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
++ ADD_TO_LIB='kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000006945.2_ASM694v2_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
+++ kraken2-build --add-to-library /scratch/users/k24087895/final_project/data/genomes/GCF_000006765.1_ASM676v1_genomic.fna --db /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 --threads 8
++ echo 'kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000006945.2_ASM694v2_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
++ for genome in "$GENOMES"/*.fna
++ eval 'kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000006945.2_ASM694v2_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
++ ADD_TO_LIB='kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000008865.2_ASM886v2_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
+++ kraken2-build --add-to-library /scratch/users/k24087895/final_project/data/genomes/GCF_000006945.2_ASM694v2_genomic.fna --db /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 --threads 8
++ echo 'kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000008865.2_ASM886v2_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
++ for genome in "$GENOMES"/*.fna
++ eval 'kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000008865.2_ASM886v2_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
++ ADD_TO_LIB='kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000009045.1_ASM904v1_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
+++ kraken2-build --add-to-library /scratch/users/k24087895/final_project/data/genomes/GCF_000008865.2_ASM886v2_genomic.fna --db /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 --threads 8
++ echo 'kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000009045.1_ASM904v1_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
++ for genome in "$GENOMES"/*.fna
++ eval 'kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000009045.1_ASM904v1_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
++ ADD_TO_LIB='kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000013425.1_ASM1342v1_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
++ echo 'kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000013425.1_ASM1342v1_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
+++ kraken2-build --add-to-library /scratch/users/k24087895/final_project/data/genomes/GCF_000009045.1_ASM904v1_genomic.fna --db /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 --threads 8
+Masking low-complexity regions of new file...+ for genome in "$GENOMES"/*.fna
++ eval 'kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000013425.1_ASM1342v1_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
+Masking low-complexity regions of new file... done.
+Added "/scratch/users/k24087895/final_project/data/genomes/GCF_000005845.2_ASM584v2_genomic.fna" to library (/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502)
+++ kraken2-build --add-to-library /scratch/users/k24087895/final_project/data/genomes/GCF_000013425.1_ASM1342v1_genomic.fna --db /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 --threads 8
+ done.
++ ADD_TO_LIB='kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000091045.1_ASM9104v1_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
+Added "/scratch/users/k24087895/final_project/data/genomes/GCF_000006765.1_ASM676v1_genomic.fna" to library (/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502)
++ echo 'kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000091045.1_ASM9104v1_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
++ for genome in "$GENOMES"/*.fna
++ ADD_TO_LIB='kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000146045.2_R64_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
++ echo 'kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000146045.2_R64_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
++ eval 'kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000091045.1_ASM9104v1_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
+++ kraken2-build --add-to-library /scratch/users/k24087895/final_project/data/genomes/GCF_000091045.1_ASM9104v1_genomic.fna --db /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 --threads 8
++ for genome in "$GENOMES"/*.fna
++ ADD_TO_LIB='kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000196035.1_ASM19603v1_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
++ echo 'kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000196035.1_ASM19603v1_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
++ eval 'kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000146045.2_R64_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
+++ kraken2-build --add-to-library /scratch/users/k24087895/final_project/data/genomes/GCF_000146045.2_R64_genomic.fna --db /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 --threads 8
++ for genome in "$GENOMES"/*.fna
++ ADD_TO_LIB='kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000393015.1_Ente_faec_T5_V1_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
++ echo 'kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000393015.1_Ente_faec_T5_V1_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
++ for genome in "$GENOMES"/*.fna
++ ADD_TO_LIB='kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_029961225.1_ASM2996122v1_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
++ echo 'kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_029961225.1_ASM2996122v1_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
++ wait
++ eval 'kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000393015.1_Ente_faec_T5_V1_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
+++ kraken2-build --add-to-library /scratch/users/k24087895/final_project/data/genomes/GCF_000393015.1_Ente_faec_T5_V1_genomic.fna --db /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 --threads 8
++ eval 'kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_000196035.1_ASM19603v1_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
+++ kraken2-build --add-to-library /scratch/users/k24087895/final_project/data/genomes/GCF_000196035.1_ASM19603v1_genomic.fna --db /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 --threads 8
++ eval 'kraken2-build --add-to-library "/scratch/users/k24087895/final_project/data/genomes/GCF_029961225.1_ASM2996122v1_genomic.fna" --db "/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502" --threads 8'
+++ kraken2-build --add-to-library /scratch/users/k24087895/final_project/data/genomes/GCF_029961225.1_ASM2996122v1_genomic.fna --db /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 --threads 8
+Masking low-complexity regions of new file... done.
+Added "/scratch/users/k24087895/final_project/data/genomes/GCF_000006945.2_ASM694v2_genomic.fna" to library (/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502)
+Masking low-complexity regions of new file... done.
+Added "/scratch/users/k24087895/final_project/data/genomes/GCF_000008865.2_ASM886v2_genomic.fna" to library (/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502)
+Masking low-complexity regions of new file... done.
+Added "/scratch/users/k24087895/final_project/data/genomes/GCF_000009045.1_ASM904v1_genomic.fna" to library (/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502)
+Masking low-complexity regions of new file... done.
+Added "/scratch/users/k24087895/final_project/data/genomes/GCF_000013425.1_ASM1342v1_genomic.fna" to library (/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502)
+Masking low-complexity regions of new file...Masking low-complexity regions of new file... done.
+Added "/scratch/users/k24087895/final_project/data/genomes/GCF_000196035.1_ASM19603v1_genomic.fna" to library (/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502)
+ done.
+Added "/scratch/users/k24087895/final_project/data/genomes/GCF_029961225.1_ASM2996122v1_genomic.fna" to library (/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502)
+Masking low-complexity regions of new file... done.
+Added "/scratch/users/k24087895/final_project/data/genomes/GCF_000393015.1_Ente_faec_T5_V1_genomic.fna" to library (/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502)
+Masking low-complexity regions of new file... done.
+Added "/scratch/users/k24087895/final_project/data/genomes/GCF_000146045.2_R64_genomic.fna" to library (/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502)
+Masking low-complexity regions of new file... done.
+Added "/scratch/users/k24087895/final_project/data/genomes/GCF_000091045.1_ASM9104v1_genomic.fna" to library (/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502)
++ echo '✅ All genomes added to Kraken2 DB.'
++ echo 'Building Kraken2 database...'
++ kraken2-build --build --db /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 --threads 8
+Taxonomy parsed and converted.
+CHT created with 7 bits reserved for taxid.
+Completed processing of 0 sequences, 0 bp
+Writing data to disk...  complete.
++ echo '✅ Kraken2 database built.'
++ tree /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502
++++ which kraken2
+++ dirname /users/k24087895/.conda/envs/metagenomics/bin/kraken2
++ KRAKEN2_DIR=/users/k24087895/.conda/envs/metagenomics/bin
++ for READ_LEN in 50 100 150 200 250 300
++ echo 'Building Bracken DB for read length 50...'
++ echo ' 35 50 /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 /users/k24087895/.conda/envs/metagenomics/bin 8'
++ bracken-build -k 35 -l 50 -d /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 -y kraken2 -t 8
+Loading database information... done.
+0 sequences (0.00 Mbp) processed in 0.040s (0.0 Kseq/m, 0.00 Mbp/m).
+  0 sequences classified (-nan%)
+  0 sequences unclassified (-nan%)
+		0 sequences converted...		8 sequences converted
++ echo '✅ Bracken DB for 50 built.'
++ for READ_LEN in 50 100 150 200 250 300
++ echo 'Building Bracken DB for read length 100...'
++ echo ' 35 100 /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 /users/k24087895/.conda/envs/metagenomics/bin 8'
++ bracken-build -k 35 -l 100 -d /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 -y kraken2 -t 8
+Loading database information... done.
+0 sequences (0.00 Mbp) processed in 0.104s (0.0 Kseq/m, 0.00 Mbp/m).
+  0 sequences classified (-nan%)
+  0 sequences unclassified (-nan%)
+		0 sequences converted...		8 sequences converted
++ echo '✅ Bracken DB for 100 built.'
++ for READ_LEN in 50 100 150 200 250 300
++ echo 'Building Bracken DB for read length 150...'
++ echo ' 35 150 /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 /users/k24087895/.conda/envs/metagenomics/bin 8'
++ bracken-build -k 35 -l 150 -d /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 -y kraken2 -t 8
+Loading database information... done.
+0 sequences (0.00 Mbp) processed in 0.059s (0.0 Kseq/m, 0.00 Mbp/m).
+  0 sequences classified (-nan%)
+  0 sequences unclassified (-nan%)
+		0 sequences converted...		8 sequences converted
++ echo '✅ Bracken DB for 150 built.'
++ for READ_LEN in 50 100 150 200 250 300
++ echo 'Building Bracken DB for read length 200...'
++ echo ' 35 200 /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 /users/k24087895/.conda/envs/metagenomics/bin 8'
++ bracken-build -k 35 -l 200 -d /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 -y kraken2 -t 8
+Loading database information... done.
+0 sequences (0.00 Mbp) processed in 0.087s (0.0 Kseq/m, 0.00 Mbp/m).
+  0 sequences classified (-nan%)
+  0 sequences unclassified (-nan%)
+		0 sequences converted...		8 sequences converted
++ echo '✅ Bracken DB for 200 built.'
++ for READ_LEN in 50 100 150 200 250 300
++ echo 'Building Bracken DB for read length 250...'
++ echo ' 35 250 /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 /users/k24087895/.conda/envs/metagenomics/bin 8'
++ bracken-build -k 35 -l 250 -d /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 -y kraken2 -t 8
+Loading database information... done.
+0 sequences (0.00 Mbp) processed in 0.008s (0.0 Kseq/m, 0.00 Mbp/m).
+  0 sequences classified (-nan%)
+  0 sequences unclassified (-nan%)
+		0 sequences converted...		8 sequences converted
++ echo '✅ Bracken DB for 250 built.'
++ for READ_LEN in 50 100 150 200 250 300
++ echo 'Building Bracken DB for read length 300...'
++ echo ' 35 300 /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 /users/k24087895/.conda/envs/metagenomics/bin 8'
++ bracken-build -k 35 -l 300 -d /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 -y kraken2 -t 8
+Loading database information... done.
+0 sequences (0.00 Mbp) processed in 0.008s (0.0 Kseq/m, 0.00 Mbp/m).
+  0 sequences classified (-nan%)
+  0 sequences unclassified (-nan%)
+		0 sequences converted...		8 sequences converted
++ echo '✅ Bracken DB for 300 built.'
++ echo 'All Bracken databases built successfully!'
