@@ -304,7 +304,7 @@ cp "$ROOT_DIR"/scripts/logs/*_"$SLURM_JOB_ID".* "$LOG_DIR" || { echo "❌ Copyin
 
 # Generate the precision-recall and l2 distance plots for all the runs so far 
 #python "$ROOT_DIR/scripts/evaluation_metrics.py" 
-fi 
+
 echo -e "\n================================================= METAGENOMIC DIVERSITY ANALYSIS ================================================="
 
 "$ROOT_DIR/scripts/helper_scripts/diversity_analysis.sh" -b  "$BRACKEN_DIR" -d "$DIVERSITY_DIR" || { echo "❌ Diversity analysis failed!"; exit 1; }
