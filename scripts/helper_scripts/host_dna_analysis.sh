@@ -79,18 +79,25 @@ if [ $(tail -n +2 "$BED_FILES_DIR/common_intervals_filtered.bed" | wc -l) -eq 0 
 else
     # Deduplicate sequences
     awk '
-        NR % 2 == 1 { id = $0; next }  # Skip sequence identifiers
-        { seq = $0; pair = id "\n" seq }
-        !seen[pair]++ { print id; print seq }  # Print unique sequences
-    ' "$BLAST_QUERY" > "$BLAST_QUERY.tmp" && mv "$BLAST_QUERY.tmp" "$BLAST_QUERY" || { echo "❌ Failed to remove duplicates."; exit 1; }
+        NR % 2 == 1 { id = $0; next }                    # Header line
+        { seq = $0; pair = id "\n" seq }                 
+        !seen[pair]++ { print id; print seq }            # Print only if new
+    ' "$BLAST_QUERY" > "$BLAST_QUERY.unique" || {echo "❌ Failed to remove duplicates."; exit 1;} 
     echo "✅ Duplicate sequences removed."
-    
-    # Shuffle sequences in blocks of 4 lines and select the first 15 sequences (60 lines)
-    awk 'NR%4==1{a=$0} NR%4==2{b=$0} NR%4==3{c=$0} NR%4==0{d=$0; print a; print b; print c; print d}' "$BLAST_QUERY" | \
-    shuf | head -n 60 > "$BLAST_QUERY.limited" || { echo "❌ Failed to shuffle sequences."; exit 1; }
-        
-    # Run BLAST with the limited query (15 random sequences)
-    blastn -query "$BLAST_QUERY.limited" -db nt -out "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" \
+
+    # Randomly select 15 unique sequences ---
+    awk 'BEGIN { RS=">"; ORS=""; srand() }
+        NR > 1 { seqs[++n] = $0 }
+        END {
+            for (i = n; i > 1; i--) {
+                j = int(rand() * i) + 1
+                tmp = seqs[i]; seqs[i] = seqs[j]; seqs[j] = tmp
+            }
+            for (i = 1; i <= 15 && i <= n; i++) print ">" seqs[i]
+        }' "$BLAST_QUERY.unique" > "$BLAST_QUERY.selected" || { echo "❌ Failed to select sequences."; exit 1; }
+    echo "✅ 15 random sequences selected and saved to: $BLAST_QUERY.selected"
+
+    blastn -query "$BLAST_QUERY.selected" -db nt -out "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" \
             -evalue 1e-5 -max_target_seqs 15 -outfmt "6 qseqid staxids pident evalue bitscore" -remote || { echo "❌ BLAST failed."; exit 1; }
     echo "✅ BLAST completed."
 
