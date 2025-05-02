@@ -1,7 +1,0 @@
-+ echo -e '\n================================================= ARGUMENT PARSING & VALIDATION =================================================\n'
-+ TRIM=false
-+ REMOVE_HOST_DNA=false
-+ [[ 3 -gt 0 ]]
-+ case "$1" in
-+ echo '❌ Unknown argument: ../exposure_folder2/raw_data/. Usage: /var/lib/slurm/slurmd/job25677354/slurm_script --raw-fastq/-f <reads_dir> [--database/-d <database_path>] [-t | --trim] [-r | --remove-host-dna <index_path>]'
-+ exit 1

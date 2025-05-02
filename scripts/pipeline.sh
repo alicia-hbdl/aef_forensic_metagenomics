@@ -226,7 +226,7 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
     # Abundance estimation with Bracken
     echo -e "\nEstimating species abundance with Bracken..."
     bracken -d "$DATABASE" -i "$REPORTS_DIR/${base}.k2report" -l S \
-            -r 100 -t 10 -w "$REPORTS_DIR/${base}.breport" -o "$BRACKEN_DIR/${base}.bracken" 2>&1 
+            -r 100 -t 0 -w "$REPORTS_DIR/${base}.breport" -o "$BRACKEN_DIR/${base}.bracken" 2>&1 
     echo "✅ Abundance estimated."
     
     # Generate Krona interactive plot
