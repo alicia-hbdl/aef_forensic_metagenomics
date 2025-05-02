@@ -28,14 +28,14 @@ for file in "$ALIGNED_SAM_DIR"/*.sam; do
     echo -e "\nProcessing host reads from sample: $base"
     
     # Convert SAM to sorted BAM (excluding unmapped reads)
-    samtools view -b -h -F 4 "$file" | samtools sort -@8 -o "$SORTED_BAM_DIR/${base}.sorted.bam"
+    samtools view -b -h -F 4 "$file" | samtools sort -@8 -o "$SORTED_BAM_DIR/${base}.sorted.bam" || { echo "❌ Error sorting BAM for $base"; exit 1; }
     echo "✅ BAM sorted."
     
-    samtools index "$SORTED_BAM_DIR/${base}.sorted.bam"
+    samtools index "$SORTED_BAM_DIR/${base}.sorted.bam" || { echo "❌ Error indexing BAM for $base"; exit 1; }
     echo "✅ BAM indexed."
     
     # Convert BAM to sorted BED
-    bedtools bamtobed -i "$SORTED_BAM_DIR/${base}.sorted.bam" | bedtools sort -i > "$BED_FILES_DIR/${base}.sorted.bed"
+    bedtools bamtobed -i "$SORTED_BAM_DIR/${base}.sorted.bam" | bedtools sort -i > "$BED_FILES_DIR/${base}.sorted.bed" || { echo "❌ Error creating BED for $base"; exit 1; }
     echo "✅ BED created."
 done
   
