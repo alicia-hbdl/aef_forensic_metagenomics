@@ -169,7 +169,7 @@ for READ_LEN in 50 100 150 200 250 300; do
     echo "Building Bracken DB for read length $READ_LEN..."
     echo " $KMER_LEN $READ_LEN $DBNAME $KRAKEN2_DIR $THREADS"
     # Try to build Bracken DB using bracken-build
-    if ! bracken-build -k "$KMER_LEN" -l "$READ_LEN" -d "$DBNAME" -x "$KRAKEN2_DIR" -y kraken2 -t "$THREADS"; then
+    if ! bracken-build -k "$KMER_LEN" -l "$READ_LEN" -d "$DBNAME" -y kraken2 -t "$THREADS"; then
 
         # Rebuild Kraken DB and use kmer2read_distr for Bracken database creation
         echo "❌ Bracken DB build failed. Rebuilding Kraken DB for $READ_LEN..."
