@@ -237,9 +237,10 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
 done
 
 # Process all FASTQ files as desired using the get_fastq_stats.sh script
-echo "Running get_fastq_stats.sh on filtered, classified and unclassified data..."
+echo -e "\nRunning get_fastq_stats.sh on filtered, classified and unclassified data..."
 files=("$FILTERED_FASTQ_DIR"/*.1 "$FILTERED_FASTQ_DIR"/*.2 "$CLASSIFIED_DIR"/*.fastq "$UNCLASSIFIED_DIR"/*.fastq) # Expand file patterns into actual files
 "$ROOT_DIR/scripts/helper_scripts/get_fastq_stats.sh" "${files[@]}" 2>&1 # Run the script with all the matching files
+echo "✅ Statistics generated."
 
 # End timer for metagenomic classification
 END_TIME=$(date +%s)
@@ -286,14 +287,15 @@ echo -e "\n✅ Pipeline completed successfully."
 # Move final SLURM logs to run directory and clean up originals
 echo "Storing log file..."
 if cp $ROOT_DIR/scripts/logs/*_"$SLURM_JOB_ID".* "$LOG_DIR"; then
-  rm $ROOT_DIR/scripts/logs/*_"$SLURM_JOB_ID".*
+  
+    # Generate the summary table and evaluation metrics including this run 
+    "$ROOT_DIR/scripts/runs_summary.sh" "$RUN_DIR" || { echo "❌ Summary generation failed!"; exit 1; }
+    python "$ROOT_DIR/scripts/evaluation_metrics.py" "$RUN_DIR" || { echo "❌ Evaluation metrics generation failed!"; exit 1; }
+    Rscript "$ROOT_DIR/scripts/helper_scripts/read_progression.R" "$RUN_DIR" || { echo "❌ Read progression plot generation failed!"; exit 1; }
+    
+    # Remove the original log file when successful 
+    rm $ROOT_DIR/scripts/logs/*_"$SLURM_JOB_ID".*
 else
   echo "❌ Copying log files failed!"
   exit 1
 fi
-
-"$ROOT_DIR/scripts/runs_summary.sh" "$RUN_DIR" || { echo "❌ Summary generation failed!"; exit 1; }
-
-python "$ROOT_DIR/scripts/evaluation_metrics.py" "$RUN_DIR" || { echo "❌ Evaluation metrics generation failed!"; exit 1; }
-
-Rscript "$ROOT_DIR/scripts/helper_scripts/read_progression.R" "$RUN_DIR" || { echo "❌ Read progression plot generation failed!"; exit 1; }

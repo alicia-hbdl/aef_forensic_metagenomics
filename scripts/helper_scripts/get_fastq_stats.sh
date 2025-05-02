@@ -13,11 +13,11 @@ for file in "$@"; do
     continue
   fi
 
-  echo -n "$file: "  # Print the filename for reference
+  echo -n "$(basename "$file"): "  # Print the filename for reference
 
   # Process the FASTQ file
-  # NR%4==2 selects the second line in each 4-line FASTQ entry (the sequence line)
-  # Calculate the length of the sequence and store it
+    # NR%4==2 selects the second line in each 4-line FASTQ entry (the sequence line)
+    # Calculate the length of the sequence and store it
   awk 'NR%4==2 {print length($0)}' "$file" | sort -n | awk '
   
   # Initialize variables for the first line
