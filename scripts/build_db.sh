@@ -146,7 +146,9 @@ fi
 # Add genomes to the Kraken2 database
 echo "Adding genomes to Kraken2 DB..."
 for genome in "$GENOMES"/*.fna; do
-    kraken2-build --add-to-library "$genome" --db "$DBNAME" --threads $THREADS &  # Run in background
+    ADD_TO_LIB = "kraken2-build --add-to-library "$genome" --db "$DBNAME" --threads $THREADS" 
+    echo "$ADD_TO_LIB"
+    eval "$ADD_TO_LIB" & # Run in background
 done
 wait  # Wait for all background jobs to finish
 echo "✅ All genomes added to Kraken2 DB."
@@ -159,6 +161,7 @@ if ! kraken2-build --build --db "$DBNAME" --threads $THREADS; then
 fi
 echo "✅ Kraken2 database built."
 
+tree "$DBNAME"  # Display the directory structure of the database
 
 # --- BUILD BRACKEN DATABASE ---
 
