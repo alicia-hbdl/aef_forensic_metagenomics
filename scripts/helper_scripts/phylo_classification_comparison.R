@@ -13,7 +13,10 @@ suppressPackageStartupMessages({
   library(taxize)       # to interact with web APIs for taxonomic tasks
   library(ggtree)       # for visualization and annotation of phylogenetic trees
   library(treeio)       # to import and store phylogenetic tree with associated data
-  library(pheatmap)     # to implement heatmaps with control over dimensions and appearance  library(ggtext)
+  library(optparse)     # to write "#!" shebang scripts that accept short and long flag/options
+  library(pheatmap)     # to implement heatmaps with control over dimensions and appearance  
+  library(ggtext)       # to render of complex formatted plot labels
+  library(scales)       # to map data to aesthetics
 })
 
 # Set NCBI API key for taxonomic queries
@@ -74,7 +77,7 @@ if (file.exists(opt$`ground-truth`)) {
 #taxonomy_data <- classification(tax_ids)  # Fetch taxonomy data
 
 # Directly get taxonomy data (skip tax_id fetching step)
-taxonomy_data <- classification(read_counts$species, db = "ncbi", http_version = 2L, verbose = TRUE)  # Fetch taxonomy data directly
+taxonomy_data <- classification(read_counts$species, db = "ncbi", http_version = 2L)  # Fetch taxonomy data directly
 
 # Construct phylogenetic tree
 tree <- class2tree(taxonomy_data)$phylo  # Convert classification to tree
