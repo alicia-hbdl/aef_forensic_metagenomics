@@ -13,7 +13,9 @@ suppressPackageStartupMessages({
   library(taxize)       # to interact with web APIs for taxonomic tasks
   library(ggtree)       # for visualization and annotation of phylogenetic trees
   library(treeio)       # to import and store phylogenetic tree with associated data
-  library(pheatmap)     # to implement heatmaps with control over dimensions and appearance  library(ggtext)
+  library(pheatmap)     # to implement heatmaps with control over dimensions and appearance  
+  library(optparse)     # to write "#!" shebang scripts that accept short and long flag/options 
+  library(ggtext)       # for rendering of complex formatted plot labels
 })
 
 # Set NCBI API key for taxonomic queries
