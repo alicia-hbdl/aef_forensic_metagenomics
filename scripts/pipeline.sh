@@ -221,14 +221,14 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
 
     echo -e "\nFirst few lines of R1 FASTQ:"
     if [[ -f "$FILTERED_FASTQ_DIR/${base}_metagenomic.1" ]]; then
-        zcat "$FILTERED_FASTQ_DIR/${base}_metagenomic.1" | head -n 4
+        cat "$FILTERED_FASTQ_DIR/${base}_metagenomic.1" | head -n 4
     else
         echo "❌ Missing R1 file: $FILTERED_FASTQ_DIR/${base}_metagenomic.1"
     fi
 
     echo -e "\n📈 Memory snapshot:"
     free -h
-    
+
     # Taxonomic classification with Kraken2
     echo -e "\nClassifying metagenomic reads with Kraken2..."
     KRAKEN_CMD="kraken2 --d \"$DATABASE\" --threads 8 --report \"$REPORTS_DIR/${base}.k2report\" \
@@ -288,14 +288,14 @@ cp "$ROOT_DIR"/scripts/logs/*_"$SLURM_JOB_ID".* "$LOG_DIR" || { echo "❌ Copyin
 
 echo -e "\n================================================= METAGENOMIC DIVERSITY ANALYSIS ================================================="
 
-"$ROOT_DIR/scripts/helper_scripts/diversity_analysis.sh" -b  "$BRACKEN_DIR" -d "$DIVERSITY_DIR" || { echo "❌ Diversity analysis failed!"; exit 1; }
+"$ROOT_DIR/scripts/helper_scripts/diversity_analysis.sh" -b  "$BRACKEN_DIR" -d "$DIVERSITY_DIR" 2>&1 || { echo "❌ Diversity analysis failed!"; exit 1; }
 echo -e "✅ Diversity analysis completed successfully."
 
 # Proceed if host DNA removal was performed
 if [[ "$REMOVE_HOST_DNA" == true ]]; then    
     echo -e "\n====================================================== HUMAN DNA ANALYSIS ======================================================"
     
-    "$ROOT_DIR/scripts/helper_scripts/host_dna_analysis.sh" "$ALIGNED_SAM_DIR" || { echo "❌ Host DNA analysis failed!"; exit 1; }
+    "$ROOT_DIR/scripts/helper_scripts/host_dna_analysis.sh" "$ALIGNED_SAM_DIR" 2>&1 || { echo "❌ Host DNA analysis failed!"; exit 1; }
     echo -e "✅ Host DNA analysis completed successfully."
 fi 
 
@@ -308,9 +308,9 @@ if cp $ROOT_DIR/scripts/logs/*_"$SLURM_JOB_ID".* "$LOG_DIR"; then
     echo -e "\n====================================================== COMPARISON TO OTHER RUNS ======================================================"
   
     # Generate the summary table and evaluation metrics including this run 
-    "$ROOT_DIR/scripts/helper_scripts/runs_summary.sh" "$RUN_DIR" || { echo "❌ Summary generation failed!"; exit 1; }
-    python "$ROOT_DIR/scripts/helper_scripts/evaluation_metrics.py" "$RUN_DIR" || { echo "❌ Evaluation metrics generation failed!"; exit 1; }
-    Rscript "$ROOT_DIR/scripts/helper_scripts/helper_scripts/read_progression.R" "$RUN_DIR" || { echo "❌ Read progression plot generation failed!"; exit 1; }
+    "$ROOT_DIR/scripts/helper_scripts/runs_summary.sh" "$RUN_DIR" 2>&1 || { echo "❌ Summary generation failed!"; exit 1; }
+    python "$ROOT_DIR/scripts/helper_scripts/evaluation_metrics.py" "$RUN_DIR" 2>&1 || { echo "❌ Evaluation metrics generation failed!"; exit 1; }
+    Rscript "$ROOT_DIR/scripts/helper_scripts/helper_scripts/read_progression.R" "$RUN_DIR" 2>&1 || { echo "❌ Read progression plot generation failed!"; exit 1; }
     
     # Remove the original log file when successful 
     rm $ROOT_DIR/scripts/logs/*_"$SLURM_JOB_ID".*
