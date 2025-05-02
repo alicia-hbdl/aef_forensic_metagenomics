@@ -3,9 +3,928 @@
 + GENOMES=/scratch/users/k24087895/final_project/data/genomes
 ++ date +%Y%m%d
 + DBNAME=/scratch/users/k24087895/final_project/data/databases/k2_custom_20250502
-++ dirname /var/lib/slurm/slurmd/job25663430/slurm_script
-++ dirname /var/lib/slurm/slurmd/job25663430/slurm_script
-+ source /var/lib/slurm/slurmd/job25663430/helper_scripts/environment_setup.sh /var/lib/slurm/slurmd/job25663430/metagenomics.yml
-/var/lib/slurm/slurmd/job25663430/slurm_script: line 28: /var/lib/slurm/slurmd/job25663430/helper_scripts/environment_setup.sh: No such file or directory
-+ echo '❌ Failed to set up Conda environment.'
-+ exit 1
+++ pwd
+++ pwd
++ source /scratch/users/k24087895/final_project/scripts/helper_scripts/environment_setup.sh /scratch/users/k24087895/final_project/scripts/metagenomics.yml
+++ [[ -z /scratch/users/k24087895/final_project/scripts/metagenomics.yml ]]
+++ [[ /scratch/users/k24087895/final_project/scripts/metagenomics.yml != *.yml ]]
+++ [[ ! -f /scratch/users/k24087895/final_project/scripts/metagenomics.yml ]]
+++ ENV_FILE=/scratch/users/k24087895/final_project/scripts/metagenomics.yml
++++ basename /scratch/users/k24087895/final_project/scripts/metagenomics.yml .yml
+++ ENV_NAME=metagenomics
+++ command -v conda
++++ conda shell.bash hook
+++ eval 'export CONDA_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python'\''
+
+# Copyright (C) 2012 Anaconda, Inc
+# SPDX-License-Identifier: BSD-3-Clause
+
+__conda_exe() (
+    "$CONDA_EXE" $_CE_M $_CE_CONDA "$@"
+)
+
+__conda_hashr() {
+    if [ -n "${ZSH_VERSION:+x}" ]; then
+        \rehash
+    elif [ -n "${POSH_VERSION:+x}" ]; then
+        :  # pass
+    else
+        \hash -r
+    fi
+}
+
+__conda_activate() {
+    if [ -n "${CONDA_PS1_BACKUP:+x}" ]; then
+        # Handle transition from shell activated with conda <= 4.3 to a subsequent activation
+        # after conda updated to >= 4.4. See issue #6173.
+        PS1="$CONDA_PS1_BACKUP"
+        \unset CONDA_PS1_BACKUP
+    fi
+    \local ask_conda
+    ask_conda="$(PS1="${PS1:-}" __conda_exe shell.posix "$@")" || \return
+    \eval "$ask_conda"
+    __conda_hashr
+}
+
+__conda_reactivate() {
+    \local ask_conda
+    ask_conda="$(PS1="${PS1:-}" __conda_exe shell.posix reactivate)" || \return
+    \eval "$ask_conda"
+    __conda_hashr
+}
+
+conda() {
+    \local cmd="${1-__missing__}"
+    case "$cmd" in
+        activate|deactivate)
+            __conda_activate "$@"
+            ;;
+        install|update|upgrade|remove|uninstall)
+            __conda_exe "$@" || \return
+            __conda_reactivate
+            ;;
+        *)
+            __conda_exe "$@"
+            ;;
+    esac
+}
+
+if [ -z "${CONDA_SHLVL+x}" ]; then
+    \export CONDA_SHLVL=0
+    # In dev-mode CONDA_EXE is python.exe and on Windows
+    # it is in a different relative location to condabin.
+    if [ -n "${_CE_CONDA:+x}" ] && [ -n "${WINDIR+x}" ]; then
+        PATH="$(\dirname "$CONDA_EXE")/condabin${PATH:+":${PATH}"}"
+    else
+        PATH="$(\dirname "$(\dirname "$CONDA_EXE")")/condabin${PATH:+":${PATH}"}"
+    fi
+    \export PATH
+
+    # We'\''re not allowing PS1 to be unbound. It must at least be set.
+    # However, we'\''re not exporting it, which can cause problems when starting a second shell
+    # via a first shell (i.e. starting zsh from bash).
+    if [ -z "${PS1+x}" ]; then
+        PS1=
+    fi
+fi
+
+conda activate base'
++++ export CONDA_EXE=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda
++++ CONDA_EXE=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda
++++ export _CE_M=
++++ _CE_M=
++++ export _CE_CONDA=
++++ _CE_CONDA=
++++ export CONDA_PYTHON_EXE=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python
++++ CONDA_PYTHON_EXE=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python
++++ '[' -z x ']'
++++ conda activate base
++++ local cmd=activate
++++ case "$cmd" in
++++ __conda_activate activate base
++++ '[' -n '' ']'
++++ local ask_conda
+++++ PS1=
+++++ __conda_exe shell.posix activate base
+++++ /software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda shell.posix activate base
++++ ask_conda='PS1='\''(base) '\''
+export PATH='\''/users/k24087895/.local/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin'\''
+export CONDA_SHLVL='\''1'\''
+export CONDA_PROMPT_MODIFIER='\''(base) '\'''
++++ eval 'PS1='\''(base) '\''
+export PATH='\''/users/k24087895/.local/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin'\''
+export CONDA_SHLVL='\''1'\''
+export CONDA_PROMPT_MODIFIER='\''(base) '\'''
+++++ PS1='(base) '
+++++ export PATH=/users/k24087895/.local/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin
+++++ PATH=/users/k24087895/.local/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin
+++++ export CONDA_SHLVL=1
+++++ CONDA_SHLVL=1
+++++ export 'CONDA_PROMPT_MODIFIER=(base) '
+++++ CONDA_PROMPT_MODIFIER='(base) '
++++ __conda_hashr
++++ '[' -n '' ']'
++++ '[' -n '' ']'
++++ hash -r
+++ conda env list
+++ local cmd=env
+++ case "$cmd" in
+++ __conda_exe env list
+++ grep -q metagenomics
+++ /software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda env list
+++ conda activate metagenomics
+++ local cmd=activate
+++ case "$cmd" in
+++ __conda_activate activate metagenomics
+++ '[' -n '' ']'
+++ local ask_conda
++++ PS1='(base) '
++++ __conda_exe shell.posix activate metagenomics
++++ /software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda shell.posix activate metagenomics
+++ ask_conda='PS1='\''(metagenomics) '\''
+export PATH='\''/users/k24087895/.local/bin:/users/k24087895/.conda/envs/metagenomics/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin'\''
+export CONDA_PREFIX='\''/users/k24087895/.conda/envs/metagenomics'\''
+export CONDA_SHLVL='\''2'\''
+export CONDA_DEFAULT_ENV='\''metagenomics'\''
+export CONDA_PROMPT_MODIFIER='\''(metagenomics) '\''
+export CONDA_PREFIX_1='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe'\''
+export CONDA_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python'\''
+. "/users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/activate-r-base.sh"
+. "/users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/libglib_activate.sh"
+. "/users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/libxml2_activate.sh"
+. "/users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/openjdk_activate.sh"'
+++ eval 'PS1='\''(metagenomics) '\''
+export PATH='\''/users/k24087895/.local/bin:/users/k24087895/.conda/envs/metagenomics/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin'\''
+export CONDA_PREFIX='\''/users/k24087895/.conda/envs/metagenomics'\''
+export CONDA_SHLVL='\''2'\''
+export CONDA_DEFAULT_ENV='\''metagenomics'\''
+export CONDA_PROMPT_MODIFIER='\''(metagenomics) '\''
+export CONDA_PREFIX_1='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe'\''
+export CONDA_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python'\''
+. "/users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/activate-r-base.sh"
+. "/users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/libglib_activate.sh"
+. "/users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/libxml2_activate.sh"
+. "/users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/openjdk_activate.sh"'
++++ PS1='(metagenomics) '
++++ export PATH=/users/k24087895/.local/bin:/users/k24087895/.conda/envs/metagenomics/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin
++++ PATH=/users/k24087895/.local/bin:/users/k24087895/.conda/envs/metagenomics/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin
++++ export CONDA_PREFIX=/users/k24087895/.conda/envs/metagenomics
++++ CONDA_PREFIX=/users/k24087895/.conda/envs/metagenomics
++++ export CONDA_SHLVL=2
++++ CONDA_SHLVL=2
++++ export CONDA_DEFAULT_ENV=metagenomics
++++ CONDA_DEFAULT_ENV=metagenomics
++++ export 'CONDA_PROMPT_MODIFIER=(metagenomics) '
++++ CONDA_PROMPT_MODIFIER='(metagenomics) '
++++ export CONDA_PREFIX_1=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe
++++ CONDA_PREFIX_1=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe
++++ export CONDA_EXE=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda
++++ CONDA_EXE=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda
++++ export _CE_M=
++++ _CE_M=
++++ export _CE_CONDA=
++++ _CE_CONDA=
++++ export CONDA_PYTHON_EXE=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python
++++ CONDA_PYTHON_EXE=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python
++++ . /users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/activate-r-base.sh
+++++ R CMD javareconf
+++++ '[' -n '' ']'
+++++ export RSTUDIO_WHICH_R=/users/k24087895/.conda/envs/metagenomics/bin/R
+++++ RSTUDIO_WHICH_R=/users/k24087895/.conda/envs/metagenomics/bin/R
++++ . /users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/libglib_activate.sh
+++++ export GSETTINGS_SCHEMA_DIR_CONDA_BACKUP=
+++++ GSETTINGS_SCHEMA_DIR_CONDA_BACKUP=
+++++ export GSETTINGS_SCHEMA_DIR=/users/k24087895/.conda/envs/metagenomics/share/glib-2.0/schemas
+++++ GSETTINGS_SCHEMA_DIR=/users/k24087895/.conda/envs/metagenomics/share/glib-2.0/schemas
++++ . /users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/libxml2_activate.sh
+++++ test -n ''
+++++ xml_catalog_files_libxml2=
+++++ XML_CATALOG_FILES=
+++++ conda_catalog_files=
+++++ ifs_libxml2=' 	
+'
+++++ IFS=' '
+++++ rem=/users/k24087895/.conda/envs/metagenomics
+++++ for pre in ${rem}
+++++ test '' = /users/k24087895/.conda/envs/metagenomics
+++++ conda_catalog_files=/users/k24087895/.conda/envs/metagenomics
+++++ rem=
+++++ IFS=' 	
+'
+++++ conda_catalog_files='file:///users/k24087895/.conda/envs/metagenomics/etc/xml/catalog file:///etc/xml/catalog'
+++++ export 'XML_CATALOG_FILES=file:///users/k24087895/.conda/envs/metagenomics/etc/xml/catalog file:///etc/xml/catalog'
+++++ XML_CATALOG_FILES='file:///users/k24087895/.conda/envs/metagenomics/etc/xml/catalog file:///etc/xml/catalog'
+++++ unset conda_catalog_files ifs_libxml2 rem
++++ . /users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/openjdk_activate.sh
+++++ '[' '' ']'
+++++ export JAVA_HOME=/users/k24087895/.conda/envs/metagenomics/lib/jvm
+++++ JAVA_HOME=/users/k24087895/.conda/envs/metagenomics/lib/jvm
+++++ '[' '' ']'
+++++ export JAVA_LD_LIBRARY_PATH=/users/k24087895/.conda/envs/metagenomics/lib/jvm/lib/server
+++++ JAVA_LD_LIBRARY_PATH=/users/k24087895/.conda/envs/metagenomics/lib/jvm/lib/server
+++ __conda_hashr
+++ '[' -n '' ']'
+++ '[' -n '' ']'
+++ hash -r
+++ echo '✅ '\''metagenomics'\'' environment activated successfully.'
+++ export PATH=/users/k24087895/.conda/envs/metagenomics/bin:/users/k24087895/.local/bin:/users/k24087895/.conda/envs/metagenomics/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin
+++ PATH=/users/k24087895/.conda/envs/metagenomics/bin:/users/k24087895/.local/bin:/users/k24087895/.conda/envs/metagenomics/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin
++++ python -c 'import sys; print(".".join(map(str, sys.version_info[:3])))'
+++ export PYTHONPATH=/users/k24087895/.conda/envs/metagenomics/lib/python3.12.10/site-packages:
+++ PYTHONPATH=/users/k24087895/.conda/envs/metagenomics/lib/python3.12.10/site-packages:
++ [[ 0 -gt 0 ]]
++ '[' -z /scratch/users/k24087895/final_project/data/genomes ']'
++ '[' -z /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 ']'
++ echo '✅ Arguments provided:'
++ echo '    DBNAME: /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502'
++ echo '    GENOMES: /scratch/users/k24087895/final_project/data/genomes'
++ '[' -d /scratch/users/k24087895/final_project/data/genomes ']'
++ echo '⚠️ Removing existing Genomes directory.'
++ rm -rf /scratch/users/k24087895/final_project/data/genomes
++ '[' -d /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 ']'
++ mkdir -p /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 /scratch/users/k24087895/final_project/data/genomes
++ cd /scratch/users/k24087895/final_project/data/genomes
++ genomes_urls=("https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/196/035/GCF_000196035.1_ASM19603v1/GCF_000196035.1_ASM19603v1_genomic.fna.gz" "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/006/765/GCF_000006765.1_ASM676v1/GCF_000006765.1_ASM676v1_genomic.fna.gz" "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/009/045/GCF_000009045.1_ASM904v1/GCF_000009045.1_ASM904v1_genomic.fna.gz" "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/005/845/GCF_000005845.2_ASM584v2/GCF_000005845.2_ASM584v2_genomic.fna.gz" "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/008/865/GCF_000008865.2_ASM886v2/GCF_000008865.2_ASM886v2_genomic.fna.gz" "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/961/225/GCF_029961225.1_ASM2996122v1/GCF_029961225.1_ASM2996122v1_genomic.fna.gz" "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/006/945/GCF_000006945.2_ASM694v2/GCF_000006945.2_ASM694v2_genomic.fna.gz" "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/393/015/GCF_000393015.1_Ente_faec_T5_V1/GCF_000393015.1_Ente_faec_T5_V1_genomic.fna.gz" "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/013/425/GCF_000013425.1_ASM1342v1/GCF_000013425.1_ASM1342v1_genomic.fna.gz" "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/146/045/GCF_000146045.2_R64/GCF_000146045.2_R64_genomic.fna.gz" "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/091/045/GCF_000091045.1_ASM9104v1/GCF_000091045.1_ASM9104v1_genomic.fna.gz")
++ echo 'Downloading genomes...'
++ for url in "${genomes_urls[@]}"
++ wget -nc --tries=3 https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/196/035/GCF_000196035.1_ASM19603v1/GCF_000196035.1_ASM19603v1_genomic.fna.gz
+--2025-05-02 14:01:48--  https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/196/035/GCF_000196035.1_ASM19603v1/GCF_000196035.1_ASM19603v1_genomic.fna.gz
+Resolving ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)... 130.14.250.13, 130.14.250.31, 130.14.250.7, ...
+Connecting to ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)|130.14.250.13|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 869413 (849K) [application/x-gzip]
+Saving to: ‘GCF_000196035.1_ASM19603v1_genomic.fna.gz’
+
+     0K .......... .......... .......... .......... ..........  5%  309K 3s
+    50K .......... .......... .......... .......... .......... 11%  614K 2s
+   100K .......... .......... .......... .......... .......... 17%  263K 2s
+   150K .......... .......... .......... .......... .......... 23%  127M 1s
+   200K .......... .......... .......... .......... .......... 29%  616K 1s
+   250K .......... .......... .......... .......... .......... 35% 46.6M 1s
+   300K .......... .......... .......... .......... .......... 41% 48.1M 1s
+   350K .......... .......... .......... .......... .......... 47% 86.4K 1s
+   400K .......... .......... .......... .......... .......... 53%  122M 1s
+   450K .......... .......... .......... .......... .......... 58% 7.68M 1s
+   500K .......... .......... .......... .......... .......... 64%  110M 1s
+   550K .......... .......... .......... .......... .......... 70% 95.5M 0s
+   600K .......... .......... .......... .......... .......... 76% 53.7K 1s
+   650K .......... .......... .......... .......... .......... 82%  134M 0s
+   700K .......... .......... .......... .......... .......... 88% 3.08M 0s
+   750K .......... .......... .......... .......... .......... 94%  132M 0s
+   800K .......... .......... .......... .......... ......... 100%  123M=2.1s
+
+2025-05-02 14:01:59 (414 KB/s) - ‘GCF_000196035.1_ASM19603v1_genomic.fna.gz’ saved [869413/869413]
+
+++ basename https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/196/035/GCF_000196035.1_ASM19603v1/GCF_000196035.1_ASM19603v1_genomic.fna.gz
++ filename=GCF_000196035.1_ASM19603v1_genomic.fna.gz
++ gunzip -f GCF_000196035.1_ASM19603v1_genomic.fna.gz
++ for url in "${genomes_urls[@]}"
++ wget -nc --tries=3 https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/006/765/GCF_000006765.1_ASM676v1/GCF_000006765.1_ASM676v1_genomic.fna.gz
+--2025-05-02 14:01:59--  https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/006/765/GCF_000006765.1_ASM676v1/GCF_000006765.1_ASM676v1_genomic.fna.gz
+Resolving ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)... 130.14.250.31, 130.14.250.7, 130.14.250.10, ...
+Connecting to ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)|130.14.250.31|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1787220 (1.7M) [application/x-gzip]
+Saving to: ‘GCF_000006765.1_ASM676v1_genomic.fna.gz’
+
+     0K .......... .......... .......... .......... ..........  2%  309K 5s
+    50K .......... .......... .......... .......... ..........  5% 1.35M 3s
+   100K .......... .......... .......... .......... ..........  8% 1.07M 3s
+   150K .......... .......... .......... .......... .......... 11% 49.3M 2s
+   200K .......... .......... .......... .......... .......... 14%  624K 2s
+   250K .......... .......... .......... .......... .......... 17% 54.5M 2s
+   300K .......... .......... .......... .......... .......... 20% 73.3M 1s
+   350K .......... .......... .......... .......... .......... 22% 49.7M 1s
+   400K .......... .......... .......... .......... .......... 25% 1.45M 1s
+   450K .......... .......... .......... .......... .......... 28% 1.08M 1s
+   500K .......... .......... .......... .......... .......... 31% 49.4M 1s
+   550K .......... .......... .......... .......... .......... 34%  114M 1s
+   600K .......... .......... .......... .......... .......... 37%  120M 1s
+   650K .......... .......... .......... .......... .......... 40%  145M 1s
+   700K .......... .......... .......... .......... .......... 42%  118M 1s
+   750K .......... .......... .......... .......... .......... 45%  130M 0s
+   800K .......... .......... .......... .......... .......... 48%  138M 0s
+   850K .......... .......... .......... .......... .......... 51% 1.47M 0s
+   900K .......... .......... .......... .......... .......... 54%  125M 0s
+   950K .......... .......... .......... .......... .......... 57% 1.10M 0s
+  1000K .......... .......... .......... .......... .......... 60% 90.3M 0s
+  1050K .......... .......... .......... .......... .......... 63% 47.2M 0s
+  1100K .......... .......... .......... .......... .......... 65%  112M 0s
+  1150K .......... .......... .......... .......... .......... 68%  143M 0s
+  1200K .......... .......... .......... .......... .......... 71%  115M 0s
+  1250K .......... .......... .......... .......... .......... 74%  127M 0s
+  1300K .......... .......... .......... .......... .......... 77%  121M 0s
+  1350K .......... .......... .......... .......... .......... 80%  116M 0s
+  1400K .......... .......... .......... .......... .......... 83%  137M 0s
+  1450K .......... .......... .......... .......... .......... 85%  119M 0s
+  1500K .......... .......... .......... .......... .......... 88%  138M 0s
+  1550K .......... .......... .......... .......... .......... 91%  140M 0s
+  1600K .......... .......... .......... .......... .......... 94%  123M 0s
+  1650K .......... .......... .......... .......... .......... 97%  140M 0s
+  1700K .......... .......... .......... .......... .....     100%  129M=0.5s
+
+2025-05-02 14:02:05 (3.45 MB/s) - ‘GCF_000006765.1_ASM676v1_genomic.fna.gz’ saved [1787220/1787220]
+
+++ basename https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/006/765/GCF_000006765.1_ASM676v1/GCF_000006765.1_ASM676v1_genomic.fna.gz
++ filename=GCF_000006765.1_ASM676v1_genomic.fna.gz
++ gunzip -f GCF_000006765.1_ASM676v1_genomic.fna.gz
++ for url in "${genomes_urls[@]}"
++ wget -nc --tries=3 https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/009/045/GCF_000009045.1_ASM904v1/GCF_000009045.1_ASM904v1_genomic.fna.gz
+--2025-05-02 14:02:05--  https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/009/045/GCF_000009045.1_ASM904v1/GCF_000009045.1_ASM904v1_genomic.fna.gz
+Resolving ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)... 130.14.250.10, 130.14.250.7, 130.14.250.13, ...
+Connecting to ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)|130.14.250.10|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1248396 (1.2M) [application/x-gzip]
+Saving to: ‘GCF_000009045.1_ASM904v1_genomic.fna.gz’
+
+     0K .......... .......... .......... .......... ..........  4%  308K 4s
+    50K .......... .......... .......... .......... ..........  8% 1.30M 2s
+   100K .......... .......... .......... .......... .......... 12% 1.09M 2s
+   150K .......... .......... .......... .......... .......... 16% 46.6M 1s
+   200K .......... .......... .......... .......... .......... 20%  624K 1s
+   250K .......... .......... .......... .......... .......... 24%  127M 1s
+   300K .......... .......... .......... .......... .......... 28%  131M 1s
+   350K .......... .......... .......... .......... .......... 32% 95.0M 1s
+   400K .......... .......... .......... .......... .......... 36% 1.35M 1s
+   450K .......... .......... .......... .......... .......... 41% 1.11M 1s
+   500K .......... .......... .......... .......... .......... 45%  132M 0s
+   550K .......... .......... .......... .......... .......... 49%  133M 0s
+   600K .......... .......... .......... .......... .......... 53%  120M 0s
+   650K .......... .......... .......... .......... .......... 57%  141M 0s
+   700K .......... .......... .......... .......... .......... 61%  124M 0s
+   750K .......... .......... .......... .......... .......... 65%  138M 0s
+   800K .......... .......... .......... .......... .......... 69%  146M 0s
+   850K .......... .......... .......... .......... .......... 73% 1.40M 0s
+   900K .......... .......... .......... .......... .......... 77%  121M 0s
+   950K .......... .......... .......... .......... .......... 82% 1.12M 0s
+  1000K .......... .......... .......... .......... .......... 86%  131M 0s
+  1050K .......... .......... .......... .......... .......... 90%  133M 0s
+  1100K .......... .......... .......... .......... .......... 94%  122M 0s
+  1150K .......... .......... .......... .......... .......... 98%  145M 0s
+  1200K .......... .........                                  100% 99.9M=0.5s
+
+2025-05-02 14:02:11 (2.43 MB/s) - ‘GCF_000009045.1_ASM904v1_genomic.fna.gz’ saved [1248396/1248396]
+
+++ basename https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/009/045/GCF_000009045.1_ASM904v1/GCF_000009045.1_ASM904v1_genomic.fna.gz
++ filename=GCF_000009045.1_ASM904v1_genomic.fna.gz
++ gunzip -f GCF_000009045.1_ASM904v1_genomic.fna.gz
++ for url in "${genomes_urls[@]}"
++ wget -nc --tries=3 https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/005/845/GCF_000005845.2_ASM584v2/GCF_000005845.2_ASM584v2_genomic.fna.gz
+--2025-05-02 14:02:11--  https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/005/845/GCF_000005845.2_ASM584v2/GCF_000005845.2_ASM584v2_genomic.fna.gz
+Resolving ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)... 130.14.250.13, 130.14.250.7, 130.14.250.10, ...
+Connecting to ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)|130.14.250.13|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1379902 (1.3M) [application/x-gzip]
+Saving to: ‘GCF_000005845.2_ASM584v2_genomic.fna.gz’
+
+     0K .......... .......... .......... .......... ..........  3%  153K 8s
+    50K .......... .......... .......... .......... ..........  7%  137K 9s
+   100K .......... .......... .......... .......... .......... 11%  133K 9s
+   150K .......... .......... .......... .......... .......... 14%  153K 8s
+   200K .......... .......... .......... .......... .......... 18%  103K 8s
+   250K .......... .......... .......... .......... .......... 22%  144K 8s
+   300K .......... .......... .......... .......... .......... 25%  159K 7s
+   350K .......... .......... .......... .......... .......... 29%  131K 7s
+   400K .......... .......... .......... .......... .......... 33%  167K 6s
+   450K .......... .......... .......... .......... .......... 37%  104K 6s
+   500K .......... .......... .......... .......... .......... 40%  155K 6s
+   550K .......... .......... .......... .......... .......... 44%  157K 5s
+   600K .......... .......... .......... .......... .......... 48%  124K 5s
+   650K .......... .......... .......... .......... .......... 51%  137K 5s
+   700K .......... .......... .......... .......... .......... 55%  107K 4s
+   750K .......... .......... .......... .......... .......... 59%  135K 4s
+   800K .......... .......... .......... .......... .......... 63%  142K 4s
+   850K .......... .......... .......... .......... .......... 66%  143K 3s
+   900K .......... .......... .......... .......... .......... 70%  171K 3s
+   950K .......... .......... .......... .......... .......... 74% 94.3K 3s
+  1000K .......... .......... .......... .......... .......... 77%  162K 2s
+  1050K .......... .......... .......... .......... .......... 81%  149K 2s
+  1100K .......... .......... .......... .......... .......... 85%  138K 1s
+  1150K .......... .......... .......... .......... .......... 89%  176K 1s
+  1200K .......... .......... .......... .......... .......... 92%  130K 1s
+  1250K .......... .......... .......... .......... .......... 96%  149K 0s
+  1300K .......... .......... .......... .......... .......   100%  168K=9.8s
+
+2025-05-02 14:02:24 (138 KB/s) - ‘GCF_000005845.2_ASM584v2_genomic.fna.gz’ saved [1379902/1379902]
+
+++ basename https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/005/845/GCF_000005845.2_ASM584v2/GCF_000005845.2_ASM584v2_genomic.fna.gz
++ filename=GCF_000005845.2_ASM584v2_genomic.fna.gz
++ gunzip -f GCF_000005845.2_ASM584v2_genomic.fna.gz
++ for url in "${genomes_urls[@]}"
++ wget -nc --tries=3 https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/008/865/GCF_000008865.2_ASM886v2/GCF_000008865.2_ASM886v2_genomic.fna.gz
+--2025-05-02 14:02:24--  https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/008/865/GCF_000008865.2_ASM886v2/GCF_000008865.2_ASM886v2_genomic.fna.gz
+Resolving ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)... 130.14.250.31, 130.14.250.10, 130.14.250.7, ...
+Connecting to ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)|130.14.250.31|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1663694 (1.6M) [application/x-gzip]
+Saving to: ‘GCF_000008865.2_ASM886v2_genomic.fna.gz’
+
+     0K .......... .......... .......... .......... ..........  3%  143K 11s
+    50K .......... .......... .......... .......... ..........  6%  121K 12s
+   100K .......... .......... .......... .......... ..........  9%  123K 12s
+   150K .......... .......... .......... .......... .......... 12%  147K 11s
+   200K .......... .......... .......... .......... .......... 15%  105K 11s
+   250K .......... .......... .......... .......... .......... 18%  135K 10s
+   300K .......... .......... .......... .......... .......... 21% 93.3K 11s
+   350K .......... .......... .......... .......... .......... 24%  106K 10s
+   400K .......... .......... .......... .......... .......... 27%  129K 10s
+   450K .......... .......... .......... .......... .......... 30%  125K 9s
+   500K .......... .......... .......... .......... .......... 33%  137K 9s
+   550K .......... .......... .......... .......... .......... 36%  146K 8s
+   600K .......... .......... .......... .......... .......... 40%  103K 8s
+   650K .......... .......... .......... .......... .......... 43%  152K 7s
+   700K .......... .......... .......... .......... .......... 46%  132K 7s
+   750K .......... .......... .......... .......... .......... 49%  140K 7s
+   800K .......... .......... .......... .......... .......... 52%  149K 6s
+   850K .......... .......... .......... .......... .......... 55%  116K 6s
+   900K .......... .......... .......... .......... .......... 58%  153K 5s
+   950K .......... .......... .......... .......... .......... 61%  129K 5s
+  1000K .......... .......... .......... .......... .......... 64%  128K 5s
+  1050K .......... .......... .......... .......... .......... 67%  127K 4s
+  1100K .......... .......... .......... .......... .......... 70%  124K 4s
+  1150K .......... .......... .......... .......... .......... 73%  137K 3s
+  1200K .......... .......... .......... .......... .......... 76%  130K 3s
+  1250K .......... .......... .......... .......... .......... 80%  147K 3s
+  1300K .......... .......... .......... .......... .......... 83%  150K 2s
+  1350K .......... .......... .......... .......... .......... 86%  106K 2s
+  1400K .......... .......... .......... .......... .......... 89%  148K 1s
+  1450K .......... .......... .......... .......... .......... 92%  112K 1s
+  1500K .......... .......... .......... .......... .......... 95%  151K 1s
+  1550K .......... .......... .......... .......... .......... 98%  157K 0s
+  1600K .......... .......... ....                            100% 67.3K=13s
+
+2025-05-02 14:02:37 (127 KB/s) - ‘GCF_000008865.2_ASM886v2_genomic.fna.gz’ saved [1663694/1663694]
+
+++ basename https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/008/865/GCF_000008865.2_ASM886v2/GCF_000008865.2_ASM886v2_genomic.fna.gz
++ filename=GCF_000008865.2_ASM886v2_genomic.fna.gz
++ gunzip -f GCF_000008865.2_ASM886v2_genomic.fna.gz
++ for url in "${genomes_urls[@]}"
++ wget -nc --tries=3 https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/961/225/GCF_029961225.1_ASM2996122v1/GCF_029961225.1_ASM2996122v1_genomic.fna.gz
+--2025-05-02 14:02:38--  https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/961/225/GCF_029961225.1_ASM2996122v1/GCF_029961225.1_ASM2996122v1_genomic.fna.gz
+Resolving ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)... 130.14.250.12, 130.14.250.13, 130.14.250.7, ...
+Connecting to ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)|130.14.250.12|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 622230 (608K) [application/x-gzip]
+Saving to: ‘GCF_029961225.1_ASM2996122v1_genomic.fna.gz’
+
+     0K .......... .......... .......... .......... ..........  8%  163K 3s
+    50K .......... .......... .......... .......... .......... 16%  166K 3s
+   100K .......... .......... .......... .......... .......... 24%  111K 3s
+   150K .......... .......... .......... .......... .......... 32%  127K 3s
+   200K .......... .......... .......... .......... .......... 41%  121K 3s
+   250K .......... .......... .......... .......... .......... 49%  160K 2s
+   300K .......... .......... .......... .......... .......... 57%  158K 2s
+   350K .......... .......... .......... .......... .......... 65%  137K 1s
+   400K .......... .......... .......... .......... .......... 74%  146K 1s
+   450K .......... .......... .......... .......... .......... 82%  150K 1s
+   500K .......... .......... .......... .......... .......... 90%  145K 0s
+   550K .......... .......... .......... .......... .......... 98%  158K 0s
+   600K .......                                               100% 89.4K=4.3s
+
+2025-05-02 14:02:48 (142 KB/s) - ‘GCF_029961225.1_ASM2996122v1_genomic.fna.gz’ saved [622230/622230]
+
+++ basename https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/961/225/GCF_029961225.1_ASM2996122v1/GCF_029961225.1_ASM2996122v1_genomic.fna.gz
++ filename=GCF_029961225.1_ASM2996122v1_genomic.fna.gz
++ gunzip -f GCF_029961225.1_ASM2996122v1_genomic.fna.gz
++ for url in "${genomes_urls[@]}"
++ wget -nc --tries=3 https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/006/945/GCF_000006945.2_ASM694v2/GCF_000006945.2_ASM694v2_genomic.fna.gz
+--2025-05-02 14:02:48--  https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/006/945/GCF_000006945.2_ASM694v2/GCF_000006945.2_ASM694v2_genomic.fna.gz
+Resolving ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)... 130.14.250.10, 130.14.250.12, 130.14.250.13, ...
+Connecting to ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)|130.14.250.10|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1471540 (1.4M) [application/x-gzip]
+Saving to: ‘GCF_000006945.2_ASM694v2_genomic.fna.gz’
+
+     0K .......... .......... .......... .......... ..........  3%  155K 9s
+    50K .......... .......... .......... .......... ..........  6%  124K 10s
+   100K .......... .......... .......... .......... .......... 10% 96.5K 11s
+   150K .......... .......... .......... .......... .......... 13%  154K 10s
+   200K .......... .......... .......... .......... .......... 17%  117K 9s
+   250K .......... .......... .......... .......... .......... 20%  164K 9s
+   300K .......... .......... .......... .......... .......... 24%  136K 8s
+   350K .......... .......... .......... .......... .......... 27%  130K 8s
+   400K .......... .......... .......... .......... .......... 31%  180K 7s
+   450K .......... .......... .......... .......... .......... 34%  110K 7s
+   500K .......... .......... .......... .......... .......... 38%  180K 7s
+   550K .......... .......... .......... .......... .......... 41%  184K 6s
+   600K .......... .......... .......... .......... .......... 45% 93.4K 6s
+   650K .......... .......... .......... .......... .......... 48%  143K 5s
+   700K .......... .......... .......... .......... .......... 52%  148K 5s
+   750K .......... .......... .......... .......... .......... 55%  163K 5s
+   800K .......... .......... .......... .......... .......... 59%  138K 4s
+   850K .......... .......... .......... .......... .......... 62%  129K 4s
+   900K .......... .......... .......... .......... .......... 66%  157K 4s
+   950K .......... .......... .......... .......... .......... 69%  127K 3s
+  1000K .......... .......... .......... .......... .......... 73%  150K 3s
+  1050K .......... .......... .......... .......... .......... 76%  148K 2s
+  1100K .......... .......... .......... .......... .......... 80%  123K 2s
+  1150K .......... .......... .......... .......... .......... 83%  177K 2s
+  1200K .......... .......... .......... .......... .......... 86%  148K 1s
+  1250K .......... .......... .......... .......... .......... 90%  165K 1s
+  1300K .......... .......... .......... .......... .......... 93% 89.1K 1s
+  1350K .......... .......... .......... .......... .......... 97% 93.5K 0s
+  1400K .......... .......... .......... .......              100%  126K=11s
+
+2025-05-02 14:02:59 (134 KB/s) - ‘GCF_000006945.2_ASM694v2_genomic.fna.gz’ saved [1471540/1471540]
+
+++ basename https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/006/945/GCF_000006945.2_ASM694v2/GCF_000006945.2_ASM694v2_genomic.fna.gz
++ filename=GCF_000006945.2_ASM694v2_genomic.fna.gz
++ gunzip -f GCF_000006945.2_ASM694v2_genomic.fna.gz
++ for url in "${genomes_urls[@]}"
++ wget -nc --tries=3 https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/393/015/GCF_000393015.1_Ente_faec_T5_V1/GCF_000393015.1_Ente_faec_T5_V1_genomic.fna.gz
+--2025-05-02 14:02:59--  https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/393/015/GCF_000393015.1_Ente_faec_T5_V1/GCF_000393015.1_Ente_faec_T5_V1_genomic.fna.gz
+Resolving ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)... 130.14.250.7, 130.14.250.11, 130.14.250.10, ...
+Connecting to ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)|130.14.250.7|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 845015 (825K) [application/x-gzip]
+Saving to: ‘GCF_000393015.1_Ente_faec_T5_V1_genomic.fna.gz’
+
+     0K .......... .......... .......... .......... ..........  6%  107K 7s
+    50K .......... .......... .......... .......... .......... 12%  107K 7s
+   100K .......... .......... .......... .......... .......... 18% 99.9K 6s
+   150K .......... .......... .......... .......... .......... 24%  124K 6s
+   200K .......... .......... .......... .......... .......... 30% 92.1K 5s
+   250K .......... .......... .......... .......... .......... 36%  121K 5s
+   300K .......... .......... .......... .......... .......... 42%  102K 4s
+   350K .......... .......... .......... .......... .......... 48% 97.5K 4s
+   400K .......... .......... .......... .......... .......... 54% 85.1K 4s
+   450K .......... .......... .......... .......... .......... 60%  103K 3s
+   500K .......... .......... .......... .......... .......... 66%  105K 3s
+   550K .......... .......... .......... .......... .......... 72%  117K 2s
+   600K .......... .......... .......... .......... .......... 78% 85.8K 2s
+   650K .......... .......... .......... .......... .......... 84%  132K 1s
+   700K .......... .......... .......... .......... .......... 90% 96.8K 1s
+   750K .......... .......... .......... .......... .......... 96%  114K 0s
+   800K .......... .......... .....                           100% 98.3K=7.9s
+
+2025-05-02 14:03:13 (104 KB/s) - ‘GCF_000393015.1_Ente_faec_T5_V1_genomic.fna.gz’ saved [845015/845015]
+
+++ basename https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/393/015/GCF_000393015.1_Ente_faec_T5_V1/GCF_000393015.1_Ente_faec_T5_V1_genomic.fna.gz
++ filename=GCF_000393015.1_Ente_faec_T5_V1_genomic.fna.gz
++ gunzip -f GCF_000393015.1_Ente_faec_T5_V1_genomic.fna.gz
++ for url in "${genomes_urls[@]}"
++ wget -nc --tries=3 https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/013/425/GCF_000013425.1_ASM1342v1/GCF_000013425.1_ASM1342v1_genomic.fna.gz
+--2025-05-02 14:03:14--  https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/013/425/GCF_000013425.1_ASM1342v1/GCF_000013425.1_ASM1342v1_genomic.fna.gz
+Resolving ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)... 130.14.250.31, 130.14.250.10, 130.14.250.7, ...
+Connecting to ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)|130.14.250.31|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 820675 (801K) [application/x-gzip]
+Saving to: ‘GCF_000013425.1_ASM1342v1_genomic.fna.gz’
+
+     0K .......... .......... .......... .......... ..........  6%  115K 7s
+    50K .......... .......... .......... .......... .......... 12% 95.7K 7s
+   100K .......... .......... .......... .......... .......... 18%  106K 6s
+   150K .......... .......... .......... .......... .......... 24%  113K 6s
+   200K .......... .......... .......... .......... .......... 31%  111K 5s
+   250K .......... .......... .......... .......... .......... 37%  118K 5s
+   300K .......... .......... .......... .......... .......... 43%  125K 4s
+   350K .......... .......... .......... .......... .......... 49% 90.0K 4s
+   400K .......... .......... .......... .......... .......... 56%  124K 3s
+   450K .......... .......... .......... .......... .......... 62% 99.4K 3s
+   500K .......... .......... .......... .......... .......... 68%  111K 2s
+   550K .......... .......... .......... .......... .......... 74%  108K 2s
+   600K .......... .......... .......... .......... .......... 81% 94.1K 1s
+   650K .......... .......... .......... .......... .......... 87%  123K 1s
+   700K .......... .......... .......... .......... .......... 93% 93.7K 0s
+   750K .......... .......... .......... .......... .......... 99%  102K 0s
+   800K .                                                     100% 2.68T=7.5s
+
+2025-05-02 14:03:22 (107 KB/s) - ‘GCF_000013425.1_ASM1342v1_genomic.fna.gz’ saved [820675/820675]
+
+++ basename https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/013/425/GCF_000013425.1_ASM1342v1/GCF_000013425.1_ASM1342v1_genomic.fna.gz
++ filename=GCF_000013425.1_ASM1342v1_genomic.fna.gz
++ gunzip -f GCF_000013425.1_ASM1342v1_genomic.fna.gz
++ for url in "${genomes_urls[@]}"
++ wget -nc --tries=3 https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/146/045/GCF_000146045.2_R64/GCF_000146045.2_R64_genomic.fna.gz
+--2025-05-02 14:03:22--  https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/146/045/GCF_000146045.2_R64/GCF_000146045.2_R64_genomic.fna.gz
+Resolving ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)... 130.14.250.12, 130.14.250.13, 130.14.250.11, ...
+Connecting to ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)|130.14.250.12|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 3843460 (3.7M) [application/x-gzip]
+Saving to: ‘GCF_000146045.2_R64_genomic.fna.gz’
+
+     0K .......... .......... .......... .......... ..........  1%  117K 32s
+    50K .......... .......... .......... .......... ..........  2%  106K 33s
+   100K .......... .......... .......... .......... ..........  3% 91.6K 35s
+   150K .......... .......... .......... .......... ..........  5%  105K 34s
+   200K .......... .......... .......... .......... ..........  6% 85.0K 35s
+   250K .......... .......... .......... .......... ..........  7%  122K 34s
+   300K .......... .......... .......... .......... ..........  9% 97.7K 33s
+   350K .......... .......... .......... .......... .......... 10% 88.6K 33s
+   400K .......... .......... .......... .......... .......... 11% 81.6K 34s
+   450K .......... .......... .......... .......... .......... 13% 83.6K 34s
+   500K .......... .......... .......... .......... .......... 14% 66.1K 35s
+   550K .......... .......... .......... .......... .......... 15% 85.7K 34s
+   600K .......... .......... .......... .......... .......... 17% 76.9K 34s
+   650K .......... .......... .......... .......... .......... 18% 87.1K 34s
+   700K .......... .......... .......... .......... .......... 19% 71.8K 34s
+   750K .......... .......... .......... .......... .......... 21% 85.6K 33s
+   800K .......... .......... .......... .......... .......... 22%  103K 33s
+   850K .......... .......... .......... .......... .......... 23% 79.2K 32s
+   900K .......... .......... .......... .......... .......... 25%  108K 31s
+   950K .......... .......... .......... .......... .......... 26% 93.4K 31s
+  1000K .......... .......... .......... .......... .......... 27% 93.7K 30s
+  1050K .......... .......... .......... .......... .......... 29%  115K 29s
+  1100K .......... .......... .......... .......... .......... 30%  108K 29s
+  1150K .......... .......... .......... .......... .......... 31%  106K 28s
+  1200K .......... .......... .......... .......... .......... 33%  102K 27s
+  1250K .......... .......... .......... .......... .......... 34% 96.8K 27s
+  1300K .......... .......... .......... .......... .......... 35%  110K 26s
+  1350K .......... .......... .......... .......... .......... 37% 97.4K 25s
+  1400K .......... .......... .......... .......... .......... 38%  121K 25s
+  1450K .......... .......... .......... .......... .......... 39%  102K 24s
+  1500K .......... .......... .......... .......... .......... 41%  115K 23s
+  1550K .......... .......... .......... .......... .......... 42%  111K 23s
+  1600K .......... .......... .......... .......... .......... 43%  114K 22s
+  1650K .......... .......... .......... .......... .......... 45%  125K 21s
+  1700K .......... .......... .......... .......... .......... 46%  112K 21s
+  1750K .......... .......... .......... .......... .......... 47% 96.4K 20s
+  1800K .......... .......... .......... .......... .......... 49%  104K 20s
+  1850K .......... .......... .......... .......... .......... 50% 82.9K 19s
+  1900K .......... .......... .......... .......... .......... 51%  101K 19s
+  1950K .......... .......... .......... .......... .......... 53% 97.2K 18s
+  2000K .......... .......... .......... .......... .......... 54%  115K 18s
+  2050K .......... .......... .......... .......... .......... 55%  118K 17s
+  2100K .......... .......... .......... .......... .......... 57% 66.1K 17s
+  2150K .......... .......... .......... .......... .......... 58%  103K 16s
+  2200K .......... .......... .......... .......... .......... 59% 73.9K 16s
+  2250K .......... .......... .......... .......... .......... 61% 83.3K 15s
+  2300K .......... .......... .......... .......... .......... 62% 99.7K 15s
+  2350K .......... .......... .......... .......... .......... 63% 76.3K 14s
+  2400K .......... .......... .......... .......... .......... 65% 93.8K 14s
+  2450K .......... .......... .......... .......... .......... 66% 89.6K 13s
+  2500K .......... .......... .......... .......... .......... 67% 93.5K 13s
+  2550K .......... .......... .......... .......... .......... 69% 85.3K 12s
+  2600K .......... .......... .......... .......... .......... 70% 58.0K 12s
+  2650K .......... .......... .......... .......... .......... 71% 81.0K 11s
+  2700K .......... .......... .......... .......... .......... 73% 77.1K 11s
+  2750K .......... .......... .......... .......... .......... 74% 94.9K 10s
+  2800K .......... .......... .......... .......... .......... 75% 95.3K 10s
+  2850K .......... .......... .......... .......... .......... 77% 72.2K 9s
+  2900K .......... .......... .......... .......... .......... 78% 89.8K 9s
+  2950K .......... .......... .......... .......... .......... 79% 74.0K 8s
+  3000K .......... .......... .......... .......... .......... 81% 91.1K 8s
+  3050K .......... .......... .......... .......... .......... 82% 79.1K 7s
+  3100K .......... .......... .......... .......... .......... 83% 86.3K 7s
+  3150K .......... .......... .......... .......... .......... 85% 92.9K 6s
+  3200K .......... .......... .......... .......... .......... 86% 86.2K 5s
+  3250K .......... .......... .......... .......... .......... 87% 85.7K 5s
+  3300K .......... .......... .......... .......... .......... 89% 98.2K 4s
+  3350K .......... .......... .......... .......... .......... 90% 74.6K 4s
+  3400K .......... .......... .......... .......... .......... 91% 81.0K 3s
+  3450K .......... .......... .......... .......... .......... 93% 62.6K 3s
+  3500K .......... .......... .......... .......... .......... 94% 81.6K 2s
+  3550K .......... .......... .......... .......... .......... 95% 86.1K 2s
+  3600K .......... .......... .......... .......... .......... 97% 64.6K 1s
+  3650K .......... .......... .......... .......... .......... 98%  101K 1s
+  3700K .......... .......... .......... .......... .......... 99% 71.6K 0s
+  3750K ...                                                   100% 6.29T=42s
+
+2025-05-02 14:04:05 (89.8 KB/s) - ‘GCF_000146045.2_R64_genomic.fna.gz’ saved [3843460/3843460]
+
+++ basename https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/146/045/GCF_000146045.2_R64/GCF_000146045.2_R64_genomic.fna.gz
++ filename=GCF_000146045.2_R64_genomic.fna.gz
++ gunzip -f GCF_000146045.2_R64_genomic.fna.gz
++ for url in "${genomes_urls[@]}"
++ wget -nc --tries=3 https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/091/045/GCF_000091045.1_ASM9104v1/GCF_000091045.1_ASM9104v1_genomic.fna.gz
+--2025-05-02 14:04:05--  https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/091/045/GCF_000091045.1_ASM9104v1/GCF_000091045.1_ASM9104v1_genomic.fna.gz
+Resolving ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)... 130.14.250.7, 130.14.250.31, 130.14.250.11, ...
+Connecting to ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)|130.14.250.7|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 5988547 (5.7M) [application/x-gzip]
+Saving to: ‘GCF_000091045.1_ASM9104v1_genomic.fna.gz’
+
+     0K .......... .......... .......... .......... ..........  0% 91.9K 63s
+    50K .......... .......... .......... .......... ..........  1% 83.5K 66s
+   100K .......... .......... .......... .......... ..........  2% 66.5K 72s
+   150K .......... .......... .......... .......... ..........  3%  116K 66s
+   200K .......... .......... .......... .......... ..........  4% 94.7K 64s
+   250K .......... .......... .......... .......... ..........  5% 82.8K 64s
+   300K .......... .......... .......... .......... ..........  5% 93.9K 63s
+   350K .......... .......... .......... .......... ..........  6% 76.0K 63s
+   400K .......... .......... .......... .......... ..........  7% 87.0K 63s
+   450K .......... .......... .......... .......... ..........  8% 75.3K 63s
+   500K .......... .......... .......... .......... ..........  9%  111K 61s
+   550K .......... .......... .......... .......... .......... 10%  126K 59s
+   600K .......... .......... .......... .......... .......... 11% 87.5K 58s
+   650K .......... .......... .......... .......... .......... 11%  135K 56s
+   700K .......... .......... .......... .......... .......... 12% 97.1K 56s
+   750K .......... .......... .......... .......... .......... 13%  102K 55s
+   800K .......... .......... .......... .......... .......... 14% 98.8K 54s
+   850K .......... .......... .......... .......... .......... 15% 76.2K 54s
+   900K .......... .......... .......... .......... .......... 16%  110K 53s
+   950K .......... .......... .......... .......... .......... 17%  111K 52s
+  1000K .......... .......... .......... .......... .......... 17%  131K 51s
+  1050K .......... .......... .......... .......... .......... 18%  124K 50s
+  1100K .......... .......... .......... .......... .......... 19%  107K 49s
+  1150K .......... .......... .......... .......... .......... 20%  141K 48s
+  1200K .......... .......... .......... .......... .......... 21%  102K 47s
+  1250K .......... .......... .......... .......... .......... 22%  114K 46s
+  1300K .......... .......... .......... .......... .......... 23%  121K 46s
+  1350K .......... .......... .......... .......... .......... 23%  136K 45s
+  1400K .......... .......... .......... .......... .......... 24%  110K 44s
+  1450K .......... .......... .......... .......... .......... 25%  114K 43s
+  1500K .......... .......... .......... .......... .......... 26%  107K 43s
+  1550K .......... .......... .......... .......... .......... 27%  127K 42s
+  1600K .......... .......... .......... .......... .......... 28%  135K 41s
+  1650K .......... .......... .......... .......... .......... 29%  108K 41s
+  1700K .......... .......... .......... .......... .......... 29%  111K 40s
+  1750K .......... .......... .......... .......... .......... 30%  101K 40s
+  1800K .......... .......... .......... .......... .......... 31%  120K 39s
+  1850K .......... .......... .......... .......... .......... 32% 90.9K 39s
+  1900K .......... .......... .......... .......... .......... 33%  112K 38s
+  1950K .......... .......... .......... .......... .......... 34% 93.0K 38s
+  2000K .......... .......... .......... .......... .......... 35% 98.8K 37s
+  2050K .......... .......... .......... .......... .......... 35%  124K 37s
+  2100K .......... .......... .......... .......... .......... 36%  104K 36s
+  2150K .......... .......... .......... .......... .......... 37%  160K 35s
+  2200K .......... .......... .......... .......... .......... 38% 92.3K 35s
+  2250K .......... .......... .......... .......... .......... 39%  118K 34s
+  2300K .......... .......... .......... .......... .......... 40%  115K 34s
+  2350K .......... .......... .......... .......... .......... 41%  108K 33s
+  2400K .......... .......... .......... .......... .......... 41%  132K 33s
+  2450K .......... .......... .......... .......... .......... 42%  110K 32s
+  2500K .......... .......... .......... .......... .......... 43%  126K 31s
+  2550K .......... .......... .......... .......... .......... 44%  137K 31s
+  2600K .......... .......... .......... .......... .......... 45%  101K 30s
+  2650K .......... .......... .......... .......... .......... 46%  139K 30s
+  2700K .......... .......... .......... .......... .......... 47% 97.5K 29s
+  2750K .......... .......... .......... .......... .......... 47% 65.3K 29s
+  2800K .......... .......... .......... .......... .......... 48% 76.2K 29s
+  2850K .......... .......... .......... .......... .......... 49% 79.3K 29s
+  2900K .......... .......... .......... .......... .......... 50% 94.1K 28s
+  2950K .......... .......... .......... .......... .......... 51% 92.7K 28s
+  3000K .......... .......... .......... .......... .......... 52% 86.3K 27s
+  3050K .......... .......... .......... .......... .......... 53% 69.6K 27s
+  3100K .......... .......... .......... .......... .......... 53% 70.2K 27s
+  3150K .......... .......... .......... .......... .......... 54% 82.9K 26s
+  3200K .......... .......... .......... .......... .......... 55% 62.3K 26s
+  3250K .......... .......... .......... .......... .......... 56%  101K 26s
+  3300K .......... .......... .......... .......... .......... 57% 92.9K 25s
+  3350K .......... .......... .......... .......... .......... 58% 76.7K 25s
+  3400K .......... .......... .......... .......... .......... 58% 95.3K 24s
+  3450K .......... .......... .......... .......... .......... 59% 84.5K 24s
+  3500K .......... .......... .......... .......... .......... 60%  103K 23s
+  3550K .......... .......... .......... .......... .......... 61%  104K 23s
+  3600K .......... .......... .......... .......... .......... 62% 89.7K 22s
+  3650K .......... .......... .......... .......... .......... 63% 81.4K 22s
+  3700K .......... .......... .......... .......... .......... 64% 94.0K 21s
+  3750K .......... .......... .......... .......... .......... 64%  103K 21s
+  3800K .......... .......... .......... .......... .......... 65%  100K 20s
+  3850K .......... .......... .......... .......... .......... 66% 75.3K 20s
+  3900K .......... .......... .......... .......... .......... 67%  102K 19s
+  3950K .......... .......... .......... .......... .......... 68% 73.2K 19s
+  4000K .......... .......... .......... .......... .......... 69%  104K 18s
+  4050K .......... .......... .......... .......... .......... 70% 94.6K 18s
+  4100K .......... .......... .......... .......... .......... 70% 82.8K 17s
+  4150K .......... .......... .......... .......... .......... 71% 89.6K 17s
+  4200K .......... .......... .......... .......... .......... 72% 95.3K 16s
+  4250K .......... .......... .......... .......... .......... 73%  107K 16s
+  4300K .......... .......... .......... .......... .......... 74%  114K 15s
+  4350K .......... .......... .......... .......... .......... 75%  101K 15s
+  4400K .......... .......... .......... .......... .......... 76% 86.8K 14s
+  4450K .......... .......... .......... .......... .......... 76% 98.2K 14s
+  4500K .......... .......... .......... .......... .......... 77% 99.0K 13s
+  4550K .......... .......... .......... .......... .......... 78%  120K 13s
+  4600K .......... .......... .......... .......... .......... 79% 87.8K 12s
+  4650K .......... .......... .......... .......... .......... 80% 92.0K 12s
+  4700K .......... .......... .......... .......... .......... 81% 84.3K 11s
+  4750K .......... .......... .......... .......... .......... 82%  101K 11s
+  4800K .......... .......... .......... .......... .......... 82% 98.7K 10s
+  4850K .......... .......... .......... .......... .......... 83% 73.6K 10s
+  4900K .......... .......... .......... .......... .......... 84% 92.3K 9s
+  4950K .......... .......... .......... .......... .......... 85% 89.0K 9s
+  5000K .......... .......... .......... .......... .......... 86%  116K 8s
+  5050K .......... .......... .......... .......... .......... 87%  103K 8s
+  5100K .......... .......... .......... .......... .......... 88% 92.0K 7s
+  5150K .......... .......... .......... .......... .......... 88% 85.6K 7s
+  5200K .......... .......... .......... .......... .......... 89% 91.9K 6s
+  5250K .......... .......... .......... .......... .......... 90% 92.3K 6s
+  5300K .......... .......... .......... .......... .......... 91% 75.5K 5s
+  5350K .......... .......... .......... .......... .......... 92%  120K 5s
+  5400K .......... .......... .......... .......... .......... 93%  131K 4s
+  5450K .......... .......... .......... .......... .......... 94% 87.3K 4s
+  5500K .......... .......... .......... .......... .......... 94%  152K 3s
+  5550K .......... .......... .......... .......... .......... 95%  138K 3s
+  5600K .......... .......... .......... .......... .......... 96% 96.0K 2s
+  5650K .......... .......... .......... .......... .......... 97%  175K 2s
+  5700K .......... .......... .......... .......... .......... 98%  129K 1s
+  5750K .......... .......... .......... .......... .......... 99%  181K 0s
+  5800K .......... .......... .......... .......... ........  100% 76.2K=59s
+
+2025-05-02 14:05:06 (98.4 KB/s) - ‘GCF_000091045.1_ASM9104v1_genomic.fna.gz’ saved [5988547/5988547]
+
+++ basename https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/091/045/GCF_000091045.1_ASM9104v1/GCF_000091045.1_ASM9104v1_genomic.fna.gz
++ filename=GCF_000091045.1_ASM9104v1_genomic.fna.gz
++ gunzip -f GCF_000091045.1_ASM9104v1_genomic.fna.gz
++ taxids=(['GCF_000196035.1_ASM19603v1_genomic.fna']='169963' ['GCF_000006765.1_ASM676v1_genomic.fna']='208964' ['GCF_000009045.1_ASM904v1_genomic.fna']='224308' ['GCF_000005845.2_ASM584v2_genomic.fna']='562' ['GCF_000008865.2_ASM886v2_genomic.fna']='562' ['GCF_029961225.1_ASM2996122v1_genomic.fna']='1613' ['GCF_000006945.2_ASM694v2_genomic.fna']='28901' ['GCF_000393015.1_Ente_faec_T5_V1_genomic.fna']='1351' ['GCF_000013425.1_ASM1342v1_genomic.fna']='1280' ['GCF_000146045.2_R64_genomic.fna']='4932' ['GCF_000091045.1_ASM9104v1_genomic.fna']='5207')
++ declare -A taxids
++ echo 'Tagging genome headers with taxIDs...'
++ for genome in "$GENOMES"/*.fna
+++ basename /scratch/users/k24087895/final_project/data/genomes/GCF_000005845.2_ASM584v2_genomic.fna
++ base=GCF_000005845.2_ASM584v2_genomic.fna
++ taxid=562
++ '[' -z 562 ']'
++ grep -q kraken:taxid /scratch/users/k24087895/final_project/data/genomes/GCF_000005845.2_ASM584v2_genomic.fna
++ echo 'Tagging GCF_000005845.2_ASM584v2_genomic.fna with taxid 562...'
++ sed -i -E 's/^(>[^ ]+)/&|kraken:taxid|562/' /scratch/users/k24087895/final_project/data/genomes/GCF_000005845.2_ASM584v2_genomic.fna
++ for genome in "$GENOMES"/*.fna
+++ basename /scratch/users/k24087895/final_project/data/genomes/GCF_000006765.1_ASM676v1_genomic.fna
++ base=GCF_000006765.1_ASM676v1_genomic.fna
++ taxid=208964
++ '[' -z 208964 ']'
++ grep -q kraken:taxid /scratch/users/k24087895/final_project/data/genomes/GCF_000006765.1_ASM676v1_genomic.fna
++ echo 'Tagging GCF_000006765.1_ASM676v1_genomic.fna with taxid 208964...'
++ sed -i -E 's/^(>[^ ]+)/&|kraken:taxid|208964/' /scratch/users/k24087895/final_project/data/genomes/GCF_000006765.1_ASM676v1_genomic.fna
++ for genome in "$GENOMES"/*.fna
+++ basename /scratch/users/k24087895/final_project/data/genomes/GCF_000006945.2_ASM694v2_genomic.fna
++ base=GCF_000006945.2_ASM694v2_genomic.fna
++ taxid=28901
++ '[' -z 28901 ']'
++ grep -q kraken:taxid /scratch/users/k24087895/final_project/data/genomes/GCF_000006945.2_ASM694v2_genomic.fna
++ echo 'Tagging GCF_000006945.2_ASM694v2_genomic.fna with taxid 28901...'
++ sed -i -E 's/^(>[^ ]+)/&|kraken:taxid|28901/' /scratch/users/k24087895/final_project/data/genomes/GCF_000006945.2_ASM694v2_genomic.fna
++ for genome in "$GENOMES"/*.fna
+++ basename /scratch/users/k24087895/final_project/data/genomes/GCF_000008865.2_ASM886v2_genomic.fna
++ base=GCF_000008865.2_ASM886v2_genomic.fna
++ taxid=562
++ '[' -z 562 ']'
++ grep -q kraken:taxid /scratch/users/k24087895/final_project/data/genomes/GCF_000008865.2_ASM886v2_genomic.fna
++ echo 'Tagging GCF_000008865.2_ASM886v2_genomic.fna with taxid 562...'
++ sed -i -E 's/^(>[^ ]+)/&|kraken:taxid|562/' /scratch/users/k24087895/final_project/data/genomes/GCF_000008865.2_ASM886v2_genomic.fna
++ for genome in "$GENOMES"/*.fna
+++ basename /scratch/users/k24087895/final_project/data/genomes/GCF_000009045.1_ASM904v1_genomic.fna
++ base=GCF_000009045.1_ASM904v1_genomic.fna
++ taxid=224308
++ '[' -z 224308 ']'
++ grep -q kraken:taxid /scratch/users/k24087895/final_project/data/genomes/GCF_000009045.1_ASM904v1_genomic.fna
++ echo 'Tagging GCF_000009045.1_ASM904v1_genomic.fna with taxid 224308...'
++ sed -i -E 's/^(>[^ ]+)/&|kraken:taxid|224308/' /scratch/users/k24087895/final_project/data/genomes/GCF_000009045.1_ASM904v1_genomic.fna
++ for genome in "$GENOMES"/*.fna
+++ basename /scratch/users/k24087895/final_project/data/genomes/GCF_000013425.1_ASM1342v1_genomic.fna
++ base=GCF_000013425.1_ASM1342v1_genomic.fna
++ taxid=1280
++ '[' -z 1280 ']'
++ grep -q kraken:taxid /scratch/users/k24087895/final_project/data/genomes/GCF_000013425.1_ASM1342v1_genomic.fna
++ echo 'Tagging GCF_000013425.1_ASM1342v1_genomic.fna with taxid 1280...'
++ sed -i -E 's/^(>[^ ]+)/&|kraken:taxid|1280/' /scratch/users/k24087895/final_project/data/genomes/GCF_000013425.1_ASM1342v1_genomic.fna
++ for genome in "$GENOMES"/*.fna
+++ basename /scratch/users/k24087895/final_project/data/genomes/GCF_000091045.1_ASM9104v1_genomic.fna
++ base=GCF_000091045.1_ASM9104v1_genomic.fna
++ taxid=5207
++ '[' -z 5207 ']'
++ grep -q kraken:taxid /scratch/users/k24087895/final_project/data/genomes/GCF_000091045.1_ASM9104v1_genomic.fna
++ echo 'Tagging GCF_000091045.1_ASM9104v1_genomic.fna with taxid 5207...'
++ sed -i -E 's/^(>[^ ]+)/&|kraken:taxid|5207/' /scratch/users/k24087895/final_project/data/genomes/GCF_000091045.1_ASM9104v1_genomic.fna
++ for genome in "$GENOMES"/*.fna
+++ basename /scratch/users/k24087895/final_project/data/genomes/GCF_000146045.2_R64_genomic.fna
++ base=GCF_000146045.2_R64_genomic.fna
++ taxid=4932
++ '[' -z 4932 ']'
++ grep -q kraken:taxid /scratch/users/k24087895/final_project/data/genomes/GCF_000146045.2_R64_genomic.fna
++ echo 'Tagging GCF_000146045.2_R64_genomic.fna with taxid 4932...'
++ sed -i -E 's/^(>[^ ]+)/&|kraken:taxid|4932/' /scratch/users/k24087895/final_project/data/genomes/GCF_000146045.2_R64_genomic.fna
++ for genome in "$GENOMES"/*.fna
+++ basename /scratch/users/k24087895/final_project/data/genomes/GCF_000196035.1_ASM19603v1_genomic.fna
++ base=GCF_000196035.1_ASM19603v1_genomic.fna
++ taxid=169963
++ '[' -z 169963 ']'
++ grep -q kraken:taxid /scratch/users/k24087895/final_project/data/genomes/GCF_000196035.1_ASM19603v1_genomic.fna
++ echo 'Tagging GCF_000196035.1_ASM19603v1_genomic.fna with taxid 169963...'
++ sed -i -E 's/^(>[^ ]+)/&|kraken:taxid|169963/' /scratch/users/k24087895/final_project/data/genomes/GCF_000196035.1_ASM19603v1_genomic.fna
++ for genome in "$GENOMES"/*.fna
+++ basename /scratch/users/k24087895/final_project/data/genomes/GCF_000393015.1_Ente_faec_T5_V1_genomic.fna
++ base=GCF_000393015.1_Ente_faec_T5_V1_genomic.fna
++ taxid=1351
++ '[' -z 1351 ']'
++ grep -q kraken:taxid /scratch/users/k24087895/final_project/data/genomes/GCF_000393015.1_Ente_faec_T5_V1_genomic.fna
++ echo 'Tagging GCF_000393015.1_Ente_faec_T5_V1_genomic.fna with taxid 1351...'
++ sed -i -E 's/^(>[^ ]+)/&|kraken:taxid|1351/' /scratch/users/k24087895/final_project/data/genomes/GCF_000393015.1_Ente_faec_T5_V1_genomic.fna
++ for genome in "$GENOMES"/*.fna
+++ basename /scratch/users/k24087895/final_project/data/genomes/GCF_029961225.1_ASM2996122v1_genomic.fna
++ base=GCF_029961225.1_ASM2996122v1_genomic.fna
++ taxid=1613
++ '[' -z 1613 ']'
++ grep -q kraken:taxid /scratch/users/k24087895/final_project/data/genomes/GCF_029961225.1_ASM2996122v1_genomic.fna
++ echo 'Tagging GCF_029961225.1_ASM2996122v1_genomic.fna with taxid 1613...'
++ sed -i -E 's/^(>[^ ]+)/&|kraken:taxid|1613/' /scratch/users/k24087895/final_project/data/genomes/GCF_029961225.1_ASM2996122v1_genomic.fna
++ kraken2-build --download-taxonomy --db /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 --threads 8
+Downloading nucleotide gb accession to taxon map... done.
+Downloading nucleotide wgs accession to taxon map... done.
+Downloaded accession to taxon map(s)
+Downloading taxonomy tree data... done.
+Uncompressing taxonomy data... done.
+Untarring taxonomy tree data... done.
++ echo '✅ NCBI taxonomy downloaded to: /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502'
++ echo 'Downloading human reference library to: /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502'
++ kraken2-build --download-library human --db /scratch/users/k24087895/final_project/data/databases/k2_custom_20250502 --threads 8
+Step 1/2: Performing rsync file transfer of requested files
