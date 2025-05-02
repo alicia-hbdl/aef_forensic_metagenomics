@@ -209,9 +209,12 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
         BOWTIE_CMD="bowtie2 -x \"$BOWTIE_PREFIX\" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant \
 	-1 \"$TRIMMED_DIR/paired/${base}_R1_paired.fastq.gz\" -2 \"$TRIMMED_DIR/paired/${base}_R2_paired.fastq.gz\" \
 	--un-conc \"$FILTERED_FASTQ_DIR/${base}_metagenomic\" -S \"$ALIGNED_SAM_DIR/${base}_human.sam\" 2>&1"
-        
-	echo "$BOWTIE_CMD"
-        "$BOWTIE_CMD"
+   
+        # Echo the command to the log/output for debugging
+        echo "$BOWTIE_CMD"
+
+        # Execute the command using eval to interpret the string as a shell command
+        eval "$BOWTIE_CMD"
         
         # Compress filtered metagenomic reads
         for i in 1 2; do # Compress and rename metagenomic reads
@@ -228,10 +231,13 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
                --classified-out \"$CLASSIFIED_DIR/${base}_classified#.fastq\" --unclassified-out \"$UNCLASSIFIED_DIR/${base}_unclassified#.fastq\" \
                \"$FILTERED_FASTQ_DIR/${base}_metagenomic.1.gz\" \"$FILTERED_FASTQ_DIR/${base}_metagenomic.2.gz\" \
                --output \"$KRAKEN2_DIR/${base}.kraken2\" --use-names 2>&1"
-    
-    echo "$KRAKEN_CMD" 
-    "$KRAKEN_CMD"
-    
+
+    # Echo the command to the log/output for debugging
+    echo "$KRAKEN_CMD"
+
+    # Execute the command using eval to interpret the string as a shell command
+    eval "$KRAKEN_CMD"  
+      
     echo "✅ Classification complete."
 
     # Abundance estimation with Bracken
