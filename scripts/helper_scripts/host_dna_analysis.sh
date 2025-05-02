@@ -76,16 +76,20 @@ echo "✅ Sequences saved to BLAST query."
 if [ $(tail -n +2 "$BED_FILES_DIR/common_intervals_filtered.bed" | wc -l) -eq 0 ]; then
     echo "❌ No regions found. Skipping BLAST."
     rm -f "$BLAST_QUERY"
+# Skip BLAST if BED region file is empty
+if [ "$(tail -n +2 "$BED_FILES_DIR/common_intervals_filtered.bed" | wc -l)" -eq 0 ]; then
+    echo "❌ No regions found. Skipping BLAST."
+    rm -f "$BLAST_QUERY"
 else
     # Deduplicate sequences
     awk '
-        NR % 2 == 1 { id = $0; next }                    # Header line
-        { seq = $0; pair = id "\n" seq }                 
-        !seen[pair]++ { print id; print seq }            # Print only if new
-    ' "$BLAST_QUERY" > "$BLAST_QUERY.unique" || {echo "❌ Failed to remove duplicates."; exit 1;} 
+        NR % 2 == 1 { id = $0; next }
+        { seq = $0; pair = id "\n" seq }
+        !seen[pair]++ { print id; print seq }
+    ' "$BLAST_QUERY" > "$BLAST_QUERY.unique" || { echo "❌ Failed to remove duplicates."; exit 1; }
     echo "✅ Duplicate sequences removed."
 
-    # Randomly select 15 unique sequences ---
+    # Randomly select 15 unique sequences
     awk 'BEGIN { RS=">"; ORS=""; srand() }
         NR > 1 { seqs[++n] = $0 }
         END {
@@ -98,13 +102,13 @@ else
     echo "✅ 15 random sequences selected and saved to: $BLAST_QUERY.selected"
 
     blastn -query "$BLAST_QUERY.selected" -db nt -out "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" \
-            -evalue 1e-5 -max_target_seqs 15 -outfmt "6 qseqid staxids pident evalue bitscore" -remote || { echo "❌ BLAST failed."; exit 1; }
+           -evalue 1e-5 -max_target_seqs 15 -outfmt "6 qseqid staxids pident evalue bitscore" -remote || { echo "❌ BLAST failed."; exit 1; }
     echo "✅ BLAST completed."
 
     # Generate taxonomy tree from BLAST results
     Rscript "$ROOT_DIR/scripts/helper_scripts/human_aligned_tree.R" "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" || { echo "❌ Error generating taxonomy tree."; exit 1; }
     echo "✅ Taxonomy tree generated."
-fi 
+fi
     
 echo -e "\n=========================================== JACCARD SIMILARITY ==========================================="
   
