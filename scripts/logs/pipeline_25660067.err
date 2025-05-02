@@ -610,3 +610,18 @@ Approx 80% complete for ZP3_S22_L001_R2_001.fastq.gz
 Approx 85% complete for ZP3_S22_L001_R2_001.fastq.gz
 Approx 90% complete for ZP3_S22_L001_R2_001.fastq.gz
 Approx 95% complete for ZP3_S22_L001_R2_001.fastq.gz
++ echo -e '✅ QC and trimming completed successfully.'
++ echo -e '\n================================================= METAGENOMIC ABUNDANCE ESTIMATION ================================================='
++ echo '⚠️ This step assumes reads have already been trimmed with Trimmomatic and host DNA removed with Bowtie2. Processed reads must be in the correct directory.'
+++ date +%s
++ START_TIME=1746177718
++ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz
+++ basename ../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R1_paired.fastq.gz _R1_paired.fastq.gz
++ base=ZC1_S4
++ echo -e '\nProcessing sample: ZC1_S4'
++ [[ true == true ]]
++ echo -e '\nRemoving human reads with Bowtie2...'
++ BOWTIE_CMD='bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	-1 "../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R2_paired.fastq.gz" 	--un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZC1_S4_human.sam" 2>&1'
++ echo 'bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	-1 "../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R2_paired.fastq.gz" 	--un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZC1_S4_human.sam" 2>&1'
++ 'bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	-1 "../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R2_paired.fastq.gz" 	--un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZC1_S4_human.sam" 2>&1'
+/var/lib/slurm/slurmd/job25660067/slurm_script: line 214: bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	-1 "../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R2_paired.fastq.gz" 	--un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZC1_S4_human.sam" 2>&1: No such file or directory
