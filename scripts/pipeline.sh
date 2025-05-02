@@ -215,11 +215,6 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
 
         # Execute the command using eval to interpret the string as a shell command
         eval "$BOWTIE_CMD"
-        
-        # Compress filtered metagenomic reads
-        for i in 1 2; do # Compress and rename metagenomic reads
-            gzip -f "$FILTERED_FASTQ_DIR/${base}_metagenomic.$i"
-        done &&
         echo "✅ Host reads removed and filtered reads compressed."
     fi
     
@@ -250,19 +245,6 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
     python "$ROOT_DIR/tools/KrakenTools/kreport2krona.py" -r "$REPORTS_DIR/${base}.breport" -o "$KRONA_DIR/${base}.krona.txt" --no-intermediate-ranks && \
     "$ROOT_DIR/tools/Krona/KronaTools/scripts/ImportText.pl" "$KRONA_DIR/${base}.krona.txt" -o "$KRONA_DIR/${base}.krona.html" && rm "$KRONA_DIR/${base}.krona.txt" && \
     echo "✅ Krona plot generated."
-done
-
-# Unzip all .gz files in "$FILTERED_FASTQ_DIR" and keep the 1 and 2 info in filenames
-echo "Unzipping filtered data for stats analysis..."
-for gz_file in "$FILTERED_FASTQ_DIR"/*.gz; do
-  # Unzip and rename the file
-  base_name=$(basename "$gz_file" .gz)  # Get the base name without .gz
-  new_name="$FILTERED_FASTQ_DIR/${base_name}.fastq"  # Create new .fastq filename
-
-  # Unzip the file only if it's a valid .gz file
-  if [[ -f "$gz_file" ]]; then
-    gunzip -c "$gz_file" > "$new_name"  # Unzip to the new name
-  fi
 done
 
 # Process all FASTQ files as desired using the get_fastq_stats.sh script
