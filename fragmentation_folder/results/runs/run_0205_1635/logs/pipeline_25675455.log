@@ -370,3 +370,48 @@ Metagenomic classification completed in: 00:01:44
 
 Combining Bracken reports...
 Combined CSV file saved to: ../fragmentation_folder/results/runs/run_0205_1635/combined_breports.csv 
+
+================================================= METAGENOMIC DIVERSITY ANALYSIS =================================================
+Calculating alpha and beta diversity...
+✅ Alpha diversity calculated.
+null device 
+          1 
+Heatmap saved to: ../fragmentation_folder/results/runs/run_0205_1635/diversity/beta_diversity_heatmap.png 
+✅ Beta diversity heatmap generated.
+✅ Diversity analysis completed successfully.
+
+====================================================== HUMAN DNA ANALYSIS ======================================================
+
+Processing host reads from sample: DE3_S7_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: DE4_S8_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: DT3_S15_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: DT4_S16_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+=============================================== KARYOTYPE ================================================
+Identifying overlapping regions across samples...
+Generating karyotype plot...
+null device 
+          1 
+✅ Karyotype plot generated.
+
+================================================== BLAST ==================================================
+
+Extracting sequences for BLAST query...
+✅ Sequences saved to BLAST query.
+✅ Duplicate sequences removed.
+Running BLAST search...
