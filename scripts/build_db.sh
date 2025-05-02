@@ -135,9 +135,8 @@ else
 fi
 
 # Download human reference library
-echo "Downloading human reference library to: $DBNAME"
 if kraken2-build --download-library human --db "$DBNAME" --threads $THREADS; then
-    echo "✅ Human reference library downloaded."
+    echo "✅ Human reference library downloaded to: $DBNAME"
 else
     echo "❌ Error: Failed to download human reference library.  Exiting."
     exit 1
@@ -146,9 +145,7 @@ fi
 # Add genomes to the Kraken2 database
 echo "Adding genomes to Kraken2 DB..."
 for genome in "$GENOMES"/*.fna; do
-    ADD_TO_LIB="kraken2-build --add-to-library \"$genome\" --db \"$DBNAME\" --threads $THREADS" 
-    echo "$ADD_TO_LIB"
-    eval "$ADD_TO_LIB" & # Run in background
+    kraken2-build --add-to-library "$genome" --db "$DBNAME" --threads "$THREADS"
 done
 wait  # Wait for all background jobs to finish
 echo "✅ All genomes added to Kraken2 DB."
@@ -160,8 +157,6 @@ if ! kraken2-build --build --db "$DBNAME" --threads $THREADS; then
     exit 1
 fi
 echo "✅ Kraken2 database built."
-
-tree "$DBNAME"  # Display the directory structure of the database
 
 # --- BUILD BRACKEN DATABASE ---
 
