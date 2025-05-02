@@ -126,71 +126,33 @@ done
 
 # --- BUILD KRAKEN DATABASE ---
 
-# Download NCBI taxonomyecho "📦 Downloading NCBI taxonomy to: $DBNAME"
-if kraken2-build --download-taxonomy --db "$DBNAME" --threads $THREADS; then
-    echo "✅ NCBI taxonomy downloaded to: $DBNAME"
-else
-    echo "❌ Error: Failed to download NCBI taxonomy. Exiting."
-    exit 1
-fi
+echo "Downloading NCBI taxonomy..."
+kraken2-build --download-taxonomy --db "$DBNAME" --threads "$THREADS" || { echo "❌ Error: Failed to download NCBI taxonomy. Exiting."; exit 1; }
+echo "✅ NCBI taxonomy downloaded."
 
-# Download human reference library
-if kraken2-build --download-library human --db "$DBNAME" --threads $THREADS; then
-    echo "✅ Human reference library downloaded to: $DBNAME"
-else
-    echo "❌ Error: Failed to download human reference library.  Exiting."
-    exit 1
-fi
+# echo "Installing human reference library..."
+# kraken2-build --download-library human --db "$DBNAME" --threads "$THREADS" || { echo "❌ Error: Failed to install human reference library. Exiting."; exit 1; }
+# echo "✅ Human reference library installed."
 
-# Add genomes to the Kraken2 database
-echo "Adding genomes to Kraken2 DB..."
-for genome in "$GENOMES"/*.fna; do
-    kraken2-build --add-to-library "$genome" --db "$DBNAME" --threads "$THREADS"
+echo "Adding custom genomes..."
+for file in "$GENOMES"/*.fna; do
+    head -n 1 "$file"
+    kraken2-build --add-to-library "$file" --db "$DBNAME" --threads "$THREADS" || { echo "❌ Error: Failed to add $file. Skipping."; continue; }
 done
-wait  # Wait for all background jobs to finish
-echo "✅ All genomes added to Kraken2 DB."
+echo "✅ Custom genomes added."
 
-# Build Kraken2 database
 echo "Building Kraken2 database..."
-if ! kraken2-build --build --db "$DBNAME" --threads $THREADS; then
-    echo "❌ Failed to build Kraken2 database."
-    exit 1
-fi
+kraken2-build --build --db "$DBNAME" --threads "$THREADS" || { echo "❌ Error: Failed to build Kraken2 database. Exiting."; exit 1; }
 echo "✅ Kraken2 database built."
 
 # --- BUILD BRACKEN DATABASE ---
 
-KRAKEN2_DIR=$(dirname $(which kraken2))  # Get the directory of the Kraken2 executable
+KRAKEN_INSTALLATION=$(dirname $(which kraken2))  # Get the directory of the Kraken2 executable
 
 # Build Bracken databases for different read lengths
-for READ_LEN in 50 100 150 200 250 300; do
-    echo "Building Bracken DB for read length $READ_LEN..."
-    echo " $KMER_LEN $READ_LEN $DBNAME $KRAKEN2_DIR $THREADS"
-    # Try to build Bracken DB using bracken-build
-    if ! bracken-build -k "$KMER_LEN" -l "$READ_LEN" -d "$DBNAME" -y kraken2 -t "$THREADS"; then
-
-        # Rebuild Kraken DB and use kmer2read_distr for Bracken database creation
-        echo "❌ Bracken DB build failed. Rebuilding Kraken DB for $READ_LEN..."
-        
-        if ! kraken2 --db="${DBNAME}" --threads=10 <(find -L "${DBNAME}/library" \( -name "*.fna" -o -name "*.fasta" -o -name "*.fa" \) -exec cat {} + ) > database.kraken; then
-            echo "❌ Error rebuilding Kraken DB."
-            continue  # Skip to the next iteration of the loop
-        fi
-
-        # Run kmer2read_distr with the newly rebuilt Kraken DB
-        if ! ./kmer2read_distr --seqid2taxid "${DBNAME}/seqid2taxid.map" --taxonomy "${DBNAME}/taxonomy" --kraken database.kraken --output "database${READ_LEN}mers.kraken" -k "${KMER_LEN}" -l "${READ_LEN}" -t "${THREADS}"; then
-            echo "❌ Error running kmer2read_distr."
-            continue  
-        fi
-
-        # Generate kmer distribution using Python script
-        if ! python generate_kmer_distribution.py -i "database${READ_LEN}mers.kraken" -o "database${READ_LEN}mers.kmer_distrib"; then
-            echo "❌ Error generating kmer distribution."
-            continue  
-        fi        
-        continue
-    fi
-    echo "✅ Bracken DB for $READ_LEN built."
+for READ_LEN in 100 ; do # 50 100 150 200 250 300
+  bracken-build -d "$DBNAME" -t "$THREADS" -k "$KMER_LEN" -l "$READ_LEN" -x "$KRAKEN_INSTALLATION" || { echo "❌ Error: Failed to build Brakcen database. Exiting."; exit 1; }
+  echo "✅ Bracken database built for read length $READ_LEN"
 done
 
 echo "All Bracken databases built successfully!"
