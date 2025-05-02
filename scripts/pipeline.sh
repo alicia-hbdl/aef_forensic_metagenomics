@@ -287,11 +287,13 @@ echo -e "\n✅ Pipeline completed successfully."
 # Move final SLURM logs to run directory and clean up originals
 echo "Storing log file..."
 if cp $ROOT_DIR/scripts/logs/*_"$SLURM_JOB_ID".* "$LOG_DIR"; then
+
+    echo -e "\n====================================================== COMPARISON TO OTHER RUNS ======================================================"
   
     # Generate the summary table and evaluation metrics including this run 
-    "$ROOT_DIR/scripts/runs_summary.sh" "$RUN_DIR" || { echo "❌ Summary generation failed!"; exit 1; }
-    python "$ROOT_DIR/scripts/evaluation_metrics.py" "$RUN_DIR" || { echo "❌ Evaluation metrics generation failed!"; exit 1; }
-    Rscript "$ROOT_DIR/scripts/helper_scripts/read_progression.R" "$RUN_DIR" || { echo "❌ Read progression plot generation failed!"; exit 1; }
+    "$ROOT_DIR/scripts/helper_scripts/runs_summary.sh" "$RUN_DIR" || { echo "❌ Summary generation failed!"; exit 1; }
+    python "$ROOT_DIR/scripts/helper_scripts/evaluation_metrics.py" "$RUN_DIR" || { echo "❌ Evaluation metrics generation failed!"; exit 1; }
+    Rscript "$ROOT_DIR/scripts/helper_scripts/helper_scripts/read_progression.R" "$RUN_DIR" || { echo "❌ Read progression plot generation failed!"; exit 1; }
     
     # Remove the original log file when successful 
     rm $ROOT_DIR/scripts/logs/*_"$SLURM_JOB_ID".*
