@@ -1,3 +1,11 @@
+#!/usr/bin/env python
+
+# Usage: python evaluation_metrics.py -d/--runs-dir <path/to/runs/directory> -t/--ground-truth <path/to/ground_truth.csv>
+
+# This script processes Kraken2 and Bracken outputs, extracts relevant statistics, and generates visualizations: 
+# 1. A boxplot for L2 distance comparing classified vs total reads across different databases. 
+# 2. A boxplot and Precision-Recall (PR) curves for AUPR to compare classified and total reads
+
 # Import  necessary libraries 
 import pandas as pd  # Data handling
 import re  # Regex for text cleaning
@@ -8,10 +16,6 @@ import numpy as np  # Numerical operations
 from sklearn.metrics import precision_recall_curve, auc  # PR curve and AUC
 import os  # File operations
 import math  # Math utilities
-import subprocess
-
-# Update the summary to reflect the current directory state
-subprocess.run(["bash", "runs_summary.sh"])
 
 # Load run metadata
 metadata = pd.read_csv(
