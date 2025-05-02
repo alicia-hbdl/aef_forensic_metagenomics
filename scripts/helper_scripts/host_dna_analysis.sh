@@ -73,10 +73,6 @@ done < <(tail -n +2 "$BED_FILES_DIR/common_intervals_filtered.bed")
 echo "✅ Sequences saved to BLAST query."
 
 # Skip BLAST if BED region file is empty
-if [ $(tail -n +2 "$BED_FILES_DIR/common_intervals_filtered.bed" | wc -l) -eq 0 ]; then
-    echo "❌ No regions found. Skipping BLAST."
-    rm -f "$BLAST_QUERY"
-# Skip BLAST if BED region file is empty
 if [ "$(tail -n +2 "$BED_FILES_DIR/common_intervals_filtered.bed" | wc -l)" -eq 0 ]; then
     echo "❌ No regions found. Skipping BLAST."
     rm -f "$BLAST_QUERY"
