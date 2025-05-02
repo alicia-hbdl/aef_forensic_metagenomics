@@ -42,21 +42,20 @@ done
 echo -e "\n=============================================== KARYOTYPE ================================================"
     
 # Identifying overlapping regions across samples
-echo "Identifying overlapping regions across samples..."
+echo "Generating karyotype plot..."
 mapfile -t SORTED_BEDS < <(find "$BED_FILES_DIR" -name "*.sorted.bed")
 
 if (( ${#SORTED_BEDS[@]} < 2 )); then
     echo "⚠️ Only one BED file found – skipping multiinter and using it directly."
-    cp "${SORTED_BEDS[0]}" "$BED_FILES_DIR/common_intervals.bed"
+    cp "${SORTED_BEDS[0]}" "$HOST_DNA_ANALYSIS_DIR/common_intervals.bed"
 else
-    bedtools multiinter -header -i "${SORTED_BEDS[@]}" > "$BED_FILES_DIR/common_intervals.bed"
+    bedtools multiinter -header -i "${SORTED_BEDS[@]}" > "$HOST_DNA_ANALYSIS_DIR/common_intervals.bed"
 fi
 
-echo "Generating karyotype plot..."
-Rscript "$ROOT_DIR/scripts/helper_scripts/karyotype.R" "$BED_FILES_DIR/common_intervals.bed" && \
+Rscript "$ROOT_DIR/scripts/helper_scripts/karyotype.R" "$HOST_DNA_ANALYSIS_DIR/common_intervals.bed" && \
 echo "✅ Karyotype plot generated."
 
-awk '$4 > 1' "$BED_FILES_DIR/common_intervals.bed" > "$BED_FILES_DIR/common_intervals_filtered.bed"
+awk '$4 > 1' "$HOST_DNA_ANALYSIS_DIR/common_intervals.bed" > "$HOST_DNA_ANALYSIS_DIR/common_intervals_filtered.bed"
 
 echo -e "\n================================================== BLAST =================================================="
     
@@ -95,8 +94,9 @@ else
             }
             for (i = 1; i <= 15 && i <= n; i++) print ">" seqs[i]
         }' "$BLAST_QUERY.unique" > "$BLAST_QUERY.selected" || { echo "❌ Failed to select sequences."; exit 1; }
-    echo "✅ 15 random sequences selected and saved to: $BLAST_QUERY.selected"
+    echo "✅ 15 random sequences selected."
 
+    echo "Running BLAST search..."
     blastn -query "$BLAST_QUERY.selected" -db nt -out "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" \
            -evalue 1e-5 -max_target_seqs 15 -outfmt "6 qseqid staxids pident evalue bitscore" -remote || { echo "❌ BLAST failed."; exit 1; }
     echo "✅ BLAST completed."
@@ -105,7 +105,7 @@ else
     Rscript "$ROOT_DIR/scripts/helper_scripts/human_aligned_tree.R" "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" || { echo "❌ Error generating taxonomy tree."; exit 1; }
     echo "✅ Taxonomy tree generated."
 fi
-    
+
 echo -e "\n=========================================== JACCARD SIMILARITY ==========================================="
   
 if (( ${#SORTED_BEDS[@]} < 2 )); then
