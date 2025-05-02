@@ -221,7 +221,7 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
     echo -e "\nClassifying metagenomic reads with Kraken2..."
     
     KRAKEN_CMD="kraken2 --d \"$DATABASE\" --threads 8 --report \"$REPORTS_DIR/${base}.k2report\" \
-               --report-minimizer-data --paired --minimum-hit-groups 2 \
+               --report-minimizer-data --paired --minimum-hit-groups 2 --gzip-compressed \
                --classified-out \"$CLASSIFIED_DIR/${base}_classified#.fastq\" --unclassified-out \"$UNCLASSIFIED_DIR/${base}_unclassified#.fastq\" \
                \"$FILTERED_FASTQ_DIR/${base}_metagenomic.1\" \"$FILTERED_FASTQ_DIR/${base}_metagenomic.2\" \
                --output \"$KRAKEN2_DIR/${base}.kraken2\" --use-names 2>&1"
@@ -306,3 +306,9 @@ else
   echo "❌ Copying log files failed!"
   exit 1
 fi
+
+"$ROOT_DIR/scripts/runs_summary.sh" "$RUN_DIR" || { echo "❌ Summary generation failed!"; exit 1; }
+
+python "$ROOT_DIR/scripts/evaluation_metrics.py" "$RUN_DIR" || { echo "❌ Evaluation metrics generation failed!"; exit 1; }
+
+Rscript "$ROOT_DIR/scripts/helper_scripts/read_progression.R" "$RUN_DIR" || { echo "❌ Read progression plot generation failed!"; exit 1; }
