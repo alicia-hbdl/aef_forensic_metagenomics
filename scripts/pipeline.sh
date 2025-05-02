@@ -237,14 +237,9 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
 done
 
 # Process all FASTQ files as desired using the get_fastq_stats.sh script
-echo "Running get_fastq_stats.sh on filtered data..."
-"$ROOT_DIR/scripts/helper_scripts/get_fastq_stats.sh" "$FILTERED_FASTQ_DIR" 2>&1
-
-echo "Running get_fastq_stats.sh on classified data..."
-"$ROOT_DIR/scripts/helper_scripts/get_fastq_stats.sh" "$CLASSIFIED_DIR" 2>&1
-
-echo "Running get_fastq_stats.sh on unclassified data..."
-"$ROOT_DIR/scripts/helper_scripts/get_fastq_stats.sh" "$UNCLASSIFIED_DIR" 2>&1
+echo "Running get_fastq_stats.sh on filtered, classified and unclassified data..."
+files=("$FILTERED_FASTQ_DIR"/*.1 "$FILTERED_FASTQ_DIR"/*.2 "$CLASSIFIED_DIR"/*.fastq "$UNCLASSIFIED_DIR"/*.fastq) # Expand file patterns into actual files
+"$ROOT_DIR/scripts/helper_scripts/get_fastq_stats.sh" "${files[@]}" 2>&1 # Run the script with all the matching files
 
 # End timer for metagenomic classification
 END_TIME=$(date +%s)

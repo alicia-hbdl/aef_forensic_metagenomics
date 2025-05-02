@@ -1,16 +1,18 @@
 #!/bin/bash
 
-# Check if a directory argument is provided
-if [ -z "$1" ]; then
-  echo "Usage: $0 <directory>"
+# Check if at least one file argument is provided
+if [ $# -eq 0 ]; then
+  echo "Usage: $0 <file1> <file2> ... <fileN>"
   exit 1
 fi
 
-# Set the directory to the argument provided by the user
-DIRECTORY=$1
+# Process each file argument
+for file in "$@"; do
+  if [[ ! -f "$file" ]]; then
+    echo "❌ Error: $file not found or not a valid file."
+    continue
+  fi
 
-# Extract read lengths from each FASTQ file in the provided directory and calculate mean and median
-for file in "$DIRECTORY"/*.{fastq,1,2}; do
   echo -n "$file: "  # Print the filename for reference
 
   # Process the FASTQ file
