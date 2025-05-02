@@ -41,10 +41,11 @@ Kraken2/Bracken Database: ../data/databases/k2_standard_16gb_20241228
     │   └── pre_trimming
     ├── host_dna_analysis
     └── runs
-        ├── run_0205_1701
-        └── run_0205_1827
+        ├── run_0205_2219
+        ├── run_0205_2227
+        └── run_0205_2234
 
-23 directories
+24 directories
 Human DNA-related files (SAM, BAM, and BED) in the 'human' directory are created once per sub-project and remain unchanged across runs.
 Intermediate metagenomic files in the 'metagenomic' directory are overwritten with each run and should be inspected beforehand if desired.
 Results are stored in the 'results' directory (including FastQC, host DNA analysis, and run-specific results like Kraken2 and Bracken).
@@ -165,9 +166,9 @@ bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-
 ✅ Host reads removed and filtered reads compressed.
 
 Classifying metagenomic reads with Kraken2...
-kraken2 --d "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../exposure_folder1/results/runs/run_0205_1827/reports/D1RP_S9.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2                --classified-out "../exposure_folder1/processed_data/metagenomic/classified/D1RP_S9_classified#.fastq" --unclassified-out "../exposure_folder1/processed_data/metagenomic/unclassified/D1RP_S9_unclassified#.fastq"                "../exposure_folder1/processed_data/metagenomic/filtered_fastq/D1RP_S9_metagenomic.1" "../exposure_folder1/processed_data/metagenomic/filtered_fastq/D1RP_S9_metagenomic.2"                --output "../exposure_folder1/processed_data/metagenomic/kraken2/D1RP_S9.kraken2" --use-names 2>&1
+kraken2 --d "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../exposure_folder1/results/runs/run_0205_2234/reports/D1RP_S9.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2                --classified-out "../exposure_folder1/processed_data/metagenomic/classified/D1RP_S9_classified#.fastq" --unclassified-out "../exposure_folder1/processed_data/metagenomic/unclassified/D1RP_S9_unclassified#.fastq"                "../exposure_folder1/processed_data/metagenomic/filtered_fastq/D1RP_S9_metagenomic.1" "../exposure_folder1/processed_data/metagenomic/filtered_fastq/D1RP_S9_metagenomic.2"                --output "../exposure_folder1/processed_data/metagenomic/kraken2/D1RP_S9.kraken2" --use-names 2>&1
 Loading database information... done.
-124006 sequences (32.63 Mbp) processed in 0.317s (23481.6 Kseq/m, 6178.97 Mbp/m).
+124006 sequences (32.63 Mbp) processed in 0.395s (18857.0 Kseq/m, 4962.04 Mbp/m).
   18947 sequences classified (15.28%)
   105059 sequences unclassified (84.72%)
 ✅ Classification complete.
@@ -175,10 +176,10 @@ Loading database information... done.
 Estimating species abundance with Bracken...
  >> Checking for Valid Options...
  >> Running Bracken 
-      >> python src/est_abundance.py -i ../exposure_folder1/results/runs/run_0205_1827/reports/D1RP_S9.k2report -o ../exposure_folder1/processed_data/metagenomic/bracken/D1RP_S9.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
->> Checking report file: ../exposure_folder1/results/runs/run_0205_1827/reports/D1RP_S9.k2report
-PROGRAM START TIME: 05-02-2025 17:28:40
-BRACKEN SUMMARY (Kraken report: ../exposure_folder1/results/runs/run_0205_1827/reports/D1RP_S9.k2report)
+      >> python src/est_abundance.py -i ../exposure_folder1/results/runs/run_0205_2234/reports/D1RP_S9.k2report -o ../exposure_folder1/processed_data/metagenomic/bracken/D1RP_S9.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../exposure_folder1/results/runs/run_0205_2234/reports/D1RP_S9.k2report
+PROGRAM START TIME: 05-02-2025 21:36:08
+BRACKEN SUMMARY (Kraken report: ../exposure_folder1/results/runs/run_0205_2234/reports/D1RP_S9.k2report)
     >>> Threshold: 0 
     >>> Number of species in sample: 294 
 	  >> Number of species with reads > threshold: 294 
@@ -190,12 +191,12 @@ BRACKEN SUMMARY (Kraken report: ../exposure_folder1/results/runs/run_0205_1827/r
 	  >> Reads not distributed (eg. no species above threshold): 46
 	  >> Unclassified reads: 105059
 BRACKEN OUTPUT PRODUCED: ../exposure_folder1/processed_data/metagenomic/bracken/D1RP_S9.bracken
-PROGRAM END TIME: 05-02-2025 17:28:40
+PROGRAM END TIME: 05-02-2025 21:36:09
   Bracken complete.
 ✅ Abundance estimated.
 
 Generating Krona visualization...
-Writing ../exposure_folder1/results/runs/run_0205_1827/krona/D1RP_S9.krona.html...
+Writing ../exposure_folder1/results/runs/run_0205_2234/krona/D1RP_S9.krona.html...
 ✅ Krona plot generated.
 
 Processing sample: D1SG_S1
@@ -211,9 +212,9 @@ bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-
 ✅ Host reads removed and filtered reads compressed.
 
 Classifying metagenomic reads with Kraken2...
-kraken2 --d "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../exposure_folder1/results/runs/run_0205_1827/reports/D1SG_S1.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2                --classified-out "../exposure_folder1/processed_data/metagenomic/classified/D1SG_S1_classified#.fastq" --unclassified-out "../exposure_folder1/processed_data/metagenomic/unclassified/D1SG_S1_unclassified#.fastq"                "../exposure_folder1/processed_data/metagenomic/filtered_fastq/D1SG_S1_metagenomic.1" "../exposure_folder1/processed_data/metagenomic/filtered_fastq/D1SG_S1_metagenomic.2"                --output "../exposure_folder1/processed_data/metagenomic/kraken2/D1SG_S1.kraken2" --use-names 2>&1
+kraken2 --d "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../exposure_folder1/results/runs/run_0205_2234/reports/D1SG_S1.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2                --classified-out "../exposure_folder1/processed_data/metagenomic/classified/D1SG_S1_classified#.fastq" --unclassified-out "../exposure_folder1/processed_data/metagenomic/unclassified/D1SG_S1_unclassified#.fastq"                "../exposure_folder1/processed_data/metagenomic/filtered_fastq/D1SG_S1_metagenomic.1" "../exposure_folder1/processed_data/metagenomic/filtered_fastq/D1SG_S1_metagenomic.2"                --output "../exposure_folder1/processed_data/metagenomic/kraken2/D1SG_S1.kraken2" --use-names 2>&1
 Loading database information... done.
-155364 sequences (39.82 Mbp) processed in 0.400s (23307.1 Kseq/m, 5973.32 Mbp/m).
+155364 sequences (39.82 Mbp) processed in 0.506s (18438.9 Kseq/m, 4725.66 Mbp/m).
   27846 sequences classified (17.92%)
   127518 sequences unclassified (82.08%)
 ✅ Classification complete.
@@ -221,10 +222,10 @@ Loading database information... done.
 Estimating species abundance with Bracken...
  >> Checking for Valid Options...
  >> Running Bracken 
-      >> python src/est_abundance.py -i ../exposure_folder1/results/runs/run_0205_1827/reports/D1SG_S1.k2report -o ../exposure_folder1/processed_data/metagenomic/bracken/D1SG_S1.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
->> Checking report file: ../exposure_folder1/results/runs/run_0205_1827/reports/D1SG_S1.k2report
-PROGRAM START TIME: 05-02-2025 17:29:06
-BRACKEN SUMMARY (Kraken report: ../exposure_folder1/results/runs/run_0205_1827/reports/D1SG_S1.k2report)
+      >> python src/est_abundance.py -i ../exposure_folder1/results/runs/run_0205_2234/reports/D1SG_S1.k2report -o ../exposure_folder1/processed_data/metagenomic/bracken/D1SG_S1.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../exposure_folder1/results/runs/run_0205_2234/reports/D1SG_S1.k2report
+PROGRAM START TIME: 05-02-2025 21:36:27
+BRACKEN SUMMARY (Kraken report: ../exposure_folder1/results/runs/run_0205_2234/reports/D1SG_S1.k2report)
     >>> Threshold: 0 
     >>> Number of species in sample: 3804 
 	  >> Number of species with reads > threshold: 3804 
@@ -236,12 +237,12 @@ BRACKEN SUMMARY (Kraken report: ../exposure_folder1/results/runs/run_0205_1827/r
 	  >> Reads not distributed (eg. no species above threshold): 77
 	  >> Unclassified reads: 127518
 BRACKEN OUTPUT PRODUCED: ../exposure_folder1/processed_data/metagenomic/bracken/D1SG_S1.bracken
-PROGRAM END TIME: 05-02-2025 17:29:06
+PROGRAM END TIME: 05-02-2025 21:36:27
   Bracken complete.
 ✅ Abundance estimated.
 
 Generating Krona visualization...
-Writing ../exposure_folder1/results/runs/run_0205_1827/krona/D1SG_S1.krona.html...
+Writing ../exposure_folder1/results/runs/run_0205_2234/krona/D1SG_S1.krona.html...
 ✅ Krona plot generated.
 
 Processing sample: D2RP_S10
@@ -257,9 +258,9 @@ bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-
 ✅ Host reads removed and filtered reads compressed.
 
 Classifying metagenomic reads with Kraken2...
-kraken2 --d "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../exposure_folder1/results/runs/run_0205_1827/reports/D2RP_S10.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2                --classified-out "../exposure_folder1/processed_data/metagenomic/classified/D2RP_S10_classified#.fastq" --unclassified-out "../exposure_folder1/processed_data/metagenomic/unclassified/D2RP_S10_unclassified#.fastq"                "../exposure_folder1/processed_data/metagenomic/filtered_fastq/D2RP_S10_metagenomic.1" "../exposure_folder1/processed_data/metagenomic/filtered_fastq/D2RP_S10_metagenomic.2"                --output "../exposure_folder1/processed_data/metagenomic/kraken2/D2RP_S10.kraken2" --use-names 2>&1
+kraken2 --d "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../exposure_folder1/results/runs/run_0205_2234/reports/D2RP_S10.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2                --classified-out "../exposure_folder1/processed_data/metagenomic/classified/D2RP_S10_classified#.fastq" --unclassified-out "../exposure_folder1/processed_data/metagenomic/unclassified/D2RP_S10_unclassified#.fastq"                "../exposure_folder1/processed_data/metagenomic/filtered_fastq/D2RP_S10_metagenomic.1" "../exposure_folder1/processed_data/metagenomic/filtered_fastq/D2RP_S10_metagenomic.2"                --output "../exposure_folder1/processed_data/metagenomic/kraken2/D2RP_S10.kraken2" --use-names 2>&1
 Loading database information... done.
-122720 sequences (31.55 Mbp) processed in 0.326s (22603.5 Kseq/m, 5810.47 Mbp/m).
+122720 sequences (31.55 Mbp) processed in 0.375s (19651.0 Kseq/m, 5051.51 Mbp/m).
   94809 sequences classified (77.26%)
   27911 sequences unclassified (22.74%)
 ✅ Classification complete.
@@ -267,10 +268,10 @@ Loading database information... done.
 Estimating species abundance with Bracken...
  >> Checking for Valid Options...
  >> Running Bracken 
-      >> python src/est_abundance.py -i ../exposure_folder1/results/runs/run_0205_1827/reports/D2RP_S10.k2report -o ../exposure_folder1/processed_data/metagenomic/bracken/D2RP_S10.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
->> Checking report file: ../exposure_folder1/results/runs/run_0205_1827/reports/D2RP_S10.k2report
-PROGRAM START TIME: 05-02-2025 17:29:31
-BRACKEN SUMMARY (Kraken report: ../exposure_folder1/results/runs/run_0205_1827/reports/D2RP_S10.k2report)
+      >> python src/est_abundance.py -i ../exposure_folder1/results/runs/run_0205_2234/reports/D2RP_S10.k2report -o ../exposure_folder1/processed_data/metagenomic/bracken/D2RP_S10.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../exposure_folder1/results/runs/run_0205_2234/reports/D2RP_S10.k2report
+PROGRAM START TIME: 05-02-2025 21:36:44
+BRACKEN SUMMARY (Kraken report: ../exposure_folder1/results/runs/run_0205_2234/reports/D2RP_S10.k2report)
     >>> Threshold: 0 
     >>> Number of species in sample: 35 
 	  >> Number of species with reads > threshold: 35 
@@ -282,12 +283,12 @@ BRACKEN SUMMARY (Kraken report: ../exposure_folder1/results/runs/run_0205_1827/r
 	  >> Reads not distributed (eg. no species above threshold): 16
 	  >> Unclassified reads: 27911
 BRACKEN OUTPUT PRODUCED: ../exposure_folder1/processed_data/metagenomic/bracken/D2RP_S10.bracken
-PROGRAM END TIME: 05-02-2025 17:29:31
+PROGRAM END TIME: 05-02-2025 21:36:44
   Bracken complete.
 ✅ Abundance estimated.
 
 Generating Krona visualization...
-Writing ../exposure_folder1/results/runs/run_0205_1827/krona/D2RP_S10.krona.html...
+Writing ../exposure_folder1/results/runs/run_0205_2234/krona/D2RP_S10.krona.html...
 ✅ Krona plot generated.
 
 Processing sample: D2SG_S2
@@ -303,9 +304,9 @@ bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-
 ✅ Host reads removed and filtered reads compressed.
 
 Classifying metagenomic reads with Kraken2...
-kraken2 --d "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../exposure_folder1/results/runs/run_0205_1827/reports/D2SG_S2.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2                --classified-out "../exposure_folder1/processed_data/metagenomic/classified/D2SG_S2_classified#.fastq" --unclassified-out "../exposure_folder1/processed_data/metagenomic/unclassified/D2SG_S2_unclassified#.fastq"                "../exposure_folder1/processed_data/metagenomic/filtered_fastq/D2SG_S2_metagenomic.1" "../exposure_folder1/processed_data/metagenomic/filtered_fastq/D2SG_S2_metagenomic.2"                --output "../exposure_folder1/processed_data/metagenomic/kraken2/D2SG_S2.kraken2" --use-names 2>&1
+kraken2 --d "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../exposure_folder1/results/runs/run_0205_2234/reports/D2SG_S2.k2report"                --report-minimizer-data --paired --minimum-hit-groups 2                --classified-out "../exposure_folder1/processed_data/metagenomic/classified/D2SG_S2_classified#.fastq" --unclassified-out "../exposure_folder1/processed_data/metagenomic/unclassified/D2SG_S2_unclassified#.fastq"                "../exposure_folder1/processed_data/metagenomic/filtered_fastq/D2SG_S2_metagenomic.1" "../exposure_folder1/processed_data/metagenomic/filtered_fastq/D2SG_S2_metagenomic.2"                --output "../exposure_folder1/processed_data/metagenomic/kraken2/D2SG_S2.kraken2" --use-names 2>&1
 Loading database information... done.
-27649 sequences (6.00 Mbp) processed in 0.158s (10480.0 Kseq/m, 2273.94 Mbp/m).
+27649 sequences (6.00 Mbp) processed in 0.172s (9639.2 Kseq/m, 2091.50 Mbp/m).
   19861 sequences classified (71.83%)
   7788 sequences unclassified (28.17%)
 ✅ Classification complete.
@@ -313,27 +314,27 @@ Loading database information... done.
 Estimating species abundance with Bracken...
  >> Checking for Valid Options...
  >> Running Bracken 
-      >> python src/est_abundance.py -i ../exposure_folder1/results/runs/run_0205_1827/reports/D2SG_S2.k2report -o ../exposure_folder1/processed_data/metagenomic/bracken/D2SG_S2.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
->> Checking report file: ../exposure_folder1/results/runs/run_0205_1827/reports/D2SG_S2.k2report
-PROGRAM START TIME: 05-02-2025 17:29:55
-BRACKEN SUMMARY (Kraken report: ../exposure_folder1/results/runs/run_0205_1827/reports/D2SG_S2.k2report)
+      >> python src/est_abundance.py -i ../exposure_folder1/results/runs/run_0205_2234/reports/D2SG_S2.k2report -o ../exposure_folder1/processed_data/metagenomic/bracken/D2SG_S2.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../exposure_folder1/results/runs/run_0205_2234/reports/D2SG_S2.k2report
+PROGRAM START TIME: 05-02-2025 21:37:00
+BRACKEN SUMMARY (Kraken report: ../exposure_folder1/results/runs/run_0205_2234/reports/D2SG_S2.k2report)
     >>> Threshold: 0 
-    >>> Number of species in sample: 340 
-	  >> Number of species with reads > threshold: 340 
+    >>> Number of species in sample: 336 
+	  >> Number of species with reads > threshold: 336 
 	  >> Number of species with reads < threshold: 0 
-    >>> Total reads in sample: 27649
-	  >> Total reads kept at species level (reads > threshold): 19062
+    >>> Total reads in sample: 27607
+	  >> Total reads kept at species level (reads > threshold): 19021
 	  >> Total reads discarded (species reads < threshold): 0
-	  >> Reads distributed: 766
+	  >> Reads distributed: 765
 	  >> Reads not distributed (eg. no species above threshold): 33
 	  >> Unclassified reads: 7788
 BRACKEN OUTPUT PRODUCED: ../exposure_folder1/processed_data/metagenomic/bracken/D2SG_S2.bracken
-PROGRAM END TIME: 05-02-2025 17:29:55
+PROGRAM END TIME: 05-02-2025 21:37:00
   Bracken complete.
 ✅ Abundance estimated.
 
 Generating Krona visualization...
-Writing ../exposure_folder1/results/runs/run_0205_1827/krona/D2SG_S2.krona.html...
+Writing ../exposure_folder1/results/runs/run_0205_2234/krona/D2SG_S2.krona.html...
 ✅ Krona plot generated.
 
 Running get_fastq_stats.sh on filtered, classified and unclassified data...
@@ -347,35 +348,35 @@ D2RP_S10_metagenomic.2: mean = 127.5, median = 129.0
 D2SG_S2_metagenomic.2: mean = 108.3, median = 101.0
 D1RP_S9_classified_1.fastq: mean = 145.2, median = 157.0
 D1RP_S9_classified_2.fastq: mean = 143.4, median = 153.0
-D1SG_S1_classified_1.fastq: mean = 143.2, median = 151.0
-D1SG_S1_classified_2.fastq: mean = 141.5, median = 147.0
-D2RP_S10_classified_1.fastq: mean = 141.0, median = 148.0
-D2RP_S10_classified_2.fastq: mean = 138.5, median = 144.0
-D2SG_S2_classified_1.fastq: mean = 116.7, median = 112.0
-D2SG_S2_classified_2.fastq: mean = 116.1, median = 112.0
+D1SG_S1_classified_1.fastq: mean = 143.3, median = 151.0
+D1SG_S1_classified_2.fastq: mean = 141.7, median = 148.0
+D2RP_S10_classified_1.fastq: mean = 141.1, median = 149.0
+D2RP_S10_classified_2.fastq: mean = 138.7, median = 145.0
+D2SG_S2_classified_1.fastq: mean = 116.8, median = 113.0
+D2SG_S2_classified_2.fastq: mean = 116.4, median = 112.0
 D1RP_S9_unclassified_1.fastq: mean = 130.4, median = 134.0
-D1RP_S9_unclassified_2.fastq: mean = 127.9, median = 129.0
-D1SG_S1_unclassified_1.fastq: mean = 125.9, median = 124.0
-D1SG_S1_unclassified_2.fastq: mean = 124.2, median = 122.0
-D2RP_S10_unclassified_1.fastq: mean = 90.7, median = 63.0
-D2RP_S10_unclassified_2.fastq: mean = 89.5, median = 63.0
-D2SG_S2_unclassified_1.fastq: mean = 87.8, median = 66.0
-D2SG_S2_unclassified_2.fastq: mean = 87.7, median = 66.0
+D1RP_S9_unclassified_2.fastq: mean = 128.0, median = 129.0
+D1SG_S1_unclassified_1.fastq: mean = 125.9, median = 125.0
+D1SG_S1_unclassified_2.fastq: mean = 124.3, median = 122.0
+D2RP_S10_unclassified_1.fastq: mean = 90.2, median = 63.0
+D2RP_S10_unclassified_2.fastq: mean = 89.0, median = 62.0
+D2SG_S2_unclassified_1.fastq: mean = 88.1, median = 67.0
+D2SG_S2_unclassified_2.fastq: mean = 87.8, median = 66.0
 ✅ Statistics generated.
 
-Metagenomic classification completed in: 00:01:43
+Metagenomic classification completed in: 00:01:51
 
 ================================================= COMPARISON TO GROUND TRUTH =================================================
 
 Combining Bracken reports...
-Combined CSV file saved to: ../exposure_folder1/results/runs/run_0205_1827/combined_breports.csv 
+Combined CSV file saved to: ../exposure_folder1/results/runs/run_0205_2234/combined_breports.csv 
 
 ================================================= METAGENOMIC DIVERSITY ANALYSIS =================================================
 Calculating alpha and beta diversity...
 ✅ Alpha diversity calculated.
 null device 
           1 
-Heatmap saved to: ../exposure_folder1/results/runs/run_0205_1827/diversity/beta_diversity_heatmap.png 
+Heatmap saved to: ../exposure_folder1/results/runs/run_0205_2234/diversity/beta_diversity_heatmap.png 
 ✅ Beta diversity heatmap generated.
 ✅ Diversity analysis completed successfully.
 
@@ -413,3 +414,4 @@ null device
 Extracting sequences for BLAST query...
 ✅ Sequences saved to BLAST query.
 ✅ Duplicate sequences removed.
+✅ 15 random sequences selected and saved to: ../exposure_folder1/processed_data/human/aligned_sam/../../../results/host_dna_analysis/blast_query.fasta.selected
