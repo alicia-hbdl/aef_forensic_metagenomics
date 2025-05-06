@@ -1,0 +1,2112 @@
+
+================================================= ARGUMENT PARSING & VALIDATION =================================================
+
+Raw FASTQ directory path: ../hands_folder/raw_data/
+⚠️ Warning: No Bowtie2 index provided. Using default: ../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as
+✅ Trimming enabled.
+Quality Control & Trimming: Enabled ✅
+⚠️ Optional, but must be done at least once on the raw reads for the pipeline to work.
+
+Host DNA Removal: Enabled ✅
+Bowtie2 Index Prefix: ../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as
+⚠️ Optional, but must be done at least once on the trimmed reads for the pipeline to work.
+
+Kraken2/Bracken Database: ../data/databases/k2_standard_16gb_20241228
+
+================================================= CONDA ENVIRONMENT ACTIVATION ==================================================
+
+✅ 'metagenomics' environment activated successfully.
+
+====================================================== PROJECT STRUCTURE ======================================================
+
+../hands_folder
+├── processed_data
+│   ├── human
+│   │   ├── aligned_sam
+│   │   ├── bed_files
+│   │   └── sorted_bam
+│   ├── metagenomic
+│   │   ├── bracken
+│   │   ├── classified
+│   │   ├── filtered_fastq
+│   │   ├── kraken2
+│   │   └── unclassified
+│   └── trimmed
+│       ├── paired
+│       └── unpaired
+├── raw_data
+└── results
+    ├── diversity
+    ├── fastqc
+    │   ├── post_trimming
+    │   └── pre_trimming
+    ├── host_dna_analysis
+    ├── krona
+    └── runs
+        ├── run_0205_2337
+        ├── run_0504_1913
+        ├── run_0605_1202
+        ├── run_2603_1337
+        └── run_2603_1539
+
+28 directories
+Human DNA-related files (SAM, BAM, and BED) in the 'human' directory are created once per sub-project and remain unchanged across runs.
+Intermediate metagenomic files in the 'metagenomic' directory are overwritten with each run and should be inspected beforehand if desired.
+Results are stored in the 'results' directory (including FastQC, host DNA analysis, and run-specific results like Kraken2 and Bracken).
+
+=================================================== QUALITY CONTROL & TRIMMING ===================================================
+
+
+Running FastQC on all raw reads...
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+Analysis complete for BR1_S10_L001_R1_001.fastq.gz
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+application/gzip
+Analysis complete for BR1_S10_L001_R2_001.fastq.gz
+Analysis complete for BR2_S11_L001_R1_001.fastq.gz
+Analysis complete for BR2_S11_L001_R2_001.fastq.gz
+Analysis complete for BR3_S12_L001_R1_001.fastq.gz
+Analysis complete for BR3_S12_L001_R2_001.fastq.gz
+Analysis complete for BS1_S1_L001_R1_001.fastq.gz
+Analysis complete for BS1_S1_L001_R2_001.fastq.gz
+Analysis complete for BS2_S2_L001_R1_001.fastq.gz
+Analysis complete for BS2_S2_L001_R2_001.fastq.gz
+Analysis complete for BS3_S3_L001_R1_001.fastq.gz
+Analysis complete for BS3_S3_L001_R2_001.fastq.gz
+Analysis complete for DR1_S13_L001_R1_001.fastq.gz
+Analysis complete for DR1_S13_L001_R2_001.fastq.gz
+Analysis complete for DR2_S14_L001_R1_001.fastq.gz
+Analysis complete for DR2_S14_L001_R2_001.fastq.gz
+Analysis complete for DR3_S15_L001_R1_001.fastq.gz
+Analysis complete for DR3_S15_L001_R2_001.fastq.gz
+Analysis complete for DS1_S4_L001_R1_001.fastq.gz
+Analysis complete for DS1_S4_L001_R2_001.fastq.gz
+Analysis complete for DS2_S5_L001_R1_001.fastq.gz
+Analysis complete for DS2_S5_L001_R2_001.fastq.gz
+Analysis complete for DS3_S6_L001_R1_001.fastq.gz
+Analysis complete for DS3_S6_L001_R2_001.fastq.gz
+Analysis complete for LR1_S16_L001_R1_001.fastq.gz
+Analysis complete for LR1_S16_L001_R2_001.fastq.gz
+Analysis complete for LR2_S17_L001_R1_001.fastq.gz
+Analysis complete for LR2_S17_L001_R2_001.fastq.gz
+Analysis complete for LR3_S18_L001_R1_001.fastq.gz
+Analysis complete for LR3_S18_L001_R2_001.fastq.gz
+Analysis complete for LS1_S7_L001_R1_001.fastq.gz
+Analysis complete for LS1_S7_L001_R2_001.fastq.gz
+Analysis complete for LS2_S8_L001_R1_001.fastq.gz
+Analysis complete for LS2_S8_L001_R2_001.fastq.gz
+Analysis complete for LS3_S9_L001_R1_001.fastq.gz
+Analysis complete for LS3_S9_L001_R2_001.fastq.gz
+Analysis complete for NR1_S22_L001_R1_001.fastq.gz
+Analysis complete for NR1_S22_L001_R2_001.fastq.gz
+Analysis complete for NR2_S23_L001_R1_001.fastq.gz
+Analysis complete for NR2_S23_L001_R2_001.fastq.gz
+Analysis complete for NR3_S24_L001_R1_001.fastq.gz
+Analysis complete for NR3_S24_L001_R2_001.fastq.gz
+✅ FastQC completed successfully.
+
+/// MultiQC 🔍 v1.28
+
+       file_search | Search path: /cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/hands_folder/results/fastqc/pre_trimming
+
+            fastqc | Found 42 reports
+
+     write_results | Data        : None
+     write_results | Report      : /cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/hands_folder/results/fastqc/pre_trimming/multiqc_report.html   (overwritten)
+           multiqc | MultiQC complete
+✅ MultiQC report generated successfully.
+
+Running Trimmomatic...
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../hands_folder/raw_data//BR1_S10_L001_R1_001.fastq.gz ../hands_folder/raw_data//BR1_S10_L001_R2_001.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/BR1_S10_R1_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/BR1_S10_R1_unpaired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/BR1_S10_R2_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/BR1_S10_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 139632 Both Surviving: 98006 (70.19%) Forward Only Surviving: 1444 (1.03%) Reverse Only Surviving: 375 (0.27%) Dropped: 39807 (28.51%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed BR1_S10!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../hands_folder/raw_data//BR2_S11_L001_R1_001.fastq.gz ../hands_folder/raw_data//BR2_S11_L001_R2_001.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/BR2_S11_R1_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/BR2_S11_R1_unpaired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/BR2_S11_R2_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/BR2_S11_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 145571 Both Surviving: 127857 (87.83%) Forward Only Surviving: 2311 (1.59%) Reverse Only Surviving: 339 (0.23%) Dropped: 15064 (10.35%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed BR2_S11!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../hands_folder/raw_data//BR3_S12_L001_R1_001.fastq.gz ../hands_folder/raw_data//BR3_S12_L001_R2_001.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/BR3_S12_R1_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/BR3_S12_R1_unpaired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/BR3_S12_R2_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/BR3_S12_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 176248 Both Surviving: 102387 (58.09%) Forward Only Surviving: 1831 (1.04%) Reverse Only Surviving: 436 (0.25%) Dropped: 71594 (40.62%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed BR3_S12!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../hands_folder/raw_data//BS1_S1_L001_R1_001.fastq.gz ../hands_folder/raw_data//BS1_S1_L001_R2_001.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/BS1_S1_R1_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/BS1_S1_R1_unpaired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/BS1_S1_R2_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/BS1_S1_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 1841 Both Surviving: 927 (50.35%) Forward Only Surviving: 16 (0.87%) Reverse Only Surviving: 5 (0.27%) Dropped: 893 (48.51%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed BS1_S1!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../hands_folder/raw_data//BS2_S2_L001_R1_001.fastq.gz ../hands_folder/raw_data//BS2_S2_L001_R2_001.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/BS2_S2_R1_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/BS2_S2_R1_unpaired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/BS2_S2_R2_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/BS2_S2_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 1022 Both Surviving: 620 (60.67%) Forward Only Surviving: 5 (0.49%) Reverse Only Surviving: 3 (0.29%) Dropped: 394 (38.55%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed BS2_S2!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../hands_folder/raw_data//BS3_S3_L001_R1_001.fastq.gz ../hands_folder/raw_data//BS3_S3_L001_R2_001.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/BS3_S3_R1_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/BS3_S3_R1_unpaired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/BS3_S3_R2_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/BS3_S3_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 694 Both Surviving: 342 (49.28%) Forward Only Surviving: 4 (0.58%) Reverse Only Surviving: 3 (0.43%) Dropped: 345 (49.71%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed BS3_S3!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../hands_folder/raw_data//DR1_S13_L001_R1_001.fastq.gz ../hands_folder/raw_data//DR1_S13_L001_R2_001.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/DR1_S13_R1_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/DR1_S13_R1_unpaired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/DR1_S13_R2_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/DR1_S13_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 177649 Both Surviving: 142933 (80.46%) Forward Only Surviving: 2470 (1.39%) Reverse Only Surviving: 454 (0.26%) Dropped: 31792 (17.90%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed DR1_S13!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../hands_folder/raw_data//DR2_S14_L001_R1_001.fastq.gz ../hands_folder/raw_data//DR2_S14_L001_R2_001.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/DR2_S14_R1_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/DR2_S14_R1_unpaired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/DR2_S14_R2_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/DR2_S14_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 154960 Both Surviving: 132447 (85.47%) Forward Only Surviving: 2541 (1.64%) Reverse Only Surviving: 324 (0.21%) Dropped: 19648 (12.68%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed DR2_S14!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../hands_folder/raw_data//DR3_S15_L001_R1_001.fastq.gz ../hands_folder/raw_data//DR3_S15_L001_R2_001.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/DR3_S15_R1_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/DR3_S15_R1_unpaired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/DR3_S15_R2_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/DR3_S15_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 124512 Both Surviving: 107406 (86.26%) Forward Only Surviving: 2006 (1.61%) Reverse Only Surviving: 327 (0.26%) Dropped: 14773 (11.86%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed DR3_S15!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../hands_folder/raw_data//DS1_S4_L001_R1_001.fastq.gz ../hands_folder/raw_data//DS1_S4_L001_R2_001.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/DS1_S4_R1_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/DS1_S4_R1_unpaired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/DS1_S4_R2_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/DS1_S4_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 2736 Both Surviving: 1761 (64.36%) Forward Only Surviving: 37 (1.35%) Reverse Only Surviving: 9 (0.33%) Dropped: 929 (33.95%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed DS1_S4!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../hands_folder/raw_data//DS2_S5_L001_R1_001.fastq.gz ../hands_folder/raw_data//DS2_S5_L001_R2_001.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/DS2_S5_R1_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/DS2_S5_R1_unpaired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/DS2_S5_R2_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/DS2_S5_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 3952 Both Surviving: 3049 (77.15%) Forward Only Surviving: 51 (1.29%) Reverse Only Surviving: 9 (0.23%) Dropped: 843 (21.33%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed DS2_S5!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../hands_folder/raw_data//DS3_S6_L001_R1_001.fastq.gz ../hands_folder/raw_data//DS3_S6_L001_R2_001.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/DS3_S6_R1_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/DS3_S6_R1_unpaired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/DS3_S6_R2_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/DS3_S6_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 1112 Both Surviving: 696 (62.59%) Forward Only Surviving: 9 (0.81%) Reverse Only Surviving: 2 (0.18%) Dropped: 405 (36.42%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed DS3_S6!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../hands_folder/raw_data//LR1_S16_L001_R1_001.fastq.gz ../hands_folder/raw_data//LR1_S16_L001_R2_001.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/LR1_S16_R1_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/LR1_S16_R1_unpaired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/LR1_S16_R2_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/LR1_S16_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 208829 Both Surviving: 191320 (91.62%) Forward Only Surviving: 3841 (1.84%) Reverse Only Surviving: 821 (0.39%) Dropped: 12847 (6.15%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed LR1_S16!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../hands_folder/raw_data//LR2_S17_L001_R1_001.fastq.gz ../hands_folder/raw_data//LR2_S17_L001_R2_001.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/LR2_S17_R1_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/LR2_S17_R1_unpaired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/LR2_S17_R2_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/LR2_S17_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 165701 Both Surviving: 147430 (88.97%) Forward Only Surviving: 2417 (1.46%) Reverse Only Surviving: 650 (0.39%) Dropped: 15204 (9.18%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed LR2_S17!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../hands_folder/raw_data//LR3_S18_L001_R1_001.fastq.gz ../hands_folder/raw_data//LR3_S18_L001_R2_001.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/LR3_S18_R1_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/LR3_S18_R1_unpaired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/LR3_S18_R2_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/LR3_S18_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 976075 Both Surviving: 862088 (88.32%) Forward Only Surviving: 14978 (1.53%) Reverse Only Surviving: 3307 (0.34%) Dropped: 95702 (9.80%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed LR3_S18!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../hands_folder/raw_data//LS1_S7_L001_R1_001.fastq.gz ../hands_folder/raw_data//LS1_S7_L001_R2_001.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/LS1_S7_R1_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/LS1_S7_R1_unpaired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/LS1_S7_R2_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/LS1_S7_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 128411 Both Surviving: 111388 (86.74%) Forward Only Surviving: 1451 (1.13%) Reverse Only Surviving: 410 (0.32%) Dropped: 15162 (11.81%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed LS1_S7!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../hands_folder/raw_data//LS2_S8_L001_R1_001.fastq.gz ../hands_folder/raw_data//LS2_S8_L001_R2_001.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/LS2_S8_R1_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/LS2_S8_R1_unpaired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/LS2_S8_R2_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/LS2_S8_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 120136 Both Surviving: 109991 (91.56%) Forward Only Surviving: 1595 (1.33%) Reverse Only Surviving: 397 (0.33%) Dropped: 8153 (6.79%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed LS2_S8!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../hands_folder/raw_data//LS3_S9_L001_R1_001.fastq.gz ../hands_folder/raw_data//LS3_S9_L001_R2_001.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/LS3_S9_R1_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/LS3_S9_R1_unpaired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/LS3_S9_R2_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/LS3_S9_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 127244 Both Surviving: 119004 (93.52%) Forward Only Surviving: 1724 (1.35%) Reverse Only Surviving: 351 (0.28%) Dropped: 6165 (4.85%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed LS3_S9!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../hands_folder/raw_data//NR1_S22_L001_R1_001.fastq.gz ../hands_folder/raw_data//NR1_S22_L001_R2_001.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/NR1_S22_R1_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/NR1_S22_R1_unpaired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/NR1_S22_R2_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/NR1_S22_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 90149 Both Surviving: 18592 (20.62%) Forward Only Surviving: 483 (0.54%) Reverse Only Surviving: 189 (0.21%) Dropped: 70885 (78.63%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed NR1_S22!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../hands_folder/raw_data//NR2_S23_L001_R1_001.fastq.gz ../hands_folder/raw_data//NR2_S23_L001_R2_001.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/NR2_S23_R1_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/NR2_S23_R1_unpaired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/NR2_S23_R2_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/NR2_S23_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 156085 Both Surviving: 51710 (33.13%) Forward Only Surviving: 1037 (0.66%) Reverse Only Surviving: 278 (0.18%) Dropped: 103060 (66.03%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed NR2_S23!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../hands_folder/raw_data//NR3_S24_L001_R1_001.fastq.gz ../hands_folder/raw_data//NR3_S24_L001_R2_001.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/NR3_S24_R1_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/NR3_S24_R1_unpaired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/paired/NR3_S24_R2_paired.fastq.gz ../hands_folder/raw_data//../processed_data/trimmed/unpaired/NR3_S24_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 78621 Both Surviving: 45443 (57.80%) Forward Only Surviving: 935 (1.19%) Reverse Only Surviving: 171 (0.22%) Dropped: 32072 (40.79%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed NR3_S24!
+
+
+Running FastQC on paired trimmed reads...
+✅ FastQC completed successfully.
+
+/// MultiQC 🔍 v1.28
+
+       file_search | Search path: /cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/hands_folder/results/fastqc/post_trimming
+
+            fastqc | Found 42 reports
+
+     write_results | Data        : None
+     write_results | Report      : /cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/hands_folder/results/fastqc/post_trimming/multiqc_report.html   (overwritten)
+           multiqc | MultiQC complete
+✅ MultiQC report generated successfully.
+
+✅ All processing steps completed successfully.
+✅ QC and trimming completed successfully.
+
+================================================= METAGENOMIC ABUNDANCE ESTIMATION =================================================
+⚠️ This step assumes reads have already been trimmed with Trimmomatic and host DNA removed with Bowtie2. Processed reads must be in the correct directory.
+
+Processing sample: BR1_S10
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../hands_folder/processed_data/trimmed/paired/BR1_S10_R1_paired.fastq.gz" -2 "../hands_folder/processed_data/trimmed/paired/BR1_S10_R2_paired.fastq.gz" 	                --un-conc "../hands_folder/processed_data/metagenomic/filtered_fastq/BR1_S10_metagenomic" -S "../hands_folder/processed_data/human/aligned_sam/BR1_S10_human.sam" 2>&1
+98006 reads; of these:
+  98006 (100.00%) were paired; of these:
+    97788 (99.78%) aligned concordantly 0 times
+    149 (0.15%) aligned concordantly exactly 1 time
+    69 (0.07%) aligned concordantly >1 times
+0.22% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+🧪 DEBUG INFO for sample: BR1_S10
+Input files:
+-rw-rw---- 1 k24087895 k24087895 21M May  6 12:06 ../hands_folder/processed_data/metagenomic/filtered_fastq/BR1_S10_metagenomic.1
+-rw-rw---- 1 k24087895 k24087895 21M May  6 12:06 ../hands_folder/processed_data/metagenomic/filtered_fastq/BR1_S10_metagenomic.2
+
+Disk usage of input files:
+21M	../hands_folder/processed_data/metagenomic/filtered_fastq/BR1_S10_metagenomic.1
+21M	../hands_folder/processed_data/metagenomic/filtered_fastq/BR1_S10_metagenomic.2
+
+First few lines of R1 FASTQ:
+@M00737:133:000000000-GHK3P:1:1101:15693:1522 1:N:0:TTCCCTTT+CACCAAGC
+TCCAATGTGTGGGGCTTATTTGCTAAAGCCAAAAAGAAATAAGCAGCATAAGCAGAATGAAAAAG
++
+FFG9<EDFCF@7,@FGGFGGG9FFEF99FFGF<8CC8CDFDCFFC@FFFC<<FE@8,C<9@AD8B
+
+📈 Memory snapshot:
+               total        used        free      shared  buff/cache   available
+Mem:           1.0Ti       174Gi       584Gi        98Mi       248Gi       826Gi
+Swap:             0B          0B          0B
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../hands_folder/results/runs/run_0605_1202/reports/BR1_S10.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 2 		--classified-out "../hands_folder/processed_data/metagenomic/classified/BR1_S10_classified#.fastq" --unclassified-out "../hands_folder/processed_data/metagenomic/unclassified/BR1_S10_unclassified#.fastq" 		--output "../hands_folder/processed_data/metagenomic/kraken2/BR1_S10.kraken2" --use-names "../hands_folder/processed_data/metagenomic/filtered_fastq/BR1_S10_metagenomic.1" "../hands_folder/processed_data/metagenomic/filtered_fastq/BR1_S10_metagenomic.2" 2>&1
+Loading database information... done.
+97788 sequences (14.52 Mbp) processed in 0.344s (17037.6 Kseq/m, 2530.18 Mbp/m).
+  36273 sequences classified (37.09%)
+  61515 sequences unclassified (62.91%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../hands_folder/results/runs/run_0605_1202/reports/BR1_S10.k2report -o ../hands_folder/processed_data/metagenomic/bracken/BR1_S10.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../hands_folder/results/runs/run_0605_1202/reports/BR1_S10.k2report
+PROGRAM START TIME: 05-06-2025 11:06:47
+BRACKEN SUMMARY (Kraken report: ../hands_folder/results/runs/run_0605_1202/reports/BR1_S10.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 70 
+	  >> Number of species with reads > threshold: 70 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 97788
+	  >> Total reads kept at species level (reads > threshold): 12981
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 23136
+	  >> Reads not distributed (eg. no species above threshold): 156
+	  >> Unclassified reads: 61515
+BRACKEN OUTPUT PRODUCED: ../hands_folder/processed_data/metagenomic/bracken/BR1_S10.bracken
+PROGRAM END TIME: 05-06-2025 11:06:47
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../hands_folder/results/runs/run_0605_1202/krona/BR1_S10.krona.html...
+✅ Krona plot generated.
+
+Processing sample: BR2_S11
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../hands_folder/processed_data/trimmed/paired/BR2_S11_R1_paired.fastq.gz" -2 "../hands_folder/processed_data/trimmed/paired/BR2_S11_R2_paired.fastq.gz" 	                --un-conc "../hands_folder/processed_data/metagenomic/filtered_fastq/BR2_S11_metagenomic" -S "../hands_folder/processed_data/human/aligned_sam/BR2_S11_human.sam" 2>&1
+127857 reads; of these:
+  127857 (100.00%) were paired; of these:
+    127857 (100.00%) aligned concordantly 0 times
+    0 (0.00%) aligned concordantly exactly 1 time
+    0 (0.00%) aligned concordantly >1 times
+0.00% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+🧪 DEBUG INFO for sample: BR2_S11
+Input files:
+-rw-rw---- 1 k24087895 k24087895 30M May  6 12:06 ../hands_folder/processed_data/metagenomic/filtered_fastq/BR2_S11_metagenomic.1
+-rw-rw---- 1 k24087895 k24087895 30M May  6 12:06 ../hands_folder/processed_data/metagenomic/filtered_fastq/BR2_S11_metagenomic.2
+
+Disk usage of input files:
+30M	../hands_folder/processed_data/metagenomic/filtered_fastq/BR2_S11_metagenomic.1
+30M	../hands_folder/processed_data/metagenomic/filtered_fastq/BR2_S11_metagenomic.2
+
+First few lines of R1 FASTQ:
+@M00737:133:000000000-GHK3P:1:1101:22991:1575 1:N:0:GACGCTCG+CGGAGAGG
+TCCATCATTGGCGCCGTGTCGATCGTGGTGATGACCGCCATGCATGAAAAGATGCATCAACGGGCAAGCAAGAAGTGGCAGCCAG
++
+FFC9FFEFG9CE@FF>F7FF@@EGEEFDG8AF,6EF>CGEF<EFGCA<<E?7E<DAEFC9CB@EEEC7F<<F8A<C,,B8?CFC8
+
+📈 Memory snapshot:
+               total        used        free      shared  buff/cache   available
+Mem:           1.0Ti       173Gi       585Gi        98Mi       248Gi       827Gi
+Swap:             0B          0B          0B
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../hands_folder/results/runs/run_0605_1202/reports/BR2_S11.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 2 		--classified-out "../hands_folder/processed_data/metagenomic/classified/BR2_S11_classified#.fastq" --unclassified-out "../hands_folder/processed_data/metagenomic/unclassified/BR2_S11_unclassified#.fastq" 		--output "../hands_folder/processed_data/metagenomic/kraken2/BR2_S11.kraken2" --use-names "../hands_folder/processed_data/metagenomic/filtered_fastq/BR2_S11_metagenomic.1" "../hands_folder/processed_data/metagenomic/filtered_fastq/BR2_S11_metagenomic.2" 2>&1
+Loading database information... done.
+127857 sequences (21.53 Mbp) processed in 0.407s (18865.3 Kseq/m, 3176.93 Mbp/m).
+  80618 sequences classified (63.05%)
+  47239 sequences unclassified (36.95%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../hands_folder/results/runs/run_0605_1202/reports/BR2_S11.k2report -o ../hands_folder/processed_data/metagenomic/bracken/BR2_S11.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../hands_folder/results/runs/run_0605_1202/reports/BR2_S11.k2report
+PROGRAM START TIME: 05-06-2025 11:07:02
+BRACKEN SUMMARY (Kraken report: ../hands_folder/results/runs/run_0605_1202/reports/BR2_S11.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 25 
+	  >> Number of species with reads > threshold: 25 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 127857
+	  >> Total reads kept at species level (reads > threshold): 54052
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 26410
+	  >> Reads not distributed (eg. no species above threshold): 156
+	  >> Unclassified reads: 47239
+BRACKEN OUTPUT PRODUCED: ../hands_folder/processed_data/metagenomic/bracken/BR2_S11.bracken
+PROGRAM END TIME: 05-06-2025 11:07:02
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../hands_folder/results/runs/run_0605_1202/krona/BR2_S11.krona.html...
+✅ Krona plot generated.
+
+Processing sample: BR3_S12
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../hands_folder/processed_data/trimmed/paired/BR3_S12_R1_paired.fastq.gz" -2 "../hands_folder/processed_data/trimmed/paired/BR3_S12_R2_paired.fastq.gz" 	                --un-conc "../hands_folder/processed_data/metagenomic/filtered_fastq/BR3_S12_metagenomic" -S "../hands_folder/processed_data/human/aligned_sam/BR3_S12_human.sam" 2>&1
+102387 reads; of these:
+  102387 (100.00%) were paired; of these:
+    102361 (99.97%) aligned concordantly 0 times
+    25 (0.02%) aligned concordantly exactly 1 time
+    1 (0.00%) aligned concordantly >1 times
+0.03% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+🧪 DEBUG INFO for sample: BR3_S12
+Input files:
+-rw-rw---- 1 k24087895 k24087895 22M May  6 12:07 ../hands_folder/processed_data/metagenomic/filtered_fastq/BR3_S12_metagenomic.1
+-rw-rw---- 1 k24087895 k24087895 22M May  6 12:07 ../hands_folder/processed_data/metagenomic/filtered_fastq/BR3_S12_metagenomic.2
+
+Disk usage of input files:
+22M	../hands_folder/processed_data/metagenomic/filtered_fastq/BR3_S12_metagenomic.1
+22M	../hands_folder/processed_data/metagenomic/filtered_fastq/BR3_S12_metagenomic.2
+
+First few lines of R1 FASTQ:
+@M00737:133:000000000-GHK3P:1:1101:15560:1567 1:N:0:CTCACGTC+TATTTACC
+ATCAAATGCTGTATTAGAGGGGTGTGTACAAAGTGCAGCTACCCAGCCTTAAAGCTGTCTGGGTAGACAGGAAACACAACGCGGGAAGGCTATTAGCTAGCTAAAAG
++
+<FGFEEFFGGGGFGFGCCCEDCFFGDGGGGGGGGGGGGGGGGGGFDGGGGGGGDGGDFGGFFDGDDFEFDDFDFFGGGGGGGGDEDEGDFGFGGGEFGGFGGFF9EC
+
+📈 Memory snapshot:
+               total        used        free      shared  buff/cache   available
+Mem:           1.0Ti       175Gi       583Gi        98Mi       248Gi       825Gi
+Swap:             0B          0B          0B
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../hands_folder/results/runs/run_0605_1202/reports/BR3_S12.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 2 		--classified-out "../hands_folder/processed_data/metagenomic/classified/BR3_S12_classified#.fastq" --unclassified-out "../hands_folder/processed_data/metagenomic/unclassified/BR3_S12_unclassified#.fastq" 		--output "../hands_folder/processed_data/metagenomic/kraken2/BR3_S12.kraken2" --use-names "../hands_folder/processed_data/metagenomic/filtered_fastq/BR3_S12_metagenomic.1" "../hands_folder/processed_data/metagenomic/filtered_fastq/BR3_S12_metagenomic.2" 2>&1
+Loading database information... done.
+102361 sequences (14.71 Mbp) processed in 0.319s (19259.6 Kseq/m, 2767.97 Mbp/m).
+  58107 sequences classified (56.77%)
+  44254 sequences unclassified (43.23%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../hands_folder/results/runs/run_0605_1202/reports/BR3_S12.k2report -o ../hands_folder/processed_data/metagenomic/bracken/BR3_S12.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../hands_folder/results/runs/run_0605_1202/reports/BR3_S12.k2report
+PROGRAM START TIME: 05-06-2025 11:07:16
+BRACKEN SUMMARY (Kraken report: ../hands_folder/results/runs/run_0605_1202/reports/BR3_S12.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 75 
+	  >> Number of species with reads > threshold: 75 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 102361
+	  >> Total reads kept at species level (reads > threshold): 1678
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 56426
+	  >> Reads not distributed (eg. no species above threshold): 3
+	  >> Unclassified reads: 44254
+BRACKEN OUTPUT PRODUCED: ../hands_folder/processed_data/metagenomic/bracken/BR3_S12.bracken
+PROGRAM END TIME: 05-06-2025 11:07:17
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../hands_folder/results/runs/run_0605_1202/krona/BR3_S12.krona.html...
+✅ Krona plot generated.
+
+Processing sample: BS1_S1
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../hands_folder/processed_data/trimmed/paired/BS1_S1_R1_paired.fastq.gz" -2 "../hands_folder/processed_data/trimmed/paired/BS1_S1_R2_paired.fastq.gz" 	                --un-conc "../hands_folder/processed_data/metagenomic/filtered_fastq/BS1_S1_metagenomic" -S "../hands_folder/processed_data/human/aligned_sam/BS1_S1_human.sam" 2>&1
+927 reads; of these:
+  927 (100.00%) were paired; of these:
+    911 (98.27%) aligned concordantly 0 times
+    5 (0.54%) aligned concordantly exactly 1 time
+    11 (1.19%) aligned concordantly >1 times
+1.73% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+🧪 DEBUG INFO for sample: BS1_S1
+Input files:
+-rw-rw---- 1 k24087895 k24087895 184K May  6 12:07 ../hands_folder/processed_data/metagenomic/filtered_fastq/BS1_S1_metagenomic.1
+-rw-rw---- 1 k24087895 k24087895 184K May  6 12:07 ../hands_folder/processed_data/metagenomic/filtered_fastq/BS1_S1_metagenomic.2
+
+Disk usage of input files:
+184K	../hands_folder/processed_data/metagenomic/filtered_fastq/BS1_S1_metagenomic.1
+184K	../hands_folder/processed_data/metagenomic/filtered_fastq/BS1_S1_metagenomic.2
+
+First few lines of R1 FASTQ:
+@M00737:133:000000000-GHK3P:1:1101:15947:1915 1:N:0:ACGACGTC+TTGTTGCA
+CTTATGAACTCCGGCGTGCAACAGAGGATCCATCGAGGGCCTTAATATCTCTTATGAACTCCGGCGTGCAACAGAGATA
++
+GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+
+📈 Memory snapshot:
+               total        used        free      shared  buff/cache   available
+Mem:           1.0Ti       175Gi       583Gi        98Mi       248Gi       825Gi
+Swap:             0B          0B          0B
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../hands_folder/results/runs/run_0605_1202/reports/BS1_S1.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 2 		--classified-out "../hands_folder/processed_data/metagenomic/classified/BS1_S1_classified#.fastq" --unclassified-out "../hands_folder/processed_data/metagenomic/unclassified/BS1_S1_unclassified#.fastq" 		--output "../hands_folder/processed_data/metagenomic/kraken2/BS1_S1.kraken2" --use-names "../hands_folder/processed_data/metagenomic/filtered_fastq/BS1_S1_metagenomic.1" "../hands_folder/processed_data/metagenomic/filtered_fastq/BS1_S1_metagenomic.2" 2>&1
+Loading database information... done.
+911 sequences (0.12 Mbp) processed in 0.033s (1631.9 Kseq/m, 215.52 Mbp/m).
+  281 sequences classified (30.85%)
+  630 sequences unclassified (69.15%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../hands_folder/results/runs/run_0605_1202/reports/BS1_S1.k2report -o ../hands_folder/processed_data/metagenomic/bracken/BS1_S1.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../hands_folder/results/runs/run_0605_1202/reports/BS1_S1.k2report
+PROGRAM START TIME: 05-06-2025 11:07:28
+BRACKEN SUMMARY (Kraken report: ../hands_folder/results/runs/run_0605_1202/reports/BS1_S1.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 35 
+	  >> Number of species with reads > threshold: 35 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 911
+	  >> Total reads kept at species level (reads > threshold): 230
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 39
+	  >> Reads not distributed (eg. no species above threshold): 12
+	  >> Unclassified reads: 630
+BRACKEN OUTPUT PRODUCED: ../hands_folder/processed_data/metagenomic/bracken/BS1_S1.bracken
+PROGRAM END TIME: 05-06-2025 11:07:29
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../hands_folder/results/runs/run_0605_1202/krona/BS1_S1.krona.html...
+✅ Krona plot generated.
+
+Processing sample: BS2_S2
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../hands_folder/processed_data/trimmed/paired/BS2_S2_R1_paired.fastq.gz" -2 "../hands_folder/processed_data/trimmed/paired/BS2_S2_R2_paired.fastq.gz" 	                --un-conc "../hands_folder/processed_data/metagenomic/filtered_fastq/BS2_S2_metagenomic" -S "../hands_folder/processed_data/human/aligned_sam/BS2_S2_human.sam" 2>&1
+620 reads; of these:
+  620 (100.00%) were paired; of these:
+    614 (99.03%) aligned concordantly 0 times
+    3 (0.48%) aligned concordantly exactly 1 time
+    3 (0.48%) aligned concordantly >1 times
+0.97% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+🧪 DEBUG INFO for sample: BS2_S2
+Input files:
+-rw-rw---- 1 k24087895 k24087895 132K May  6 12:07 ../hands_folder/processed_data/metagenomic/filtered_fastq/BS2_S2_metagenomic.1
+-rw-rw---- 1 k24087895 k24087895 132K May  6 12:07 ../hands_folder/processed_data/metagenomic/filtered_fastq/BS2_S2_metagenomic.2
+
+Disk usage of input files:
+132K	../hands_folder/processed_data/metagenomic/filtered_fastq/BS2_S2_metagenomic.1
+132K	../hands_folder/processed_data/metagenomic/filtered_fastq/BS2_S2_metagenomic.2
+
+First few lines of R1 FASTQ:
+@M00737:133:000000000-GHK3P:1:1101:15901:1771 1:N:0:GTATGACG+CCACACTT
+CATCTGAATTTTGGAGGGACCATATTCAAACCATAACACCACATAATACATACC
++
+GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+
+📈 Memory snapshot:
+               total        used        free      shared  buff/cache   available
+Mem:           1.0Ti       173Gi       585Gi        98Mi       248Gi       827Gi
+Swap:             0B          0B          0B
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../hands_folder/results/runs/run_0605_1202/reports/BS2_S2.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 2 		--classified-out "../hands_folder/processed_data/metagenomic/classified/BS2_S2_classified#.fastq" --unclassified-out "../hands_folder/processed_data/metagenomic/unclassified/BS2_S2_unclassified#.fastq" 		--output "../hands_folder/processed_data/metagenomic/kraken2/BS2_S2.kraken2" --use-names "../hands_folder/processed_data/metagenomic/filtered_fastq/BS2_S2_metagenomic.1" "../hands_folder/processed_data/metagenomic/filtered_fastq/BS2_S2_metagenomic.2" 2>&1
+Loading database information... done.
+614 sequences (0.09 Mbp) processed in 0.031s (1200.3 Kseq/m, 173.18 Mbp/m).
+  192 sequences classified (31.27%)
+  422 sequences unclassified (68.73%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../hands_folder/results/runs/run_0605_1202/reports/BS2_S2.k2report -o ../hands_folder/processed_data/metagenomic/bracken/BS2_S2.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../hands_folder/results/runs/run_0605_1202/reports/BS2_S2.k2report
+PROGRAM START TIME: 05-06-2025 11:07:40
+BRACKEN SUMMARY (Kraken report: ../hands_folder/results/runs/run_0605_1202/reports/BS2_S2.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 38 
+	  >> Number of species with reads > threshold: 38 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 614
+	  >> Total reads kept at species level (reads > threshold): 153
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 17
+	  >> Reads not distributed (eg. no species above threshold): 22
+	  >> Unclassified reads: 422
+BRACKEN OUTPUT PRODUCED: ../hands_folder/processed_data/metagenomic/bracken/BS2_S2.bracken
+PROGRAM END TIME: 05-06-2025 11:07:41
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../hands_folder/results/runs/run_0605_1202/krona/BS2_S2.krona.html...
+✅ Krona plot generated.
+
+Processing sample: BS3_S3
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../hands_folder/processed_data/trimmed/paired/BS3_S3_R1_paired.fastq.gz" -2 "../hands_folder/processed_data/trimmed/paired/BS3_S3_R2_paired.fastq.gz" 	                --un-conc "../hands_folder/processed_data/metagenomic/filtered_fastq/BS3_S3_metagenomic" -S "../hands_folder/processed_data/human/aligned_sam/BS3_S3_human.sam" 2>&1
+342 reads; of these:
+  342 (100.00%) were paired; of these:
+    338 (98.83%) aligned concordantly 0 times
+    2 (0.58%) aligned concordantly exactly 1 time
+    2 (0.58%) aligned concordantly >1 times
+1.17% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+🧪 DEBUG INFO for sample: BS3_S3
+Input files:
+-rw-rw---- 1 k24087895 k24087895 75K May  6 12:07 ../hands_folder/processed_data/metagenomic/filtered_fastq/BS3_S3_metagenomic.1
+-rw-rw---- 1 k24087895 k24087895 75K May  6 12:07 ../hands_folder/processed_data/metagenomic/filtered_fastq/BS3_S3_metagenomic.2
+
+Disk usage of input files:
+75K	../hands_folder/processed_data/metagenomic/filtered_fastq/BS3_S3_metagenomic.1
+75K	../hands_folder/processed_data/metagenomic/filtered_fastq/BS3_S3_metagenomic.2
+
+First few lines of R1 FASTQ:
+@M00737:133:000000000-GHK3P:1:1101:8346:2323 1:N:0:TACAGCAA+CCCGTTTG
+CCATTGATACAGAGCCAATTCCAATAGACTTATTGGAGGGTCCCATTGGCGTGCATCCAGTAGGAATTGAACC
++
+GFGGGGGGGGFFGFGGGGGGGFFGGGGGFFGGGFGFGGGGGGGGGFFGGGG7FFFFFGDGCFFGGGGGGGGGG
+
+📈 Memory snapshot:
+               total        used        free      shared  buff/cache   available
+Mem:           1.0Ti       174Gi       584Gi        98Mi       248Gi       826Gi
+Swap:             0B          0B          0B
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../hands_folder/results/runs/run_0605_1202/reports/BS3_S3.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 2 		--classified-out "../hands_folder/processed_data/metagenomic/classified/BS3_S3_classified#.fastq" --unclassified-out "../hands_folder/processed_data/metagenomic/unclassified/BS3_S3_unclassified#.fastq" 		--output "../hands_folder/processed_data/metagenomic/kraken2/BS3_S3.kraken2" --use-names "../hands_folder/processed_data/metagenomic/filtered_fastq/BS3_S3_metagenomic.1" "../hands_folder/processed_data/metagenomic/filtered_fastq/BS3_S3_metagenomic.2" 2>&1
+Loading database information... done.
+338 sequences (0.05 Mbp) processed in 0.026s (782.3 Kseq/m, 119.27 Mbp/m).
+  102 sequences classified (30.18%)
+  236 sequences unclassified (69.82%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../hands_folder/results/runs/run_0605_1202/reports/BS3_S3.k2report -o ../hands_folder/processed_data/metagenomic/bracken/BS3_S3.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../hands_folder/results/runs/run_0605_1202/reports/BS3_S3.k2report
+PROGRAM START TIME: 05-06-2025 11:07:52
+BRACKEN SUMMARY (Kraken report: ../hands_folder/results/runs/run_0605_1202/reports/BS3_S3.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 17 
+	  >> Number of species with reads > threshold: 17 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 338
+	  >> Total reads kept at species level (reads > threshold): 80
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 15
+	  >> Reads not distributed (eg. no species above threshold): 7
+	  >> Unclassified reads: 236
+BRACKEN OUTPUT PRODUCED: ../hands_folder/processed_data/metagenomic/bracken/BS3_S3.bracken
+PROGRAM END TIME: 05-06-2025 11:07:53
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../hands_folder/results/runs/run_0605_1202/krona/BS3_S3.krona.html...
+✅ Krona plot generated.
+
+Processing sample: DR1_S13
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../hands_folder/processed_data/trimmed/paired/DR1_S13_R1_paired.fastq.gz" -2 "../hands_folder/processed_data/trimmed/paired/DR1_S13_R2_paired.fastq.gz" 	                --un-conc "../hands_folder/processed_data/metagenomic/filtered_fastq/DR1_S13_metagenomic" -S "../hands_folder/processed_data/human/aligned_sam/DR1_S13_human.sam" 2>&1
+142933 reads; of these:
+  142933 (100.00%) were paired; of these:
+    142856 (99.95%) aligned concordantly 0 times
+    71 (0.05%) aligned concordantly exactly 1 time
+    6 (0.00%) aligned concordantly >1 times
+0.05% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+🧪 DEBUG INFO for sample: DR1_S13
+Input files:
+-rw-rw---- 1 k24087895 k24087895 31M May  6 12:07 ../hands_folder/processed_data/metagenomic/filtered_fastq/DR1_S13_metagenomic.1
+-rw-rw---- 1 k24087895 k24087895 31M May  6 12:07 ../hands_folder/processed_data/metagenomic/filtered_fastq/DR1_S13_metagenomic.2
+
+Disk usage of input files:
+31M	../hands_folder/processed_data/metagenomic/filtered_fastq/DR1_S13_metagenomic.1
+31M	../hands_folder/processed_data/metagenomic/filtered_fastq/DR1_S13_metagenomic.2
+
+First few lines of R1 FASTQ:
+@M00737:133:000000000-GHK3P:1:1101:14289:1504 1:N:0:CTGCCAAG+TATATGGA
+TCCTTGAAAAGTGGTCGGCTGCGCACGGCAAGAACTGGACGAGCAAGGAGCTGAACCCAT
++
+FGFGGD98<<@F99FFC>FGDFCFCF@7F@@@DFGGC88EC@@F@@@788DF@<DFFG7F
+
+📈 Memory snapshot:
+               total        used        free      shared  buff/cache   available
+Mem:           1.0Ti       174Gi       584Gi        98Mi       248Gi       826Gi
+Swap:             0B          0B          0B
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../hands_folder/results/runs/run_0605_1202/reports/DR1_S13.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 2 		--classified-out "../hands_folder/processed_data/metagenomic/classified/DR1_S13_classified#.fastq" --unclassified-out "../hands_folder/processed_data/metagenomic/unclassified/DR1_S13_unclassified#.fastq" 		--output "../hands_folder/processed_data/metagenomic/kraken2/DR1_S13.kraken2" --use-names "../hands_folder/processed_data/metagenomic/filtered_fastq/DR1_S13_metagenomic.1" "../hands_folder/processed_data/metagenomic/filtered_fastq/DR1_S13_metagenomic.2" 2>&1
+Loading database information... done.
+142856 sequences (21.81 Mbp) processed in 0.409s (20973.9 Kseq/m, 3201.50 Mbp/m).
+  54036 sequences classified (37.83%)
+  88820 sequences unclassified (62.17%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../hands_folder/results/runs/run_0605_1202/reports/DR1_S13.k2report -o ../hands_folder/processed_data/metagenomic/bracken/DR1_S13.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../hands_folder/results/runs/run_0605_1202/reports/DR1_S13.k2report
+PROGRAM START TIME: 05-06-2025 11:08:08
+BRACKEN SUMMARY (Kraken report: ../hands_folder/results/runs/run_0605_1202/reports/DR1_S13.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 27 
+	  >> Number of species with reads > threshold: 27 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 142856
+	  >> Total reads kept at species level (reads > threshold): 53322
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 698
+	  >> Reads not distributed (eg. no species above threshold): 16
+	  >> Unclassified reads: 88820
+BRACKEN OUTPUT PRODUCED: ../hands_folder/processed_data/metagenomic/bracken/DR1_S13.bracken
+PROGRAM END TIME: 05-06-2025 11:08:09
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../hands_folder/results/runs/run_0605_1202/krona/DR1_S13.krona.html...
+✅ Krona plot generated.
+
+Processing sample: DR2_S14
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../hands_folder/processed_data/trimmed/paired/DR2_S14_R1_paired.fastq.gz" -2 "../hands_folder/processed_data/trimmed/paired/DR2_S14_R2_paired.fastq.gz" 	                --un-conc "../hands_folder/processed_data/metagenomic/filtered_fastq/DR2_S14_metagenomic" -S "../hands_folder/processed_data/human/aligned_sam/DR2_S14_human.sam" 2>&1
+132447 reads; of these:
+  132447 (100.00%) were paired; of these:
+    132077 (99.72%) aligned concordantly 0 times
+    239 (0.18%) aligned concordantly exactly 1 time
+    131 (0.10%) aligned concordantly >1 times
+0.28% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+🧪 DEBUG INFO for sample: DR2_S14
+Input files:
+-rw-rw---- 1 k24087895 k24087895 33M May  6 12:08 ../hands_folder/processed_data/metagenomic/filtered_fastq/DR2_S14_metagenomic.1
+-rw-rw---- 1 k24087895 k24087895 33M May  6 12:08 ../hands_folder/processed_data/metagenomic/filtered_fastq/DR2_S14_metagenomic.2
+
+Disk usage of input files:
+33M	../hands_folder/processed_data/metagenomic/filtered_fastq/DR2_S14_metagenomic.1
+33M	../hands_folder/processed_data/metagenomic/filtered_fastq/DR2_S14_metagenomic.2
+
+First few lines of R1 FASTQ:
+@M00737:133:000000000-GHK3P:1:1101:14339:1470 1:N:0:ACGCCGCA+GTTAACAT
+ATAGCTTAGAGGTTCTGAATAGCAAGTACAATGTTCACTACTGGAATGACTGGGGAGTGGGAGATACAGGAACCATTGGT
++
+-C,-CFFA@99,CFFGDA9FA,C9,<F9FAAFAFFFCFF9FF9888C<9CFC887,7C88,,@7F9E9,,8EEF8FF,,C
+
+📈 Memory snapshot:
+               total        used        free      shared  buff/cache   available
+Mem:           1.0Ti       173Gi       590Gi        98Mi       242Gi       827Gi
+Swap:             0B          0B          0B
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../hands_folder/results/runs/run_0605_1202/reports/DR2_S14.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 2 		--classified-out "../hands_folder/processed_data/metagenomic/classified/DR2_S14_classified#.fastq" --unclassified-out "../hands_folder/processed_data/metagenomic/unclassified/DR2_S14_unclassified#.fastq" 		--output "../hands_folder/processed_data/metagenomic/kraken2/DR2_S14.kraken2" --use-names "../hands_folder/processed_data/metagenomic/filtered_fastq/DR2_S14_metagenomic.1" "../hands_folder/processed_data/metagenomic/filtered_fastq/DR2_S14_metagenomic.2" 2>&1
+Loading database information... done.
+132077 sequences (24.35 Mbp) processed in 0.522s (15180.9 Kseq/m, 2798.99 Mbp/m).
+  97524 sequences classified (73.84%)
+  34553 sequences unclassified (26.16%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../hands_folder/results/runs/run_0605_1202/reports/DR2_S14.k2report -o ../hands_folder/processed_data/metagenomic/bracken/DR2_S14.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../hands_folder/results/runs/run_0605_1202/reports/DR2_S14.k2report
+PROGRAM START TIME: 05-06-2025 11:08:27
+BRACKEN SUMMARY (Kraken report: ../hands_folder/results/runs/run_0605_1202/reports/DR2_S14.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 53 
+	  >> Number of species with reads > threshold: 53 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 132077
+	  >> Total reads kept at species level (reads > threshold): 79812
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 17707
+	  >> Reads not distributed (eg. no species above threshold): 5
+	  >> Unclassified reads: 34553
+BRACKEN OUTPUT PRODUCED: ../hands_folder/processed_data/metagenomic/bracken/DR2_S14.bracken
+PROGRAM END TIME: 05-06-2025 11:08:27
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../hands_folder/results/runs/run_0605_1202/krona/DR2_S14.krona.html...
+✅ Krona plot generated.
+
+Processing sample: DR3_S15
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../hands_folder/processed_data/trimmed/paired/DR3_S15_R1_paired.fastq.gz" -2 "../hands_folder/processed_data/trimmed/paired/DR3_S15_R2_paired.fastq.gz" 	                --un-conc "../hands_folder/processed_data/metagenomic/filtered_fastq/DR3_S15_metagenomic" -S "../hands_folder/processed_data/human/aligned_sam/DR3_S15_human.sam" 2>&1
+107406 reads; of these:
+  107406 (100.00%) were paired; of these:
+    106696 (99.34%) aligned concordantly 0 times
+    644 (0.60%) aligned concordantly exactly 1 time
+    66 (0.06%) aligned concordantly >1 times
+0.66% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+🧪 DEBUG INFO for sample: DR3_S15
+Input files:
+-rw-rw---- 1 k24087895 k24087895 27M May  6 12:08 ../hands_folder/processed_data/metagenomic/filtered_fastq/DR3_S15_metagenomic.1
+-rw-rw---- 1 k24087895 k24087895 27M May  6 12:08 ../hands_folder/processed_data/metagenomic/filtered_fastq/DR3_S15_metagenomic.2
+
+Disk usage of input files:
+27M	../hands_folder/processed_data/metagenomic/filtered_fastq/DR3_S15_metagenomic.1
+27M	../hands_folder/processed_data/metagenomic/filtered_fastq/DR3_S15_metagenomic.2
+
+First few lines of R1 FASTQ:
+@M00737:133:000000000-GHK3P:1:1101:8755:1607 1:N:0:CGCCAGTC+CGTCTTGG
+TTTGCTGGAGAGGAGGGGGCATTCAAGACAGAGACAGTAGCTGGGTCTAGCTGGGATCTGCAAATGCAC
++
+GGGGGGGGFGFEGFGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGDGGGFFGGGGGGGGGGGGFGGGGGG
+
+📈 Memory snapshot:
+               total        used        free      shared  buff/cache   available
+Mem:           1.0Ti       172Gi       598Gi        98Mi       236Gi       828Gi
+Swap:             0B          0B          0B
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../hands_folder/results/runs/run_0605_1202/reports/DR3_S15.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 2 		--classified-out "../hands_folder/processed_data/metagenomic/classified/DR3_S15_classified#.fastq" --unclassified-out "../hands_folder/processed_data/metagenomic/unclassified/DR3_S15_unclassified#.fastq" 		--output "../hands_folder/processed_data/metagenomic/kraken2/DR3_S15.kraken2" --use-names "../hands_folder/processed_data/metagenomic/filtered_fastq/DR3_S15_metagenomic.1" "../hands_folder/processed_data/metagenomic/filtered_fastq/DR3_S15_metagenomic.2" 2>&1
+Loading database information... done.
+106696 sequences (20.21 Mbp) processed in 0.409s (15670.0 Kseq/m, 2968.88 Mbp/m).
+  65062 sequences classified (60.98%)
+  41634 sequences unclassified (39.02%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../hands_folder/results/runs/run_0605_1202/reports/DR3_S15.k2report -o ../hands_folder/processed_data/metagenomic/bracken/DR3_S15.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../hands_folder/results/runs/run_0605_1202/reports/DR3_S15.k2report
+PROGRAM START TIME: 05-06-2025 11:08:44
+BRACKEN SUMMARY (Kraken report: ../hands_folder/results/runs/run_0605_1202/reports/DR3_S15.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 61 
+	  >> Number of species with reads > threshold: 61 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 106696
+	  >> Total reads kept at species level (reads > threshold): 62138
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 2893
+	  >> Reads not distributed (eg. no species above threshold): 31
+	  >> Unclassified reads: 41634
+BRACKEN OUTPUT PRODUCED: ../hands_folder/processed_data/metagenomic/bracken/DR3_S15.bracken
+PROGRAM END TIME: 05-06-2025 11:08:44
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../hands_folder/results/runs/run_0605_1202/krona/DR3_S15.krona.html...
+✅ Krona plot generated.
+
+Processing sample: DS1_S4
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../hands_folder/processed_data/trimmed/paired/DS1_S4_R1_paired.fastq.gz" -2 "../hands_folder/processed_data/trimmed/paired/DS1_S4_R2_paired.fastq.gz" 	                --un-conc "../hands_folder/processed_data/metagenomic/filtered_fastq/DS1_S4_metagenomic" -S "../hands_folder/processed_data/human/aligned_sam/DS1_S4_human.sam" 2>&1
+1761 reads; of these:
+  1761 (100.00%) were paired; of these:
+    1714 (97.33%) aligned concordantly 0 times
+    20 (1.14%) aligned concordantly exactly 1 time
+    27 (1.53%) aligned concordantly >1 times
+2.67% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+🧪 DEBUG INFO for sample: DS1_S4
+Input files:
+-rw-rw---- 1 k24087895 k24087895 389K May  6 12:08 ../hands_folder/processed_data/metagenomic/filtered_fastq/DS1_S4_metagenomic.1
+-rw-rw---- 1 k24087895 k24087895 387K May  6 12:08 ../hands_folder/processed_data/metagenomic/filtered_fastq/DS1_S4_metagenomic.2
+
+Disk usage of input files:
+389K	../hands_folder/processed_data/metagenomic/filtered_fastq/DS1_S4_metagenomic.1
+387K	../hands_folder/processed_data/metagenomic/filtered_fastq/DS1_S4_metagenomic.2
+
+First few lines of R1 FASTQ:
+@M00737:133:000000000-GHK3P:1:1101:23071:2032 1:N:0:CAGCAGGG+ATGCTCCC
+TTAGTATACAGTTCTCATTTGACACAGGGGGATTGGTGTGCACAGTCTATCTCTTATTAGTGTTAATGGGAATTACATGTGTAAATCACCAAGTCCCAGTGCATGGAGATGAAAATCTCCATAAAGATTAAAATTCTGCATTTGTATTGCTTTTGATTATGGAGAAACTGAAAGTATGATAGTTGTGCTTATATCTTTAAACTTAGAAG
++
+GGGGGGGGGGGGGGGGGFGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGFGGB::C:::C::FG?::CFGC5C<CC,<8<88<BEDF:8::<::::CFC<:::,<:
+
+📈 Memory snapshot:
+               total        used        free      shared  buff/cache   available
+Mem:           1.0Ti       173Gi       597Gi        98Mi       236Gi       827Gi
+Swap:             0B          0B          0B
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../hands_folder/results/runs/run_0605_1202/reports/DS1_S4.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 2 		--classified-out "../hands_folder/processed_data/metagenomic/classified/DS1_S4_classified#.fastq" --unclassified-out "../hands_folder/processed_data/metagenomic/unclassified/DS1_S4_unclassified#.fastq" 		--output "../hands_folder/processed_data/metagenomic/kraken2/DS1_S4.kraken2" --use-names "../hands_folder/processed_data/metagenomic/filtered_fastq/DS1_S4_metagenomic.1" "../hands_folder/processed_data/metagenomic/filtered_fastq/DS1_S4_metagenomic.2" 2>&1
+Loading database information... done.
+1714 sequences (0.27 Mbp) processed in 0.078s (1318.9 Kseq/m, 207.38 Mbp/m).
+  894 sequences classified (52.16%)
+  820 sequences unclassified (47.84%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../hands_folder/results/runs/run_0605_1202/reports/DS1_S4.k2report -o ../hands_folder/processed_data/metagenomic/bracken/DS1_S4.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../hands_folder/results/runs/run_0605_1202/reports/DS1_S4.k2report
+PROGRAM START TIME: 05-06-2025 11:08:57
+BRACKEN SUMMARY (Kraken report: ../hands_folder/results/runs/run_0605_1202/reports/DS1_S4.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 66 
+	  >> Number of species with reads > threshold: 66 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 1714
+	  >> Total reads kept at species level (reads > threshold): 805
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 72
+	  >> Reads not distributed (eg. no species above threshold): 17
+	  >> Unclassified reads: 820
+BRACKEN OUTPUT PRODUCED: ../hands_folder/processed_data/metagenomic/bracken/DS1_S4.bracken
+PROGRAM END TIME: 05-06-2025 11:08:57
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../hands_folder/results/runs/run_0605_1202/krona/DS1_S4.krona.html...
+✅ Krona plot generated.
+
+Processing sample: DS2_S5
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../hands_folder/processed_data/trimmed/paired/DS2_S5_R1_paired.fastq.gz" -2 "../hands_folder/processed_data/trimmed/paired/DS2_S5_R2_paired.fastq.gz" 	                --un-conc "../hands_folder/processed_data/metagenomic/filtered_fastq/DS2_S5_metagenomic" -S "../hands_folder/processed_data/human/aligned_sam/DS2_S5_human.sam" 2>&1
+3049 reads; of these:
+  3049 (100.00%) were paired; of these:
+    2974 (97.54%) aligned concordantly 0 times
+    46 (1.51%) aligned concordantly exactly 1 time
+    29 (0.95%) aligned concordantly >1 times
+2.46% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+🧪 DEBUG INFO for sample: DS2_S5
+Input files:
+-rw-rw---- 1 k24087895 k24087895 721K May  6 12:08 ../hands_folder/processed_data/metagenomic/filtered_fastq/DS2_S5_metagenomic.1
+-rw-rw---- 1 k24087895 k24087895 717K May  6 12:08 ../hands_folder/processed_data/metagenomic/filtered_fastq/DS2_S5_metagenomic.2
+
+Disk usage of input files:
+721K	../hands_folder/processed_data/metagenomic/filtered_fastq/DS2_S5_metagenomic.1
+717K	../hands_folder/processed_data/metagenomic/filtered_fastq/DS2_S5_metagenomic.2
+
+First few lines of R1 FASTQ:
+@M00737:133:000000000-GHK3P:1:1101:21502:1963 1:N:0:GATAAATG+GCTCAATA
+ATTTGTCAAGAGGGTAAATTTCAAGAAAAAGAAAGAGAGGGTAGATCTCATGTTAAGTGCTCTTACCGCAATAAAATAAAGACATAAATAAATGAGCTAGTATATTTAACTACAAAAGAAAG
++
+GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+
+📈 Memory snapshot:
+               total        used        free      shared  buff/cache   available
+Mem:           1.0Ti       175Gi       596Gi        98Mi       236Gi       825Gi
+Swap:             0B          0B          0B
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../hands_folder/results/runs/run_0605_1202/reports/DS2_S5.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 2 		--classified-out "../hands_folder/processed_data/metagenomic/classified/DS2_S5_classified#.fastq" --unclassified-out "../hands_folder/processed_data/metagenomic/unclassified/DS2_S5_unclassified#.fastq" 		--output "../hands_folder/processed_data/metagenomic/kraken2/DS2_S5.kraken2" --use-names "../hands_folder/processed_data/metagenomic/filtered_fastq/DS2_S5_metagenomic.1" "../hands_folder/processed_data/metagenomic/filtered_fastq/DS2_S5_metagenomic.2" 2>&1
+Loading database information... done.
+2974 sequences (0.51 Mbp) processed in 0.056s (3185.4 Kseq/m, 550.99 Mbp/m).
+  1705 sequences classified (57.33%)
+  1269 sequences unclassified (42.67%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../hands_folder/results/runs/run_0605_1202/reports/DS2_S5.k2report -o ../hands_folder/processed_data/metagenomic/bracken/DS2_S5.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../hands_folder/results/runs/run_0605_1202/reports/DS2_S5.k2report
+PROGRAM START TIME: 05-06-2025 11:09:09
+BRACKEN SUMMARY (Kraken report: ../hands_folder/results/runs/run_0605_1202/reports/DS2_S5.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 112 
+	  >> Number of species with reads > threshold: 112 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 2974
+	  >> Total reads kept at species level (reads > threshold): 1506
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 184
+	  >> Reads not distributed (eg. no species above threshold): 15
+	  >> Unclassified reads: 1269
+BRACKEN OUTPUT PRODUCED: ../hands_folder/processed_data/metagenomic/bracken/DS2_S5.bracken
+PROGRAM END TIME: 05-06-2025 11:09:09
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../hands_folder/results/runs/run_0605_1202/krona/DS2_S5.krona.html...
+✅ Krona plot generated.
+
+Processing sample: DS3_S6
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../hands_folder/processed_data/trimmed/paired/DS3_S6_R1_paired.fastq.gz" -2 "../hands_folder/processed_data/trimmed/paired/DS3_S6_R2_paired.fastq.gz" 	                --un-conc "../hands_folder/processed_data/metagenomic/filtered_fastq/DS3_S6_metagenomic" -S "../hands_folder/processed_data/human/aligned_sam/DS3_S6_human.sam" 2>&1
+696 reads; of these:
+  696 (100.00%) were paired; of these:
+    675 (96.98%) aligned concordantly 0 times
+    11 (1.58%) aligned concordantly exactly 1 time
+    10 (1.44%) aligned concordantly >1 times
+3.02% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+🧪 DEBUG INFO for sample: DS3_S6
+Input files:
+-rw-rw---- 1 k24087895 k24087895 153K May  6 12:09 ../hands_folder/processed_data/metagenomic/filtered_fastq/DS3_S6_metagenomic.1
+-rw-rw---- 1 k24087895 k24087895 153K May  6 12:09 ../hands_folder/processed_data/metagenomic/filtered_fastq/DS3_S6_metagenomic.2
+
+Disk usage of input files:
+153K	../hands_folder/processed_data/metagenomic/filtered_fastq/DS3_S6_metagenomic.1
+153K	../hands_folder/processed_data/metagenomic/filtered_fastq/DS3_S6_metagenomic.2
+
+First few lines of R1 FASTQ:
+@M00737:133:000000000-GHK3P:1:1101:9903:2366 1:N:0:GCATCAAG+GTAGTTCG
+CGGTGCACCAGCTTGGGGGCTGGTGTGAAACGGATAGCATTAGCAGTCAACCATTTTTCTACAGCAGTCTCACCCATGTCACCTA
++
+GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGDGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGEGGGGGGGGGGG
+
+📈 Memory snapshot:
+               total        used        free      shared  buff/cache   available
+Mem:           1.0Ti       172Gi       598Gi        98Mi       236Gi       828Gi
+Swap:             0B          0B          0B
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../hands_folder/results/runs/run_0605_1202/reports/DS3_S6.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 2 		--classified-out "../hands_folder/processed_data/metagenomic/classified/DS3_S6_classified#.fastq" --unclassified-out "../hands_folder/processed_data/metagenomic/unclassified/DS3_S6_unclassified#.fastq" 		--output "../hands_folder/processed_data/metagenomic/kraken2/DS3_S6.kraken2" --use-names "../hands_folder/processed_data/metagenomic/filtered_fastq/DS3_S6_metagenomic.1" "../hands_folder/processed_data/metagenomic/filtered_fastq/DS3_S6_metagenomic.2" 2>&1
+Loading database information... done.
+675 sequences (0.11 Mbp) processed in 0.026s (1536.9 Kseq/m, 241.46 Mbp/m).
+  367 sequences classified (54.37%)
+  308 sequences unclassified (45.63%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../hands_folder/results/runs/run_0605_1202/reports/DS3_S6.k2report -o ../hands_folder/processed_data/metagenomic/bracken/DS3_S6.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../hands_folder/results/runs/run_0605_1202/reports/DS3_S6.k2report
+PROGRAM START TIME: 05-06-2025 11:09:22
+BRACKEN SUMMARY (Kraken report: ../hands_folder/results/runs/run_0605_1202/reports/DS3_S6.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 37 
+	  >> Number of species with reads > threshold: 37 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 675
+	  >> Total reads kept at species level (reads > threshold): 332
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 30
+	  >> Reads not distributed (eg. no species above threshold): 5
+	  >> Unclassified reads: 308
+BRACKEN OUTPUT PRODUCED: ../hands_folder/processed_data/metagenomic/bracken/DS3_S6.bracken
+PROGRAM END TIME: 05-06-2025 11:09:22
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../hands_folder/results/runs/run_0605_1202/krona/DS3_S6.krona.html...
+✅ Krona plot generated.
+
+Processing sample: LR1_S16
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../hands_folder/processed_data/trimmed/paired/LR1_S16_R1_paired.fastq.gz" -2 "../hands_folder/processed_data/trimmed/paired/LR1_S16_R2_paired.fastq.gz" 	                --un-conc "../hands_folder/processed_data/metagenomic/filtered_fastq/LR1_S16_metagenomic" -S "../hands_folder/processed_data/human/aligned_sam/LR1_S16_human.sam" 2>&1
+191320 reads; of these:
+  191320 (100.00%) were paired; of these:
+    183775 (96.06%) aligned concordantly 0 times
+    5592 (2.92%) aligned concordantly exactly 1 time
+    1953 (1.02%) aligned concordantly >1 times
+3.94% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+🧪 DEBUG INFO for sample: LR1_S16
+Input files:
+-rw-rw---- 1 k24087895 k24087895 46M May  6 12:09 ../hands_folder/processed_data/metagenomic/filtered_fastq/LR1_S16_metagenomic.1
+-rw-rw---- 1 k24087895 k24087895 46M May  6 12:09 ../hands_folder/processed_data/metagenomic/filtered_fastq/LR1_S16_metagenomic.2
+
+Disk usage of input files:
+46M	../hands_folder/processed_data/metagenomic/filtered_fastq/LR1_S16_metagenomic.1
+46M	../hands_folder/processed_data/metagenomic/filtered_fastq/LR1_S16_metagenomic.2
+
+First few lines of R1 FASTQ:
+@M00737:133:000000000-GHK3P:1:1101:21579:1738 1:N:0:CTAAACAA+CGTAGCGA
+TAATAAGTTAGATGTAGGAGACAAGGACATGGGAGAAATCAAGAACAACCCCCAGGCTTCAGGCTTGAGC
++
+GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+
+📈 Memory snapshot:
+               total        used        free      shared  buff/cache   available
+Mem:           1.0Ti       173Gi       597Gi        98Mi       236Gi       827Gi
+Swap:             0B          0B          0B
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../hands_folder/results/runs/run_0605_1202/reports/LR1_S16.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 2 		--classified-out "../hands_folder/processed_data/metagenomic/classified/LR1_S16_classified#.fastq" --unclassified-out "../hands_folder/processed_data/metagenomic/unclassified/LR1_S16_unclassified#.fastq" 		--output "../hands_folder/processed_data/metagenomic/kraken2/LR1_S16.kraken2" --use-names "../hands_folder/processed_data/metagenomic/filtered_fastq/LR1_S16_metagenomic.1" "../hands_folder/processed_data/metagenomic/filtered_fastq/LR1_S16_metagenomic.2" 2>&1
+Loading database information... done.
+183775 sequences (33.64 Mbp) processed in 0.543s (20296.1 Kseq/m, 3714.71 Mbp/m).
+  142259 sequences classified (77.41%)
+  41516 sequences unclassified (22.59%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../hands_folder/results/runs/run_0605_1202/reports/LR1_S16.k2report -o ../hands_folder/processed_data/metagenomic/bracken/LR1_S16.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../hands_folder/results/runs/run_0605_1202/reports/LR1_S16.k2report
+PROGRAM START TIME: 05-06-2025 11:09:56
+BRACKEN SUMMARY (Kraken report: ../hands_folder/results/runs/run_0605_1202/reports/LR1_S16.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 31 
+	  >> Number of species with reads > threshold: 31 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 183775
+	  >> Total reads kept at species level (reads > threshold): 141431
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 816
+	  >> Reads not distributed (eg. no species above threshold): 12
+	  >> Unclassified reads: 41516
+BRACKEN OUTPUT PRODUCED: ../hands_folder/processed_data/metagenomic/bracken/LR1_S16.bracken
+PROGRAM END TIME: 05-06-2025 11:09:57
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../hands_folder/results/runs/run_0605_1202/krona/LR1_S16.krona.html...
+✅ Krona plot generated.
+
+Processing sample: LR2_S17
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../hands_folder/processed_data/trimmed/paired/LR2_S17_R1_paired.fastq.gz" -2 "../hands_folder/processed_data/trimmed/paired/LR2_S17_R2_paired.fastq.gz" 	                --un-conc "../hands_folder/processed_data/metagenomic/filtered_fastq/LR2_S17_metagenomic" -S "../hands_folder/processed_data/human/aligned_sam/LR2_S17_human.sam" 2>&1
+147430 reads; of these:
+  147430 (100.00%) were paired; of these:
+    145326 (98.57%) aligned concordantly 0 times
+    1236 (0.84%) aligned concordantly exactly 1 time
+    868 (0.59%) aligned concordantly >1 times
+1.43% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+🧪 DEBUG INFO for sample: LR2_S17
+Input files:
+-rw-rw---- 1 k24087895 k24087895 31M May  6 12:10 ../hands_folder/processed_data/metagenomic/filtered_fastq/LR2_S17_metagenomic.1
+-rw-rw---- 1 k24087895 k24087895 31M May  6 12:10 ../hands_folder/processed_data/metagenomic/filtered_fastq/LR2_S17_metagenomic.2
+
+Disk usage of input files:
+31M	../hands_folder/processed_data/metagenomic/filtered_fastq/LR2_S17_metagenomic.1
+31M	../hands_folder/processed_data/metagenomic/filtered_fastq/LR2_S17_metagenomic.2
+
+First few lines of R1 FASTQ:
+@M00737:133:000000000-GHK3P:1:1101:12982:1521 1:N:0:TATACCTC+TAGTCACA
+GATACAAATGAGTGAATGGGTATAAGTTCTATAAACTCTAAAATGTAATAAAATTCATTCAGTTATTTACTAATAAGTGAACAATAT
++
+9-EAFF9@F9,<FC9,C98<C@FADAFFGFCG999EFGGC<9@FDFFFFDCCFFFG9FFG9<FFAFFG9FGD9FA9,E,,<C<8C<F
+
+📈 Memory snapshot:
+               total        used        free      shared  buff/cache   available
+Mem:           1.0Ti       174Gi       596Gi        98Mi       236Gi       827Gi
+Swap:             0B          0B          0B
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../hands_folder/results/runs/run_0605_1202/reports/LR2_S17.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 2 		--classified-out "../hands_folder/processed_data/metagenomic/classified/LR2_S17_classified#.fastq" --unclassified-out "../hands_folder/processed_data/metagenomic/unclassified/LR2_S17_unclassified#.fastq" 		--output "../hands_folder/processed_data/metagenomic/kraken2/LR2_S17.kraken2" --use-names "../hands_folder/processed_data/metagenomic/filtered_fastq/LR2_S17_metagenomic.1" "../hands_folder/processed_data/metagenomic/filtered_fastq/LR2_S17_metagenomic.2" 2>&1
+Loading database information... done.
+145326 sequences (21.28 Mbp) processed in 0.427s (20413.4 Kseq/m, 2989.06 Mbp/m).
+  89173 sequences classified (61.36%)
+  56153 sequences unclassified (38.64%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../hands_folder/results/runs/run_0605_1202/reports/LR2_S17.k2report -o ../hands_folder/processed_data/metagenomic/bracken/LR2_S17.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../hands_folder/results/runs/run_0605_1202/reports/LR2_S17.k2report
+PROGRAM START TIME: 05-06-2025 11:10:22
+BRACKEN SUMMARY (Kraken report: ../hands_folder/results/runs/run_0605_1202/reports/LR2_S17.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 31 
+	  >> Number of species with reads > threshold: 31 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 145326
+	  >> Total reads kept at species level (reads > threshold): 88231
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 904
+	  >> Reads not distributed (eg. no species above threshold): 38
+	  >> Unclassified reads: 56153
+BRACKEN OUTPUT PRODUCED: ../hands_folder/processed_data/metagenomic/bracken/LR2_S17.bracken
+PROGRAM END TIME: 05-06-2025 11:10:23
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../hands_folder/results/runs/run_0605_1202/krona/LR2_S17.krona.html...
+✅ Krona plot generated.
+
+Processing sample: LR3_S18
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../hands_folder/processed_data/trimmed/paired/LR3_S18_R1_paired.fastq.gz" -2 "../hands_folder/processed_data/trimmed/paired/LR3_S18_R2_paired.fastq.gz" 	                --un-conc "../hands_folder/processed_data/metagenomic/filtered_fastq/LR3_S18_metagenomic" -S "../hands_folder/processed_data/human/aligned_sam/LR3_S18_human.sam" 2>&1
+862088 reads; of these:
+  862088 (100.00%) were paired; of these:
+    833587 (96.69%) aligned concordantly 0 times
+    8252 (0.96%) aligned concordantly exactly 1 time
+    20249 (2.35%) aligned concordantly >1 times
+3.31% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+🧪 DEBUG INFO for sample: LR3_S18
+Input files:
+-rw-rw---- 1 k24087895 k24087895 182M May  6 12:12 ../hands_folder/processed_data/metagenomic/filtered_fastq/LR3_S18_metagenomic.1
+-rw-rw---- 1 k24087895 k24087895 181M May  6 12:12 ../hands_folder/processed_data/metagenomic/filtered_fastq/LR3_S18_metagenomic.2
+
+Disk usage of input files:
+182M	../hands_folder/processed_data/metagenomic/filtered_fastq/LR3_S18_metagenomic.1
+181M	../hands_folder/processed_data/metagenomic/filtered_fastq/LR3_S18_metagenomic.2
+
+First few lines of R1 FASTQ:
+@M00737:133:000000000-GHK3P:1:1101:14079:1499 1:N:0:CTCTTGAT+AGAAGTGG
+TGGTTCATAAAACTAGAGAAGAGAACAGATGGAAAGGAGGTTAAAGAG
++
+G@7FGFAEC9,<FFA<9,@8<8<<AE<C8FE?@9,<8,C;FFCA9<9@
+
+📈 Memory snapshot:
+               total        used        free      shared  buff/cache   available
+Mem:           1.0Ti       170Gi       599Gi        98Mi       237Gi       830Gi
+Swap:             0B          0B          0B
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../hands_folder/results/runs/run_0605_1202/reports/LR3_S18.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 2 		--classified-out "../hands_folder/processed_data/metagenomic/classified/LR3_S18_classified#.fastq" --unclassified-out "../hands_folder/processed_data/metagenomic/unclassified/LR3_S18_unclassified#.fastq" 		--output "../hands_folder/processed_data/metagenomic/kraken2/LR3_S18.kraken2" --use-names "../hands_folder/processed_data/metagenomic/filtered_fastq/LR3_S18_metagenomic.1" "../hands_folder/processed_data/metagenomic/filtered_fastq/LR3_S18_metagenomic.2" 2>&1
+Loading database information... done.
+833587 sequences (127.63 Mbp) processed in 1.840s (27176.1 Kseq/m, 4160.80 Mbp/m).
+  586953 sequences classified (70.41%)
+  246634 sequences unclassified (29.59%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../hands_folder/results/runs/run_0605_1202/reports/LR3_S18.k2report -o ../hands_folder/processed_data/metagenomic/bracken/LR3_S18.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../hands_folder/results/runs/run_0605_1202/reports/LR3_S18.k2report
+PROGRAM START TIME: 05-06-2025 11:12:21
+BRACKEN SUMMARY (Kraken report: ../hands_folder/results/runs/run_0605_1202/reports/LR3_S18.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 87 
+	  >> Number of species with reads > threshold: 87 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 833587
+	  >> Total reads kept at species level (reads > threshold): 584232
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 2706
+	  >> Reads not distributed (eg. no species above threshold): 15
+	  >> Unclassified reads: 246634
+BRACKEN OUTPUT PRODUCED: ../hands_folder/processed_data/metagenomic/bracken/LR3_S18.bracken
+PROGRAM END TIME: 05-06-2025 11:12:21
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../hands_folder/results/runs/run_0605_1202/krona/LR3_S18.krona.html...
+✅ Krona plot generated.
+
+Processing sample: LS1_S7
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../hands_folder/processed_data/trimmed/paired/LS1_S7_R1_paired.fastq.gz" -2 "../hands_folder/processed_data/trimmed/paired/LS1_S7_R2_paired.fastq.gz" 	                --un-conc "../hands_folder/processed_data/metagenomic/filtered_fastq/LS1_S7_metagenomic" -S "../hands_folder/processed_data/human/aligned_sam/LS1_S7_human.sam" 2>&1
+111388 reads; of these:
+  111388 (100.00%) were paired; of these:
+    105149 (94.40%) aligned concordantly 0 times
+    2427 (2.18%) aligned concordantly exactly 1 time
+    3812 (3.42%) aligned concordantly >1 times
+5.60% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+🧪 DEBUG INFO for sample: LS1_S7
+Input files:
+-rw-rw---- 1 k24087895 k24087895 23M May  6 12:12 ../hands_folder/processed_data/metagenomic/filtered_fastq/LS1_S7_metagenomic.1
+-rw-rw---- 1 k24087895 k24087895 23M May  6 12:12 ../hands_folder/processed_data/metagenomic/filtered_fastq/LS1_S7_metagenomic.2
+
+Disk usage of input files:
+23M	../hands_folder/processed_data/metagenomic/filtered_fastq/LS1_S7_metagenomic.1
+23M	../hands_folder/processed_data/metagenomic/filtered_fastq/LS1_S7_metagenomic.2
+
+First few lines of R1 FASTQ:
+@M00737:133:000000000-GHK3P:1:1101:10758:1774 1:N:0:CGATACAT+CGAGAACC
+TCTTTCTGTATTCAACTTGCACATCTTTACTTAGAAGGTCATTTGGAA
++
+GGGGGGGGGFGGDFGGGGGGGGFGGGGGGGGGGGGGGGFGGGGGGGFG
+
+📈 Memory snapshot:
+               total        used        free      shared  buff/cache   available
+Mem:           1.0Ti       171Gi       598Gi        98Mi       237Gi       829Gi
+Swap:             0B          0B          0B
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../hands_folder/results/runs/run_0605_1202/reports/LS1_S7.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 2 		--classified-out "../hands_folder/processed_data/metagenomic/classified/LS1_S7_classified#.fastq" --unclassified-out "../hands_folder/processed_data/metagenomic/unclassified/LS1_S7_unclassified#.fastq" 		--output "../hands_folder/processed_data/metagenomic/kraken2/LS1_S7.kraken2" --use-names "../hands_folder/processed_data/metagenomic/filtered_fastq/LS1_S7_metagenomic.1" "../hands_folder/processed_data/metagenomic/filtered_fastq/LS1_S7_metagenomic.2" 2>&1
+Loading database information... done.
+105149 sequences (15.94 Mbp) processed in 0.347s (18200.5 Kseq/m, 2759.49 Mbp/m).
+  76488 sequences classified (72.74%)
+  28661 sequences unclassified (27.26%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../hands_folder/results/runs/run_0605_1202/reports/LS1_S7.k2report -o ../hands_folder/processed_data/metagenomic/bracken/LS1_S7.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../hands_folder/results/runs/run_0605_1202/reports/LS1_S7.k2report
+PROGRAM START TIME: 05-06-2025 11:12:51
+BRACKEN SUMMARY (Kraken report: ../hands_folder/results/runs/run_0605_1202/reports/LS1_S7.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 216 
+	  >> Number of species with reads > threshold: 216 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 105149
+	  >> Total reads kept at species level (reads > threshold): 75760
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 692
+	  >> Reads not distributed (eg. no species above threshold): 36
+	  >> Unclassified reads: 28661
+BRACKEN OUTPUT PRODUCED: ../hands_folder/processed_data/metagenomic/bracken/LS1_S7.bracken
+PROGRAM END TIME: 05-06-2025 11:12:51
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../hands_folder/results/runs/run_0605_1202/krona/LS1_S7.krona.html...
+✅ Krona plot generated.
+
+Processing sample: LS2_S8
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../hands_folder/processed_data/trimmed/paired/LS2_S8_R1_paired.fastq.gz" -2 "../hands_folder/processed_data/trimmed/paired/LS2_S8_R2_paired.fastq.gz" 	                --un-conc "../hands_folder/processed_data/metagenomic/filtered_fastq/LS2_S8_metagenomic" -S "../hands_folder/processed_data/human/aligned_sam/LS2_S8_human.sam" 2>&1
+109991 reads; of these:
+  109991 (100.00%) were paired; of these:
+    104241 (94.77%) aligned concordantly 0 times
+    2125 (1.93%) aligned concordantly exactly 1 time
+    3625 (3.30%) aligned concordantly >1 times
+5.23% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+🧪 DEBUG INFO for sample: LS2_S8
+Input files:
+-rw-rw---- 1 k24087895 k24087895 23M May  6 12:13 ../hands_folder/processed_data/metagenomic/filtered_fastq/LS2_S8_metagenomic.1
+-rw-rw---- 1 k24087895 k24087895 23M May  6 12:13 ../hands_folder/processed_data/metagenomic/filtered_fastq/LS2_S8_metagenomic.2
+
+Disk usage of input files:
+23M	../hands_folder/processed_data/metagenomic/filtered_fastq/LS2_S8_metagenomic.1
+23M	../hands_folder/processed_data/metagenomic/filtered_fastq/LS2_S8_metagenomic.2
+
+First few lines of R1 FASTQ:
+@M00737:133:000000000-GHK3P:1:1101:14683:1607 1:N:0:AACCCTAT+GCCATGTA
+AAGCTAGTCACAAGGTCTTCCCAGATTCAAGGAGCTGCAAGACACAGGCAAAGGGTGTCAATACAGGGGAAAGTGGGGAATCGGG
++
+EGFGFFFGGGGFGGGGGGGGGGGGGGGGGGGGFFFGGGGCDGGGGGGGGFDEGGGGGGGFFGGGGGGGGEGGFGGFFGDGGGGDE
+
+📈 Memory snapshot:
+               total        used        free      shared  buff/cache   available
+Mem:           1.0Ti       172Gi       597Gi        98Mi       237Gi       828Gi
+Swap:             0B          0B          0B
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../hands_folder/results/runs/run_0605_1202/reports/LS2_S8.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 2 		--classified-out "../hands_folder/processed_data/metagenomic/classified/LS2_S8_classified#.fastq" --unclassified-out "../hands_folder/processed_data/metagenomic/unclassified/LS2_S8_unclassified#.fastq" 		--output "../hands_folder/processed_data/metagenomic/kraken2/LS2_S8.kraken2" --use-names "../hands_folder/processed_data/metagenomic/filtered_fastq/LS2_S8_metagenomic.1" "../hands_folder/processed_data/metagenomic/filtered_fastq/LS2_S8_metagenomic.2" 2>&1
+Loading database information... done.
+104241 sequences (16.07 Mbp) processed in 0.412s (15194.3 Kseq/m, 2342.64 Mbp/m).
+  77505 sequences classified (74.35%)
+  26736 sequences unclassified (25.65%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../hands_folder/results/runs/run_0605_1202/reports/LS2_S8.k2report -o ../hands_folder/processed_data/metagenomic/bracken/LS2_S8.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../hands_folder/results/runs/run_0605_1202/reports/LS2_S8.k2report
+PROGRAM START TIME: 05-06-2025 11:13:21
+BRACKEN SUMMARY (Kraken report: ../hands_folder/results/runs/run_0605_1202/reports/LS2_S8.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 202 
+	  >> Number of species with reads > threshold: 202 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 104241
+	  >> Total reads kept at species level (reads > threshold): 76759
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 702
+	  >> Reads not distributed (eg. no species above threshold): 44
+	  >> Unclassified reads: 26736
+BRACKEN OUTPUT PRODUCED: ../hands_folder/processed_data/metagenomic/bracken/LS2_S8.bracken
+PROGRAM END TIME: 05-06-2025 11:13:22
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../hands_folder/results/runs/run_0605_1202/krona/LS2_S8.krona.html...
+✅ Krona plot generated.
+
+Processing sample: LS3_S9
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../hands_folder/processed_data/trimmed/paired/LS3_S9_R1_paired.fastq.gz" -2 "../hands_folder/processed_data/trimmed/paired/LS3_S9_R2_paired.fastq.gz" 	                --un-conc "../hands_folder/processed_data/metagenomic/filtered_fastq/LS3_S9_metagenomic" -S "../hands_folder/processed_data/human/aligned_sam/LS3_S9_human.sam" 2>&1
+119004 reads; of these:
+  119004 (100.00%) were paired; of these:
+    111966 (94.09%) aligned concordantly 0 times
+    3281 (2.76%) aligned concordantly exactly 1 time
+    3757 (3.16%) aligned concordantly >1 times
+5.91% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+🧪 DEBUG INFO for sample: LS3_S9
+Input files:
+-rw-rw---- 1 k24087895 k24087895 27M May  6 12:13 ../hands_folder/processed_data/metagenomic/filtered_fastq/LS3_S9_metagenomic.1
+-rw-rw---- 1 k24087895 k24087895 27M May  6 12:13 ../hands_folder/processed_data/metagenomic/filtered_fastq/LS3_S9_metagenomic.2
+
+Disk usage of input files:
+27M	../hands_folder/processed_data/metagenomic/filtered_fastq/LS3_S9_metagenomic.1
+27M	../hands_folder/processed_data/metagenomic/filtered_fastq/LS3_S9_metagenomic.2
+
+First few lines of R1 FASTQ:
+@M00737:133:000000000-GHK3P:1:1101:15580:1587 1:N:0:ACGTGAAC+TTTGGGAT
+ACTGAGGCACAAGTTCACACAGATGCTATGCAGCAGAACTGAGAGCTAGACCTAGGGATTTTGGC
++
+FGGC,6DF7FEDCGEFFEFGGEFFEFCEC,E,CFD8<EFF9EFFGGGFFFGFE@<FG,CEFG<:F
+
+📈 Memory snapshot:
+               total        used        free      shared  buff/cache   available
+Mem:           1.0Ti       174Gi       596Gi        98Mi       236Gi       826Gi
+Swap:             0B          0B          0B
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../hands_folder/results/runs/run_0605_1202/reports/LS3_S9.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 2 		--classified-out "../hands_folder/processed_data/metagenomic/classified/LS3_S9_classified#.fastq" --unclassified-out "../hands_folder/processed_data/metagenomic/unclassified/LS3_S9_unclassified#.fastq" 		--output "../hands_folder/processed_data/metagenomic/kraken2/LS3_S9.kraken2" --use-names "../hands_folder/processed_data/metagenomic/filtered_fastq/LS3_S9_metagenomic.1" "../hands_folder/processed_data/metagenomic/filtered_fastq/LS3_S9_metagenomic.2" 2>&1
+Loading database information... done.
+111966 sequences (19.52 Mbp) processed in 0.393s (17094.1 Kseq/m, 2980.83 Mbp/m).
+  89190 sequences classified (79.66%)
+  22776 sequences unclassified (20.34%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../hands_folder/results/runs/run_0605_1202/reports/LS3_S9.k2report -o ../hands_folder/processed_data/metagenomic/bracken/LS3_S9.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../hands_folder/results/runs/run_0605_1202/reports/LS3_S9.k2report
+PROGRAM START TIME: 05-06-2025 11:13:54
+BRACKEN SUMMARY (Kraken report: ../hands_folder/results/runs/run_0605_1202/reports/LS3_S9.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 238 
+	  >> Number of species with reads > threshold: 238 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 111966
+	  >> Total reads kept at species level (reads > threshold): 88400
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 758
+	  >> Reads not distributed (eg. no species above threshold): 32
+	  >> Unclassified reads: 22776
+BRACKEN OUTPUT PRODUCED: ../hands_folder/processed_data/metagenomic/bracken/LS3_S9.bracken
+PROGRAM END TIME: 05-06-2025 11:13:54
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../hands_folder/results/runs/run_0605_1202/krona/LS3_S9.krona.html...
+✅ Krona plot generated.
+
+Processing sample: NR1_S22
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../hands_folder/processed_data/trimmed/paired/NR1_S22_R1_paired.fastq.gz" -2 "../hands_folder/processed_data/trimmed/paired/NR1_S22_R2_paired.fastq.gz" 	                --un-conc "../hands_folder/processed_data/metagenomic/filtered_fastq/NR1_S22_metagenomic" -S "../hands_folder/processed_data/human/aligned_sam/NR1_S22_human.sam" 2>&1
+18592 reads; of these:
+  18592 (100.00%) were paired; of these:
+    18592 (100.00%) aligned concordantly 0 times
+    0 (0.00%) aligned concordantly exactly 1 time
+    0 (0.00%) aligned concordantly >1 times
+0.00% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+🧪 DEBUG INFO for sample: NR1_S22
+Input files:
+-rw-rw---- 1 k24087895 k24087895 3.9M May  6 12:13 ../hands_folder/processed_data/metagenomic/filtered_fastq/NR1_S22_metagenomic.1
+-rw-rw---- 1 k24087895 k24087895 3.8M May  6 12:13 ../hands_folder/processed_data/metagenomic/filtered_fastq/NR1_S22_metagenomic.2
+
+Disk usage of input files:
+3.9M	../hands_folder/processed_data/metagenomic/filtered_fastq/NR1_S22_metagenomic.1
+3.8M	../hands_folder/processed_data/metagenomic/filtered_fastq/NR1_S22_metagenomic.2
+
+First few lines of R1 FASTQ:
+@M00737:133:000000000-GHK3P:1:1101:17634:1756 1:N:0:AAGATTGA+CGAACCAC
+GCCAACAATGCCTGCAGCCAACAATGCCTGCAGCCAACAATGCCTGCAGCCAACAATGCCTGCAGCCAACAATGCCTGCAGCCAACAATGCCTGCAGCCAACAATGCCTGCAGCCAACAAT
++
+GGFGGGGGGGGGGGGGGGGGGGGGGGGFGGGGGGFFGGGGGGGGGGGGGGGGGGGGGGGFGGGGGGGGGGGGGFGGGGGGGGGGGGGGGGGGGGGGDFFGGGGGGGGGGGGGGGGGGGGGG
+
+📈 Memory snapshot:
+               total        used        free      shared  buff/cache   available
+Mem:           1.0Ti       174Gi       596Gi        98Mi       236Gi       826Gi
+Swap:             0B          0B          0B
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../hands_folder/results/runs/run_0605_1202/reports/NR1_S22.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 2 		--classified-out "../hands_folder/processed_data/metagenomic/classified/NR1_S22_classified#.fastq" --unclassified-out "../hands_folder/processed_data/metagenomic/unclassified/NR1_S22_unclassified#.fastq" 		--output "../hands_folder/processed_data/metagenomic/kraken2/NR1_S22.kraken2" --use-names "../hands_folder/processed_data/metagenomic/filtered_fastq/NR1_S22_metagenomic.1" "../hands_folder/processed_data/metagenomic/filtered_fastq/NR1_S22_metagenomic.2" 2>&1
+Loading database information... done.
+18592 sequences (2.63 Mbp) processed in 0.099s (11248.2 Kseq/m, 1589.58 Mbp/m).
+  290 sequences classified (1.56%)
+  18302 sequences unclassified (98.44%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../hands_folder/results/runs/run_0605_1202/reports/NR1_S22.k2report -o ../hands_folder/processed_data/metagenomic/bracken/NR1_S22.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../hands_folder/results/runs/run_0605_1202/reports/NR1_S22.k2report
+PROGRAM START TIME: 05-06-2025 11:14:07
+BRACKEN SUMMARY (Kraken report: ../hands_folder/results/runs/run_0605_1202/reports/NR1_S22.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 10 
+	  >> Number of species with reads > threshold: 10 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 18592
+	  >> Total reads kept at species level (reads > threshold): 257
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 31
+	  >> Reads not distributed (eg. no species above threshold): 2
+	  >> Unclassified reads: 18302
+BRACKEN OUTPUT PRODUCED: ../hands_folder/processed_data/metagenomic/bracken/NR1_S22.bracken
+PROGRAM END TIME: 05-06-2025 11:14:07
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../hands_folder/results/runs/run_0605_1202/krona/NR1_S22.krona.html...
+✅ Krona plot generated.
+
+Processing sample: NR2_S23
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../hands_folder/processed_data/trimmed/paired/NR2_S23_R1_paired.fastq.gz" -2 "../hands_folder/processed_data/trimmed/paired/NR2_S23_R2_paired.fastq.gz" 	                --un-conc "../hands_folder/processed_data/metagenomic/filtered_fastq/NR2_S23_metagenomic" -S "../hands_folder/processed_data/human/aligned_sam/NR2_S23_human.sam" 2>&1
+51710 reads; of these:
+  51710 (100.00%) were paired; of these:
+    51710 (100.00%) aligned concordantly 0 times
+    0 (0.00%) aligned concordantly exactly 1 time
+    0 (0.00%) aligned concordantly >1 times
+0.00% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+🧪 DEBUG INFO for sample: NR2_S23
+Input files:
+-rw-rw---- 1 k24087895 k24087895 13M May  6 12:14 ../hands_folder/processed_data/metagenomic/filtered_fastq/NR2_S23_metagenomic.1
+-rw-rw---- 1 k24087895 k24087895 13M May  6 12:14 ../hands_folder/processed_data/metagenomic/filtered_fastq/NR2_S23_metagenomic.2
+
+Disk usage of input files:
+13M	../hands_folder/processed_data/metagenomic/filtered_fastq/NR2_S23_metagenomic.1
+13M	../hands_folder/processed_data/metagenomic/filtered_fastq/NR2_S23_metagenomic.2
+
+First few lines of R1 FASTQ:
+@M00737:133:000000000-GHK3P:1:1101:17495:1631 1:N:0:GTGTGTTT+TATTGTTC
+CATCCGCAAGTCGCTCAGTGGCCGGTCGGGTCTGATTGCCGTGCCG
++
+GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGEGGG
+
+📈 Memory snapshot:
+               total        used        free      shared  buff/cache   available
+Mem:           1.0Ti       175Gi       595Gi        98Mi       237Gi       826Gi
+Swap:             0B          0B          0B
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../hands_folder/results/runs/run_0605_1202/reports/NR2_S23.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 2 		--classified-out "../hands_folder/processed_data/metagenomic/classified/NR2_S23_classified#.fastq" --unclassified-out "../hands_folder/processed_data/metagenomic/unclassified/NR2_S23_unclassified#.fastq" 		--output "../hands_folder/processed_data/metagenomic/kraken2/NR2_S23.kraken2" --use-names "../hands_folder/processed_data/metagenomic/filtered_fastq/NR2_S23_metagenomic.1" "../hands_folder/processed_data/metagenomic/filtered_fastq/NR2_S23_metagenomic.2" 2>&1
+Loading database information... done.
+51710 sequences (8.99 Mbp) processed in 0.246s (12619.8 Kseq/m, 2194.60 Mbp/m).
+  3131 sequences classified (6.05%)
+  48579 sequences unclassified (93.95%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../hands_folder/results/runs/run_0605_1202/reports/NR2_S23.k2report -o ../hands_folder/processed_data/metagenomic/bracken/NR2_S23.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../hands_folder/results/runs/run_0605_1202/reports/NR2_S23.k2report
+PROGRAM START TIME: 05-06-2025 11:14:20
+BRACKEN SUMMARY (Kraken report: ../hands_folder/results/runs/run_0605_1202/reports/NR2_S23.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 20 
+	  >> Number of species with reads > threshold: 20 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 51710
+	  >> Total reads kept at species level (reads > threshold): 1385
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 1737
+	  >> Reads not distributed (eg. no species above threshold): 9
+	  >> Unclassified reads: 48579
+BRACKEN OUTPUT PRODUCED: ../hands_folder/processed_data/metagenomic/bracken/NR2_S23.bracken
+PROGRAM END TIME: 05-06-2025 11:14:21
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../hands_folder/results/runs/run_0605_1202/krona/NR2_S23.krona.html...
+✅ Krona plot generated.
+
+Processing sample: NR3_S24
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../hands_folder/processed_data/trimmed/paired/NR3_S24_R1_paired.fastq.gz" -2 "../hands_folder/processed_data/trimmed/paired/NR3_S24_R2_paired.fastq.gz" 	                --un-conc "../hands_folder/processed_data/metagenomic/filtered_fastq/NR3_S24_metagenomic" -S "../hands_folder/processed_data/human/aligned_sam/NR3_S24_human.sam" 2>&1
+45443 reads; of these:
+  45443 (100.00%) were paired; of these:
+    45443 (100.00%) aligned concordantly 0 times
+    0 (0.00%) aligned concordantly exactly 1 time
+    0 (0.00%) aligned concordantly >1 times
+0.00% overall alignment rate
+✅ Host reads removed and filtered reads compressed.
+
+🧪 DEBUG INFO for sample: NR3_S24
+Input files:
+-rw-rw---- 1 k24087895 k24087895 12M May  6 12:14 ../hands_folder/processed_data/metagenomic/filtered_fastq/NR3_S24_metagenomic.1
+-rw-rw---- 1 k24087895 k24087895 11M May  6 12:14 ../hands_folder/processed_data/metagenomic/filtered_fastq/NR3_S24_metagenomic.2
+
+Disk usage of input files:
+12M	../hands_folder/processed_data/metagenomic/filtered_fastq/NR3_S24_metagenomic.1
+11M	../hands_folder/processed_data/metagenomic/filtered_fastq/NR3_S24_metagenomic.2
+
+First few lines of R1 FASTQ:
+@M00737:133:000000000-GHK3P:1:1101:10676:1683 1:N:0:CGTCCGAC+GTTGTGTG
+ACAGTAAGAAGTGGCTCGTGTAGAACAGTAAGAAGTGGCTCGTGTAGAACAGTAAGAAGTGGCTCGTGTAGAACAGTAAGAAGTGACTCGTGTAGAACAGTAAGAAGTGACTCGTGTAGAACAG
++
+GGGGGGGGACFGEFFEGGGCF<FFGGGFFFFFCECFCAEFGGGGGGGFFFCFGGGGFGFGFGGFGCG8CEE<CFFGGFC,@CFGE<FEFGGGGGGGGGG8FFGGGGDF9EFEAFFGGGGGGGGF
+
+📈 Memory snapshot:
+               total        used        free      shared  buff/cache   available
+Mem:           1.0Ti       174Gi       596Gi        98Mi       237Gi       826Gi
+Swap:             0B          0B          0B
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_standard_16gb_20241228" --threads 8 --report "../hands_folder/results/runs/run_0605_1202/reports/NR3_S24.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 2 		--classified-out "../hands_folder/processed_data/metagenomic/classified/NR3_S24_classified#.fastq" --unclassified-out "../hands_folder/processed_data/metagenomic/unclassified/NR3_S24_unclassified#.fastq" 		--output "../hands_folder/processed_data/metagenomic/kraken2/NR3_S24.kraken2" --use-names "../hands_folder/processed_data/metagenomic/filtered_fastq/NR3_S24_metagenomic.1" "../hands_folder/processed_data/metagenomic/filtered_fastq/NR3_S24_metagenomic.2" 2>&1
+Loading database information... done.
+45443 sequences (8.12 Mbp) processed in 0.196s (13896.2 Kseq/m, 2482.38 Mbp/m).
+  116 sequences classified (0.26%)
+  45327 sequences unclassified (99.74%)
+✅ Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../hands_folder/results/runs/run_0605_1202/reports/NR3_S24.k2report -o ../hands_folder/processed_data/metagenomic/bracken/NR3_S24.bracken -k ../data/databases/k2_standard_16gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../hands_folder/results/runs/run_0605_1202/reports/NR3_S24.k2report
+PROGRAM START TIME: 05-06-2025 11:14:34
+BRACKEN SUMMARY (Kraken report: ../hands_folder/results/runs/run_0605_1202/reports/NR3_S24.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 6 
+	  >> Number of species with reads > threshold: 6 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 45443
+	  >> Total reads kept at species level (reads > threshold): 54
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 14
+	  >> Reads not distributed (eg. no species above threshold): 48
+	  >> Unclassified reads: 45327
+BRACKEN OUTPUT PRODUCED: ../hands_folder/processed_data/metagenomic/bracken/NR3_S24.bracken
+PROGRAM END TIME: 05-06-2025 11:14:34
+  Bracken complete.
+✅ Abundance estimated.
+
+Generating Krona visualization...
+Writing ../hands_folder/results/runs/run_0605_1202/krona/NR3_S24.krona.html...
+✅ Krona plot generated.
+
+Running get_fastq_stats.sh on filtered, classified and unclassified data...
+BR1_S10_metagenomic.1: mean = 74.4, median = 66.0
+BR2_S11_metagenomic.1: mean = 84.5, median = 76.0
+BR3_S12_metagenomic.1: mean = 72.6, median = 56.0
+BS1_S1_metagenomic.1: mean = 66.2, median = 61.0
+BS2_S2_metagenomic.1: mean = 72.2, median = 65.0
+BS3_S3_metagenomic.1: mean = 76.2, median = 64.0
+DR1_S13_metagenomic.1: mean = 76.5, median = 69.0
+DR2_S14_metagenomic.1: mean = 92.7, median = 84.0
+DR3_S15_metagenomic.1: mean = 95.4, median = 87.0
+DS1_S4_metagenomic.1: mean = 78.9, median = 65.5
+DS2_S5_metagenomic.1: mean = 86.9, median = 73.0
+DS3_S6_metagenomic.1: mean = 78.8, median = 68.0
+LR1_S16_metagenomic.1: mean = 91.8, median = 83.0
+LR2_S17_metagenomic.1: mean = 73.3, median = 66.0
+LR3_S18_metagenomic.1: mean = 76.7, median = 69.0
+LS1_S7_metagenomic.1: mean = 75.9, median = 66.0
+LS2_S8_metagenomic.1: mean = 77.2, median = 68.0
+LS3_S9_metagenomic.1: mean = 87.4, median = 77.0
+NR1_S22_metagenomic.1: mean = 72.1, median = 58.0
+NR2_S23_metagenomic.1: mean = 87.8, median = 73.0
+NR3_S24_metagenomic.1: mean = 95.0, median = 83.0
+BR1_S10_metagenomic.2: mean = 74.1, median = 65.0
+BR2_S11_metagenomic.2: mean = 83.9, median = 76.0
+BR3_S12_metagenomic.2: mean = 71.1, median = 56.0
+BS1_S1_metagenomic.2: mean = 65.9, median = 60.0
+BS2_S2_metagenomic.2: mean = 72.1, median = 65.0
+BS3_S3_metagenomic.2: mean = 76.3, median = 64.0
+DR1_S13_metagenomic.2: mean = 76.2, median = 69.0
+DR2_S14_metagenomic.2: mean = 91.7, median = 83.0
+DR3_S15_metagenomic.2: mean = 94.0, median = 86.0
+DS1_S4_metagenomic.2: mean = 78.4, median = 66.0
+DS2_S5_metagenomic.2: mean = 86.1, median = 73.0
+DS3_S6_metagenomic.2: mean = 78.3, median = 68.0
+LR1_S16_metagenomic.2: mean = 91.2, median = 83.0
+LR2_S17_metagenomic.2: mean = 73.2, median = 66.0
+LR3_S18_metagenomic.2: mean = 76.4, median = 69.0
+LS1_S7_metagenomic.2: mean = 75.7, median = 66.0
+LS2_S8_metagenomic.2: mean = 77.0, median = 68.0
+LS3_S9_metagenomic.2: mean = 87.0, median = 77.0
+NR1_S22_metagenomic.2: mean = 69.3, median = 57.0
+NR2_S23_metagenomic.2: mean = 86.1, median = 73.0
+NR3_S24_metagenomic.2: mean = 83.6, median = 77.0
+BR1_S10_classified_1.fastq: mean = 87.6, median = 79.0
+BR1_S10_classified_2.fastq: mean = 87.2, median = 79.0
+BR2_S11_classified_1.fastq: mean = 95.5, median = 88.0
+BR2_S11_classified_2.fastq: mean = 94.6, median = 87.0
+BR3_S12_classified_1.fastq: mean = 90.1, median = 72.0
+BR3_S12_classified_2.fastq: mean = 87.6, median = 72.0
+BS1_S1_classified_1.fastq: mean = 77.1, median = 72.0
+BS1_S1_classified_2.fastq: mean = 77.2, median = 72.0
+BS2_S2_classified_1.fastq: mean = 85.0, median = 76.5
+BS2_S2_classified_2.fastq: mean = 84.9, median = 76.5
+BS3_S3_classified_1.fastq: mean = 82.2, median = 74.0
+BS3_S3_classified_2.fastq: mean = 82.5, median = 74.0
+DR1_S13_classified_1.fastq: mean = 88.2, median = 81.0
+DR1_S13_classified_2.fastq: mean = 87.7, median = 81.0
+DR2_S14_classified_1.fastq: mean = 104.5, median = 97.0
+DR2_S14_classified_2.fastq: mean = 103.3, median = 97.0
+DR3_S15_classified_1.fastq: mean = 107.0, median = 100.0
+DR3_S15_classified_2.fastq: mean = 105.8, median = 99.0
+DS1_S4_classified_1.fastq: mean = 94.0, median = 83.5
+DS1_S4_classified_2.fastq: mean = 92.9, median = 83.0
+DS2_S5_classified_1.fastq: mean = 100.4, median = 88.0
+DS2_S5_classified_2.fastq: mean = 99.8, median = 88.0
+DS3_S6_classified_1.fastq: mean = 92.3, median = 84.0
+DS3_S6_classified_2.fastq: mean = 91.2, median = 83.0
+LR1_S16_classified_1.fastq: mean = 100.8, median = 93.0
+LR1_S16_classified_2.fastq: mean = 100.1, median = 92.0
+LR2_S17_classified_1.fastq: mean = 83.9, median = 77.0
+LR2_S17_classified_2.fastq: mean = 83.7, median = 77.0
+LR3_S18_classified_1.fastq: mean = 86.4, median = 79.0
+LR3_S18_classified_2.fastq: mean = 86.1, median = 79.0
+LS1_S7_classified_1.fastq: mean = 85.3, median = 76.0
+LS1_S7_classified_2.fastq: mean = 85.1, median = 76.0
+LS2_S8_classified_1.fastq: mean = 86.1, median = 77.0
+LS2_S8_classified_2.fastq: mean = 85.9, median = 77.0
+LS3_S9_classified_1.fastq: mean = 95.9, median = 86.0
+LS3_S9_classified_2.fastq: mean = 95.5, median = 86.0
+NR1_S22_classified_1.fastq: mean = 133.1, median = 123.5
+NR1_S22_classified_2.fastq: mean = 129.2, median = 125.0
+NR2_S23_classified_1.fastq: mean = 109.7, median = 95.0
+NR2_S23_classified_2.fastq: mean = 106.9, median = 94.0
+NR3_S24_classified_1.fastq: mean = 159.9, median = 164.5
+NR3_S24_classified_2.fastq: mean = 130.6, median = 122.5
+BR1_S10_unclassified_1.fastq: mean = 66.6, median = 58.0
+BR1_S10_unclassified_2.fastq: mean = 66.4, median = 58.0
+BR2_S11_unclassified_1.fastq: mean = 65.7, median = 58.0
+BR2_S11_unclassified_2.fastq: mean = 65.6, median = 58.0
+BR3_S12_unclassified_1.fastq: mean = 49.6, median = 44.0
+BR3_S12_unclassified_2.fastq: mean = 49.5, median = 44.0
+BS1_S1_unclassified_1.fastq: mean = 61.3, median = 56.0
+BS1_S1_unclassified_2.fastq: mean = 60.8, median = 55.5
+BS2_S2_unclassified_1.fastq: mean = 66.3, median = 61.0
+BS2_S2_unclassified_2.fastq: mean = 66.3, median = 61.0
+BS3_S3_unclassified_1.fastq: mean = 73.5, median = 61.0
+BS3_S3_unclassified_2.fastq: mean = 73.6, median = 61.0
+DR1_S13_unclassified_1.fastq: mean = 69.4, median = 61.0
+DR1_S13_unclassified_2.fastq: mean = 69.2, median = 61.0
+DR2_S14_unclassified_1.fastq: mean = 59.2, median = 51.0
+DR2_S14_unclassified_2.fastq: mean = 58.9, median = 50.0
+DR3_S15_unclassified_1.fastq: mean = 77.4, median = 65.0
+DR3_S15_unclassified_2.fastq: mean = 75.7, median = 64.0
+DS1_S4_unclassified_1.fastq: mean = 62.4, median = 52.0
+DS1_S4_unclassified_2.fastq: mean = 62.5, median = 52.0
+DS2_S5_unclassified_1.fastq: mean = 68.6, median = 58.0
+DS2_S5_unclassified_2.fastq: mean = 67.7, median = 57.0
+DS3_S6_unclassified_1.fastq: mean = 62.7, median = 54.5
+DS3_S6_unclassified_2.fastq: mean = 63.0, median = 55.0
+LR1_S16_unclassified_1.fastq: mean = 61.0, median = 53.0
+LR1_S16_unclassified_2.fastq: mean = 60.5, median = 53.0
+LR2_S17_unclassified_1.fastq: mean = 56.4, median = 51.0
+LR2_S17_unclassified_2.fastq: mean = 56.4, median = 51.0
+LR3_S18_unclassified_1.fastq: mean = 53.5, median = 49.0
+LR3_S18_unclassified_2.fastq: mean = 53.5, median = 49.0
+LS1_S7_unclassified_1.fastq: mean = 50.8, median = 46.0
+LS1_S7_unclassified_2.fastq: mean = 50.8, median = 46.0
+LS2_S8_unclassified_1.fastq: mean = 51.4, median = 47.0
+LS2_S8_unclassified_2.fastq: mean = 51.4, median = 47.0
+LS3_S9_unclassified_1.fastq: mean = 54.1, median = 49.0
+LS3_S9_unclassified_2.fastq: mean = 53.9, median = 48.0
+NR1_S22_unclassified_1.fastq: mean = 71.1, median = 57.0
+NR1_S22_unclassified_2.fastq: mean = 68.3, median = 57.0
+NR2_S23_unclassified_1.fastq: mean = 86.4, median = 73.0
+NR2_S23_unclassified_2.fastq: mean = 84.7, median = 73.0
+NR3_S24_unclassified_1.fastq: mean = 94.8, median = 83.0
+NR3_S24_unclassified_2.fastq: mean = 83.5, median = 77.0
+✅ Statistics generated.
+
+Metagenomic classification completed in: 00:08:48
+
+================================================= COMPARISON TO GROUND TRUTH =================================================
+
+Combining Bracken reports...
+Combined CSV file saved to: ../hands_folder/results/runs/run_0605_1202/combined_breports.csv 
+
+================================================= METAGENOMIC DIVERSITY ANALYSIS =================================================
+Calculating alpha and beta diversity...
+✅ Alpha diversity calculated.
+null device 
+          1 
+Heatmap saved to: ../hands_folder/results/runs/run_0605_1202/diversity/beta_diversity_heatmap.png 
+✅ Beta diversity heatmap generated.
+✅ Diversity analysis completed successfully.
+
+====================================================== HUMAN DNA ANALYSIS ======================================================
+
+Processing host reads from sample: BR1_S10_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: BR2_S11_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: BR3_S12_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: BS1_S1_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: BS2_S2_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: BS3_S3_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: DR1_S13_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: DR2_S14_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: DR3_S15_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: DS1_S4_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: DS2_S5_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: DS3_S6_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: LR1_S16_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: LR2_S17_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: LR3_S18_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: LS1_S7_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: LS2_S8_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: LS3_S9_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: NR1_S22_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: NR2_S23_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: NR3_S24_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+=============================================== KARYOTYPE ================================================
+Generating karyotype plot...
+null device 
+          1 
+Plot saved as: ../hands_folder/processed_data/human/aligned_sam/../../../results/host_dna_analysis/karyotype_frequency.jpg
+✅ Karyotype plot generated.
+
+================================================== BLAST ==================================================
+
+Extracting sequences for BLAST query...
+tail: cannot open '../hands_folder/processed_data/human/aligned_sam/../bed_files/common_intervals_filtered.bed' for reading: No such file or directory
+✅ Sequences saved to BLAST query.
+tail: cannot open '../hands_folder/processed_data/human/aligned_sam/../bed_files/common_intervals_filtered.bed' for reading: No such file or directory
+❌ No regions found. Skipping BLAST.
+
+=========================================== JACCARD SIMILARITY ===========================================
+Generating Jaccard similarity heatmap...
+null device 
+          1 
+Heatmap saved at: ../hands_folder/processed_data/human/aligned_sam/../../../results/host_dna_analysis/jaccard_similarity_heatmap.png 
+✅ Jaccard analysis complete.
+✅ Host DNA analysis completed successfully.
+
+✅ Pipeline completed successfully.
+Storing log file...
+
+====================================================== COMPARISON TO OTHER RUNS ======================================================
+basename: missing operand
+Try 'basename --help' for more information.
+Traceback (most recent call last):
+  File "/cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/scripts/../scripts/helper_scripts/evaluation_metrics.py", line 10, in <module>
+    import pandas as pd  # Data handling
+    ^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'pandas'
+❌ Evaluation metrics generation failed!
