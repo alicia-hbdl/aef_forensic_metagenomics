@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# This script builds a Kraken2 database using genome files from a specified directory.
 #SBATCH --job-name=build_db
 #SBATCH --output=logs/build_db.log
 #SBATCH --error=logs/build_db.err
@@ -16,16 +17,17 @@ set -x  # Print each command and its arguments as it is executed for debugging
 
 # This script builds a Kraken2 database.
 # Arguments:
-#   -g, --genomes    Path to the directory containing genome files (default: /scratch/users/k24087895/final_project/data/genomes)
-#   -d, --database   Path to the Kraken2 database directory (default: /scratch/users/k24087895/final_project/data/databases/k2_custom_[date])
+#   -g, --genomes    Path to the directory containing genome files (default: /scratch/users/k24087895/final_project/data/genomes/default)
+#   -d, --database   Path to the Kraken2 database directory (default: /scratch/users/k24087895/final_project/data/databases/k2_default_[date])
 
 # Default values
 THREADS=8
 KMER_LEN=35
 GENOMES="/scratch/users/k24087895/final_project/data/genomes/default"
-DBNAME="/scratch/users/k24087895/final_project/data/databases/k2_custom_$(date +"%Y%m%d")"
+DBNAME="/scratch/users/k24087895/final_project/data/databases/k2_default_$(date +"%Y%m%d")"
 
 # --- ACTIVATE CONDA ENVIRONMENT --- 
+
 source "$(pwd)/helper_scripts/environment_setup.sh" "$(pwd)/metagenomics.yml" \
 || { echo "❌  Failed to set up Conda environment."; exit 1; }
 
@@ -55,9 +57,13 @@ mkdir -p  "$DBNAME" && echo "✅  Created $(basename "$DBNAME") directory."
 
 # --- DOWNLOAD AND TAG GENOMES ---
 
-# Optional: comment this block out if $GENOMES already contains the required .fna files.
-bash helper_scripts/download_zymobiomics.sh "$GENOMES" \
-|| { echo "❌  Failed to download genomes. Exiting."; exit 1; }
+# Download genomes if missing
+if [ ! -d "$GENOMES" ] || ! ls "$GENOMES"/*.fna &> /dev/null; then
+    echo "Downloading genomes..."
+    ./helper_scripts/download_zymobiomics.sh "$GENOMES"
+else
+    echo "✅ Genomes already present in $GENOMES. Skipping download."
+fi
 
 # --- BUILD KRAKEN DATABASE ---
 
@@ -66,18 +72,14 @@ echo "Downloading NCBI taxonomy..."
 kraken2-build --download-taxonomy --use-ftp --db "$DBNAME" --threads "$THREADS" \
 || { echo "❌  Failed to download NCBI taxonomy. Exiting."; exit 1; }
 echo "✅  NCBI taxonomy downloaded."
-
-# Troubleshooting: check the contents of the taxonomy files
-head "$DBNAME"/taxonomy/* || { echo "❌  Failed to read files in '$DBNAME/taxonomy/'."; exit 1; }
+# head "$DBNAME"/taxonomy/* || { echo "❌  Failed to read files in '$DBNAME/taxonomy/'."; exit 1; } # Troubleshooting
 
 # Add human library
 echo "Installing human reference library..."
 kraken2-build --download-library human --use-ftp --db "$DBNAME" --threads "$THREADS" \
 || echo "⚠️  Failed to install human reference library."
 echo "✅  Human reference library installed."
-
-# Troubleshooting: check contents of human library files
-head "$DBNAME"/library/human/* || { echo "❌  Failed to read files in '$DBNAME/library/human/'."; exit 1; }
+# head "$DBNAME"/library/human/* || { echo "❌  Failed to read files in '$DBNAME/library/human/'."; exit 1; } # Troubleshooting
 
 # Add custom genomes sequentially
 echo "Adding custom genomes..."
@@ -87,18 +89,20 @@ for file in "$GENOMES"/*.fna; do
     || echo "⚠️  '$file' failed to add."
 done
 echo "✅  Custom genomes added."
-
-# Troubleshooting: check contents of custom library files
-head "$DBNAME"/library/added/* || { echo "❌  Failed to read files in '$DBNAME/library/added/'."; exit 1; }
+# head "$DBNAME"/library/added/* || { echo "❌  Failed to read files in '$DBNAME/library/added/'."; exit 1; } # Troubleshooting
 
 echo "Building Kraken2 database..."
-export OMP_NUM_THREADS="$THREADS"  # Set the number of threads for OpenMP - Only the --build step uses OpenMP.
+export OMP_NUM_THREADS="$THREADS"  # Set OpenMP threads (used only during --build)
 kraken2-build --build --db "$DBNAME" --threads "$THREADS" \
 || { echo "❌  Failed to build Kraken2 database. Exiting."; exit 1; }
 echo "✅  Kraken2 database built."
+# head "$DBNAME"/*.k2d || { echo "❌  Failed to read files in '$DBNAME/'."; exit 1; } # Troubleshooting
 
-# Troubleshooting: check contents of database files
-head "$DBNAME"/*.k2d || { echo "❌  Failed to read files in '$DBNAME/'."; exit 1; }
+# Remove intermediate files to save space (including taxonomy folder; needed again for future builds)
+kraken2-build --clean --db "$DBNAME"
+
+# View database summary
+kraken2-inspect --db "$DBNAME"
 
 # --- BUILD BRACKEN DATABASE ---
 
