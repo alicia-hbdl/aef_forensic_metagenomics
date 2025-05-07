@@ -329,3 +329,85 @@ export CONDA_PYTHON_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.0
 + echo '✅ Genomes already present in ../data/genomes/zymobiomics. Skipping download.'
 + echo 'Downloading NCBI taxonomy...'
 + kraken2-build --download-taxonomy --use-ftp --db ../data/databases/k2_zymobiomics_250507 --threads 8
++ echo '✅  NCBI taxonomy downloaded.'
++ echo 'Installing human reference library...'
++ kraken2-build --download-library human --use-ftp --db ../data/databases/k2_zymobiomics_250507 --threads 8
++ echo '✅  Human reference library installed.'
++ echo 'Adding custom genomes...'
++ for file in "$GENOMES"/*.fna
++ head -n 1 ../data/genomes/zymobiomics/GCF_000005845.2_ASM584v2_genomic.fna
++ kraken2-build --add-to-library ../data/genomes/zymobiomics/GCF_000005845.2_ASM584v2_genomic.fna --db ../data/databases/k2_zymobiomics_250507 --threads 8
++ for file in "$GENOMES"/*.fna
++ head -n 1 ../data/genomes/zymobiomics/GCF_000006765.1_ASM676v1_genomic.fna
++ kraken2-build --add-to-library ../data/genomes/zymobiomics/GCF_000006765.1_ASM676v1_genomic.fna --db ../data/databases/k2_zymobiomics_250507 --threads 8
++ for file in "$GENOMES"/*.fna
++ head -n 1 ../data/genomes/zymobiomics/GCF_000006945.2_ASM694v2_genomic.fna
++ kraken2-build --add-to-library ../data/genomes/zymobiomics/GCF_000006945.2_ASM694v2_genomic.fna --db ../data/databases/k2_zymobiomics_250507 --threads 8
++ for file in "$GENOMES"/*.fna
++ head -n 1 ../data/genomes/zymobiomics/GCF_000008865.2_ASM886v2_genomic.fna
++ kraken2-build --add-to-library ../data/genomes/zymobiomics/GCF_000008865.2_ASM886v2_genomic.fna --db ../data/databases/k2_zymobiomics_250507 --threads 8
++ for file in "$GENOMES"/*.fna
++ head -n 1 ../data/genomes/zymobiomics/GCF_000009045.1_ASM904v1_genomic.fna
++ kraken2-build --add-to-library ../data/genomes/zymobiomics/GCF_000009045.1_ASM904v1_genomic.fna --db ../data/databases/k2_zymobiomics_250507 --threads 8
++ for file in "$GENOMES"/*.fna
++ head -n 1 ../data/genomes/zymobiomics/GCF_000013425.1_ASM1342v1_genomic.fna
++ kraken2-build --add-to-library ../data/genomes/zymobiomics/GCF_000013425.1_ASM1342v1_genomic.fna --db ../data/databases/k2_zymobiomics_250507 --threads 8
++ for file in "$GENOMES"/*.fna
++ head -n 1 ../data/genomes/zymobiomics/GCF_000091045.1_ASM9104v1_genomic.fna
++ kraken2-build --add-to-library ../data/genomes/zymobiomics/GCF_000091045.1_ASM9104v1_genomic.fna --db ../data/databases/k2_zymobiomics_250507 --threads 8
++ for file in "$GENOMES"/*.fna
++ head -n 1 ../data/genomes/zymobiomics/GCF_000146045.2_R64_genomic.fna
++ kraken2-build --add-to-library ../data/genomes/zymobiomics/GCF_000146045.2_R64_genomic.fna --db ../data/databases/k2_zymobiomics_250507 --threads 8
++ for file in "$GENOMES"/*.fna
++ head -n 1 ../data/genomes/zymobiomics/GCF_000196035.1_ASM19603v1_genomic.fna
++ kraken2-build --add-to-library ../data/genomes/zymobiomics/GCF_000196035.1_ASM19603v1_genomic.fna --db ../data/databases/k2_zymobiomics_250507 --threads 8
++ for file in "$GENOMES"/*.fna
++ head -n 1 ../data/genomes/zymobiomics/GCF_000393015.1_Ente_faec_T5_V1_genomic.fna
++ kraken2-build --add-to-library ../data/genomes/zymobiomics/GCF_000393015.1_Ente_faec_T5_V1_genomic.fna --db ../data/databases/k2_zymobiomics_250507 --threads 8
++ for file in "$GENOMES"/*.fna
++ head -n 1 ../data/genomes/zymobiomics/GCF_029961225.1_ASM2996122v1_genomic.fna
++ kraken2-build --add-to-library ../data/genomes/zymobiomics/GCF_029961225.1_ASM2996122v1_genomic.fna --db ../data/databases/k2_zymobiomics_250507 --threads 8
++ echo '✅  Custom genomes added.'
++ echo 'Building Kraken2 database...'
++ export OMP_NUM_THREADS=8
++ OMP_NUM_THREADS=8
++ kraken2-build --build --db ../data/databases/k2_zymobiomics_250507 --max-db-size 16 --threads 8
++ echo '✅  Kraken2 database built.'
++ for READ_LEN in 50 75 100 150 200 250 300
++++ which kraken2
+++ dirname /users/k24087895/.conda/envs/metagenomics/bin/kraken2
++ bracken-build -d ../data/databases/k2_zymobiomics_250507 -t 8 -k 35 -l 50 -x /users/k24087895/.conda/envs/metagenomics/bin
++ echo '✅  Bracken database built for read length 50'
++ for READ_LEN in 50 75 100 150 200 250 300
++++ which kraken2
+++ dirname /users/k24087895/.conda/envs/metagenomics/bin/kraken2
++ bracken-build -d ../data/databases/k2_zymobiomics_250507 -t 8 -k 35 -l 75 -x /users/k24087895/.conda/envs/metagenomics/bin
++ echo '✅  Bracken database built for read length 75'
++ for READ_LEN in 50 75 100 150 200 250 300
++++ which kraken2
+++ dirname /users/k24087895/.conda/envs/metagenomics/bin/kraken2
++ bracken-build -d ../data/databases/k2_zymobiomics_250507 -t 8 -k 35 -l 100 -x /users/k24087895/.conda/envs/metagenomics/bin
++ echo '✅  Bracken database built for read length 100'
++ for READ_LEN in 50 75 100 150 200 250 300
++++ which kraken2
+++ dirname /users/k24087895/.conda/envs/metagenomics/bin/kraken2
++ bracken-build -d ../data/databases/k2_zymobiomics_250507 -t 8 -k 35 -l 150 -x /users/k24087895/.conda/envs/metagenomics/bin
++ echo '✅  Bracken database built for read length 150'
++ for READ_LEN in 50 75 100 150 200 250 300
++++ which kraken2
+++ dirname /users/k24087895/.conda/envs/metagenomics/bin/kraken2
++ bracken-build -d ../data/databases/k2_zymobiomics_250507 -t 8 -k 35 -l 200 -x /users/k24087895/.conda/envs/metagenomics/bin
++ echo '✅  Bracken database built for read length 200'
++ for READ_LEN in 50 75 100 150 200 250 300
++++ which kraken2
+++ dirname /users/k24087895/.conda/envs/metagenomics/bin/kraken2
++ bracken-build -d ../data/databases/k2_zymobiomics_250507 -t 8 -k 35 -l 250 -x /users/k24087895/.conda/envs/metagenomics/bin
++ echo '✅  Bracken database built for read length 250'
++ for READ_LEN in 50 75 100 150 200 250 300
++++ which kraken2
+++ dirname /users/k24087895/.conda/envs/metagenomics/bin/kraken2
++ bracken-build -d ../data/databases/k2_zymobiomics_250507 -t 8 -k 35 -l 300 -x /users/k24087895/.conda/envs/metagenomics/bin
++ echo '✅  Bracken database built for read length 300'
++ echo 'All Bracken databases built successfully!'
++ kraken2-build --clean --db ../data/databases/k2_zymobiomics_250507
++ kraken2-inspect --db ../data/databases/k2_zymobiomics_250507
