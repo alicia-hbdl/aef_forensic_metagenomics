@@ -1,4 +1,4 @@
-# Exclude all .bed files except common_intersections.bed
+l# Exclude all .bed files except common_intersections.bed
 *.bed
 !common_intersections.bed
 
