@@ -1,0 +1,131 @@
+---
+title: "sample_comp"
+format: html
+editor: visual
+---
+
+```{r}
+
+# Goal: Evaluate and compare different metagenomic pipeline configurations by projecting their 
+# species abundance profiles into reduced-dimensional space (PCA, t-SNE, UMAP), and identifying
+# which configuration most closely matches a known ground truth profile.
+
+# - Each column represents a pipeline configuration (identified by a unique run ID)
+#   - One column is labeled "truth" and serves as the ground truth benchmark
+#   - Run IDs are linked to their settings in a metadata table
+# - Each row corresponds to a species
+# - Matrix values are species read counts or relative abundances
+
+# Currently running in "mock" mode on a combined Bracken report file 
+library(tidyverse)
+library(matrixStats)
+library(Rtsne)
+library(umap)
+
+# Read CSV file with species as row names and samples as columns
+file <- read.csv("/Users/aliciahobdell/Desktop/final_project/zymobiomics_folder/results/runs/run_0705_1620/combined_breports.csv", row.names = 1)
+
+# TODO: Aggregate combined Bracken reports by run.
+#       For each run ID, sum or average the 7 sample profiles to create a single vector.
+#       Final format: rows = species, columns = run IDs (including "truth").
+
+# Replace NAs with 0.
+file[is.na(file)] <- 0
+
+# Filter out low-abundance species
+# Keep species (rows) that have at least 20 reads in at least 50% of the samples
+to_keep <- rowSums(file >= 20) >= ncol(file) / 2
+filtered <- file[to_keep,]
+
+# Normalize
+# Compute total classified reads per sample (column sums)
+lib_sizes <- colSums(filtered)
+
+# Visualize library sizes per pipeline configuration
+qplot(names(lib_sizes), lib_sizes) + 
+  geom_bar(stat = "identity") + 
+  labs(x = "Pipeline Run", y = "Total Reads", title = "Library Size per Configuration")
+
+# Correlate each species’ abundance vector with total library sizes
+cor_vals <- apply(filtered, 1, \(x) cor(x, lib_sizes))
+
+# Correlation: species abundance vs. library size (raw counts)
+cor_vals <- apply(filtered, 1, \(x) cor(x, lib_sizes))
+qplot(cor_vals) + 
+  geom_histogram(binwidth = 0.005) + 
+  labs(x = "Correlation Coefficient", y = "Density", title = "Raw Abundance vs. Library Size")
+
+# Normalize to CPM
+filtered_cpm <- t(t(filtered) / lib_sizes * 1e6)
+
+# Correlation after CPM normalization
+cor_vals_cpm <- apply(filtered_cpm, 1, \(x) cor(x, lib_sizes))
+qplot(cor_vals_cpm) +
+  geom_histogram(binwidth = 0.005) +
+  labs(x = "Correlation (CPM)", y = "Number of Species", title = "CPM-Normalized Correlation")
+
+# Log mean vs. log standard deviation (CPM scale)
+qplot(log1p(rowMeans(filtered_cpm)), log1p(rowSds(filtered_cpm))) + 
+  labs(x = "log(Mean CPM + 1)", y = "log(SD CPM + 1)", title = "Species Variability (CPM)")
+
+# Log2 transform for downstream analysis
+filtered_logcpm <- log2(filtered_cpm+1)
+
+# Log mean vs. log SD (logCPM scale)
+qplot(log1p(rowMeans(filtered_logcpm)), log1p(rowSds(filtered_logcpm))) +
+  labs(x = "log(Mean logCPM + 1)", y = "log(SD logCPM + 1)", title = "Species Variability (logCPM)")
+
+# Use PCA, t-SNE, and UMAP to reduce species-space vectors into 2D.
+#  Plot the reduced 2D coordinates of each pipeline setting.
+#  Annotate points with their setting name (including “truth”).
+
+# PCA: visualize configurations in reduced space
+pca <- prcomp(t(filtered_logcpm), scale. = TRUE)
+pca_df <- as.data.frame(pca$x) %>% rownames_to_column("sample")
+ggplot(pca_df, aes(x = PC1, y = PC2, label = sample)) +
+  geom_point() + geom_text(vjust = -0.5, size = 3) +
+  labs(title = "PCA of Samples", x = "PC1", y = "PC2")
+
+# t-SNE: visualize nonlinear separation
+tsne <- Rtsne(t(filtered_logcpm), perplexity = 2)
+tsne_df <- as.data.frame(tsne$Y)
+colnames(tsne_df) <- c("tsne_1", "tsne_2")
+tsne_df$sample <- colnames(filtered_logcpm)
+ggplot(tsne_df, aes(x = tsne_1, y = tsne_2, label = sample)) +
+  geom_point() + geom_text(vjust = -0.5, size = 3) +
+  labs(title = "t-SNE of Samples", x = "t-SNE 1", y = "t-SNE 2")
+
+# UMAP: another non-linear projection
+umap_cfg <- umap.defaults; umap_cfg$n_neighbors <- 3
+umap_res <- umap(t(filtered_logcpm), config = umap_cfg)
+umap_df <- as.data.frame(umap_res$layout)
+colnames(umap_df) <- c("umap_1", "umap_2")
+umap_df$sample <- colnames(filtered_logcpm)
+ggplot(umap_df, aes(x = umap_1, y = umap_2, label = sample)) +
+  geom_point() + geom_text(vjust = -0.5, size = 3) +
+  labs(title = "UMAP of Samples", x = "UMAP 1", y = "UMAP 2")
+
+# Quantify similarity to ground truth
+
+# Distances in original logCPM space (species abundance profiles)
+raw_dists <- dist(t(filtered_logcpm))
+raw_dists <- as.matrix(raw_dists)
+heatmap(raw_dists, scale = "none", main = "logCPM Distance Between Samples")
+
+# Distances in PCA space (first 2 principal components)
+pca_dists <- dist(pca_df[, c("PC1", "PC2")])
+pca_dists <- as.matrix(pca_dists)
+heatmap(pca_dists, scale = "none", main = "PCA Distance Between Samples")
+
+# Distances in UMAP space
+umap_dists <- dist(umap_df[, c("umap_1", "umap_2")])
+umap_dists <- as.matrix(umap_dists)
+heatmap(umap_dists, scale = "none", main = "UMAP Distance Between Samples")
+
+# Distances in t-SNE space
+tsne_dists <- dist(tsne_df[, c("tsne_1", "tsne_2")])
+tsne_dists <- as.matrix(tsne_dists)
+heatmap(tsne_dists, scale = "none", main = "t-SNE Distance Between Samples")
+
+# TODO: Use distances from "truth" column to rank best-matching configurations
+```
