@@ -62,7 +62,7 @@ if [ ! -d "$GENOMES" ] || ! ls "$GENOMES"/*.fna &> /dev/null; then
     SCRIPT="./helper_scripts/download_$(basename "$GENOMES").sh"
     [ -f "$SCRIPT" ] || { echo "❌  $SCRIPT not found."; exit 1; }
     echo "Downloading genomes..."
-    bash "$SCRIPT" "$GENOMES" 2>&1 && echo "✅ Genomes downloaded."
+    bash "$SCRIPT" "$GENOMES" && echo "✅ Genomes downloaded."
 else
     echo "✅ Genomes already present in $GENOMES. Skipping download."
 fi
