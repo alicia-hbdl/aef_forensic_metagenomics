@@ -2,8 +2,8 @@
 
 # This script builds a Kraken2 database using genome files from a specified directory.
 #SBATCH --job-name=build_db
-#SBATCH --output=logs/build_db.log
-#SBATCH --error=logs/build_db.err
+#SBATCH --output=logs/build_db_%j.log
+#SBATCH --error=logs/build_db_%j.err
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=60G
