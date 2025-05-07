@@ -12,7 +12,7 @@
 
 # Usage: ./build_db.sh [-g/--genomes <path/to/genomes>] [-d/--database <path/to/database>]
 
-set -e # Exit on error 
+set -e  # Exit on error 
 set -x  # Print each command and its arguments as it is executed for debugging 
 
 # This script builds a Kraken2 database.
@@ -109,7 +109,7 @@ kraken2-inspect --db "$DBNAME" 2>&1
 # --- BUILD BRACKEN DATABASE ---
 
 # Build Bracken databases for different read lengths
-for READ_LEN in 50 100 150 200 250 300 ; do 
+for READ_LEN in 50 75 100 150 200 250 300 ; do 
     bracken-build -d "$DBNAME" -t "$THREADS" -k "$KMER_LEN" -l "$READ_LEN" -x "$(dirname "$(which kraken2)")" 2>&1 \
     || { echo "⚠️  Failed to build Bracken database for read length $READ_LEN. Skipping."; continue; }
     echo "✅  Bracken database built for read length $READ_LEN"
