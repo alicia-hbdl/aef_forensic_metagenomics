@@ -86,7 +86,7 @@ echo "✅  Human reference library installed."
 # Add custom genomes sequentially
 echo "Adding custom genomes..."
 for file in "$GENOMES"/*.fna; do
-    echo "Filepath: $file"; head -n 1 "$file"
+    head -n 1 "$file"
     kraken2-build --add-to-library "$file" --db "$DBNAME" --threads "$THREADS" 2>&1 \
     || echo "⚠️  '$file' failed to add."
 done
