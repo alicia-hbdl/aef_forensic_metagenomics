@@ -100,12 +100,6 @@ kraken2-build --build --db "$DBNAME" --max-db-size 16 --threads "$THREADS" 2>&1 
 echo "✅  Kraken2 database built."
 # head "$DBNAME"/*.k2d || { echo "❌  Failed to read files in '$DBNAME/'."; exit 1; } # Troubleshooting
 
-# Remove intermediate files to save space (including taxonomy folder; needed again for future builds)
-kraken2-build --clean --db "$DBNAME" 2>&1
-
-# View database summary
-kraken2-inspect --db "$DBNAME" 2>&1
-
 # --- BUILD BRACKEN DATABASE ---
 
 # Build Bracken databases for different read lengths
@@ -116,3 +110,12 @@ for READ_LEN in 50 75 100 150 200 250 300 ; do
 done
 
 echo "All Bracken databases built successfully!"
+
+# --- CLEAN & INSPECT ---
+
+# Remove intermediate files to save space (including taxonomy folder; needed again for future builds)
+kraken2-build --clean --db "$DBNAME" 2>&1
+
+# View database summary
+kraken2-inspect --db "$DBNAME" 2>&1
+
