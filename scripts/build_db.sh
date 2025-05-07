@@ -17,7 +17,7 @@ set -x  # Print each command and its arguments as it is executed for debugging
 
 # This script builds a Kraken2 database.
 # Arguments:
-#   -g, --genomes    Path to the directory containing genome files (default: /scratch/users/k24087895/final_project/data/genomes/default)
+#   -g, --genomes    Path to the directory containing genome files (default: /scratch/users/k24087895/final_project/data/genomes/zymobiomics)
 #   -d, --database   Path to the Kraken2 database directory (default: /scratch/users/k24087895/final_project/data/databases/k2_default_[date])
 
 # Default values
@@ -59,8 +59,10 @@ mkdir -p  "$DBNAME" && echo "✅  Created $(basename "$DBNAME") directory."
 
 # Download genomes if missing
 if [ ! -d "$GENOMES" ] || ! ls "$GENOMES"/*.fna &> /dev/null; then
+    SCRIPT="./helper_scripts/download_$(basename "$GENOMES").sh"
+    [ -f "$SCRIPT" ] || { echo "❌  $SCRIPT not found."; exit 1; }
     echo "Downloading genomes..."
-    ./helper_scripts/download_zymobiomics.sh "$GENOMES"
+    bash "$SCRIPT" "$GENOMES" 2>&1 && echo "✅ Genomes downloaded."
 else
     echo "✅ Genomes already present in $GENOMES. Skipping download."
 fi
@@ -69,14 +71,14 @@ fi
 
 echo "Downloading NCBI taxonomy..."
 # Use --use-ftp to avoid rsync (default)
-kraken2-build --download-taxonomy --use-ftp --db "$DBNAME" --threads "$THREADS" \
+kraken2-build --download-taxonomy --use-ftp --db "$DBNAME" --threads "$THREADS" 2>&1 \
 || { echo "❌  Failed to download NCBI taxonomy. Exiting."; exit 1; }
 echo "✅  NCBI taxonomy downloaded."
 # head "$DBNAME"/taxonomy/* || { echo "❌  Failed to read files in '$DBNAME/taxonomy/'."; exit 1; } # Troubleshooting
 
 # Add human library
 echo "Installing human reference library..."
-kraken2-build --download-library human --use-ftp --db "$DBNAME" --threads "$THREADS" \
+kraken2-build --download-library human --use-ftp --db "$DBNAME" --threads "$THREADS" 2>&1 \
 || echo "⚠️  Failed to install human reference library."
 echo "✅  Human reference library installed."
 # head "$DBNAME"/library/human/* || { echo "❌  Failed to read files in '$DBNAME/library/human/'."; exit 1; } # Troubleshooting
@@ -85,7 +87,7 @@ echo "✅  Human reference library installed."
 echo "Adding custom genomes..."
 for file in "$GENOMES"/*.fna; do
     echo "Filepath: $file"; head -n 1 "$file"
-    kraken2-build --add-to-library "$file" --db "$DBNAME" --threads "$THREADS" \
+    kraken2-build --add-to-library "$file" --db "$DBNAME" --threads "$THREADS" 2>&1 \
     || echo "⚠️  '$file' failed to add."
 done
 echo "✅  Custom genomes added."
@@ -93,22 +95,22 @@ echo "✅  Custom genomes added."
 
 echo "Building Kraken2 database..."
 export OMP_NUM_THREADS="$THREADS"  # Set OpenMP threads (used only during --build)
-kraken2-build --build --db "$DBNAME" --threads "$THREADS" \
+kraken2-build --build --db "$DBNAME" --max-db-size 16 --threads "$THREADS" 2>&1 \
 || { echo "❌  Failed to build Kraken2 database. Exiting."; exit 1; }
 echo "✅  Kraken2 database built."
 # head "$DBNAME"/*.k2d || { echo "❌  Failed to read files in '$DBNAME/'."; exit 1; } # Troubleshooting
 
 # Remove intermediate files to save space (including taxonomy folder; needed again for future builds)
-kraken2-build --clean --db "$DBNAME"
+kraken2-build --clean --db "$DBNAME" 2>&1
 
 # View database summary
-kraken2-inspect --db "$DBNAME"
+kraken2-inspect --db "$DBNAME" 2>&1
 
 # --- BUILD BRACKEN DATABASE ---
 
 # Build Bracken databases for different read lengths
 for READ_LEN in 50 100 150 200 250 300 ; do 
-    bracken-build -d "$DBNAME" -t "$THREADS" -k "$KMER_LEN" -l "$READ_LEN" -x "$(dirname "$(which kraken2)")" \
+    bracken-build -d "$DBNAME" -t "$THREADS" -k "$KMER_LEN" -l "$READ_LEN" -x "$(dirname "$(which kraken2)")" 2>&1 \
     || { echo "⚠️  Failed to build Bracken database for read length $READ_LEN. Skipping."; continue; }
     echo "✅  Bracken database built for read length $READ_LEN"
 done

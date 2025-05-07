@@ -7,10 +7,7 @@
 GENOMES="$1"
 echo "Using genomes directory: $GENOMES"
 
-# Recreate $GENOMES directory
-[ -d "$GENOMES" ] && echo "⚠️  Removing existing $(basename "$GENOMES") directory." && rm -rf "$GENOMES"
 mkdir -p "$GENOMES" && echo "✅  Created $(basename "$GENOMES") directory."
-
 cd "$GENOMES" || { echo "❌  Failed to enter '$GENOMES'."; exit 1; }
 echo "Current directory: $PWD"
 
