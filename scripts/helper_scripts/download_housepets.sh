@@ -1,16 +1,13 @@
 #!/usr/bin/env bash
 
-# This Bash script downloads housepet genomes from NCBI and tags each with its corresponding NCBI taxonomic ID for Kraken2 compatibility.
+# This Bash script downloads common/housepet genomes from NCBI and tags each with its corresponding NCBI taxonomic ID for Kraken2 compatibility.
 
 # Check for required argument
 [ -z "$1" ] && { echo "❌  No genomes directory provided."; echo "Usage: $0 <path/to/genomes>"; exit 1; }
 GENOMES="$1"
 echo "Using genomes directory: $GENOMES"
 
-# Recreate $GENOMES directory
-[ -d "$GENOMES" ] && echo "⚠️  Removing existing $(basename "$GENOMES") directory." && rm -rf "$GENOMES"
 mkdir -p "$GENOMES" && echo "✅  Created $(basename "$GENOMES") directory."
-
 cd "$GENOMES" || { echo "❌  Failed to enter '$GENOMES'."; exit 1; }
 echo "Current directory: $PWD"
 
