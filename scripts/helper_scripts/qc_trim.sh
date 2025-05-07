@@ -36,7 +36,6 @@ multiqc "$FASTQC_DIR/pre_trimming" --no-data-dir -o "$FASTQC_DIR/pre_trimming" -
     echo "❌ MultiQC failed!"
     exit 1
 }
-multiqc "$FASTQC_DIR/pre_trimming" -n stdout
 echo -e "✅ MultiQC report generated successfully.\n"
 rm -f "$FASTQC_DIR/pre_trimming"/*.zip  
 
