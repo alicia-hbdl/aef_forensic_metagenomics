@@ -6,6 +6,7 @@ l# Exclude all .bed files except common_intersections.bed
 *.fastq
 *.fq
 *.gz
+*.fna
 
 # Ignore paired-end files explicitly
 *.1
