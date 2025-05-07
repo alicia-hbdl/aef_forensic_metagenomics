@@ -1,0 +1,42 @@
++ echo -e '\n================================================= ARGUMENT PARSING & VALIDATION =================================================\n'
++ TRIM=false
++ REMOVE_HOST_DNA=false
++ [[ 4 -gt 0 ]]
++ case "$1" in
++ [[ -z ../zymobiomics_folder/raw_data/ ]]
++ [[ ../zymobiomics_folder/raw_data/ == -* ]]
++ [[ ! -d ../zymobiomics_folder/raw_data/ ]]
+++ find ../zymobiomics_folder/raw_data/ -maxdepth 1 -type f '(' -name '*.fq' -o -name '*.fastq' -o -name '*.fq.gz' -o -name '*.fastq.gz' ')'
++ [[ -z ../zymobiomics_folder/raw_data/ZC2_S5_L001_R1_001.fastq.gz
+../zymobiomics_folder/raw_data/ZC3_S6_L001_R2_001.fastq.gz
+../zymobiomics_folder/raw_data/ZC1_S4_L001_R1_001.fastq.gz
+../zymobiomics_folder/raw_data/ZP2_S21_L001_R2_001.fastq.gz
+../zymobiomics_folder/raw_data/ZC2_S5_L001_R2_001.fastq.gz
+../zymobiomics_folder/raw_data/ZC1_S4_L001_R2_001.fastq.gz
+../zymobiomics_folder/raw_data/ZC4_S7_L001_R1_001.fastq.gz
+../zymobiomics_folder/raw_data/ZP1_S20_L001_R2_001.fastq.gz
+../zymobiomics_folder/raw_data/ZP3_S22_L001_R1_001.fastq.gz
+../zymobiomics_folder/raw_data/ZP1_S20_L001_R1_001.fastq.gz
+../zymobiomics_folder/raw_data/ZC4_S7_L001_R2_001.fastq.gz
+../zymobiomics_folder/raw_data/ZP2_S21_L001_R1_001.fastq.gz
+../zymobiomics_folder/raw_data/ZP3_S22_L001_R2_001.fastq.gz
+../zymobiomics_folder/raw_data/ZC3_S6_L001_R1_001.fastq.gz ]]
++ for file in "$2"/*.{fq,fastq}
++ [[ -f ../zymobiomics_folder/raw_data//*.fq ]]
++ for file in "$2"/*.{fq,fastq}
++ [[ -f ../zymobiomics_folder/raw_data//*.fastq ]]
++ for file in "$2"/*.fq.gz
++ [[ -f ../zymobiomics_folder/raw_data//*.fq.gz ]]
++ RAW_FASTQ_DIR=../zymobiomics_folder/raw_data/
++ echo 'Raw FASTQ directory path: ../zymobiomics_folder/raw_data/'
+++ dirname ../zymobiomics_folder/raw_data/
++ PROJ_DIR=../zymobiomics_folder
+++ dirname ../zymobiomics_folder
++ ROOT_DIR=..
++ DATABASE=../data/databases/k2_standard_16gb_20241228
++ BOWTIE_PREFIX=../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as
++ shift 2
++ [[ 2 -gt 0 ]]
++ case "$1" in
++ echo '❌ Unknown argument: -db. Usage: /var/lib/slurm/slurmd/job25977023/slurm_script --raw-fastq/-f <reads_dir> [--database/-d <database_path>] [-t | --trim] [-r | --remove-host-dna <index_path>]'
++ exit 1

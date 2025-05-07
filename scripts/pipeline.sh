@@ -210,7 +210,7 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
 	                --un-conc \"$FILTERED_FASTQ_DIR/${base}_metagenomic\" -S \"$ALIGNED_SAM_DIR/${base}_human.sam\" 2>&1"
         echo "$BOWTIE_CMD"
         eval "$BOWTIE_CMD"
-        echo "✅  Host reads removed and filtered reads compressed."
+        echo "✅  Host reads removed."
     fi
     
     # Taxonomic classification with Kraken2
