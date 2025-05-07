@@ -43,7 +43,7 @@ while [[ $# -gt 0 ]]; do
         -f|--raw-fastq) 
             # Validate FASTQ directory and its contents
             if [[ -z "$2" || "$2" == -* || ! -d "$2" || -z "$(find "$2" -maxdepth 1 -type f \( -name "*.fq" -o -name "*.fastq" -o -name "*.fq.gz" -o -name "*.fastq.gz" \) 2>/dev/null)" ]]; then
-              echo "❌ Error: "$2" is an invalid/missing FASTQ directory. Ensure it contains .fq, .fastq, .fq.gz, or .fastq.gz files."
+              echo "❌  "$2" is an invalid/missing FASTQ directory. Ensure it contains .fq, .fastq, .fq.gz, or .fastq.gz files."
               exit 1
             fi
             
@@ -68,10 +68,10 @@ while [[ $# -gt 0 ]]; do
         # Process Kraken2/Bracken database directory argument
         -d|--database) 
             if [[ -z "$2" || "$2" == -* || ! -d "$2" || ! -f "$2/hash.k2d" || ! -f "$2/taxo.k2d" || ! -f "$2/opts.k2d" || ! $(ls "$2"/*kmer_distrib 2>/dev/null) ]]; then
-                echo "⚠️ Warning: "$2" is an invalid/missing database. Using default: $DATABASE"
+                echo "⚠️  "$2" is an invalid/missing database. Using default: $DATABASE"
             else
                 DATABASE="$2"
-                echo "✅ Database set to: $DATABASE"
+                echo "✅  Database set to: $DATABASE"
             fi
             shift 2
             ;;
@@ -79,21 +79,21 @@ while [[ $# -gt 0 ]]; do
       # Enable trimming
       -t|--trim)
           TRIM=true
-          echo "✅ Trimming enabled."
+          echo "✅  Trimming enabled."
           shift
           ;;            
         
     # Process host DNA Bowtie2 index prefix
     -r|--remove-host-dna)
         if [[ -z "$2" || "$2" == -* ]]; then
-            echo "⚠️ Warning: No Bowtie2 index provided. Using default: $BOWTIE_PREFIX"
+            echo "⚠️  No Bowtie2 index provided. Using default: $BOWTIE_PREFIX"
             shift 
         elif [[ ! -f "$2.1.bt2" || ! -f "$2.2.bt2" || ! -f "$2.3.bt2" || ! -f "$2.4.bt2" || ! -f "$2.rev.1.bt2" || ! -f "$2.rev.2.bt2" ]]; then
-            echo "⚠️ Warning: "$2" is an incomplete/ missing Bowtie2 index. Using default: $BOWTIE_PREFIX"
+            echo "⚠️  "$2" is an incomplete/ missing Bowtie2 index. Using default: $BOWTIE_PREFIX"
             shift 2
         else
             BOWTIE_PREFIX="$2"
-            echo "✅ Bowtie2 index set to: $BOWTIE_PREFIX"
+            echo "✅  Bowtie2 index set to: $BOWTIE_PREFIX"
             shift 2
         fi
         REMOVE_HOST_DNA=true
@@ -109,13 +109,13 @@ done
 
 # Ensure --raw-fastq is provided
 if [[ -z "$RAW_FASTQ_DIR" ]]; then  
-    echo "❌ Error: --raw-fastq/-f is required. Usage: $0 --raw-fastq/-f <reads_dir> [--database/-d <database_path>] [-t | --trim] [-r | --remove-host-dna <index_path>]"
+    echo "❌  --raw-fastq/-f is required. Usage: $0 --raw-fastq/-f <reads_dir> [--database/-d <database_path>] [-t | --trim] [-r | --remove-host-dna <index_path>]"
     exit 1
 fi
 
 # Display quality control and trimming status
 echo -e "Quality Control & Trimming: $( [[ $TRIM == true ]] && echo 'Enabled ✅' || echo 'Disabled ❌' )"
-echo "⚠️ Optional, but must be done at least once on the raw reads for the pipeline to work."
+echo "⚠️  Optional, but must be done at least once on the raw reads for the pipeline to work."
 
 echo ""
 
@@ -126,7 +126,7 @@ if [[ $REMOVE_HOST_DNA == true ]]; then
 else
     echo -e "Host DNA Removal: Disabled ❌"
 fi
-echo "⚠️ Optional, but must be done at least once on the trimmed reads for the pipeline to work."
+echo "⚠️  Optional, but must be done at least once on the trimmed reads for the pipeline to work."
 echo ""
 
 # Display Kraken2/Bracken database path
@@ -137,6 +137,7 @@ echo -e "\n================================================= CONDA ENVIRONMENT A
 source "$ROOT_DIR/scripts/helper_scripts/environment_setup.sh" "$ROOT_DIR/scripts/metagenomics.yml" || { echo "❌ Failed to set up Conda environment."; exit 1; }
 
 echo -e "\n====================================================== PROJECT STRUCTURE ======================================================\n"
+
 # Define output directories
 RESULTS_DIR="$PROJ_DIR/results"  # General results of the entire project
 FASTQC_DIR="$RESULTS_DIR/fastqc"  # FastQC reports for quality control analysis
@@ -187,12 +188,12 @@ if [[ "$TRIM" == true ]]; then
     echo -e "\n=================================================== QUALITY CONTROL & TRIMMING ===================================================\n"
 
     "$ROOT_DIR/scripts/helper_scripts/qc_trim.sh" "$RAW_FASTQ_DIR" || { echo "❌ Quality control and trimming failed!"; exit 1; }
-    echo -e "✅ QC and trimming completed successfully."
+    echo -e "✅  QC and trimming completed successfully."
 fi
 
 echo -e "\n================================================= METAGENOMIC ABUNDANCE ESTIMATION ================================================="
 
-echo "⚠️ This step assumes reads have already been trimmed with Trimmomatic and host DNA removed with Bowtie2. Processed reads must be in the correct directory."
+echo "⚠️  This step assumes reads have already been trimmed with Trimmomatic and host DNA removed with Bowtie2. Processed reads must be in the correct directory."
 
 # Start timer for metagenomic classification
 START_TIME=$(date +%s)
@@ -209,27 +210,11 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
 	                --un-conc \"$FILTERED_FASTQ_DIR/${base}_metagenomic\" -S \"$ALIGNED_SAM_DIR/${base}_human.sam\" 2>&1"
         echo "$BOWTIE_CMD"
         eval "$BOWTIE_CMD"
-        echo "✅ Host reads removed and filtered reads compressed."
+        echo "✅  Host reads removed and filtered reads compressed."
     fi
     
-    echo -e "\n🧪 DEBUG INFO for sample: $base"
-    echo "Input files:"
-    ls -lh "$FILTERED_FASTQ_DIR/${base}_metagenomic."* || echo "⚠️ Some expected files are missing."
-
-    echo -e "\nDisk usage of input files:"
-    du -sh "$FILTERED_FASTQ_DIR/${base}_metagenomic."* || echo "⚠️ Some files missing for disk usage."
-
-    echo -e "\nFirst few lines of R1 FASTQ:"
-    if [[ -f "$FILTERED_FASTQ_DIR/${base}_metagenomic.1" ]]; then
-        cat "$FILTERED_FASTQ_DIR/${base}_metagenomic.1" | head -n 4
-    else
-        echo "❌ Missing R1 file: $FILTERED_FASTQ_DIR/${base}_metagenomic.1"
-    fi
-
-    echo -e "\n📈 Memory snapshot:"
-    free -h
-
     # Taxonomic classification with Kraken2
+    # Note: Argument order matters—input files must come last, or it may cause a segmentation fault.
     echo -e "\nClassifying metagenomic reads with Kraken2..."
     KRAKEN_CMD="kraken2 --db \"$DATABASE\" --threads 8 --report \"$REPORTS_DIR/${base}.k2report\" \
 		--report-minimizer-data --paired --minimum-hit-groups 2 \
@@ -237,26 +222,26 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
 		--output \"$KRAKEN2_DIR/${base}.kraken2\" --use-names \"$FILTERED_FASTQ_DIR/${base}_metagenomic.1\" \"$FILTERED_FASTQ_DIR/${base}_metagenomic.2\" 2>&1"
     echo "$KRAKEN_CMD"
     eval "$KRAKEN_CMD"
-    echo "✅ Classification complete."
+    echo "✅  Classification complete."
 
     # Abundance estimation with Bracken
     echo -e "\nEstimating species abundance with Bracken..."
     bracken -d "$DATABASE" -i "$REPORTS_DIR/${base}.k2report" -l S \
             -r 100 -t 0 -w "$REPORTS_DIR/${base}.breport" -o "$BRACKEN_DIR/${base}.bracken" 2>&1 
-    echo "✅ Abundance estimated."
+    echo "✅  Abundance estimated."
     
     # Generate Krona interactive plot
     echo -e "\nGenerating Krona visualization..."
     python "$ROOT_DIR/tools/KrakenTools/kreport2krona.py" -r "$REPORTS_DIR/${base}.breport" -o "$KRONA_DIR/${base}.krona.txt" --no-intermediate-ranks && \
     "$ROOT_DIR/tools/Krona/KronaTools/scripts/ImportText.pl" "$KRONA_DIR/${base}.krona.txt" -o "$KRONA_DIR/${base}.krona.html" && rm "$KRONA_DIR/${base}.krona.txt" && \
-    echo "✅ Krona plot generated."
+    echo "✅  Krona plot generated."
 done
 
 # Process all FASTQ files as desired using the get_fastq_stats.sh script
 echo -e "\nRunning get_fastq_stats.sh on filtered, classified and unclassified data..."
 files=("$FILTERED_FASTQ_DIR"/*.1 "$FILTERED_FASTQ_DIR"/*.2 "$CLASSIFIED_DIR"/*.fastq "$UNCLASSIFIED_DIR"/*.fastq) # Expand file patterns into actual files
 "$ROOT_DIR/scripts/helper_scripts/get_fastq_stats.sh" "${files[@]}" 2>&1 # Run the script with all the matching files
-echo "✅ Statistics generated."
+echo "✅  Statistics generated."
 
 # End timer for metagenomic classification
 END_TIME=$(date +%s)
@@ -288,17 +273,17 @@ cp "$ROOT_DIR"/scripts/logs/*_"$SLURM_JOB_ID".* "$LOG_DIR" || { echo "❌ Copyin
 echo -e "\n================================================= METAGENOMIC DIVERSITY ANALYSIS ================================================="
 
 "$ROOT_DIR/scripts/helper_scripts/diversity_analysis.sh" -b  "$BRACKEN_DIR" -d "$DIVERSITY_DIR" 2>&1 || { echo "❌ Diversity analysis failed!"; exit 1; }
-echo -e "✅ Diversity analysis completed successfully."
+echo -e "✅  Diversity analysis completed successfully."
 
 # Proceed if host DNA removal was performed
 if [[ "$REMOVE_HOST_DNA" == true ]]; then    
     echo -e "\n====================================================== HUMAN DNA ANALYSIS ======================================================"
     
     "$ROOT_DIR/scripts/helper_scripts/host_dna_analysis.sh" "$ALIGNED_SAM_DIR" 2>&1 || { echo "❌ Host DNA analysis failed!"; exit 1; }
-    echo -e "✅ Host DNA analysis completed successfully."
+    echo -e "✅  Host DNA analysis completed successfully."
 fi 
 
-echo -e "\n✅ Pipeline completed successfully."
+echo -e "\n✅  Pipeline completed successfully."
 
 # Move final SLURM logs to run directory and clean up originals
 echo "Storing log file..."
