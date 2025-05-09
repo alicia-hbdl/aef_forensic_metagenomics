@@ -71,14 +71,14 @@ fi
 
 echo "Downloading NCBI taxonomy..."
 # Use --use-ftp to avoid rsync (default)
-kraken2-build --download-taxonomy --use-ftp --db "$DBNAME" --threads "$THREADS" \
+kraken2-build --download-taxonomy --use-ftp --db "$DBNAME" --threads "$THREADS" 2>&1 \
 || { echo "❌  Failed to download NCBI taxonomy. Exiting."; exit 1; }
 echo "✅  NCBI taxonomy downloaded."
 # head "$DBNAME"/taxonomy/* || { echo "❌  Failed to read files in '$DBNAME/taxonomy/'."; exit 1; } # Troubleshooting
 
 # Add human library
 # echo "Installing human reference library..."
-# kraken2-build --download-library human --use-ftp --db "$DBNAME" --threads "$THREADS" \
+# kraken2-build --download-library human --use-ftp --db "$DBNAME" --threads "$THREADS" 2>&1 \
 # || echo "⚠️  Failed to install human reference library."
 # echo "✅  Human reference library installed."
 # head "$DBNAME"/library/human/* || { echo "❌  Failed to read files in '$DBNAME/library/human/'."; exit 1; } # Troubleshooting
@@ -87,7 +87,7 @@ echo "✅  NCBI taxonomy downloaded."
 echo "Adding custom genomes..."
 for file in "$GENOMES"/*.fna; do
     head -n 1 "$file"
-    kraken2-build --add-to-library "$file" --db "$DBNAME" --threads "$THREADS" \
+    kraken2-build --add-to-library "$file" --db "$DBNAME" --threads "$THREADS" 2>&1 \
     || echo "⚠️  '$file' failed to add."
 done
 echo "✅  Custom genomes added."
@@ -95,8 +95,8 @@ echo "✅  Custom genomes added."
 
 echo "Building Kraken2 database..."
 export OMP_NUM_THREADS="$THREADS"  # Set OpenMP threads (used only during --build)
-kraken2-build --build --db "$DBNAME" --max-db-size 16 --threads "$THREADS" \
-|| { echo "❌  Failed to build Kraken2 database. Exiting."; exit 1; }
+kraken2-build --build --db "$DBNAME" --max-db-size 16000000000 --threads "$THREADS" 2>&1 \
+|| { echo "❌  Failed to build Kraken2 database. Exiting."; exit 1; } # --max-db-size 16Gb (in bytes)
 echo "✅  Kraken2 database built."
 # head "$DBNAME"/*.k2d || { echo "❌  Failed to read files in '$DBNAME/'."; exit 1; } # Troubleshooting
 
@@ -104,17 +104,13 @@ echo "✅  Kraken2 database built."
 
 # Build Bracken databases for different read lengths
 for READ_LEN in 50 75 100 150 200 250 300 ; do 
-    bracken-build -d "$DBNAME" -t "$THREADS" -k "$KMER_LEN" -l "$READ_LEN" -x "$(dirname "$(which kraken2)")" \
+    bracken-build -d "$DBNAME" -t "$THREADS" -k "$KMER_LEN" -l "$READ_LEN" -x "$(dirname "$(which kraken2)")" 2>&1 \
     || { echo "⚠️  Failed to build Bracken database for read length $READ_LEN. Skipping."; continue; }
     echo "✅  Bracken database built for read length $READ_LEN"
 done
 
 echo "All Bracken databases built successfully!"
 
-# --- CLEAN & INSPECT ---
-
+# --- CLEAN ---
 # Remove intermediate files to save space (including taxonomy folder; needed again for future builds)
 kraken2-build --clean --db "$DBNAME" 
-
-# View database summary
-kraken2-inspect --db "$DBNAME"
