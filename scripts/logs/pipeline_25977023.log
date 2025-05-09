@@ -1,5 +1,0 @@
-
-================================================= ARGUMENT PARSING & VALIDATION =================================================
-
-Raw FASTQ directory path: ../zymobiomics_folder/raw_data/
-❌ Unknown argument: -db. Usage: /var/lib/slurm/slurmd/job25977023/slurm_script --raw-fastq/-f <reads_dir> [--database/-d <database_path>] [-t | --trim] [-r | --remove-host-dna <index_path>]

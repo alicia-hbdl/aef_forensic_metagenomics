@@ -1,0 +1,56 @@
+✅ 'metagenomics' environment activated successfully.
+✅  Using provided arguments:
+    DBNAME: ../data/databases/k2_zymobiomics_250509
+    GENOMES: ../data/genomes/zymobiomics/
+✅  Created k2_zymobiomics_250509 directory.
+✅ Genomes already present in ../data/genomes/zymobiomics/. Skipping download.
+Downloading NCBI taxonomy...
+Downloading nucleotide gb accession to taxon map... done.
+Downloading nucleotide wgs accession to taxon map... done.
+Downloaded accession to taxon map(s)
+Downloading taxonomy tree data... done.
+Uncompressing taxonomy data... done.
+Untarring taxonomy tree data... done.
+✅  NCBI taxonomy downloaded.
+Adding custom genomes...
+>NC_000913.3|kraken:taxid|562 Escherichia coli str. K-12 substr. MG1655, complete genome
+Masking low-complexity regions of new file... done.
+Added "../data/genomes/zymobiomics//GCF_000005845.2_ASM584v2_genomic.fna" to library (../data/databases/k2_zymobiomics_250509)
+>NC_002516.2|kraken:taxid|208964 Pseudomonas aeruginosa PAO1, complete genome
+Masking low-complexity regions of new file... done.
+Added "../data/genomes/zymobiomics//GCF_000006765.1_ASM676v1_genomic.fna" to library (../data/databases/k2_zymobiomics_250509)
+>NC_003197.2|kraken:taxid|28901 Salmonella enterica subsp. enterica serovar Typhimurium str. LT2, complete genome
+Masking low-complexity regions of new file... done.
+Added "../data/genomes/zymobiomics//GCF_000006945.2_ASM694v2_genomic.fna" to library (../data/databases/k2_zymobiomics_250509)
+>NC_002695.2|kraken:taxid|562 Escherichia coli O157:H7 str. Sakai DNA, complete genome
+Masking low-complexity regions of new file... done.
+Added "../data/genomes/zymobiomics//GCF_000008865.2_ASM886v2_genomic.fna" to library (../data/databases/k2_zymobiomics_250509)
+>NC_000964.3|kraken:taxid|224308 Bacillus subtilis subsp. subtilis str. 168 complete genome
+Masking low-complexity regions of new file... done.
+Added "../data/genomes/zymobiomics//GCF_000009045.1_ASM904v1_genomic.fna" to library (../data/databases/k2_zymobiomics_250509)
+>NC_007795.1|kraken:taxid|1280 Staphylococcus aureus subsp. aureus NCTC 8325 chromosome, complete genome
+Masking low-complexity regions of new file... done.
+Added "../data/genomes/zymobiomics//GCF_000013425.1_ASM1342v1_genomic.fna" to library (../data/databases/k2_zymobiomics_250509)
+>NC_006670.1|kraken:taxid|5207 Cryptococcus neoformans var. neoformans JEC21 chromosome 1, complete sequence
+Masking low-complexity regions of new file... done.
+Added "../data/genomes/zymobiomics//GCF_000091045.1_ASM9104v1_genomic.fna" to library (../data/databases/k2_zymobiomics_250509)
+>NC_001133.9|kraken:taxid|4932 Saccharomyces cerevisiae S288C chromosome I, complete sequence
+Masking low-complexity regions of new file... done.
+Added "../data/genomes/zymobiomics//GCF_000146045.2_R64_genomic.fna" to library (../data/databases/k2_zymobiomics_250509)
+>NC_003210.1|kraken:taxid|169963 Listeria monocytogenes EGD-e chromosome, complete genome
+Masking low-complexity regions of new file... done.
+Added "../data/genomes/zymobiomics//GCF_000196035.1_ASM19603v1_genomic.fna" to library (../data/databases/k2_zymobiomics_250509)
+>NZ_KB944666.1|kraken:taxid|1351 Enterococcus faecalis EnGen0336 strain T5 acAro-supercont1.1, whole genome shotgun sequence
+Masking low-complexity regions of new file... done.
+Added "../data/genomes/zymobiomics//GCF_000393015.1_Ente_faec_T5_V1_genomic.fna" to library (../data/databases/k2_zymobiomics_250509)
+>NZ_CP124737.1|kraken:taxid|1613 Limosilactobacillus fermentum strain EFEL6800 chromosome, complete genome
+Masking low-complexity regions of new file... done.
+Added "../data/genomes/zymobiomics//GCF_029961225.1_ASM2996122v1_genomic.fna" to library (../data/databases/k2_zymobiomics_250509)
+✅  Custom genomes added.
+Building Kraken2 database...
+Creating sequence ID to taxonomy ID map (step 1)...
+Sequence ID to taxonomy ID map complete. [0.016s]
+Estimating required capacity (step 2)...
+Estimated hash table requirement: 113135908 bytes
+Capacity estimation complete. [0.360s]
+Building database files (step 3)...
