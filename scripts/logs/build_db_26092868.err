@@ -304,3 +304,43 @@ export CONDA_PYTHON_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.0
 + export OMP_NUM_THREADS=8
 + OMP_NUM_THREADS=8
 + kraken2-build --build --db ../data/databases/k2_zymobiomics_250509 --max-db-size 16000000000 --threads 8
++ echo '✅  Kraken2 database built.'
++ for READ_LEN in 50 75 100 150 200 250 300
++++ which kraken2
+++ dirname /users/k24087895/.conda/envs/metagenomics/bin/kraken2
++ bracken-build -d ../data/databases/k2_zymobiomics_250509 -t 8 -k 35 -l 50 -x /users/k24087895/.conda/envs/metagenomics/bin
++ echo '✅  Bracken database built for read length 50'
++ for READ_LEN in 50 75 100 150 200 250 300
++++ which kraken2
+++ dirname /users/k24087895/.conda/envs/metagenomics/bin/kraken2
++ bracken-build -d ../data/databases/k2_zymobiomics_250509 -t 8 -k 35 -l 75 -x /users/k24087895/.conda/envs/metagenomics/bin
++ echo '✅  Bracken database built for read length 75'
++ for READ_LEN in 50 75 100 150 200 250 300
++++ which kraken2
+++ dirname /users/k24087895/.conda/envs/metagenomics/bin/kraken2
++ bracken-build -d ../data/databases/k2_zymobiomics_250509 -t 8 -k 35 -l 100 -x /users/k24087895/.conda/envs/metagenomics/bin
++ echo '✅  Bracken database built for read length 100'
++ for READ_LEN in 50 75 100 150 200 250 300
++++ which kraken2
+++ dirname /users/k24087895/.conda/envs/metagenomics/bin/kraken2
++ bracken-build -d ../data/databases/k2_zymobiomics_250509 -t 8 -k 35 -l 150 -x /users/k24087895/.conda/envs/metagenomics/bin
++ echo '✅  Bracken database built for read length 150'
++ for READ_LEN in 50 75 100 150 200 250 300
++++ which kraken2
+++ dirname /users/k24087895/.conda/envs/metagenomics/bin/kraken2
++ bracken-build -d ../data/databases/k2_zymobiomics_250509 -t 8 -k 35 -l 200 -x /users/k24087895/.conda/envs/metagenomics/bin
++ echo '✅  Bracken database built for read length 200'
++ for READ_LEN in 50 75 100 150 200 250 300
++++ which kraken2
+++ dirname /users/k24087895/.conda/envs/metagenomics/bin/kraken2
++ bracken-build -d ../data/databases/k2_zymobiomics_250509 -t 8 -k 35 -l 250 -x /users/k24087895/.conda/envs/metagenomics/bin
++ echo '✅  Bracken database built for read length 250'
++ for READ_LEN in 50 75 100 150 200 250 300
++++ which kraken2
+++ dirname /users/k24087895/.conda/envs/metagenomics/bin/kraken2
++ bracken-build -d ../data/databases/k2_zymobiomics_250509 -t 8 -k 35 -l 300 -x /users/k24087895/.conda/envs/metagenomics/bin
++ echo '✅  Bracken database built for read length 300'
++ echo 'All Bracken databases built successfully!'
++ kraken2-build --clean --db ../data/databases/k2_zymobiomics_250509
+Database disk usage: 46G
+After cleaning, database uses 110M
