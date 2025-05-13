@@ -59,7 +59,7 @@ while [[ $# -gt 0 ]]; do
             # Define project root directory and default database/index paths
             PROJ_DIR=$(dirname "$RAW_FASTQ_DIR")  # Current subproject directory
             ROOT_DIR=$(dirname "$PROJ_DIR")  # Root directory with all subprojects and tools
-            DATABASE="$ROOT_DIR/data/databases/k2_standard_16gb_20241228"
+            DATABASE="$ROOT_DIR/data/databases/k2_standard_16gb_20250402"
             BOWTIE_PREFIX="$ROOT_DIR/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as"           
             
             shift 2
