@@ -106,7 +106,7 @@ else
     
     # Run taxonomy tree only if ≥ 3 unique tax IDs (column 2) exist
     if [ "$(cut -f2 "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" | sort -u | wc -l)" -ge 3 ]; then
-        Generate taxonomy tree from BLAST results
+       # Generate taxonomy tree from BLAST results
        Rscript "$ROOT_DIR/scripts/helper_scripts/human_aligned_tree.R" "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" || { echo "❌ Failed to generate taxonomy tree."; exit 1; }
         echo "✅ Taxonomy tree generated."
     else
