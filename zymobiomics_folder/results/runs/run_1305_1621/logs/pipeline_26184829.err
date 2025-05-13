@@ -1139,3 +1139,11 @@ Analysis complete for ZP3_S22_R2_paired.fastq.gz
 + echo '✅ Bracken reports combined.'
 + echo -e '\nCopying SLURM job logs...'
 + cp ../scripts/logs/pipeline_26184829.err ../scripts/logs/pipeline_26184829.log ../zymobiomics_folder/results/runs/run_1305_1621/logs
++ echo '✅ SLURM job logs copied.'
++ echo -e '\n================================================= COMPARISON TO GROUND TRUTH ================================================='
++ echo -e '\n================================================= METAGENOMIC DIVERSITY ANALYSIS ================================================='
++ ../scripts/helper_scripts/diversity_analysis.sh -b ../zymobiomics_folder/processed_data/metagenomic/bracken -d ../zymobiomics_folder/results/runs/run_1305_1621/diversity
++ echo -e '✅  Diversity analysis completed successfully.'
++ [[ true == true ]]
++ echo -e '\n====================================================== HUMAN DNA ANALYSIS ======================================================'
++ ../scripts/helper_scripts/host_dna_analysis.sh ../zymobiomics_folder/processed_data/human/aligned_sam
