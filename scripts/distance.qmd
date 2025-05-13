@@ -129,3 +129,138 @@ heatmap(tsne_dists, scale = "none", main = "t-SNE Distance Between Samples")
 
 # TODO: Use distances from "truth" column to rank best-matching configurations
 ```
+
+```{r}
+# Compact and efficient version of the original script
+library(tidyverse)
+library(matrixStats)
+library(Rtsne)
+library(umap)
+library(patchwork)
+library(ggrepel)
+library(ggplotify)
+library(pheatmap)
+library(viridis)
+
+# Color mapping
+sample_colors <- c(
+  ZC1_S4 = "red", ZC2_S5 = "orange", ZC3_S6 = "yellow", ZC4_S7 = "green",
+  ZP1_S20 = "blue", ZP2_S21 = "purple", ZP3_S22 = "pink"
+)
+
+# Load and preprocess data
+filtered <- read.csv("/Users/aliciahobdell/Desktop/final_project/zymobiomics_folder/results/runs/run_0705_1620/combined_breports.csv", row.names = 1) %>%
+  replace(is.na(.), 0) %>%
+  {
+    .[rowSums(. >= 20) >= ncol(.) / 2, ]
+  }
+
+# Normalize to CPM and logCPM
+lib_sizes <- colSums(filtered)
+filtered_cpm <- sweep(filtered, 2, lib_sizes, "/") * 1e6
+filtered_logcpm <- log2(filtered_cpm + 1)
+
+# Plot 1: Library sizes
+p1 <- lib_sizes %>%
+  enframe(name = "Run", value = "Reads") %>%
+  mutate(Run = factor(Run, levels = names(sample_colors))) %>%
+  ggplot(aes(x = Run, y = Reads, fill = Run)) +
+  geom_bar(stat = "identity", show.legend = FALSE) +
+  scale_fill_manual(values = sample_colors) +
+  labs(title = "Library Size per Sample") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Function to plot correlation histograms
+plot_correlation_hist <- function(mat, lib_sizes, title) {
+  cor_vals <- apply(mat, 1, function(x) cor(x, lib_sizes))
+  ggplot(data.frame(Correlation = cor_vals), aes(x = Correlation)) +
+    geom_histogram(binwidth = 0.05, fill = "skyblue", color = "black") +
+    stat_function(fun = dnorm, args = list(mean = mean(cor_vals), sd = sd(cor_vals)), color = "red", linewidth = 1) +
+    labs(title = title) +
+    theme_minimal()
+}
+
+p2 <- plot_correlation_hist(filtered, lib_sizes, "Raw Abundance vs. Library Size")
+p3 <- plot_correlation_hist(filtered_cpm, lib_sizes, "CPM-Normalized Correlation")
+
+# Function to plot variability
+plot_variability <- function(mat, title, loglabel) {
+  df <- data.frame(
+    Mean = log1p(rowMeans(mat)),
+    SD = log1p(rowSds(mat))
+  )
+  ggplot(df, aes(x = Mean, y = SD)) +
+    geom_point() +
+    geom_smooth(method = "lm", se = FALSE, color = "red", linewidth = 1) +
+    annotate("text", x = max(df$Mean) * 0.8, y = max(df$SD),
+             label = paste0("r = ", round(cor(df$Mean, df$SD), 3)), hjust = 0, size = 4, fontface = "italic") +
+    labs(x = paste0("log(Mean ", loglabel, " + 1)"), y = paste0("log(SD ", loglabel, " + 1)"), title = title) +
+    theme_minimal()
+}
+
+p4 <- plot_variability(filtered_cpm, "Species Variability (CPM)", "CPM")
+p5 <- plot_variability(filtered_logcpm, "Species Variability (logCPM)", "logCPM")
+
+# Combine transformation plots
+combined_transformations <- p1 / (p2 + p3) / (p4 + p5)
+ggsave("combined_transformations.png", combined_transformations, width = 10, height = 10)
+
+# Dimensionality reduction + scatter plots
+plot_dimred <- function(df, x, y, title) {
+  ggplot(df, aes_string(x = x, y = y, label = "sample", color = "sample")) +
+    geom_point(size = 3, show.legend = FALSE) +
+    geom_text_repel(size = 3, show.legend = FALSE, max.overlaps = Inf) +
+    scale_color_manual(values = sample_colors) +
+    labs(title = title) +
+    theme_minimal()
+}
+
+pca_df <- prcomp(t(filtered_logcpm), scale. = TRUE)$x %>%
+  as.data.frame() %>%
+  rownames_to_column("sample")
+p6 <- plot_dimred(pca_df, "PC1", "PC2", "PCA")
+
+tsne_df <- Rtsne(t(filtered_logcpm), perplexity = 2)$Y %>%
+  as.data.frame() %>%
+  setNames(c("tsne_1", "tsne_2")) %>%
+  mutate(sample = colnames(filtered_logcpm))
+p7 <- plot_dimred(tsne_df, "tsne_1", "tsne_2", "t-SNE")
+
+umap_df <- umap(t(filtered_logcpm), config = umap.defaults %>% modifyList(list(n_neighbors = 3)))$layout %>%
+  as.data.frame() %>%
+  setNames(c("umap_1", "umap_2")) %>%
+  mutate(sample = colnames(filtered_logcpm))
+p8 <- plot_dimred(umap_df, "umap_1", "umap_2", "UMAP")
+
+# Compact pheatmap wrapper with clustering hidden
+pheatmap_grob <- function(mat, title = "") {
+  row_order <- hclust(dist(mat))$order
+  col_order <- hclust(dist(t(mat)))$order
+  mat <- mat[row_order, col_order]
+  as.ggplot(pheatmap(
+    mat, cluster_rows = FALSE, cluster_cols = FALSE,
+    color = viridis(100, option = "D", direction = -1),
+    breaks = seq(0, 1, length.out = 100),
+    angle_col = 45, silent = TRUE, main = title
+  )[[4]])
+}
+
+# Distance matrices and heatmaps
+heatmap_from_coords <- function(coords, name) {
+  coords %>%
+    column_to_rownames("sample") %>%
+    dist() %>%
+    as.matrix() %>%
+    `/`(max(.)) %>%
+    pheatmap_grob(name)
+}
+
+p9  <- heatmap_from_coords(data.frame(t(filtered_logcpm), sample = colnames(filtered_logcpm)), "logCPM Distance")
+p10 <- heatmap_from_coords(pca_df, "PCA Distance")
+p11 <- heatmap_from_coords(tsne_df, "t-SNE Distance")
+p12 <- heatmap_from_coords(umap_df, "UMAP Distance")
+
+combined_distances <- (p6 + p7 + p8) / (p9 + p10 + p11)
+ggsave("combined_distances.png", combined_distances, width = 12, height = 8)
+```
