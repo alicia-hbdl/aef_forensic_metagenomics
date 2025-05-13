@@ -20,7 +20,6 @@ HOST_DNA_ANALYSIS_DIR="$ALIGNED_SAM_DIR/../../../results/host_dna_analysis"
 mkdir -p "$SORTED_BAM_DIR" "$BED_FILES_DIR" "$HOST_DNA_ANALYSIS_DIR"
 ROOT_DIR="$ALIGNED_SAM_DIR/../../../.."
 
-
 # Convert and process each SAM file
 for file in "$ALIGNED_SAM_DIR"/*.sam; do  
     base=$(basename "$file" .sam)  
@@ -41,40 +40,44 @@ done
   
 echo -e "\n=============================================== KARYOTYPE ================================================"
     
-# Identifying overlapping regions across samples
-echo "Generating karyotype plot..."
-mapfile -t SORTED_BEDS < <(find "$BED_FILES_DIR" -name "*.sorted.bed")
+# Identify overlapping regions across samples
+echo -e "Finding overlapping regions across samples..."
+mapfile -t SORTED_BEDS < <(find "$BED_FILES_DIR" -name "*.sorted.bed") || { echo "❌ Failed to find or read BED files."; exit 1; }
 
 if (( ${#SORTED_BEDS[@]} < 2 )); then
     echo "⚠️ Only one BED file found – skipping multiinter and using it directly."
-    cp "${SORTED_BEDS[0]}" "$HOST_DNA_ANALYSIS_DIR/common_intervals.bed"
+    cp "${SORTED_BEDS[0]}" "$HOST_DNA_ANALYSIS_DIR/intervals.bed" || { echo "❌ Failed to copy BED file."; exit 1; }
 else
-    bedtools multiinter -header -i "${SORTED_BEDS[@]}" > "$HOST_DNA_ANALYSIS_DIR/common_intervals.bed"
+    bedtools multiinter -header -i "${SORTED_BEDS[@]}" > "$HOST_DNA_ANALYSIS_DIR/intervals.bed" || { echo "❌ Failed to find overlapping regions."; exit 1; }
+    echo "✅ Overlapping regions saved."
 fi
 
-Rscript "$ROOT_DIR/scripts/helper_scripts/karyotype.R" "$HOST_DNA_ANALYSIS_DIR/common_intervals.bed" && \
+echo -e "Generating karyotype plot..."
+Rscript "$ROOT_DIR/scripts/helper_scripts/karyotype.R" "$HOST_DNA_ANALYSIS_DIR/intervals.bed" || { echo "❌ Failed to generate karyotype plot."; exit 1; }
 echo "✅ Karyotype plot generated."
 
-awk '$4 > 1' "$HOST_DNA_ANALYSIS_DIR/common_intervals.bed" > "$HOST_DNA_ANALYSIS_DIR/common_intervals_filtered.bed"
+# Filter regions present in more than one sample
+awk '$4 > 1' "$HOST_DNA_ANALYSIS_DIR/intervals.bed" > "$HOST_DNA_ANALYSIS_DIR/common_intervals.bed" || { echo "❌ Failed to filter common intervals."; exit 1; }
+echo "✅ Filtered common intervals saved."
 
 echo -e "\n================================================== BLAST =================================================="
     
 # Prepare BLAST query file
 BLAST_QUERY="$HOST_DNA_ANALYSIS_DIR/blast_query.fasta" 
-> "$BLAST_QUERY"
+> "$BLAST_QUERY" || { echo "❌ Failed to create BLAST query file."; exit 1; }
 
 echo -e "\nExtracting sequences for BLAST query..."
 while IFS=$'\t' read -r chrom start end _; do
     for FILE in "$SORTED_BAM_DIR"/*.sorted.bam; do
-        samtools view "$FILE" "$chrom:$start-$end" | awk '{print ">" $1 "\n" $10}' >> "$BLAST_QUERY"
+        samtools view "$FILE" "$chrom:$start-$end" | awk '{print ">" $1 "\n" $10}' >> "$BLAST_QUERY" || { echo "❌ Failed to extract sequences from $FILE."; exit 1; }
     done
-done < <(tail -n +2 "$BED_FILES_DIR/common_intervals_filtered.bed")
+done < <(tail -n +2 "$BED_FILES_DIR/common_intervals.bed") || { echo "❌ Failed to read BED file."; exit 1; }
 echo "✅ Sequences saved to BLAST query."
 
 # Skip BLAST if BED region file is empty
-if [ "$(tail -n +2 "$BED_FILES_DIR/common_intervals_filtered.bed" | wc -l)" -eq 0 ]; then
+if [ "$(tail -n +2 "$BED_FILES_DIR/common_intervals.bed" | wc -l)" -eq 0 ]; then
     echo "❌ No regions found. Skipping BLAST."
-    rm -f "$BLAST_QUERY"
+    rm -f "$BLAST_QUERY" || { echo "❌ Failed to remove empty BLAST query file."; exit 1; }
 else
     # Deduplicate sequences
     awk '
@@ -93,7 +96,7 @@ else
                 tmp = seqs[i]; seqs[i] = seqs[j]; seqs[j] = tmp
             }
             for (i = 1; i <= 15 && i <= n; i++) print ">" seqs[i]
-        }' "$BLAST_QUERY.unique" > "$BLAST_QUERY.selected" || { echo "❌ Failed to select sequences."; exit 1; }
+        }' "$BLAST_QUERY.unique" > "$BLAST_QUERY.selected" || { echo "❌ Failed to select random sequences."; exit 1; }
     echo "✅ 15 random sequences selected."
 
     echo "Running BLAST search..."
@@ -103,13 +106,13 @@ else
     
     # Run taxonomy tree only if ≥ 3 unique tax IDs (column 2) exist
     if [ "$(cut -f2 "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" | sort -u | wc -l)" -ge 3 ]; then
-        # Generate taxonomy tree from BLAST results
-       # Rscript "$ROOT_DIR/scripts/helper_scripts/human_aligned_tree.R" "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" || { echo "❌ Error generating taxonomy tree."; exit 1; }
+        Generate taxonomy tree from BLAST results
+       Rscript "$ROOT_DIR/scripts/helper_scripts/human_aligned_tree.R" "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" || { echo "❌ Failed to generate taxonomy tree."; exit 1; }
         echo "✅ Taxonomy tree generated."
     else
         echo "⚠️ Skipping taxonomy tree: fewer than 3 unique tax IDs."
         echo "Unique tax IDs found:"
-        cut -f2 "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" | sort -u
+        cut -f2 "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" | sort -u || { echo "❌ Failed to list unique tax IDs."; exit 1; }
     fi
 fi
 echo -e "\n=========================================== JACCARD SIMILARITY ==========================================="
