@@ -618,3 +618,49 @@ Extracting sequences for BLAST query...
 ✅ Duplicate sequences removed.
 ✅ 15 random sequences selected.
 Running BLAST search...
+✅ BLAST completed.
+../scripts/helper_scripts/host_dna_analysis.sh: line 109: Generate: command not found
+Get all ranks and their taxIDs
+Align taxonomy hierarchies...
+Taxonomy alignment done!
+Calculate distance matrix
+Add node labels
+✅ Phylogenetic tree saved to: ../zymobiomics_folder/processed_data/human/aligned_sam/../../../results/host_dna_analysis/combined_blast_tree.png 
+✅ Taxonomy tree generated.
+
+=========================================== JACCARD SIMILARITY ===========================================
+Generating Jaccard similarity heatmap...
+null device 
+          1 
+Heatmap saved at: ../zymobiomics_folder/processed_data/human/aligned_sam/../../../results/host_dna_analysis/jaccard_similarity_heatmap.png 
+✅ Jaccard analysis complete.
+✅  Host DNA analysis completed successfully.
+
+✅  Pipeline completed successfully.
+
+Copying final SLURM job logs
+
+====================================================== COMPARISON TO OTHER RUNS ======================================================
+basename: missing operand
+Try 'basename --help' for more information.
+Traceback (most recent call last):
+  File "/cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/scripts/../scripts/helper_scripts/evaluation_metrics.py", line 21, in <module>
+    metadata = pd.read_csv(
+               ^^^^^^^^^^^^
+  File "/users/k24087895/.conda/envs/metagenomics/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/users/k24087895/.conda/envs/metagenomics/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/users/k24087895/.conda/envs/metagenomics/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/users/k24087895/.conda/envs/metagenomics/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1880, in _make_engine
+    self.handles = get_handle(
+                   ^^^^^^^^^^^
+  File "/users/k24087895/.conda/envs/metagenomics/lib/python3.12/site-packages/pandas/io/common.py", line 873, in get_handle
+    handle = open(
+             ^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/aliciahobdell/Desktop/forensic_bioinformatics_project/metagenome_analysis/zymobiomics_folder/results/runs/runs_summary.csv'
+❌ Evaluation metrics generation failed!

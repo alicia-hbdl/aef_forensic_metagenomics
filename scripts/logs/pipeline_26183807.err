@@ -1147,3 +1147,12 @@ Analysis complete for ZP3_S22_R2_paired.fastq.gz
 + [[ true == true ]]
 + echo -e '\n====================================================== HUMAN DNA ANALYSIS ======================================================'
 + ../scripts/helper_scripts/host_dna_analysis.sh ../zymobiomics_folder/processed_data/human/aligned_sam
++ echo -e '✅  Host DNA analysis completed successfully.'
++ echo -e '\n✅  Pipeline completed successfully.'
++ echo -e '\nCopying final SLURM job logs'
++ cp ../scripts/logs/pipeline_26183807.err ../scripts/logs/pipeline_26183807.log ../zymobiomics_folder/results/runs/run_1305_1523/logs
++ echo -e '\n====================================================== COMPARISON TO OTHER RUNS ======================================================'
++ ../scripts/helper_scripts/runs_summary.sh ../zymobiomics_folder/results/runs/run_1305_1523
++ python ../scripts/helper_scripts/evaluation_metrics.py ../zymobiomics_folder/results/runs/run_1305_1523
++ echo '❌ Evaluation metrics generation failed!'
++ exit 1
