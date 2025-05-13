@@ -55,7 +55,7 @@ for log in $LOG_FILES; do
   fi
 
   # Get database and runtime info
-  db_name=$(grep "Kraken2/Bracken Database Path:" "$log" | awk -F': ' '{print $2}' | xargs basename)
+  db_name=$(grep "Kraken2/Bracken Database:" "$log" | awk -F': ' '{print $2}' | xargs basename)
   runtime=$(grep "Metagenomic classification completed in:" "$log" | awk -F': ' '{print $2}')    
   
   # -- KRAKEN & BRACKEN METADATA --
