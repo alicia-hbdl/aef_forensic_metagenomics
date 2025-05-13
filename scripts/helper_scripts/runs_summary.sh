@@ -1,25 +1,22 @@
 #!/bin/bash
 
-# This script processes Kraken2 pipeline log files, extracts QC, trimming, alignment, classification, and abundance stats,
-# and saves them into a CSV summary table for further analysis.
+# Script to extract run and sample statistics from Kraken2 pipeline logs.
+# Outputs a single CSV file for downstream analysis of QC, trimming, host removal, and taxonomic profiling.
 
 # Usage: ./runs_summary.sh <path/to/runs/directory>
 
 # To Do: 
 # - Print QC stats to log file
 
-# --- Argument Parsing ---
-# Ensure a run directory is provided as argument
-if [ -z "$1" ]; then
-  echo "❌ Missing run directory argument. Usage: $0 <path/to/runs/directory>"
+# --- ARGUMENT PARSING ---
+if [ -z "$1" ] || [ ! -d "$1" ]; then  # Check argument and directory validity
+  echo "❌ Missing or invalid run directory. Usage: $0 <path/to/runs_directory>"
   exit 1
 fi
+RUNS_DIR=$(realpath "$1")              # Get absolute path to run directory
+OUTPUT="$RUNS_DIR/runs_summary.csv"    # Set output CSV file path
 
-# Get absolute path to run directory
-RUNS_DIR=$(realpath "$1")
-OUTPUT="$RUNS_DIR/runs_summary.csv"
-
-# Define variable lists (column headers)
+# Define CSV column variables
 metadata_vars=(run_id db_name runtime)
 preqc_vars=(preqc_pct_dups_r1 preqc_pct_dups_r2 preqc_pct_gc_r1 preqc_pct_gc_r2 preqc_avg_len_r1 preqc_avg_len_r2 preqc_med_len_r1 preqc_med_len_r2 preqc_fail_r1 preqc_fail_r2)
 global_trim_vars=(trim_clip trim_head trim_lead trim_crop trim_sliding_win trim_trail trim_min_len)
@@ -30,7 +27,7 @@ local_bt_vars=(bt_paired bt_conc_0 bt_conc_1 bt_conc_more bt_avg_len bt_med_len)
 kraken2_vars=(kraken2_min_hits kraken2_total kraken2_classified kraken2_unclassified kraken2_avg_len kraken2_med_len)
 bracken_vars=(bracken_thresh bracken_species bracken_species_above_thresh bracken_species_below_thresh bracken_kept bracken_discarded bracken_redistributed bracken_not_redistributed bracken_total)
 
-# Create CSV header if not existing
+# Create CSV header if file not existing
 if [[ ! -f "$OUTPUT" ]]; then
   {
     IFS=,
@@ -203,13 +200,16 @@ for log in $LOG_FILES; do
 
   if grep -q "Host DNA Removal: Enabled" "$log"; then
 
-    # Extract Bowtie2 arguments and initialize values (first occurrence)
-    bt_prefix="TODO"
-    bt_mode="TODO"
-    bt_sensitivity="TODO"
-    bt_mixed="TODO"
-    bt_discordant="TODO"
+    # Get full Bowtie2 command (first occurrence)
+    bt_args=$(grep -m1 "^bowtie2 -x" "$log")
 
+    # Extract Bowtie2 values from command string
+    bt_prefix=$(echo "$bt_args" | sed -n 's/.*-x \([^ ]*\).*/\1/p' | xargs basename)
+    bt_mode=$(echo "$bt_args" | grep -q -- '--local' && echo "local" || echo "end-to-end")
+    bt_sensitivity=$(echo "$bt_args" | sed -En 's/.*--(very-sensitive|sensitive|fast|very-fast).*/\1/p')
+    bt_mixed=$(echo "$bt_args" | grep -q -- '--no-mixed' && echo "off" || echo "on")
+    bt_discordant=$(echo "$bt_args" | grep -q -- '--no-discordant' && echo "off" || echo "on")
+    
     # Loop through log lines to extract per-sample Bowtie2 alignment stats
     while read -r line; do
       [[ $line =~ ^Processing\ sample:\  ]] && sample_id=${line#*: }  && continue
@@ -222,7 +222,6 @@ for log in $LOG_FILES; do
         bt_med_len="TODO"
         # Store final sample-specific Bowtie2 stats
         bowtie_stats+=("$bt_paired,$bt_conc_0,$bt_conc_1,$bt_conc_more,$bt_avg_len,$bt_med_len")
-        echo "${bowtie_stats[@]}"
       fi        
     done < <(grep -A8 "Processing sample:" "$log")
   else 
@@ -236,34 +235,43 @@ for log in $LOG_FILES; do
     done
   fi 
 
-# Assign values in the sheet 
+  # Write sample statistics to CSV
 for i in "${!sample_ids[@]}"; do
 {
-    # Print metadata (global per-run)
+    # Global run metadata
     for var in "${metadata_vars[@]}"; do
       printf "%s," "${!var}"
     done
 
-    # Print sample ID
+    # Sample ID
     printf "%s," "${sample_ids[$i]}"
-
+    
+    # Pre-trimming QC (placeholder)
     printf "%s," "${preqc_stats[$i]}"
 
-    # Print other per-sample global and local stats
+    # Global trimming parameters
     for var in "${global_trim_vars[@]}"; do
       printf "%s," "${!var}"
     done
     
+    # Per-sample trimming stats
     printf "%s," "${trimming_stats[$i]}"
     
+    # Post-trimming QC (placeholder)
     printf "%s," "${postqc_stats[$i]}"
 
+    # Global Bowtie2 parameters
     for var in "${global_bt_vars[@]}"; do
       printf "%s," "${!var}"
     done
 
+    # Per-sample Bowtie2 stats
     printf "%s," "${bowtie_stats[$i]}"
+
+    # Kraken2 stats
     printf "%s," "${kraken_stats[$i]}"
+    
+    # Bracken stats
     printf "%s\n" "${bracken_stats[$i]}"
 
   } >> "$OUTPUT"
