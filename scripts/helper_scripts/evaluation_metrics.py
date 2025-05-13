@@ -39,14 +39,11 @@ if not os.path.isfile(ground_truth_file):
 print(f"Runs directory: {run_dir}")
 print(f"Ground truth file: {ground_truth_file}")
 
-# Example: Load run metadata
-metadata = pd.read_csv(
-    os.path.join(run_dir, "runs_summary.csv"),
-    index_col=False
-)
+# Load run metadata
+metadata = pd.read_csv(os.path.join(run_dir, "runs_summary.csv"), index_col=False)
 
-runs = metadata[metadata["Database"] != "k2_eupathdb48_20230407"]["Run"].unique() # Exclude k2_eupathdb48_20230407 database from plots
-samples = metadata["Sample"].unique()
+runs = metadata[metadata["db_name"] != "k2_eupathdb48_20230407"]["run_id"].unique() # Exclude k2_eupathdb48_20230407 database from plots
+samples = metadata["sample"].unique()
 
 # Load and normalize ground truth data
 # Example: Load ground truth
@@ -66,7 +63,7 @@ all_pr_curves = []
 for run_idx, run in enumerate(runs):
     
     # Get the database associated with the current run from the metadata
-    db = metadata.loc[metadata['Run'] == run, 'Database'].values[0]
+    db = metadata.loc[metadata['run_id'] == run, 'db_name'].values[0]
 
     # Store vectors  
     merged_tables = []
@@ -88,7 +85,7 @@ for run_idx, run in enumerate(runs):
         sample_species_set = set(sample_reads['species'])
 
         # Get sample-level metadata for current run
-        sample_metadata = metadata[(metadata['Run'] == run) & (metadata['Sample'] == sample)]
+        sample_metadata = metadata[(metadata['run_id'] == run) & (metadata['sample'] == sample)]
 
         # Normalize by classified and total reads
         sample_reads['ClassifiedProp'] = sample_reads['TotalReads'] / sample_reads['TotalReads'].sum()
