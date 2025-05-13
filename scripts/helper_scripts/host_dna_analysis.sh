@@ -101,7 +101,7 @@ else
 
     echo "Running BLAST search..."
     blastn -query "$BLAST_QUERY.selected" -db nt -out "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" \
-           -evalue 1e-5 -max_target_seqs 3 -outfmt "6 qseqid staxids pident evalue bitscore" -remote || { echo "❌ BLAST failed."; exit 1; }
+           -evalue 1e-5 -max_target_seqs 5 -outfmt "6 qseqid staxids pident evalue bitscore" -remote || { echo "❌ BLAST failed."; exit 1; }
     echo "✅ BLAST completed."
     
     # Run taxonomy tree only if ≥ 3 unique tax IDs (column 2) exist
