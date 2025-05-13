@@ -1,26 +1,25 @@
 #!/bin/bash
 
-# This script processes Kraken2 pipeline log files, extracting relevant statistics for each sample, including metadata, quality control, trimming, Bowtie2 alignment, Kraken2 classification, and Bracken abundance estimation, and saves the data into a CSV file for further analysis.
+# This script processes Kraken2 pipeline log files, extracts QC, trimming, alignment, classification, and abundance stats,
+# and saves them into a CSV summary table for further analysis.
 
 # Usage: ./runs_summary.sh <path/to/runs/directory>
 
 # To Do: 
 # - Print QC stats to log file
-# - Get length of Kraken classified and unclassified reads
-# - Print Bowtie2 command to log file
 
 # --- Argument Parsing ---
-# Ensure that the `rundir` argument is provided
+# Ensure a run directory is provided as argument
 if [ -z "$1" ]; then
-  echo "❌ Error: Missing 'rundir' argument. Usage: $0 <path/to/runs/directory>"
+  echo "❌ Missing run directory argument. Usage: $0 <path/to/runs/directory>"
   exit 1
 fi
 
-# Set the run directory to the provided argument
+# Get absolute path to run directory
 RUNS_DIR=$(realpath "$1")
 OUTPUT="$RUNS_DIR/runs_summary.csv"
 
-# Arrays to store metadata and other variables
+# Define variable lists (column headers)
 metadata_vars=(run_id db_name runtime)
 preqc_vars=(preqc_pct_dups_r1 preqc_pct_dups_r2 preqc_pct_gc_r1 preqc_pct_gc_r2 preqc_avg_len_r1 preqc_avg_len_r2 preqc_med_len_r1 preqc_med_len_r2 preqc_fail_r1 preqc_fail_r2)
 global_trim_vars=(trim_clip trim_head trim_lead trim_crop trim_sliding_win trim_trail trim_min_len)
@@ -31,7 +30,7 @@ local_bt_vars=(bt_paired bt_conc_0 bt_conc_1 bt_conc_more bt_avg_len bt_med_len)
 kraken2_vars=(kraken2_min_hits kraken2_total kraken2_classified kraken2_unclassified kraken2_avg_len kraken2_med_len)
 bracken_vars=(bracken_thresh bracken_species bracken_species_above_thresh bracken_species_below_thresh bracken_kept bracken_discarded bracken_redistributed bracken_not_redistributed bracken_total)
 
-# Create CSV header if file doesn't exist
+# Create CSV header if not existing
 if [[ ! -f "$OUTPUT" ]]; then
   {
     IFS=,
@@ -40,53 +39,55 @@ if [[ ! -f "$OUTPUT" ]]; then
   } > "$OUTPUT"
 fi
 
-# Find all kraken_pipeline.log files
+# Find and loop over all pipeline logs
 LOG_FILES=$(find "$RUNS_DIR" -type f -name "*.log")
-
-# Process each log file
 for log in $LOG_FILES; do
   # -- RUN METADATA -- 
   run_id=$(basename "$(dirname "$(dirname "$log")")") # Get run ID
 
-  # Skip if run already exists in the output
+  # Skip run if already processed
   if grep -q "^$run_id," "$OUTPUT"; then
       echo "Skipping $run_id (already in summary)"
       continue
   fi
 
-  # Get database and runtime info
+  # Get database name and runtime
   db_name=$(grep "Kraken2/Bracken Database:" "$log" | awk -F': ' '{print $2}' | xargs basename)
   runtime=$(grep "Metagenomic classification completed in:" "$log" | awk -F': ' '{print $2}')    
   
   # -- KRAKEN & BRACKEN METADATA --
-  # Process Kraken and Bracken metadata first to capture sample IDs, as this step is always executed.
+  # Process Kraken2/Bracken first to get sample IDs, as QC/trimming may not run but classification always does.
+  
+  # Extract Kraken2 minimum hit groups and Bracken threshold (same for all samples in run)
   kraken2_min_hits=$(grep "kraken2" "$log" | grep -oE -- '--minimum-hit-groups[ =][0-9]+' | grep -oE '[0-9]+' | head -n1)
   bracken_thresh=$(grep "Threshold:" "$log" | sed -n 's/.*Threshold: \([0-9]*\).*/\1/p' | head -n1)
   
-  # Parse Kraken2 & Bracken summary blocks and store stats for each sample
+  # Initialize arrays to store per-sample Kraken2 and Bracken statistics
   kraken_stats=()
   bracken_stats=()
   sample_ids=()
+  
+  # Parse each sample block from log file and extract stats
   while IFS=',' read -r sample_id minhit total classified unclassified avg med \
                       thresh species above below kept discard redist notredist total_brack; do
-    # Store sample-specific stats in associative arrays (corrected quotes)
+    # Store extracted stats for the sample
     kraken_stats+=("$minhit,$total,$classified,$unclassified,$avg,$med")
     bracken_stats+=("$thresh,$species,$above,$below,$kept,$discard,$redist,$notredist,$total_brack")
     sample_ids+=("$sample_id")
   done < <(
+    # AWK block to extract Kraken2 and Bracken summary values per sample
     awk -v b_thresh="$bracken_thresh" -v minhits="$kraken2_min_hits" -v RS="Processing sample: " '    
     BEGIN { FS = "\n" }
     NR > 1 {
-      sample = $1 # Sample ID is first line of each block
+      sample = $1 # Sample ID is the first line of each block
 
-      # Initialize output fields with placeholders
+      # Initialize all fields to placeholder values
       k_total = k_class = k_unclass = k_avg = k_med = "-"
       b_species = b_above = b_below = b_kept = b_discard = b_redist = b_noredist = b_total = "-"
       
-      # Loop over each line in the block to extract relevant stats
-      # Extract Kraken2 classification summary values
+      # Loop through lines in block to extract stats
       for (i = 1; i <= NF; i++) {
-        # Kraken2 values
+        # Extract Kraken2 stats
         if ($i ~ /sequences \(/) {
           k_total = $i
           gsub(/[^0-9].*$/, "", k_total) # Keep digits before first non-digit
@@ -102,7 +103,7 @@ for log in $LOG_FILES; do
           gsub(/[^0-9]/, "", k_unclass)
         }
 
-        # Extract Bracken species abundance summary values
+        # Extract Bracken species abundance stats
         if ($i ~ /Number of species in sample:/)      { b_species = $i; gsub(/[^0-9]/, "", b_species) }
         if ($i ~ /reads > threshold:/)                { b_above = $i; gsub(/[^0-9]/, "", b_above) }
         if ($i ~ /reads < threshold:/)                { b_below = $i; gsub(/[^0-9]/, "", b_below) }
@@ -114,37 +115,43 @@ for log in $LOG_FILES; do
         # Compute total reads considered at species level
         b_total = b_kept + b_redist
 
+        # Placeholder for Kraken2 read length stats (not yet implemented)
         k_avg= "TODO"
         k_med= "TODO"
       }
 
-      # Output all values in a single CSV-formatted line
+      # Print CSV-formatted line if valid sample block
       if (sample != "-" && kraken2_total != "-") {
-      printf "%s,%s,%s,%s,%s,%s,%s,", sample, minhits, k_total, k_class, k_unclass, k_avg, k_med
-      printf "%s,%s,%s,%s,%s,%s,%s,%s,%s\n", b_thresh, b_species, b_above, b_below, b_kept, b_discard, b_redist, b_noredist, b_total}
+        printf "%s,%s,%s,%s,%s,%s,%s,", sample, minhits, k_total, k_class, k_unclass, k_avg, k_med
+        printf "%s,%s,%s,%s,%s,%s,%s,%s,%s\n", b_thresh, b_species, b_above, b_below, b_kept, b_discard, b_redist, b_noredist, b_total}
     }' "$log"
   )
 
   # -- FASTQC & TRIMMING METADATA --
+  
+  # Initialize arrays to store pre-trimming QC, trimming, and post-trimming QC stats
   preqc_stats=()
   trimming_stats=()
   postqc_stats=()
 
+  # Check if trimming was enabled for this run
   if grep -q "Quality Control & Trimming: Enabled" "$log"; then
-    
+
+    # Add placeholder pre- and post-QC stats for each sample (currently not implemented)
     for i in "${!sample_ids[@]}"; do
       preqc_stats+=("TODO,TODO,TODO,TODO,TODO,TODO,TODO,TODO,TODO,TODO")
       postqc_stats+=("TODO,TODO,TODO,TODO,TODO,TODO,TODO,TODO,TODO,TODO")
     done
 
-    # Extract Trimmomatic arguments (from first occurrence)
+    # Extract global Trimmomatic parameters
+    # Get full argument line for TrimmomaticPE (first occurrence)
     trimmomatic_args=$(grep -m1 "TrimmomaticPE: Started with arguments:" -A1 "$log" | tail -n1)
 
-    # ILLUMINACLIP: basename + parameters
+    # Extract ILLUMINACLIP adapter file and parameters
     full_clip=$(echo "$trimmomatic_args" | sed -n 's/.*ILLUMINACLIP:\([^ ]*\).*/\1/p')
     trim_clip="$(basename "${full_clip%%:*}"):${full_clip#*:}"
 
-    # Other parameters
+    # Extract additional trimming parameters
     trim_head=$(echo "$trimmomatic_args" | sed -n 's/.*HEADCROP:\([0-9]*\).*/\1/p')
     trim_lead=$(echo "$trimmomatic_args" | sed -n 's/.*LEADING:\([0-9]*\).*/\1/p')
     trim_crop=$(echo "$trimmomatic_args" | sed -n 's/.*CROP:\([0-9]*\).*/\1/p')
@@ -152,9 +159,12 @@ for log in $LOG_FILES; do
     trim_trail=$(echo "$trimmomatic_args" | sed -n 's/.*TRAILING:\([0-9]*\).*/\1/p')
     trim_min_len=$(echo "$trimmomatic_args" | sed -n 's/.*MINLEN:\([0-9]*\).*/\1/p')    
     
+    # Loop through log to extract per-sample trimming results
     while IFS= read -r line; do
+      # Capture input read pair line
       if [[ "$line" == Input\ Read\ Pairs:* ]]; then
         combined_line="$line"
+      # Capture end of sample block and extract per-sample stats
       elif [[ "$line" == ✅\ Trimmed* ]]; then
         sample_id=${line#✅ Trimmed }
         sample_id=${sample_id%!}
@@ -166,18 +176,20 @@ for log in $LOG_FILES; do
           trim_rev_only=$(echo "$combined_line" | sed -n 's/.*Reverse Only Surviving: \([0-9]*\).*/\1/p')
           trim_dropped=$(echo "$combined_line" | sed -n 's/.*Dropped: \([0-9]*\).*/\1/p')
 
+          # Store sample-specific trimming results
           trimming_stats+=("$trim_paired,$trim_both,$trim_fw_only,$trim_rev_only,$trim_dropped")
         fi
       fi
     done < "$log"
   else
     
-    # Set global trimming variables to "NA" if trimming was not performed
+    # Trimming not performed → set all values to NA
+    # Set global trimming parameter variables to NA
     for var in "${global_trim_vars[@]}"; do
       eval "$var='NA'"
     done
 
-    # Set local qc and trimming variables to "NA" for each sample
+    # Set per-sample trimming and QC stats to NA for each sample
     for i in "${!sample_ids[@]}"; do
       preqc_stats+=("NA,NA,NA,NA,NA,NA,NA,NA,NA,NA")
       trimming_stats+=("NA,NA,NA,NA,NA")
@@ -191,16 +203,15 @@ for log in $LOG_FILES; do
 
   if grep -q "Host DNA Removal: Enabled" "$log"; then
 
-    # Extract Bowtie2 arguments (from first occurrence)
+    # Extract Bowtie2 arguments and initialize values (first occurrence)
     bt_prefix="TODO"
     bt_mode="TODO"
     bt_sensitivity="TODO"
     bt_mixed="TODO"
     bt_discordant="TODO"
 
-    # Parse Bowtie2 stats line-by-line for each sample
+    # Loop through log lines to extract per-sample Bowtie2 alignment stats
     while read -r line; do
-    # grep -A7 "Processing sample:" "$log" | while read -r line; do
       [[ $line =~ ^Processing\ sample:\  ]] && sample_id=${line#*: }  && continue
       [[ $line =~ reads\; ]] && bt_paired=$(echo "$line" | sed -E 's/^([0-9]+) .*/\1/') && continue
       [[ $line =~ concordantly\ 0\ times ]] && bt_conc_0=$(echo "$line" | sed -E 's/^[[:space:]]*([0-9]+).*/\1/') && continue
@@ -209,13 +220,13 @@ for log in $LOG_FILES; do
         bt_conc_more=$(echo "$line" | sed -E 's/^[[:space:]]*([0-9]+).*/\1/')
         bt_avg_len="TODO"
         bt_med_len="TODO"
-      # Store stats in sample-specific variable once full block is complete       
-      bowtie_stats+=("$bt_paired,$bt_conc_0,$bt_conc_1,$bt_conc_more,$bt_avg_len,$bt_med_len")
+        # Store final sample-specific Bowtie2 stats
+        bowtie_stats+=("$bt_paired,$bt_conc_0,$bt_conc_1,$bt_conc_more,$bt_avg_len,$bt_med_len")
+        echo "${bowtie_stats[@]}"
       fi        
-    done < <(grep -A7 "Processing sample:" "$log")
-    # done
+    done < <(grep -A8 "Processing sample:" "$log")
   else 
-
+    # Set Bowtie2 global and per-sample stats to NA if host removal was not performed
     for var in "${global_bt_vars[@]}"; do
       eval "$var='NA'"
     done
