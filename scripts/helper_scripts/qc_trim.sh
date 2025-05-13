@@ -22,23 +22,18 @@ mkdir -p "$FASTQC_DIR/pre_trimming" "$FASTQC_DIR/post_trimming"
 TRIMMED_DIR="$RAW_FASTQ_DIR/../processed_data/trimmed"
 mkdir -p "$TRIMMED_DIR/paired" "$TRIMMED_DIR/unpaired"
 
+# -- PRE-TRIMMING QC -- 
 # Run FastQC on all raw reads
 echo -e "\nRunning FastQC on all raw reads..."
-fastqc "$RAW_FASTQ_DIR"/*.fastq.gz --outdir "$FASTQC_DIR/pre_trimming"
-# &>/dev/null|| {
- #   echo "❌ FastQC failed!"
-  #  exit 1
-#}
+fastqc "$RAW_FASTQ_DIR"/*.fastq.gz --outdir "$FASTQC_DIR/pre_trimming" >&2 || { echo "❌ FastQC failed!"; exit 1; }
 echo "✅ FastQC completed successfully."
 
 # Run MultiQC to summarize FastQC reports and clean up zip files
-multiqc "$FASTQC_DIR/pre_trimming" --no-data-dir -o "$FASTQC_DIR/pre_trimming" --force 2>&1 || {
-    echo "❌ MultiQC failed!"
-    exit 1
-}
+multiqc "$FASTQC_DIR/pre_trimming" --no-data-dir -o "$FASTQC_DIR/pre_trimming" --force 2>&1 || { echo "❌ MultiQC failed!"; exit 1; }
 echo -e "✅ MultiQC report generated successfully.\n"
 rm -f "$FASTQC_DIR/pre_trimming"/*.zip  
 
+# -- TRIMMING -- 
 # Define Trimmomatic adapter file, trimming parameters, and steps
 ADAPT_FA="/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa"
 TRIM_PARAM="PE -phred33 -threads 4"
@@ -76,20 +71,13 @@ for R1 in "$RAW_FASTQ_DIR"/*_R1*.fastq.gz; do  # Handle variations of sample nam
     fi
 done
 
+# -- POST-TRIMMING QC -- 
 # Run FastQC on trimmed paired reads
 echo -e "\nRunning FastQC on paired trimmed reads..."
-fastqc "$TRIMMED_DIR/paired"/*.fastq.gz --outdir "$FASTQC_DIR/post_trimming" &>/dev/null || {
-    echo "❌ FastQC failed!"
-    exit 1
-}
+fastqc "$TRIMMED_DIR/paired"/*.fastq.gz --outdir "$FASTQC_DIR/post_trimming" >&2 || { echo "❌ FastQC failed!"; exit 1; }
 echo "✅ FastQC completed successfully."
 
 # Run MultiQC to summarize post-trimming FastQC results and clean up
-multiqc "$FASTQC_DIR/post_trimming" --no-data-dir -o "$FASTQC_DIR/post_trimming" --force 2>&1 || {
-    echo "❌ MultiQC failed!"
-    exit 1
-}
+multiqc "$FASTQC_DIR/post_trimming" --no-data-dir -o "$FASTQC_DIR/post_trimming" --force 2>&1 || { echo "❌ MultiQC failed!"; exit 1; }
 echo -e "✅ MultiQC report generated successfully.\n"
 rm -f "$FASTQC_DIR/post_trimming"/*.zip  
-
-echo "✅ All processing steps completed successfully."

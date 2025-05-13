@@ -237,38 +237,32 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
     echo "✅  Krona plot generated."
 done
 
-# Process all FASTQ files as desired using the get_fastq_stats.sh script
-echo -e "\nRunning get_fastq_stats.sh on filtered, classified and unclassified data..."
-files=("$FILTERED_FASTQ_DIR"/*.1 "$FILTERED_FASTQ_DIR"/*.2 "$CLASSIFIED_DIR"/*.fastq "$UNCLASSIFIED_DIR"/*.fastq) # Expand file patterns into actual files
-"$ROOT_DIR/scripts/helper_scripts/get_fastq_stats.sh" "${files[@]}" 2>&1 # Run the script with all the matching files
-echo "✅  Statistics generated."
-
-# End timer for metagenomic classification
+# Record and display total runtime
 END_TIME=$(date +%s)
 DURATION=$((END_TIME - START_TIME))
-
-# Format the duration into HH:MM:SS
-printf -v FORMATTED_DURATION '%02d:%02d:%02d' $((DURATION/3600)) $(( (DURATION%3600)/60 )) $((DURATION%60))
-
+printf -v FORMATTED_DURATION '%02d:%02d:%02d' $((DURATION/3600)) $(( (DURATION%3600)/60 )) $((DURATION%60)) # Format runtime as HH:MM:SS
 echo -e "\nMetagenomic classification completed in: $FORMATTED_DURATION"
+
+# Calculate read length stats (filtered, classified, unclassified FASTQ files)
+echo -e "\nCalculating read length statistics..."
+files=("$FILTERED_FASTQ_DIR"/*.1 "$FILTERED_FASTQ_DIR"/*.2 "$CLASSIFIED_DIR"/*.fastq "$UNCLASSIFIED_DIR"/*.fastq) # Expand file patterns into actual files
+"$ROOT_DIR/scripts/helper_scripts/get_fastq_stats.sh" "${files[@]}" 2>&1 || { echo "❌ Failed to generate read length statistics."; exit 1; }
+echo "✅ Statistics generated."
+
+# Combine all Bracken reports
+echo -e "\nCombining Bracken reports..."
+Rscript "$ROOT_DIR/scripts/helper_scripts/combine_breports.R" "$REPORTS_DIR"/*.breport || { echo "❌ Failed to combine Bracken reports."; exit 1; }
+echo "✅ Bracken reports combined."
+
+# Copy SLURM job logs to output directory
+echo -e "\nCopying SLURM job logs..."
+cp "$ROOT_DIR"/scripts/logs/*_"$SLURM_JOB_ID".* "$LOG_DIR" || { echo "❌ Failed to copy SLURM job logs."; exit 1; }
+echo "✅ SLURM job logs copied."
 
 echo -e "\n================================================= COMPARISON TO GROUND TRUTH ================================================="
 
-# Combine Bracken reports for all samples
-echo -e "\nCombining Bracken reports..."
-Rscript "$ROOT_DIR/scripts/helper_scripts/combine_breports.R" $REPORTS_DIR/*.breport
-
 # Generate the heatmap that looks at how the run differs from the groundn truth 
 # Rscript "$ROOT_DIR/scripts/helper_scripts/phylo_classification_comparison.R" -r "$REPORTS_DIR/../combined_breports.csv" -t "$RAW_FASTQ_DIR/ground_truth.csv" 
-
-# Copy SLURM logs to run directory after metagenomic classification
-cp "$ROOT_DIR"/scripts/logs/*_"$SLURM_JOB_ID".* "$LOG_DIR" || { echo "❌ Copying log files failed!"; exit 1; }
-
-# Run the summary shell script to generate the summary table
-#bash "$ROOT_DIR"/scripts/helper_scripts/runs_summary.sh
-
-# Generate the precision-recall and l2 distance plots for all the runs so far 
-#python "$ROOT_DIR/scripts/evaluation_metrics.py" 
 
 echo -e "\n================================================= METAGENOMIC DIVERSITY ANALYSIS ================================================="
 
@@ -286,8 +280,8 @@ fi
 echo -e "\n✅  Pipeline completed successfully."
 
 # Move final SLURM logs to run directory and clean up originals
-echo "Storing log file..."
-if cp $ROOT_DIR/scripts/logs/*_"$SLURM_JOB_ID".* "$LOG_DIR"; then
+echo -e "\nCopying final SLURM job logs"
+if cp "$ROOT_DIR"/scripts/logs/*_"$SLURM_JOB_ID".* "$LOG_DIR"; then
 
     echo -e "\n====================================================== COMPARISON TO OTHER RUNS ======================================================"
   
@@ -297,6 +291,7 @@ if cp $ROOT_DIR/scripts/logs/*_"$SLURM_JOB_ID".* "$LOG_DIR"; then
     Rscript "$ROOT_DIR/scripts/helper_scripts/helper_scripts/read_progression.R" "$RUN_DIR" 2>&1 || { echo "❌ Read progression plot generation failed!"; exit 1; }
     
     # Remove the original log file when successful 
+    echo -e "\nRemoving original SLURM job logs"
     rm $ROOT_DIR/scripts/logs/*_"$SLURM_JOB_ID".*
 else
   echo "❌ Copying log files failed!"
