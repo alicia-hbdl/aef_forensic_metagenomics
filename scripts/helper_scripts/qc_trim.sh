@@ -35,7 +35,7 @@ rm -f "$FASTQC_DIR/pre_trimming"/*.zip
 
 # -- TRIMMING -- 
 # Define Trimmomatic adapter file, trimming parameters, and steps
-ADAPT_FA="/scratch/users/k24087895/final_project/data/adapters/TruSeq3-PE-2.fa"
+ADAPT_FA="$RAW_FASTQ_DIR/../../data/adapters/TruSeq3-PE-2.fa"
 TRIM_PARAM="PE -phred33 -threads 4"
 STEPS="ILLUMINACLIP:$ADAPT_FA:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35"
 
