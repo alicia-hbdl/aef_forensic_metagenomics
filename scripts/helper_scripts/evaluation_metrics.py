@@ -16,19 +16,41 @@ import numpy as np  # Numerical operations
 from sklearn.metrics import precision_recall_curve, auc  # PR curve and AUC
 import os  # File operations
 import math  # Math utilities
+import argparse
 
-# Load run metadata
+# Set up argument parser
+parser = argparse.ArgumentParser(description='Process Kraken/Bracken outputs and ground truth.')
+parser.add_argument('-r', '--run-dir', required=True, help='Path to the runs directory')
+parser.add_argument('-t', '--ground-truth', required=True, help='Path to the ground truth CSV file')
+args = parser.parse_args()
+
+run_dir = args.run_dir
+ground_truth_file = args.ground_truth
+
+# Validate paths
+if not os.path.isdir(run_dir):
+    print(f"❌ {run_dir} is not a valid directory.")
+    exit(1)
+
+if not os.path.isfile(ground_truth_file):
+    print(f"❌ {ground_truth_file} is not a valid file.")
+    exit(1)
+
+print(f"Runs directory: {run_dir}")
+print(f"Ground truth file: {ground_truth_file}")
+
+# Example: Load run metadata
 metadata = pd.read_csv(
-    "/Users/aliciahobdell/Desktop/forensic_bioinformatics_project/metagenome_analysis/zymobiomics_folder/results/runs/runs_summary.csv",
+    os.path.join(run_dir, "runs_summary.csv"),
     index_col=False
 )
+
 runs = metadata[metadata["Database"] != "k2_eupathdb48_20230407"]["Run"].unique() # Exclude k2_eupathdb48_20230407 database from plots
 samples = metadata["Sample"].unique()
 
 # Load and normalize ground truth data
-ground_truth = pd.read_csv(
-    "/Users/aliciahobdell/Desktop/forensic_bioinformatics_project/metagenome_analysis/zymobiomics_folder/raw_data/ground_truth.csv"
-)
+# Example: Load ground truth
+ground_truth = pd.read_csv(ground_truth_file)
 ground_truth["abundance"] /= ground_truth["abundance"].sum()
 ground_truth = ground_truth[ground_truth["abundance"] > 0]
 gt_species_set = set(ground_truth["species"])
@@ -54,11 +76,11 @@ for run_idx, run in enumerate(runs):
         
         # Load Bracken report for current sample
         breport = pd.read_csv(
-            f'/Users/aliciahobdell/Desktop/forensic_bioinformatics_project/metagenome_analysis/zymobiomics_folder/results/runs/{run}/reports/{sample}.breport',
+            f'{run_dir}/{run}/reports/{sample}.breport',
             names=headers,
             sep='\t'
         )
-
+        
         # Extract and clean species-level read counts
         sample_reads = breport[breport['LevelID'] == 'S'][['species', 'TotalReads']].copy()
         sample_reads['species'] = sample_reads['species'].str.strip()
@@ -171,7 +193,7 @@ plt.xlabel("Database")
 plt.ylabel("L2 Distance")
 plt.title("L2 Distance to Ground Truth (Classified vs Total Reads) Across Databases")
 plt.tight_layout()
-plt.savefig("/Users/aliciahobdell/Desktop/forensic_bioinformatics_project/metagenome_analysis/zymobiomics_folder/results/l2_boxplot.png", bbox_inches='tight')
+plt.savefig(f"{run_dir}/../l2_boxplot.png", bbox_inches='tight')
 plt.show()
 
 # Combined side-by-side AUPR boxplot + PR curves
@@ -213,5 +235,5 @@ fig.text(0.5, -0.04,
          "Left: Boxplots show sample-level AUPR distributions (median shown). Right: PR curves are based on mean predictions across samples.",
          ha='center', fontsize=10)
 plt.tight_layout()
-plt.savefig("/Users/aliciahobdell/Desktop/forensic_bioinformatics_project/metagenome_analysis/zymobiomics_folder/results/AUPR_PR_curves.png", bbox_inches='tight')
+plt.savefig(f"{run_dir}/../AUPR_PR_curves.png", bbox_inches='tight')
 plt.show()
