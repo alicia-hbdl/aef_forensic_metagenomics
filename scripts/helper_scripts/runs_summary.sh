@@ -18,15 +18,20 @@ OUTPUT="$RUNS_DIR/runs_summary.csv"    # Set output CSV file path
 
 # Define CSV column variables
 metadata_vars=(run_id db_name runtime)
-preqc_vars=(preqc_pct_dups_r1 preqc_pct_dups_r2 preqc_pct_gc_r1 preqc_pct_gc_r2 preqc_avg_len_r1 preqc_avg_len_r2 preqc_med_len_r1 preqc_med_len_r2 preqc_fail_r1 preqc_fail_r2)
+preqc_vars=(preqc_pct_dups_r1 preqc_pct_dups_r2 preqc_pct_gc_r1 preqc_pct_gc_r2 preqc_fail_r1 preqc_fail_r2)
 global_trim_vars=(trim_clip trim_head trim_lead trim_crop trim_sliding_win trim_trail trim_min_len)
 local_trim_vars=(trim_paired trim_both trim_fw_only trim_rev_only trim_dropped)
-postqc_vars=(postqc_pct_dups_r1 postqc_pct_dups_r2 postqc_pct_gc_r1 postqc_pct_gc_r2 postqc_avg_len_r1 postqc_avg_len_r2 postqc_med_len_r1 postqc_med_len_r2 postqc_fail_r1 postqc_fail_r2)
+postqc_vars=(postqc_pct_dups_r1 postqc_pct_dups_r2 postqc_pct_gc_r1 postqc_pct_gc_r2 postqc_fail_r1 postqc_fail_r2)
 global_bt_vars=(bt_prefix bt_mode bt_sensitivity bt_mixed bt_discordant) 
 local_bt_vars=(bt_paired bt_conc_0 bt_conc_1 bt_conc_more)
 kraken2_vars=(kraken2_min_hits kraken2_total kraken2_classified kraken2_unclassified)
-bracken_vars=(bracken_thresh bracken_species bracken_species_above_thresh bracken_species_below_thresh bracken_kept bracken_discarded bracken_redistributed bracken_not_redistributed bracken_total)
-read_len_vars=(bt_med_r1 bt_med_r2 bt_avg_r1 bt_avg_r2 clas_med_r1 clas_med_r2 clas_avg_r1 clas_avg_r2 unclas_med_r1 unclas_med_r2 unclas_avg_r1 unclas_avg_r2)
+bracken_vars=(bracken_thresh bracken_species bracken_species_above_thresh bracken_species_below_thresh bracken_kept \
+              bracken_discarded bracken_redistributed bracken_not_redistributed bracken_total)
+read_len_vars=(preqc_avg_len_r1 preqc_avg_len_r2 preqc_med_len_r1 preqc_med_len_r2 \
+              postqc_avg_len_r1 postqc_avg_len_r2 postqc_med_len_r1 postqc_med_len_r2 \
+              bt_med_r1 bt_med_r2 bt_avg_r1 bt_avg_r2 \
+              clas_med_r1 clas_med_r2 clas_avg_r1 clas_avg_r2 \
+              unclas_med_r1 unclas_med_r2 unclas_avg_r1 unclas_avg_r2)
 
 # Create CSV header if file not existing
 if [[ ! -f "$OUTPUT" ]]; then
@@ -117,8 +122,8 @@ for log in $LOG_FILES; do
       # Print CSV-formatted line if valid sample block
       if (sample != "-" && k_total != "-") {
         printf "%s,%s,%s,%s,%s,", sample, minhits, k_total, k_class, k_unclass
-        printf "%s,%s,%s,%s,%s,%s,%s,%s,%s\n", b_thresh, b_species, b_above, b_below, b_kept, b_discard, b_redist, b_noredist, b_total}
-    }' "$log"
+        printf "%s,%s,%s,%s,%s,%s,%s,%s,%s\n", b_thresh, b_species, b_above, b_below, b_kept, b_discard, b_redist, b_noredist, b_total
+      }' "$log"
   )
 
   read_len_stats=()
@@ -134,6 +139,29 @@ for log in $LOG_FILES; do
   for i in "${!sample_ids[@]}"; do
       sample="${sample_ids[$i]}"
   
+      if grep -q "Quality Control & Trimming: Enabled" "$log"; then
+        pre_stats_1=$(get_read_stats "${sample}.fastq")
+        pre_stats_2=$(get_read_stats "${sample}.fastq")
+        post_stats_1=$(get_read_stats "${sample}_paired.fastq")
+        post_stats_2=$(get_read_stats "${sample}_paired.fastq")
+        
+        # Split mean and median values
+        IFS=',' read -r pre_avg_1 pre_med_1 <<< "$pre_stats_1"
+        IFS=',' read -r pre_avg_2 pre_med_2 <<< "$pre_stats_2"
+        IFS=',' read -r post_avg_1 post_med_1 <<< "$post_stats_1"
+        IFS=',' read -r post_avg_2 post_med_2 <<< "$post_stats_2"
+
+      else 
+        pre_avg_1="NA"
+        pre_med_1="NA"
+        pre_avg_2="NA"
+        pre_med_2="NA"
+        post_avg_1="NA"
+        post_med_1="NA"
+        post_avg_2="NA"
+        post_med_2="NA"
+      fi 
+
       # Extract values per file type (metagenomic.1, classified_1, etc.)
       bt_stats_1=$(get_read_stats "${sample}_metagenomic.1")
       bt_stats_2=$(get_read_stats "${sample}_metagenomic.2")
@@ -152,7 +180,7 @@ for log in $LOG_FILES; do
       IFS=',' read -r unclas_avg_1 unclas_med_1 <<< "$unclas_stats_1"
       IFS=',' read -r unclas_avg_2 unclas_med_2 <<< "$unclas_stats_2"
       
-      read_len_stats+=("$bt_med_1,$bt_med_2,$bt_avg_1,$bt_avg_2,$clas_med_1,$clas_med_2,$clas_avg_1,$clas_avg_2,$unclas_med_1,$unclas_med_2,$unclas_avg_1,$unclas_avg_2")
+      read_len_stats+=("$pre_stats_1,$pre_stats_2,$post_stats_1,$post_stats_2,$bt_med_1,$bt_med_2,$bt_avg_1,$bt_avg_2,$clas_med_1,$clas_med_2,$clas_avg_1,$clas_avg_2,$unclas_med_1,$unclas_med_2,$unclas_avg_1,$unclas_avg_2")
   done
   # -- FASTQC & TRIMMING METADATA --
   
@@ -166,8 +194,8 @@ for log in $LOG_FILES; do
 
     # Add placeholder pre- and post-QC stats for each sample (currently not implemented)
     for i in "${!sample_ids[@]}"; do
-      preqc_stats+=("TODO,TODO,TODO,TODO,TODO,TODO,TODO,TODO,TODO,TODO")
-      postqc_stats+=("TODO,TODO,TODO,TODO,TODO,TODO,TODO,TODO,TODO,TODO")
+      preqc_stats+=("TODO,TODO,TODO,TODO,TODO,TODO")
+      postqc_stats+=("TODO,TODO,TODO,TODO,TODO,TODO")
     done
 
     # Extract global Trimmomatic parameters
@@ -218,9 +246,9 @@ for log in $LOG_FILES; do
 
     # Set per-sample trimming and QC stats to NA for each sample
     for i in "${!sample_ids[@]}"; do
-      preqc_stats+=("NA,NA,NA,NA,NA,NA,NA,NA,NA,NA")
+      preqc_stats+=("NA,NA,NA,NA,NA,NA")
       trimming_stats+=("NA,NA,NA,NA,NA")
-      postqc_stats+=("NA,NA,NA,NA,NA,NA,NA,NA,NA,NA")
+      postqc_stats+=("NA,NA,NA,NA,NA,NA")
     done
     
   fi
