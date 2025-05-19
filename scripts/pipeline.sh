@@ -286,7 +286,7 @@ if cp "$ROOT_DIR"/scripts/logs/*_"$SLURM_JOB_ID".* "$LOG_DIR"; then
     echo -e "\n====================================================== COMPARISON TO OTHER RUNS ======================================================"
   
     # Generate the summary table and evaluation metrics including this run 
-    "$ROOT_DIR/scripts/helper_scripts/runs_summary.sh" "$RUN_DIR" 2>&1 || { echo "❌ Summary generation failed!"; exit 1; }
+    "$ROOT_DIR/scripts/helper_scripts/runs_summary.sh" "$RUN_DIR/.." 2>&1 || { echo "❌ Summary generation failed!"; exit 1; }
     python "$ROOT_DIR/scripts/helper_scripts/evaluation_metrics.py" --run-dir "$RUN_DIR" --ground-truth "$RAW_FASTQ_DIR/ground_truth.csv" 2>&1 || { echo "❌ Evaluation metrics generation failed!"; exit 1; }
     Rscript "$ROOT_DIR/scripts/helper_scripts/helper_scripts/read_progression.R" "$RUN_DIR" 2>&1 || { echo "❌ Read progression plot generation failed!"; exit 1; }
     
