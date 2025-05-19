@@ -89,7 +89,7 @@ for run_idx, run in enumerate(runs):
 
         # Normalize by classified and total reads
         sample_reads['ClassifiedProp'] = sample_reads['TotalReads'] / sample_reads['TotalReads'].sum()
-        sample_reads['OverallProp'] = sample_reads['TotalReads'] / sample_metadata['TotalReads'].values[0]
+        sample_reads['OverallProp'] = sample_reads['TotalReads'] / sample_metadata['bracken_total'].values[0]
 
         # L2 Distance
         all_species = list(gt_species_set.union(sample_reads['species']))
