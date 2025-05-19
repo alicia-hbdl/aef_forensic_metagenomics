@@ -23,15 +23,16 @@ global_trim_vars=(trim_clip trim_head trim_lead trim_crop trim_sliding_win trim_
 local_trim_vars=(trim_paired trim_both trim_fw_only trim_rev_only trim_dropped)
 postqc_vars=(postqc_pct_dups_r1 postqc_pct_dups_r2 postqc_pct_gc_r1 postqc_pct_gc_r2 postqc_avg_len_r1 postqc_avg_len_r2 postqc_med_len_r1 postqc_med_len_r2 postqc_fail_r1 postqc_fail_r2)
 global_bt_vars=(bt_prefix bt_mode bt_sensitivity bt_mixed bt_discordant) 
-local_bt_vars=(bt_paired bt_conc_0 bt_conc_1 bt_conc_more bt_avg_len bt_med_len)
-kraken2_vars=(kraken2_min_hits kraken2_total kraken2_classified kraken2_unclassified kraken2_avg_len kraken2_med_len)
+local_bt_vars=(bt_paired bt_conc_0 bt_conc_1 bt_conc_more)
+kraken2_vars=(kraken2_min_hits kraken2_total kraken2_classified kraken2_unclassified)
 bracken_vars=(bracken_thresh bracken_species bracken_species_above_thresh bracken_species_below_thresh bracken_kept bracken_discarded bracken_redistributed bracken_not_redistributed bracken_total)
+read_len_vars=(bt_med_r1 bt_med_r2 bt_avg_r1 bt_avg_r2 clas_med_r1 clas_med_r2 clas_avg_r1 clas_avg_r2 unclas_med_r1 unclas_med_r2 unclas_avg_r1 unclas_avg_r2)
 
 # Create CSV header if file not existing
 if [[ ! -f "$OUTPUT" ]]; then
   {
     IFS=,
-    echo "${metadata_vars[*]},sample,${preqc_vars[*]},${global_trim_vars[*]},${local_trim_vars[*]},${postqc_vars[*]},${global_bt_vars[*]},${local_bt_vars[*]},${kraken2_vars[*]},${bracken_vars[*]}"
+    echo "${metadata_vars[*]},sample,${preqc_vars[*]},${global_trim_vars[*]},${local_trim_vars[*]},${postqc_vars[*]},${global_bt_vars[*]},${local_bt_vars[*]},${kraken2_vars[*]},${bracken_vars[*]},${read_len_vars[*]}"
     unset IFS
   } > "$OUTPUT"
 fi
@@ -65,10 +66,10 @@ for log in $LOG_FILES; do
   sample_ids=()
   
   # Parse each sample block from log file and extract stats
-  while IFS=',' read -r sample_id minhit total classified unclassified avg med \
+  while IFS=',' read -r sample_id minhit total classified unclassified \
                       thresh species above below kept discard redist notredist total_brack; do
     # Store extracted stats for the sample
-    kraken_stats+=("$minhit,$total,$classified,$unclassified,$avg,$med")
+    kraken_stats+=("$minhit,$total,$classified,$unclassified")
     bracken_stats+=("$thresh,$species,$above,$below,$kept,$discard,$redist,$notredist,$total_brack")
     sample_ids+=("$sample_id")
   done < <(
@@ -79,7 +80,7 @@ for log in $LOG_FILES; do
       sample = $1 # Sample ID is the first line of each block
 
       # Initialize all fields to placeholder values
-      k_total = k_class = k_unclass = k_avg = k_med = "-"
+      k_total = k_class = k_unclass = "-"
       b_species = b_above = b_below = b_kept = b_discard = b_redist = b_noredist = b_total = "-"
       
       # Loop through lines in block to extract stats
@@ -111,19 +112,48 @@ for log in $LOG_FILES; do
         
         # Compute total reads considered at species level
         b_total = b_kept + b_redist
-
-        # Placeholder for Kraken2 read length stats (not yet implemented)
-        k_avg= "TODO"
-        k_med= "TODO"
       }
 
       # Print CSV-formatted line if valid sample block
-      if (sample != "-" && kraken2_total != "-") {
-        printf "%s,%s,%s,%s,%s,%s,%s,", sample, minhits, k_total, k_class, k_unclass, k_avg, k_med
+      if (sample != "-" && k_total != "-") {
+        printf "%s,%s,%s,%s,%s,", sample, minhits, k_total, k_class, k_unclass
         printf "%s,%s,%s,%s,%s,%s,%s,%s,%s\n", b_thresh, b_species, b_above, b_below, b_kept, b_discard, b_redist, b_noredist, b_total}
     }' "$log"
   )
 
+  read_len_stats=()
+  
+  # Function to extract mean and median for a given pattern
+  get_read_stats() {
+      local pattern="$1"
+      local mean=$(grep "$pattern" "$log" | awk -F'mean = ' '{print $2}' | cut -d',' -f1 | xargs)
+      local median=$(grep "$pattern" "$log" | awk -F'median = ' '{print $2}' | xargs)
+      echo "$mean,$median"
+  }
+  
+  for i in "${!sample_ids[@]}"; do
+      sample="${sample_ids[$i]}"
+  
+      # Extract values per file type (metagenomic.1, classified_1, etc.)
+      bt_stats_1=$(get_read_stats "${sample}_metagenomic.1")
+      bt_stats_2=$(get_read_stats "${sample}_metagenomic.2")
+  
+      clas_stats_1=$(get_read_stats "${sample}_classified_1.fastq")
+      clas_stats_2=$(get_read_stats "${sample}_classified_2.fastq")
+  
+      unclas_stats_1=$(get_read_stats "${sample}_unclassified_1.fastq")
+      unclas_stats_2=$(get_read_stats "${sample}_unclassified_2.fastq")
+  
+      # Split mean and median values
+      IFS=',' read -r bt_avg_1 bt_med_1 <<< "$bt_stats_1"
+      IFS=',' read -r bt_avg_2 bt_med_2 <<< "$bt_stats_2"
+      IFS=',' read -r clas_avg_1 clas_med_1 <<< "$clas_stats_1"
+      IFS=',' read -r clas_avg_2 clas_med_2 <<< "$clas_stats_2"
+      IFS=',' read -r unclas_avg_1 unclas_med_1 <<< "$unclas_stats_1"
+      IFS=',' read -r unclas_avg_2 unclas_med_2 <<< "$unclas_stats_2"
+      
+      read_len_stats+=("$bt_med_1,$bt_med_2,$bt_avg_1,$bt_avg_2,$clas_med_1,$clas_med_2,$clas_avg_1,$clas_avg_2,$unclas_med_1,$unclas_med_2,$unclas_avg_1,$unclas_avg_2")
+  done
   # -- FASTQC & TRIMMING METADATA --
   
   # Initialize arrays to store pre-trimming QC, trimming, and post-trimming QC stats
@@ -218,10 +248,8 @@ for log in $LOG_FILES; do
       [[ $line =~ exactly\ 1\ time ]] && bt_conc_1=$(echo "$line" | sed -E 's/^[[:space:]]*([0-9]+).*/\1/') && continue
       if [[ $line =~ \>1\ times ]]; then
         bt_conc_more=$(echo "$line" | sed -E 's/^[[:space:]]*([0-9]+).*/\1/')
-        bt_avg_len="TODO"
-        bt_med_len="TODO"
         # Store final sample-specific Bowtie2 stats
-        bowtie_stats+=("$bt_paired,$bt_conc_0,$bt_conc_1,$bt_conc_more,$bt_avg_len,$bt_med_len")
+        bowtie_stats+=("$bt_paired,$bt_conc_0,$bt_conc_1,$bt_conc_more")
       fi        
     done < <(grep -A8 "Processing sample:" "$log")
   else 
@@ -231,49 +259,52 @@ for log in $LOG_FILES; do
     done
 
     for i in "${!sample_ids[@]}"; do
-      bowtie_stats+=("NA,NA,NA,NA,NA,NA")
+      bowtie_stats+=("NA,NA,NA,NA")
     done
   fi 
 
   # Write sample statistics to CSV
-for i in "${!sample_ids[@]}"; do
-{
-    # Global run metadata
-    for var in "${metadata_vars[@]}"; do
-      printf "%s," "${!var}"
-    done
-
-    # Sample ID
-    printf "%s," "${sample_ids[$i]}"
+  for i in "${!sample_ids[@]}"; do
+  {
+        # Global run metadata
+        for var in "${metadata_vars[@]}"; do
+          printf "%s," "${!var}"
+        done
     
-    # Pre-trimming QC (placeholder)
-    printf "%s," "${preqc_stats[$i]}"
-
-    # Global trimming parameters
-    for var in "${global_trim_vars[@]}"; do
-      printf "%s," "${!var}"
-    done
+        # Sample ID
+        printf "%s," "${sample_ids[$i]}"
+        
+        # Pre-trimming QC (placeholder)
+        printf "%s," "${preqc_stats[$i]}"
     
-    # Per-sample trimming stats
-    printf "%s," "${trimming_stats[$i]}"
+        # Global trimming parameters
+        for var in "${global_trim_vars[@]}"; do
+          printf "%s," "${!var}"
+        done
+        
+        # Per-sample trimming stats
+        printf "%s," "${trimming_stats[$i]}"
+        
+        # Post-trimming QC (placeholder)
+        printf "%s," "${postqc_stats[$i]}"
     
-    # Post-trimming QC (placeholder)
-    printf "%s," "${postqc_stats[$i]}"
-
-    # Global Bowtie2 parameters
-    for var in "${global_bt_vars[@]}"; do
-      printf "%s," "${!var}"
-    done
-
-    # Per-sample Bowtie2 stats
-    printf "%s," "${bowtie_stats[$i]}"
-
-    # Kraken2 stats
-    printf "%s," "${kraken_stats[$i]}"
+        # Global Bowtie2 parameters
+        for var in "${global_bt_vars[@]}"; do
+          printf "%s," "${!var}"
+        done
     
-    # Bracken stats
-    printf "%s\n" "${bracken_stats[$i]}"
-
+        # Per-sample Bowtie2 stats
+        printf "%s," "${bowtie_stats[$i]}"
+    
+        # Kraken2 stats
+        printf "%s," "${kraken_stats[$i]}"
+        
+        # Bracken stats
+        printf "%s," "${bracken_stats[$i]}"
+        
+      # Read length stats
+      printf "%s\n" "${read_len_stats[$i]}"
+  
   } >> "$OUTPUT"
-  done 
+  done
 done

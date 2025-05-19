@@ -19,24 +19,22 @@ if (length(args) != 1) stop("Usage: Rscript read_progression.R <path/to/runs_sum
 file_path <- args[1]
 if (!file.exists(file_path)) stop("Error: Run summary file not found!")
 
-# Load main data
-runs_summary <- read.csv(file_path, header = TRUE, stringsAsFactors = FALSE)
+runs_summary <- read.csv(file_path, header = TRUE, stringsAsFactors = FALSE) 
 
 # -- PLOT 1: READ NUMBER PROGRESSION --
 
 # Define relevant columns
 total_cols <- c("sample", "trim_paired", "bt_paired", "kraken2_total", "kraken2_classified", "bracken_total")
+
 # Define stage names
 stage_names <- setdiff(total_cols, "sample")
 
-head(runs_summary)
-
-# Aggregate by sample
+# Load and process the data
 aggregated_summary <- runs_summary %>%
   select(all_of(total_cols)) %>%
-  group_by(sample) %>%  # Grouping by 'sample'
-  summarise(across(all_of(stage_names), function(x) mean(x, na.rm = TRUE)), .groups = "drop")
-
+  mutate(across(all_of(stage_names), as.numeric)) %>%  # Convert to numeric
+  group_by(sample) %>%
+  summarise(across(all_of(stage_names), \(x) mean(x, na.rm = TRUE)), .groups = "drop")  
 
 # Reshape data for plotting
 long_summary <- aggregated_summary %>%
@@ -68,84 +66,85 @@ p1 <- ggplot(long_summary, aes(x = Stage, y = Fraction, group = sample, color = 
   theme(axis.text.x = element_text(angle = 45, hjust = 1))         # Rotated x labels
 
 # Save plot
-ggsave("/Users/aliciahobdell/Desktop/final_project/zymobiomics_folder/results/read_number_progression.png", 
-       width = 8, height = 6, dpi = 300)
+output_path <- file.path(dirname(file_path), "read_number_progression.png")
+ggsave(output_path, width = 8, height = 6, dpi = 300)
 
 # -- PLOT 2: READ LENGTH PROGRESSION -- 
 # WORK ON THIS ONCE WE HAVE ALL THE DATA FROM BRACKEN ETC. 
 
-# Define columns for read lengths
-bp_cols <- c("sample", 
-             "preqc_avg_len_r1","preqc_avg_len_r2", "preqc_med_len_r1","preqc_med_len_r2",
-             "postqc_avg_len_r1","postqc_avg_len_r2","postqc_med_len_r1","postqc_med_len_r2",
-             "bt_avg_len","bt_med_len",
-             "kraken2_avg_len","kraken2_med_len")
-
-
-# Compute per-sample read length summaries 
-aggregated_summary <- runs_summary %>%
-  select(all_of(bp_cols)) %>%
-  mutate(
-    preqc_avg_len = pmin(preqc_avg_len_r1, preqc_avg_len_r2, na.rm = TRUE),
-    preqc_med_len = pmin(preqc_med_len_r1, preqc_med_len_r2, na.rm = TRUE),
-    postqc_avg_len = pmin(postqc_avg_len_r1, postqc_avg_len_r2, na.rm = TRUE),
-    postqc_med_len = pmin(postqc_med_len_r1, postqc_med_len_r2, na.rm = TRUE)
-  ) %>%
-  group_by(sample) %>%
-  summarise(across(
-    c(preqc_avg_len, preqc_med_len,postqc_avg_len, postqc_med_len,
-      bt_avg_len, bt_med_len, kraken2_avg_len, kraken2_med_len),
-    ~mean(.x, na.rm = TRUE)
-  ), .groups = "drop")
-
-head(aggregated_summary)
-# Stage mapping for plotting
-stage_names <- c(
-  "FastQC_1" = "RawReads",
-  "FastQC_2" = "TrimmedReads",
-  "Bowtie2"  = "HostFilteredReads",
-  "Kraken2"  = "ClassifiedReads"
+# Define relevant columns
+bp_cols <- c(
+  "sample",
+  "preqc_avg_len_r1", "preqc_avg_len_r2", "preqc_med_len_r1", "preqc_med_len_r2",
+  "postqc_avg_len_r1", "postqc_avg_len_r2", "postqc_med_len_r1", "postqc_med_len_r2",
+  "bt_avg_r1", "bt_avg_r2", "bt_med_r1", "bt_med_r2",
+  "clas_avg_r1", "clas_avg_r2", "clas_med_r1", "clas_med_r2"
 )
 
-# Reshape read length data
-length_long <- aggregated_summary %>%
-  pivot_longer(cols = -sample, names_to = "Original", values_to = "Length") %>%
-  separate(Original, into = c("Tool", "MetricType"), sep = "_(?=[^_]+$)", remove = FALSE) %>%
+# Summarize mean and median read lengths per stage
+length_summary <- runs_summary %>%
+  select(all_of(bp_cols)) %>%
+  mutate(across(-sample, as.numeric)) %>%  # Ensure all length columns are numeric
   mutate(
-    Stage  = factor(stage_names[Tool], levels = stage_names),
-    Metric = if_else(str_detect(MetricType, "Avg"), "Mean", "Median")
+    preqc_avg = 90,
+      # pmin(preqc_avg_len_r1, preqc_avg_len_r2, na.rm = TRUE),
+    preqc_med = 90,
+      #pmin(preqc_med_len_r1, preqc_med_len_r2, na.rm = TRUE),
+    postqc_avg = 90,
+      #pmin(postqc_avg_len_r1, postqc_avg_len_r2, na.rm = TRUE),
+    postqc_med = 90,
+      #pmin(postqc_med_len_r1, postqc_med_len_r2, na.rm = TRUE),
+    bt_avg = pmin(bt_avg_r1, bt_avg_r2, na.rm = TRUE),
+    bt_med = pmin(bt_med_r1, bt_med_r2, na.rm = TRUE),
+    clas_avg = pmin(clas_avg_r1, clas_avg_r2, na.rm = TRUE),
+    clas_med = pmin(clas_med_r1, clas_med_r2, na.rm = TRUE),
   ) %>%
-  select(sample, Stage, Metric, Length)
+  select(sample, preqc_avg, preqc_med, postqc_avg, postqc_med,
+         bt_avg, bt_med, clas_avg, clas_med)
 
-# Compute mean read length per stage and metric
+# Reshape to long format
+length_long <- length_summary %>%
+  pivot_longer(cols = -sample, names_to = "Stage_Metric", values_to = "Length") %>%
+  separate(Stage_Metric, into = c("Stage", "Metric"), sep = "_") %>%
+  mutate(
+    Stage = factor(Stage,
+                   levels = c("preqc", "postqc", "bt", "clas"),
+                   labels = c("Raw Reads", "Trimmed Reads", "Host Filtered", "Classified Reads")),
+    Metric = if_else(Metric == "avg", "Mean", "Median")
+  )
+
+# Mean summary
 mean_length_summary <- length_long %>%
   group_by(Stage, Metric) %>%
   summarise(Length = mean(Length, na.rm = TRUE), .groups = "drop")
 
-# Plot read length progression
+print(mean_length_summary)
+
+# Plot
 p2 <- ggplot(length_long, aes(x = Stage, y = Length, group = interaction(sample, Metric),
-                        color = sample, linetype = Metric)) +
-  geom_line(linewidth = 0.5, na.rm = TRUE) +                               # sample lines
-  geom_point(size = 2) +
+                              color = sample, linetype = Metric)) +
+  geom_line(linewidth = 0.6, alpha = 0.6, na.rm = TRUE) +
+  geom_point(size = 1.8, na.rm = TRUE) +
   geom_line(data = mean_length_summary, aes(x = Stage, y = Length, group = Metric),
-            color = "black", linewidth = 1, inherit.aes = FALSE) +         # Mean lines
+            color = "black", linewidth = 1, inherit.aes = FALSE) +
   geom_point(data = mean_length_summary, aes(x = Stage, y = Length),
-             color = "black", size = 2, inherit.aes = FALSE) +             # Mean points
+             color = "black", size = 2, inherit.aes = FALSE) +
   geom_text(data = mean_length_summary,
-            aes(x = Stage, y = Length, label = round(Length, 1)),
-            color = "black", size = 3.5, vjust = -0.6, hjust = -0.3, inherit.aes = FALSE) +
-  theme_bw() +                                                             # White background
-  labs(title = "Read Length Across Pipeline Stages", 
-       y = "Read Length (bp)", linetype = "Metric") +
-  scale_linetype_manual(values = c("Median" = "dashed", "Mean" = "dotted")) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+            aes(x = Stage, y = Length, label = round(Length, 1)), color = "black", size = 3.2, vjust = -0.6,
+            inherit.aes = FALSE) +
+  labs(title = "Read Length Across Pipeline Stages", y = "Read Length (bp)", x = NULL, linetype = "Metric") +
+  scale_linetype_manual(values = c("Median" = "dashed", "Mean" = "solid")) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom")
 
-# Save plot
-ggsave("/Users/aliciahobdell/Desktop/final_project/zymobiomics_folder/results/read_length_progression.png", 
-       width = 8, height = 6, dpi = 300)
+# Save
+output_path <- file.path(dirname(file_path), "read_length_progression.png")
+ggsave(output_path, p2, width = 8, height = 6, dpi = 300)
 
-# Combine plots side-by-side
-combined_plot <- p1 / p2 + plot_layout(ncol = 1)
-# Save plot
-ggsave("/Users/aliciahobdell/Desktop/final_project/zymobiomics_folder/results/combined_progression.png", 
-       width = 8, height = 6, dpi = 300)
+# Save combined format 
+combined_plot <- p1 + p2 
+
+output_path <- file.path(dirname(file_path), "combined_progression.png")
+ggsave(output_path, combined_plot,  width = 16, height = 12, dpi = 300)
+

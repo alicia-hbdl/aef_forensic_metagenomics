@@ -58,7 +58,8 @@ headers = ['ReadFraction', 'TotalReads', 'KrakenReads', 'LevelID', 'TaxID', 'spe
 # Initialize results list
 results = []
 all_pr_curves = []
-    
+all_species_set = set()
+
 # Iterate through each run and sample
 for run_idx, run in enumerate(runs):
     

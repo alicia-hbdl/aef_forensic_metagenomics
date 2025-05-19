@@ -81,3 +81,9 @@ echo "✅ FastQC completed successfully."
 multiqc "$FASTQC_DIR/post_trimming" --no-data-dir -o "$FASTQC_DIR/post_trimming" --force 2>&1 || { echo "❌ MultiQC failed!"; exit 1; }
 echo -e "✅ MultiQC report generated successfully.\n"
 rm -f "$FASTQC_DIR/post_trimming"/*.zip  
+
+# Calculate read length statistics for raw and trimmed FASTQ files
+echo -e "\nCalculating read length statistics..."
+files=($RAW_FASTQ_DIR/*.fastq.gz $TRIMMED_DIR/paired/*.fastq.gz) # Expand the file patterns 
+"$ROOT_DIR/scripts/helper_scripts/get_fastq_stats.sh" "${files[@]}" 2>&1 || { echo "❌ Failed to generate read length statistics."; exit 1; }
+echo "✅ Statistics generated."

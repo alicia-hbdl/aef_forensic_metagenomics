@@ -12,13 +12,20 @@ for file in "$@"; do
     echo "❌ Error: $file not found or not a valid file."
     continue
   fi
+  # If compresed, uncompress and keep original + add compressed  flag 
 
   echo -n "$(basename "$file"): "  # Print the filename for reference
 
+  # Pass the uncompressed version of the file 
+  if [[ "$file" == *.gz ]]; then
+    input_stream=$(gunzip -c "$file")
+  else
+    input_stream=$(cat "$file")
+  fi
   # Process the FASTQ file
     # NR%4==2 selects the second line in each 4-line FASTQ entry (the sequence line)
     # Calculate the length of the sequence and store it
-  awk 'NR%4==2 {print length($0)}' "$file" | sort -n | awk '
+  awk 'NR%4==2 {print length($0)}' <(echo "$input_stream") | sort -n | awk '
   
   # Initialize variables for the first line
     NR == 1 { 
@@ -50,4 +57,5 @@ for file in "$@"; do
       # Output the mean and median values
       printf "mean = %.1f, median = %.1f\n", mean, median
     }'
+    delete uncompressed version if flag is on 
 done
