@@ -190,7 +190,7 @@ plt.xlabel("Database")
 plt.ylabel("L2 Distance")
 plt.title("L2 Distance to Ground Truth (Classified vs Total Reads) Across Databases")
 plt.tight_layout()
-plt.savefig(f"{run_dir}/../l2_boxplot.png", bbox_inches='tight')
+plt.savefig(f"{run_dir}/l2_boxplot.png", bbox_inches='tight')
 plt.show()
 
 # Combined side-by-side AUPR boxplot + PR curves
@@ -232,5 +232,5 @@ fig.text(0.5, -0.04,
          "Left: Boxplots show sample-level AUPR distributions (median shown). Right: PR curves are based on mean predictions across samples.",
          ha='center', fontsize=10)
 plt.tight_layout()
-plt.savefig(f"{run_dir}/../AUPR_PR_curves.png", bbox_inches='tight')
+plt.savefig(f"{run_dir}/AUPR_PR_curves.png", bbox_inches='tight')
 plt.show()
