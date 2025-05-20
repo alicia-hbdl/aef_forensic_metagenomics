@@ -314,4 +314,72 @@ ZC3_S6_metagenomic.1: mean = 78.4, median = 67.0
 ZC4_S7_metagenomic.1: mean = 73.4, median = 62.0
 ZP1_S20_metagenomic.1: mean = 78.2, median = 69.0
 ZP2_S21_metagenomic.1: mean = 73.4, median = 64.0
-ZP3_S22_metagenomic.1: 
+ZP3_S22_metagenomic.1: mean = 72.0, median = 62.0
+ZC1_S4_metagenomic.2: mean = 89.5, median = 78.0
+ZC2_S5_metagenomic.2: mean = 71.7, median = 63.0
+ZC3_S6_metagenomic.2: mean = 78.1, median = 67.0
+ZC4_S7_metagenomic.2: mean = 73.2, median = 62.0
+ZP1_S20_metagenomic.2: mean = 78.0, median = 69.0
+ZP2_S21_metagenomic.2: mean = 73.1, median = 64.0
+ZP3_S22_metagenomic.2: mean = 72.0, median = 63.0
+ZC1_S4_classified_1.fastq: mean = 101.7, median = 92.0
+ZC1_S4_classified_2.fastq: mean = 100.7, median = 91.0
+ZC2_S5_classified_1.fastq: mean = 82.7, median = 75.0
+ZC2_S5_classified_2.fastq: mean = 82.6, median = 75.0
+ZC3_S6_classified_1.fastq: mean = 90.3, median = 80.0
+ZC3_S6_classified_2.fastq: mean = 90.0, median = 81.0
+ZC4_S7_classified_1.fastq: mean = 85.8, median = 75.0
+ZC4_S7_classified_2.fastq: mean = 85.5, median = 75.0
+ZP1_S20_classified_1.fastq: mean = 88.5, median = 80.0
+ZP1_S20_classified_2.fastq: mean = 88.2, median = 80.0
+ZP2_S21_classified_1.fastq: mean = 84.2, median = 76.0
+ZP2_S21_classified_2.fastq: mean = 83.9, median = 76.0
+ZP3_S22_classified_1.fastq: mean = 83.0, median = 75.0
+ZP3_S22_classified_2.fastq: mean = 82.9, median = 75.0
+ZC1_S4_unclassified_1.fastq: mean = 58.1, median = 49.0
+ZC1_S4_unclassified_2.fastq: mean = 58.0, median = 49.0
+ZC2_S5_unclassified_1.fastq: mean = 51.9, median = 46.0
+ZC2_S5_unclassified_2.fastq: mean = 51.9, median = 46.0
+ZC3_S6_unclassified_1.fastq: mean = 54.2, median = 47.0
+ZC3_S6_unclassified_2.fastq: mean = 54.2, median = 47.0
+ZC4_S7_unclassified_1.fastq: mean = 51.4, median = 45.0
+ZC4_S7_unclassified_2.fastq: mean = 51.4, median = 45.0
+ZP1_S20_unclassified_1.fastq: mean = 53.6, median = 47.0
+ZP1_S20_unclassified_2.fastq: mean = 53.5, median = 47.0
+ZP2_S21_unclassified_1.fastq: mean = 51.7, median = 46.0
+ZP2_S21_unclassified_2.fastq: mean = 51.7, median = 46.0
+ZP3_S22_unclassified_1.fastq: mean = 50.8, median = 45.0
+ZP3_S22_unclassified_2.fastq: mean = 50.9, median = 45.0
+✅ Statistics generated.
+
+Combining Bracken reports...
+Combined CSV file saved to: ../zymobiomics_folder/results/runs/run_2005_1730/combined_breports.csv 
+✅ Bracken reports combined.
+
+Copying SLURM job logs...
+✅ SLURM job logs copied.
+
+================================================= COMPARISON TO GROUND TRUTH =================================================
+
+================================================= METAGENOMIC DIVERSITY ANALYSIS =================================================
+Calculating alpha and beta diversity...
+✅ Alpha diversity calculated.
+null device 
+          1 
+Heatmap saved to: ../zymobiomics_folder/results/runs/run_2005_1730/diversity/beta_diversity_heatmap.png 
+✅ Beta diversity heatmap generated.
+✅  Diversity analysis completed successfully.
+
+✅  Pipeline completed successfully.
+
+Copying final SLURM job logs
+
+====================================================== COMPARISON TO OTHER RUNS ======================================================
+Skipping run_2005_1658 (already in summary)
+Skipping run_2005_1655 (already in summary)
+Skipping run_2005_1637 (already in summary)
+Skipping run_2005_1706 (already in summary)
+Runs directory: ../zymobiomics_folder/results/runs/
+Ground truth file: ../zymobiomics_folder/raw_data//ground_truth.csv
+Fatal error: cannot open file '../scripts/helper_scripts/helper_scripts/read_progression.R': No such file or directory
+❌ Read progression plot generation failed!

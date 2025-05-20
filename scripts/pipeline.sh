@@ -294,7 +294,7 @@ if cp "$ROOT_DIR"/scripts/logs/*_"$SLURM_JOB_ID".* "$LOG_DIR"; then
     # Generate the summary table and evaluation metrics including this run 
     "$ROOT_DIR/scripts/helper_scripts/runs_summary.sh" "$RESULTS_DIR/runs/" 2>&1 || { echo "❌ Summary generation failed!"; exit 1; }
     python "$ROOT_DIR/scripts/helper_scripts/evaluation_metrics.py" --run-dir "$RESULTS_DIR/runs/" --ground-truth "$RAW_FASTQ_DIR/ground_truth.csv" 2>&1 || { echo "❌ Evaluation metrics generation failed!"; exit 1; }
-    Rscript "$ROOT_DIR/scripts/helper_scripts/helper_scripts/read_progression.R" "$RESULTS_DIR/" 2>&1 || { echo "❌ Read progression plot generation failed!"; exit 1; }
+    Rscript "$ROOT_DIR/scripts/helper_scripts/read_progression.R" "$RESULTS_DIR/" 2>&1 || { echo "❌ Read progression plot generation failed!"; exit 1; }
     
     # Remove the original log file when successful 
     echo -e "\nRemoving original SLURM job logs"
