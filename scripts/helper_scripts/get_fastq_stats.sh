@@ -56,6 +56,5 @@ for file in "$@"; do
 
       # Output the mean and median values
       printf "mean = %.1f, median = %.1f\n", mean, median
-    }'
-    delete uncompressed version if flag is on 
+    }' 
 done

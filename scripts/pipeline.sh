@@ -189,6 +189,12 @@ if [[ "$TRIM" == true ]]; then
 
     "$ROOT_DIR/scripts/helper_scripts/qc_trim.sh" "$RAW_FASTQ_DIR" || { echo "❌ Quality control and trimming failed!"; exit 1; }
     echo -e "✅  QC and trimming completed successfully."
+
+    # Calculate read length stats (raw and trimmed)
+    echo -e "\nCalculating read length statistics..."
+    files=($RAW_FASTQ_DIR/*.fastq.gz $TRIMMED_DIR/paired/*.fastq.gz) # Expand the file patterns 
+    "$ROOT_DIR/scripts/helper_scripts/get_fastq_stats.sh" "${files[@]}" 2>&1 || { echo "❌ Failed to generate read length statistics."; exit 1; }
+    echo "✅ Statistics generated."
 fi
 
 echo -e "\n================================================= METAGENOMIC ABUNDANCE ESTIMATION ================================================="

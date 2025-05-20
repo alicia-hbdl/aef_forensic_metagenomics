@@ -122,7 +122,7 @@ for log in $LOG_FILES; do
       # Print CSV-formatted line if valid sample block
       if (sample != "-" && k_total != "-") {
         printf "%s,%s,%s,%s,%s,", sample, minhits, k_total, k_class, k_unclass
-        printf "%s,%s,%s,%s,%s,%s,%s,%s,%s\n", b_thresh, b_species, b_above, b_below, b_kept, b_discard, b_redist, b_noredist, b_total
+        printf "%s,%s,%s,%s,%s,%s,%s,%s,%s\n", b_thresh, b_species, b_above, b_below, b_kept, b_discard, b_redist, b_noredist, b_total}
       }' "$log"
   )
 
