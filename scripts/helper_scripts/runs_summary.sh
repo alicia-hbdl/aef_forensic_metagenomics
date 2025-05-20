@@ -132,8 +132,9 @@ for log in $LOG_FILES; do
   # Function to extract mean and median for a given pattern
   get_read_stats() {
       local pattern="$1"
-      local mean=$(grep "$pattern" "$log" | awk -F'mean = ' '{print $2}' | cut -d',' -f1 | xargs)
-      local median=$(grep "$pattern" "$log" | awk -F'median = ' '{print $2}' | xargs)
+      # -m1 ensures only the first match counts (useful when raw vs trimmed match the same pattern)
+      local mean=$(grep "$pattern" "$log" | grep -m1 "mean =" | awk -F'mean = ' '{print $2}' | cut -d',' -f1 | xargs)
+      local median=$(grep "$pattern" "$log" | grep -m1 "mean =" | awk -F'median = ' '{print $2}' | xargs)
       echo "$mean,$median"
   }
   
@@ -141,15 +142,12 @@ for log in $LOG_FILES; do
       sample="${sample_ids[$i]}"
   
       if grep -q "Quality Control & Trimming: Enabled" "$log"; then
-        pre_stats_1=$(get_read_stats "${sample}.f*")
-        echo $pre_stats_1
-        pre_stats_2=$(get_read_stats "${sample}.f*")
-        echo $pre_stats_2
-        post_stats_1=$(get_read_stats "${sample}_paired.f*")
-        echo $post_stats_1
-        post_stats_2=$(get_read_stats "${sample}_paired.f*")
-        echo $post_stats_2
-        
+      # allow eventual lane, read, and other suffixes after sample but before the .f*
+        pre_stats_1=$(get_read_stats "${sample}.*R1.*\.f.*: mean" "$log")
+        pre_stats_2=$(get_read_stats "${sample}.*R2.*\.f.*: mean" "$log")
+        post_stats_1=$(get_read_stats "${sample}_R1_paired.f*")
+        post_stats_2=$(get_read_stats "${sample}_R2_paired.f*")
+
         # Split mean and median values
         IFS=',' read -r pre_avg_1 pre_med_1 <<< "$pre_stats_1"
         IFS=',' read -r pre_avg_2 pre_med_2 <<< "$pre_stats_2"
