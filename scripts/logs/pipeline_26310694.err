@@ -1150,3 +1150,10 @@ Analysis complete for ZP3_S22_R2_paired.fastq.gz
 + [[ true == true ]]
 + echo -e '\n====================================================== HUMAN DNA ANALYSIS ======================================================'
 + ../scripts/helper_scripts/host_dna_analysis.sh ../zymobiomics_folder/processed_data/human/aligned_sam
++ echo -e '✅  Host DNA analysis completed successfully.'
++ echo -e '\n✅  Pipeline completed successfully.'
++ echo -e '\nCopying final SLURM job logs'
++ cp ../scripts/logs/pipeline_26310694.err ../scripts/logs/pipeline_26310694.log ../zymobiomics_folder/results/runs/run_2005_1513/logs
+cp: target '../zymobiomics_folder/results/runs/run_2005_1513/logs' is not a directory
++ echo '❌ Copying log files failed!'
++ exit 1
