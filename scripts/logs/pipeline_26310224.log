@@ -1,0 +1,127 @@
+
+================================================= ARGUMENT PARSING & VALIDATION =================================================
+
+Raw FASTQ directory path: ../zymobiomics_folder/raw_data/
+✅  Trimming enabled.
+Quality Control & Trimming: Enabled ✅
+⚠️  Optional, but must be done at least once on the raw reads for the pipeline to work.
+
+Host DNA Removal: Disabled ❌
+⚠️  Optional, but must be done at least once on the trimmed reads for the pipeline to work.
+
+Kraken2/Bracken Database: ../data/databases/k2_standard_16gb_20250402
+
+================================================= CONDA ENVIRONMENT ACTIVATION ==================================================
+
+✅ 'metagenomics' environment activated successfully.
+
+====================================================== PROJECT STRUCTURE ======================================================
+
+../zymobiomics_folder
+├── processed_data
+│   ├── human
+│   │   ├── aligned_sam
+│   │   ├── bed_files
+│   │   └── sorted_bam
+│   ├── metagenomic
+│   │   ├── bracken
+│   │   ├── classified
+│   │   ├── filtered_fastq
+│   │   ├── kraken2
+│   │   └── unclassified
+│   └── trimmed
+│       ├── paired
+│       └── unpaired
+├── raw_data
+└── results
+    ├── fastqc
+    │   ├── post_trimming
+    │   └── pre_trimming
+    ├── host_dna_analysis
+    └── runs
+        ├── run_0605_1332
+        ├── run_0705_1620
+        ├── run_0705_1707
+        ├── run_0705_1723
+        ├── run_0705_1939
+        ├── run_1305_1345
+        ├── run_1305_1523
+        ├── run_1305_1612
+        ├── run_1305_1621
+        ├── run_1305_1720
+        ├── run_1305_1756
+        ├── run_1905_1234
+        ├── run_1905_1258
+        ├── run_1905_1707
+        ├── run_1905_1753
+        ├── run_2005_1456
+        └── run_2005_1505
+
+38 directories
+Human DNA-related files (SAM, BAM, and BED) in the 'human' directory are created once per sub-project and remain unchanged across runs.
+Intermediate metagenomic files in the 'metagenomic' directory are overwritten with each run and should be inspected beforehand if desired.
+Results are stored in the 'results' directory (including FastQC, host DNA analysis, and run-specific results like Kraken2 and Bracken).
+
+=================================================== QUALITY CONTROL & TRIMMING ===================================================
+
+✅  QC and trimming completed successfully.
+
+Calculating read length statistics...
+../zymobiomics_folder/raw_data//ZC1_S4_L001_R1_001.fastq.gz ../zymobiomics_folder/raw_data//ZC1_S4_L001_R2_001.fastq.gz ../zymobiomics_folder/raw_data//ZC2_S5_L001_R1_001.fastq.gz ../zymobiomics_folder/raw_data//ZC2_S5_L001_R2_001.fastq.gz ../zymobiomics_folder/raw_data//ZC3_S6_L001_R1_001.fastq.gz ../zymobiomics_folder/raw_data//ZC3_S6_L001_R2_001.fastq.gz ../zymobiomics_folder/raw_data//ZC4_S7_L001_R1_001.fastq.gz ../zymobiomics_folder/raw_data//ZC4_S7_L001_R2_001.fastq.gz ../zymobiomics_folder/raw_data//ZP1_S20_L001_R1_001.fastq.gz ../zymobiomics_folder/raw_data//ZP1_S20_L001_R2_001.fastq.gz ../zymobiomics_folder/raw_data//ZP2_S21_L001_R1_001.fastq.gz ../zymobiomics_folder/raw_data//ZP2_S21_L001_R2_001.fastq.gz ../zymobiomics_folder/raw_data//ZP3_S22_L001_R1_001.fastq.gz ../zymobiomics_folder/raw_data//ZP3_S22_L001_R2_001.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R1_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R2_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZC2_S5_R1_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZC2_S5_R2_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZC3_S6_R1_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZC3_S6_R2_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZC4_S7_R1_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZC4_S7_R2_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZP1_S20_R1_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZP1_S20_R2_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZP2_S21_R1_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZP2_S21_R2_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZP3_S22_R1_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZP3_S22_R2_paired.fastq.gz
+ZC1_S4_L001_R1_001.fastq.gz: mean = 98.9, median = 79.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZC1_S4_L001_R2_001.fastq.gz: mean = 101.8, median = 80.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZC2_S5_L001_R1_001.fastq.gz: mean = 77.9, median = 62.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZC2_S5_L001_R2_001.fastq.gz: mean = 78.9, median = 62.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZC3_S6_L001_R1_001.fastq.gz: mean = 84.8, median = 67.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZC3_S6_L001_R2_001.fastq.gz: mean = 85.4, median = 67.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZC4_S7_L001_R1_001.fastq.gz: mean = 78.9, median = 60.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZC4_S7_L001_R2_001.fastq.gz: mean = 79.9, median = 60.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZP1_S20_L001_R1_001.fastq.gz: mean = 85.2, median = 70.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZP1_S20_L001_R2_001.fastq.gz: mean = 86.2, median = 70.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZP2_S21_L001_R1_001.fastq.gz: mean = 79.1, median = 64.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZP2_S21_L001_R2_001.fastq.gz: mean = 82.8, median = 64.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZP3_S22_L001_R1_001.fastq.gz: mean = 78.2, median = 62.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZP3_S22_L001_R2_001.fastq.gz: mean = 77.8, median = 61.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZC1_S4_R1_paired.fastq.gz: mean = 90.3, median = 78.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZC1_S4_R2_paired.fastq.gz: mean = 89.5, median = 78.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZC2_S5_R1_paired.fastq.gz: mean = 71.7, median = 63.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZC2_S5_R2_paired.fastq.gz: mean = 71.7, median = 63.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZC3_S6_R1_paired.fastq.gz: mean = 78.4, median = 67.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZC3_S6_R2_paired.fastq.gz: mean = 78.1, median = 67.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZC4_S7_R1_paired.fastq.gz: mean = 73.4, median = 62.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZC4_S7_R2_paired.fastq.gz: mean = 73.2, median = 62.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZP1_S20_R1_paired.fastq.gz: mean = 78.2, median = 69.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZP1_S20_R2_paired.fastq.gz: mean = 78.0, median = 69.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZP2_S21_R1_paired.fastq.gz: mean = 73.4, median = 64.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZP2_S21_R2_paired.fastq.gz: mean = 73.1, median = 64.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZP3_S22_R1_paired.fastq.gz: mean = 72.0, median = 62.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+ZP3_S22_R2_paired.fastq.gz: mean = 72.0, median = 63.0
+../scripts/helper_scripts/get_fastq_stats.sh: line 60: delete: command not found
+❌ Failed to generate read length statistics.
