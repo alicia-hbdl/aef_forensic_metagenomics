@@ -27,6 +27,7 @@ local_bt_vars=(bt_paired bt_conc_0 bt_conc_1 bt_conc_more)
 kraken2_vars=(kraken2_min_hits kraken2_total kraken2_classified kraken2_unclassified)
 bracken_vars=(bracken_thresh bracken_species bracken_species_above_thresh bracken_species_below_thresh bracken_kept \
               bracken_discarded bracken_redistributed bracken_not_redistributed bracken_total)
+# Read length statistics: raw, post-trimming, post-host removal, and for classified vs unclassified reads
 read_len_vars=(preqc_avg_len_r1 preqc_avg_len_r2 preqc_med_len_r1 preqc_med_len_r2 \
               postqc_avg_len_r1 postqc_avg_len_r2 postqc_med_len_r1 postqc_med_len_r2 \
               bt_med_r1 bt_med_r2 bt_avg_r1 bt_avg_r2 \
@@ -42,7 +43,7 @@ if [[ ! -f "$OUTPUT" ]]; then
   } > "$OUTPUT"
 fi
 
-# Find and loop over all pipeline logs
+# Locate and iterate over all pipeline log files (assumes standard format output from pipeline.sh)
 LOG_FILES=$(find "$RUNS_DIR" -type f -name "*.log")
 for log in $LOG_FILES; do
   # -- RUN METADATA -- 
@@ -59,7 +60,7 @@ for log in $LOG_FILES; do
   runtime=$(grep "Metagenomic classification completed in:" "$log" | awk -F': ' '{print $2}')    
   
   # -- KRAKEN & BRACKEN METADATA --
-  # Process Kraken2/Bracken first to get sample IDs, as QC/trimming may not run but classification always does.
+  # Process Kraken2/Bracken first to get unique sample IDs, as QC/trimming may not run but classification always does.
   
   # Extract Kraken2 minimum hit groups and Bracken threshold (same for all samples in run)
   kraken2_min_hits=$(grep "kraken2" "$log" | grep -oE -- '--minimum-hit-groups[ =][0-9]+' | grep -oE '[0-9]+' | head -n1)
@@ -140,10 +141,14 @@ for log in $LOG_FILES; do
       sample="${sample_ids[$i]}"
   
       if grep -q "Quality Control & Trimming: Enabled" "$log"; then
-        pre_stats_1=$(get_read_stats "${sample}.fastq")
-        pre_stats_2=$(get_read_stats "${sample}.fastq")
-        post_stats_1=$(get_read_stats "${sample}_paired.fastq")
-        post_stats_2=$(get_read_stats "${sample}_paired.fastq")
+        pre_stats_1=$(get_read_stats "${sample}.f*")
+        echo $pre_stats_1
+        pre_stats_2=$(get_read_stats "${sample}.f*")
+        echo $pre_stats_2
+        post_stats_1=$(get_read_stats "${sample}_paired.f*")
+        echo $post_stats_1
+        post_stats_2=$(get_read_stats "${sample}_paired.f*")
+        echo $post_stats_2
         
         # Split mean and median values
         IFS=',' read -r pre_avg_1 pre_med_1 <<< "$pre_stats_1"
