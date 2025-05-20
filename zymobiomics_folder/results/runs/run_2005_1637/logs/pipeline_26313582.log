@@ -577,3 +577,70 @@ Combined CSV file saved to: ../zymobiomics_folder/results/runs/run_2005_1637/com
 ✅ Bracken reports combined.
 
 Copying SLURM job logs...
+✅ SLURM job logs copied.
+
+================================================= COMPARISON TO GROUND TRUTH =================================================
+
+================================================= METAGENOMIC DIVERSITY ANALYSIS =================================================
+Calculating alpha and beta diversity...
+✅ Alpha diversity calculated.
+null device 
+          1 
+Heatmap saved to: ../zymobiomics_folder/results/runs/run_2005_1637/diversity/beta_diversity_heatmap.png 
+✅ Beta diversity heatmap generated.
+✅  Diversity analysis completed successfully.
+
+====================================================== HUMAN DNA ANALYSIS ======================================================
+
+Processing host reads from sample: ZC1_S4_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: ZC2_S5_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: ZC3_S6_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: ZC4_S7_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: ZP1_S20_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: ZP2_S21_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: ZP3_S22_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+=============================================== KARYOTYPE ================================================
+Finding overlapping regions across samples...
+✅ Overlapping regions saved.
+Generating karyotype plot...
+null device 
+          1 
+Plot saved as: ../zymobiomics_folder/processed_data/human/aligned_sam/../../../results/host_dna_analysis/karyotype_frequency.jpg
+✅ Karyotype plot generated.
+✅ Filtered common intervals saved.
+
+================================================== BLAST ==================================================
+
+Extracting sequences for BLAST query...
+✅ Sequences saved to BLAST query.
+✅ Duplicate sequences removed.
+✅ 15 random sequences selected.
+Running BLAST search...
