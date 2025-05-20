@@ -16,7 +16,7 @@ fi
 RUNS_DIR=$(realpath "$1")              # Get absolute path to run directory
 OUTPUT="$RUNS_DIR/runs_summary.csv"    # Set output CSV file path
 
-# Define CSV column variables
+# Define global variables (common to all samples) and local variables (sample-specific).
 metadata_vars=(run_id db_name runtime)
 preqc_vars=(preqc_pct_dups_r1 preqc_pct_dups_r2 preqc_pct_gc_r1 preqc_pct_gc_r2 preqc_fail_r1 preqc_fail_r2)
 global_trim_vars=(trim_clip trim_head trim_lead trim_crop trim_sliding_win trim_trail trim_min_len)
@@ -138,32 +138,21 @@ for log in $LOG_FILES; do
       echo "$mean,$median"
   }
   
-  for i in "${!sample_ids[@]}"; do
+  if grep -q "Quality Control & Trimming: Enabled" "$log"; then # QC/trimming enabled
+    for i in "${!sample_ids[@]}"; do
       sample="${sample_ids[$i]}"
   
-      if grep -q "Quality Control & Trimming: Enabled" "$log"; then
       # allow eventual lane, read, and other suffixes after sample but before the .f*
-        pre_stats_1=$(get_read_stats "${sample}.*R1.*\.f.*: mean" "$log")
-        pre_stats_2=$(get_read_stats "${sample}.*R2.*\.f.*: mean" "$log")
-        post_stats_1=$(get_read_stats "${sample}_R1_paired.f*")
-        post_stats_2=$(get_read_stats "${sample}_R2_paired.f*")
+      pre_stats_1=$(get_read_stats "${sample}.*R1.*\.f.*: mean" "$log")
+      pre_stats_2=$(get_read_stats "${sample}.*R2.*\.f.*: mean" "$log")
+      post_stats_1=$(get_read_stats "${sample}_R1_paired.f*")
+      post_stats_2=$(get_read_stats "${sample}_R2_paired.f*")
 
-        # Split mean and median values
-        IFS=',' read -r pre_avg_1 pre_med_1 <<< "$pre_stats_1"
-        IFS=',' read -r pre_avg_2 pre_med_2 <<< "$pre_stats_2"
-        IFS=',' read -r post_avg_1 post_med_1 <<< "$post_stats_1"
-        IFS=',' read -r post_avg_2 post_med_2 <<< "$post_stats_2"
-
-      else 
-        pre_avg_1="NA"
-        pre_med_1="NA"
-        pre_avg_2="NA"
-        pre_med_2="NA"
-        post_avg_1="NA"
-        post_med_1="NA"
-        post_avg_2="NA"
-        post_med_2="NA"
-      fi 
+      # Split mean and median values
+      IFS=',' read -r pre_avg_1 pre_med_1 <<< "$pre_stats_1"
+      IFS=',' read -r pre_avg_2 pre_med_2 <<< "$pre_stats_2"
+      IFS=',' read -r post_avg_1 post_med_1 <<< "$post_stats_1"
+      IFS=',' read -r post_avg_2 post_med_2 <<< "$post_stats_2"
 
       # Extract values per file type (metagenomic.1, classified_1, etc.)
       bt_stats_1=$(get_read_stats "${sample}_metagenomic.1")
@@ -184,7 +173,15 @@ for log in $LOG_FILES; do
       IFS=',' read -r unclas_avg_2 unclas_med_2 <<< "$unclas_stats_2"
       
       read_len_stats+=("$pre_stats_1,$pre_stats_2,$post_stats_1,$post_stats_2,$bt_med_1,$bt_med_2,$bt_avg_1,$bt_avg_2,$clas_med_1,$clas_med_2,$clas_avg_1,$clas_avg_2,$unclas_med_1,$unclas_med_2,$unclas_avg_1,$unclas_avg_2")
-  done
+    done
+  else # QC/trimming not enabled
+  
+    # Fill read length stats with NAs
+    for i in "${!sample_ids[@]}"; do
+      read_len_stats+=("NA,NA,NA,NA,NA,NA,NA,NA")
+    done
+  fi 
+
   # -- FASTQC & TRIMMING METADATA --
   
   # Initialize arrays to store pre-trimming QC, trimming, and post-trimming QC stats
