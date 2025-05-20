@@ -661,3 +661,24 @@ Extracting sequences for BLAST query...
 ✅ Duplicate sequences removed.
 ✅ 15 random sequences selected.
 Running BLAST search...
+✅ BLAST completed.
+Get all ranks and their taxIDs
+Align taxonomy hierarchies...
+Taxonomy alignment done!
+Calculate distance matrix
+Add node labels
+✅ Phylogenetic tree saved to: ../zymobiomics_folder/processed_data/human/aligned_sam/../../../results/host_dna_analysis/combined_blast_tree.png 
+✅ Taxonomy tree generated.
+
+=========================================== JACCARD SIMILARITY ===========================================
+Generating Jaccard similarity heatmap...
+null device 
+          1 
+Heatmap saved at: ../zymobiomics_folder/processed_data/human/aligned_sam/../../../results/host_dna_analysis/jaccard_similarity_heatmap.png 
+✅ Jaccard analysis complete.
+✅  Host DNA analysis completed successfully.
+
+✅  Pipeline completed successfully.
+
+Copying final SLURM job logs
+❌ Copying log files failed!
