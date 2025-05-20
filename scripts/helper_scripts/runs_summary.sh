@@ -28,7 +28,7 @@ bracken_vars=(bracken_thresh bracken_species bracken_species_above_thresh bracke
 # Read length statistics: raw, post-trimming, post-host removal, and for classified vs unclassified reads
 read_len_vars=(preqc_avg_len_r1 preqc_med_len_r1 preqc_avg_len_r2 preqc_med_len_r2 \
               postqc_avg_len_r1 postqc_med_len_r1 postqc_avg_len_r2 postqc_med_len_r2 \
-              bt_avg_r1 bt_med_r1 bt_avg_r1 bt_med_r2 \
+              bt_avg_r1 bt_med_r1 bt_avg_r2 bt_med_r2 \
               clas_avg_r1 clas_med_r1 clas_avg_r2 clas_med_r2 \
               unclas_avg_r1 unclas_avg_r2 unclas_med_r1 unclas_med_r2)
 
