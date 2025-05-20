@@ -70,7 +70,6 @@ output_path <- file.path(dirname(file_path), "read_number_progression.png")
 ggsave(output_path, width = 8, height = 6, dpi = 300)
 
 # -- PLOT 2: READ LENGTH PROGRESSION -- 
-# WORK ON THIS ONCE WE HAVE ALL THE DATA FROM BRACKEN ETC. 
 
 # Define relevant columns
 bp_cols <- c(
@@ -113,8 +112,6 @@ length_long <- length_summary %>%
 mean_length_summary <- length_long %>%
   group_by(Stage, Metric) %>%
   summarise(Length = mean(Length, na.rm = TRUE), .groups = "drop")
-
-print(mean_length_summary)
 
 # Plot
 p2 <- ggplot(length_long, aes(x = Stage, y = Length, group = interaction(sample, Metric),
