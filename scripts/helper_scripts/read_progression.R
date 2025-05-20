@@ -86,14 +86,10 @@ length_summary <- runs_summary %>%
   select(all_of(bp_cols)) %>%
   mutate(across(-sample, as.numeric)) %>%  # Ensure all length columns are numeric
   mutate(
-    preqc_avg = 90,
-      # pmin(preqc_avg_len_r1, preqc_avg_len_r2, na.rm = TRUE),
-    preqc_med = 90,
-      #pmin(preqc_med_len_r1, preqc_med_len_r2, na.rm = TRUE),
-    postqc_avg = 90,
-      #pmin(postqc_avg_len_r1, postqc_avg_len_r2, na.rm = TRUE),
-    postqc_med = 90,
-      #pmin(postqc_med_len_r1, postqc_med_len_r2, na.rm = TRUE),
+    preqc_avg = pmin(preqc_avg_len_r1, preqc_avg_len_r2, na.rm = TRUE),
+    preqc_med = pmin(preqc_med_len_r1, preqc_med_len_r2, na.rm = TRUE),
+    postqc_avg = pmin(postqc_avg_len_r1, postqc_avg_len_r2, na.rm = TRUE),
+    postqc_med = pmin(postqc_med_len_r1, postqc_med_len_r2, na.rm = TRUE),
     bt_avg = pmin(bt_avg_r1, bt_avg_r2, na.rm = TRUE),
     bt_med = pmin(bt_med_r1, bt_med_r2, na.rm = TRUE),
     clas_avg = pmin(clas_avg_r1, clas_avg_r2, na.rm = TRUE),
@@ -146,5 +142,5 @@ ggsave(output_path, p2, width = 8, height = 6, dpi = 300)
 combined_plot <- p1 + p2 
 
 output_path <- file.path(dirname(file_path), "combined_progression.png")
-ggsave(output_path, combined_plot,  width = 16, height = 12, dpi = 300)
+ggsave(output_path, combined_plot,  width = 16, height = 8, dpi = 300)
 
