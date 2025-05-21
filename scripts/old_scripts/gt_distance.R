@@ -62,6 +62,7 @@ p1 <- ggplot(df_lib, aes(x = Run, y = Reads, fill = Run)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+
 # Correlation: species abundance vs. library size (raw counts)
 cor_vals_raw <- apply(filtered, 1, \(x) cor(x, lib_sizes))
 df_cor_raw <- data.frame(Correlation = cor_vals_raw)

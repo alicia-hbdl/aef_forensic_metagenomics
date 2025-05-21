@@ -12,7 +12,7 @@ suppressPackageStartupMessages({
 
 # Parse command-line arguments
 args <- commandArgs(trailingOnly = TRUE)
-if (length(args) < 1) stop("Usage: Rscript combine_breports.R <path/to/breports>") # # At least one argument (file paths) is provided
+if (length(args) < 1) stop("Usage: Rscript combine_breports.R <path/to/breports>") # At least one argument (file paths) is provided
 file_paths <- args
 
 for (file_path in file_paths) { # Check if all provided file paths exist
