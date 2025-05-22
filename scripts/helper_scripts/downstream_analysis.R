@@ -29,6 +29,7 @@ suppressPackageStartupMessages({
   library(viridis)              # Colorblind-friendly color scales
   library(ggrepel)              # Non-overlapping text labels
   library(ggpubr)               # Statistical tests and plot annotation
+  library(scales)
 })
 
 ## ------------------ Parse Command-Line Arguments ------------------
@@ -75,9 +76,9 @@ combined_table <- data.frame(species = character(), stringsAsFactors = FALSE)
 for (file_path in breport_paths) {
   run_id <- basename(dirname(file_path)) # Extract run ID from folder name
 
-  # Read report and compute mean across numeric columns (handle NAs)
+  # Read report and compute mean across numeric columns
   run_species <- read_csv(file_path, show_col_types = FALSE) %>%
-    mutate(!!run_id := rowMeans(across(where(is.numeric), ~ replace_na(.x, 0)))) %>%
+    mutate(!!run_id := rowMeans(across(where(is.numeric), ~ replace_na(.x, 0)))) %>% # Replace NA with 0 
     select(species, !!sym(run_id)) # Keep only species and new column
 
   # Merge into the combined table
@@ -85,7 +86,7 @@ for (file_path in breport_paths) {
     run_species
   } else {
     full_join(combined_table, run_species, by = "species") %>%
-      mutate(across(where(is.numeric), ~ replace_na(.x, 0)))  # Fill missing values with 0
+      mutate(across(where(is.numeric), ~ replace_na(.x, 0))) # Fill missing values with 0
   }
 }
 
@@ -99,11 +100,11 @@ count_matrix <- combined_table %>%
 # Create row metadata for species
 row_data <- DataFrame(species = rownames(count_matrix))
 
-# Read and summarize run metadata (mean for numeric, first for categorical)
+# Read and summarize run metadata (aggregates across all samples in a run)
 col_data <- read_csv(opts$`runs-summary`, show_col_types = FALSE) %>%
-  group_by(run_id) %>%
+  group_by(run_id) %>% 
   summarise(
-    across(where(is.numeric), \(x) mean(x, na.rm = TRUE)) , # Average numeric values
+    across(where(is.numeric), \(x) mean(x, na.rm = TRUE)), # Average numeric values
     across(where(~ !is.numeric(.x)), dplyr::first), # Keep first instance for non-numeric
     .groups = "drop"
   ) %>%
@@ -128,68 +129,70 @@ se <- SummarizedExperiment(
 
 ## ------------------ Read Retention ------------------
 
-# Define columns representing total read counts at key pipeline stages
+# Define pipeline stages (read counts after major steps)
 stage_names <- c("trim_paired", "bt_paired", "kraken2_total", "kraken2_classified", "bracken_total")
 
-# Compute mean values to impute missing data
+# Fallback values if QC/trimming skipped (causes missing values)
 mean_trim <- mean(col_data$trim_paired[!is.nan(col_data$trim_paired)], na.rm = TRUE)
 mean_bt   <- mean(col_data$bt_paired[!is.nan(col_data$bt_paired)], na.rm = TRUE)
 
-# Aggregate read counts by database
+# Aggregate read counts by database (species presence/absence in DB affects classification)
 aggregated_summary <- as_tibble(col_data, rownames = "run_id") %>%
-  select(db_name, all_of(stage_names)) %>%                           
-  group_by(db_name) %>%
-  mutate(
-    trim_paired = if_else(is.nan(trim_paired), mean_trim, trim_paired),
+  select(db_name, all_of(stage_names)) %>%
+  group_by(db_name) %>%                                  
+  mutate( 
+    trim_paired = if_else(is.nan(trim_paired), mean_trim, trim_paired), # Impute missing
     bt_paired   = if_else(is.nan(bt_paired), mean_bt, bt_paired)
   ) %>%
-  summarise(across(all_of(stage_names), ~ mean(.x, na.rm = TRUE)), .groups = "drop")
-
-# Transform data for plotting and normalize to initial stage
+  summarise(across(all_of(stage_names), ~ mean(.x, na.rm = TRUE)), .groups = "drop") # Equal weight per DB
+                
+# Reshape & normalize to % of raw reads
 long_summary <- aggregated_summary %>%
-  pivot_longer(cols = all_of(stage_names), names_to = "Original", values_to = "Reads") %>%
-  mutate(Stage = factor(Original, levels = stage_names)) %>%  # Correctly assign Stage
+  pivot_longer(cols = all_of(stage_names), names_to = "Original", values_to = "Reads") %>% 
+  mutate(Stage = factor(Original, levels = stage_names)) %>% # Preserve stage order
   group_by(db_name = db_name) %>%
-  mutate(Fraction = Reads / Reads[Original == "trim_paired"]) %>%
-  mutate(Stage = recode(Stage,
-                        "trim_paired"        = "Raw Reads",
-                        "bt_paired"          = "Trimmed Reads",
+  mutate(Fraction = Reads / Reads[Original == "trim_paired"]) %>% # Normalize to % of raw reads
+  mutate(Stage = recode(Stage, # Rename for clarity
+                        "trim_paired"        = "Raw",
+                        "bt_paired"          = "Trimmed",
                         "kraken2_total"      = "Host Filtered",
                         "kraken2_classified" = "Classified (Kraken)",
                         "bracken_total"      = "Classified (Bracken)"
   )) %>%
   ungroup()
 
-# Compute average proportion per stage
+# Mean % retained at each stage across all DBs
 mean_summary <- long_summary %>%
   group_by(Stage) %>%
   summarise(Fraction = mean(Fraction, na.rm = TRUE), .groups = "drop")
 
-# Plot read retention over pipeline stages
+# Plot read retention progression across pipeline stages
 read_retention <- ggplot(long_summary, aes(x = Stage, y = Fraction, group = db_name, color = db_name)) +
-  geom_line(linewidth = 0.5, linetype = "dashed") +                     # sample lines
+  geom_line(linewidth = 0.5, alpha = 0.6) + # Per-database trend
   geom_line(data = mean_summary, aes(x = Stage, y = Fraction, group = 1), 
-            color = "black", linewidth = 1, inherit.aes = FALSE) +     
+            color = "grey", linewidth = 1, inherit.aes = FALSE) + # Mean trend 
   geom_point(data = mean_summary, aes(x = Stage, y = Fraction), 
-             color = "black", size = 2, inherit.aes = FALSE) +     
-  geom_text_repel(data = mean_summary, 
-            aes(x = Stage, y = Fraction, label = scales::percent(Fraction, accuracy = 0.01)),
-            color = "black", size = 3.5, vjust = -0.6, hjust = -0.3, inherit.aes = FALSE) +
-  theme_bw() +     
-  scale_color_brewer(palette = "Dark2") +      
+             color = "grey", size = 2, inherit.aes = FALSE) + # Mean values 
+  geom_text_repel(data = mean_summary, aes(x = Stage, y = Fraction, label = percent(Fraction, accuracy = 0.01)), 
+                  color = "black", size = 3, inherit.aes = FALSE) + # Add % labels to mean
+  scale_color_viridis_d(option = "D") +
   labs(title = "Progression of Read Count", y = "Proportion of Raw Reads", x = NULL, color = "Database") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "none")      
+  theme_bw() +
+  theme(plot.title = element_text(size = 10, face = "bold"),
+        axis.text = element_text(size = 8), axis.title = element_text(size = 9),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "none")
 
 ## ------------------ Read Length Progression ------------------
 
-# Define raw read length columns
+# Define pipeline stages (read counts after major steps)
 bp_cols <- c("preqc_avg_len_r1", "preqc_avg_len_r2", "preqc_med_len_r1", "preqc_med_len_r2",
   "postqc_avg_len_r1", "postqc_avg_len_r2", "postqc_med_len_r1", "postqc_med_len_r2",
   "bt_avg_r1", "bt_avg_r2", "bt_med_r1", "bt_med_r2",
   "clas_avg_r1", "clas_avg_r2", "clas_med_r1", "clas_med_r2",
   "unclas_avg_r1", "unclas_avg_r2", "unclas_med_r1", "unclas_med_r2")
 
-# Derive min average/median per stage per run
+# Calculate per-run min read length per stage (across R1/R2) to account for asymmetry
 min_read_data <- as_tibble(col_data, rownames = "run_id") %>%
   select(db_name, all_of(bp_cols)) %>%  
   mutate(
@@ -205,13 +208,13 @@ min_read_data <- as_tibble(col_data, rownames = "run_id") %>%
     unclas_med   = pmin(unclas_med_r1, unclas_med_r2, na.rm = TRUE)
   ) 
 
-# Impute missing values with global means
+# Fallback values if QC/trimming skipped (causes missing values)
 mean_preqc_avg <- mean(min_read_data$preqc_avg[!is.nan(min_read_data$preqc_avg)], na.rm = TRUE)
 mean_preqc_med  <- mean(min_read_data$preqc_med[!is.nan(min_read_data$preqc_med)], na.rm = TRUE)
 mean_postqc_avg <- mean(min_read_data$postqc_avg[!is.nan(min_read_data$postqc_avg)], na.rm = TRUE)
 mean_postqc_med  <- mean(min_read_data$postqc_med[!is.nan(min_read_data$postqc_med)], na.rm = TRUE)
 
-# Aggregate mean/median lengths per stage by database
+# Impute NAs and compute average read lengths per stage grouped by database
 length_summary <- min_read_data %>%
   group_by(db_name) %>%
   mutate(
@@ -223,61 +226,63 @@ length_summary <- min_read_data %>%
   summarise(across(c(preqc_avg, preqc_med, postqc_avg, postqc_med, bt_avg, bt_med, clas_avg, clas_med, unclas_avg, unclas_med),
                    ~ mean(.x, na.rm = TRUE)),.groups = "drop")
 
-# Reshape to long format for plotting
+# Reshape summary to long format for plotting 
 length_long <- length_summary %>%
-  pivot_longer(cols =-c(db_name, unclas_avg, unclas_med), names_to = "Stage_Metric", values_to = "Length") %>%
+  pivot_longer(cols = -c(db_name, unclas_avg, unclas_med), names_to = "Stage_Metric", values_to = "Length") %>%
   separate(Stage_Metric, into = c("Stage", "Metric"), sep = "_") %>%
-  mutate(Stage = factor(Stage,levels = c("preqc", "postqc", "bt", "clas"),
-                        labels = c("Raw Reads", "Trimmed Reads", "Host Filtered", "Classified Reads")),
+  mutate(Stage  = factor(Stage, levels = c("preqc", "postqc", "bt", "clas"), labels = c("Raw", "Trimmed", "Host Filtered", "Classified")),
          Metric = if_else(Metric == "avg", "Mean", "Median"))
 
-# Compute average read length per stage and metric
+# Compute mean read length per stage and metric 
 mean_length_summary <- length_long %>%
   group_by(Stage, Metric) %>%
   summarise(Length = mean(Length, na.rm = TRUE), .groups = "drop")
 
-# Plot progression of read length
-read_length <- ggplot(length_long, aes(x = Stage, y = Length, group = interaction(db_name, Metric), 
-                                       color = db_name, linetype = Metric)) +
+# Plot progression of read length across pipeline stages
+read_length <- ggplot(length_long, aes(x = Stage, y = Length, group = interaction(db_name, Metric), color = db_name, linetype = Metric)) +
   geom_line(linewidth = 0.6, alpha = 0.6, na.rm = TRUE) +
-  geom_line(data = mean_length_summary, aes(x = Stage, y = Length, group = Metric), 
-            color = "black", linewidth = 1, inherit.aes = FALSE) +
-  geom_point(data = mean_length_summary, aes(x = Stage, y = Length), 
-             color = "black", size = 2, inherit.aes = FALSE) +
-  geom_text_repel(data = mean_length_summary,
-            aes(x = Stage, y = Length, label = round(Length, 1)), color = "black", 
-            size = 3.2, vjust = -0.6,
-            inherit.aes = FALSE) +
-  labs(title = "Progression of Read Length", y = "Read Length (bp)", x = NULL, linetype = "Metric") +
-  scale_linetype_manual(values = c("Mean" = "dashed", "Median" = "solid")) +
+  geom_line(data = mean_length_summary, aes(x = Stage, y = Length, group = Metric), color = "grey", linewidth = 1) +
+  geom_point(data = mean_length_summary, aes(x = Stage, y = Length), color = "grey", size = 2, inherit.aes = FALSE) +
+  geom_text_repel(data = mean_length_summary, aes(x = Stage, y = Length, label = round(Length, 1)), color = "black", size = 3, inherit.aes = FALSE) +
+  labs(title = "Progression of Read Length", y = "Read Length (bp)", x = NULL, linetype = "Metric", color = "Database") +
+  scale_linetype_manual(values = c("Median" = "dashed", "Mean" = "solid")) +
+  scale_color_viridis_d(option = "D") +
   theme_bw() +
-  scale_color_brewer(palette = "Dark2") +    
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(plot.title = element_text(size = 10, face = "bold"),
+        axis.text = element_text(size = 8), axis.title = element_text(size = 9),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.title = element_text(size = 9, face = "bold"), legend.text = element_text(size = 8))
 
 ## ------------------ Boxplot: Classified vs Unclassified ------------------
 
-# Prepare long format for median classified/unclassified read length
+# Reshape median classified/unclassified read lengths into long format for plotting
 clas_unclas <- length_summary %>%
-  select(db_name, clas_med, unclas_med) %>%  
-  pivot_longer(cols = c(clas_med, unclas_med), names_to = "Type", values_to = "Reads") %>%  
-  mutate(Type = recode(Type,                
-                       "clas_med" = "Classified",
-                       "unclas_med" = "Unclassified"))
+  select(db_name, clas_med, unclas_med) %>%  # Keep relevant columns
+  pivot_longer(cols = c(clas_med, unclas_med), names_to = "Type", values_to = "Reads") %>%
+  mutate(Type = recode(Type, "clas_med" = "Classified", "unclas_med" = "Unclassified"))  # Rename for clarity
 
-# Boxplot with Wilcoxon test
+# Boxplot comparing median read lengths of classified vs unclassified reads
+# Unpaired Wilcoxon test: non-parametric (handles skewed data), compares medians of independent groups (classified vs unclassified reads)
 boxplot <- ggplot(clas_unclas, aes(x = Type, y = Reads, fill = Type)) +
-  geom_boxplot(alpha = 0.8) +                                 
-  geom_jitter(width = 0.1, size = 2, color = "black") +       
-  stat_compare_means(comparisons = list(c("Classified", "Unclassified")), 
-                     method = "wilcox.test", label = "p.format") +  
-  scale_fill_brewer(palette = "Set2") +                       
+  geom_boxplot(alpha = 0.8, color = "gray", size = 0.5) + 
+  geom_point(size = 1, color = "gray") + # Add raw data points
+  stat_compare_means(comparisons = list(c("Classified", "Unclassified")), method = "wilcox.test", size = 3) + # Unpaired Wilcoxon test
+  stat_summary(fun = median, geom = "text", aes(label = round(after_stat(y), 1)), size = 3, color = "black") + # Show median values
+  scale_fill_viridis_d(option = "D") + 
   labs(title = "Median Read Length Comparison", x = NULL, y = "Read Length (bp)") +
   theme_bw() +                                                
-  theme(legend.position = "none", axis.text.x = element_text(angle = 15, hjust = 1))
+  theme(plot.title = element_text(size = 10, face = "bold"),
+        axis.text = element_text(size = 8), axis.title = element_text(size = 9),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "none")
 
-# Save combined read progression figure
-read_progression <- boxplot + read_retention + read_length
-ggsave("read_progression.png", read_progression, width = 12, height = 6, dpi = 300)
+# Combine all plots (boxplot, read retention, and read length progression) and save
+read_progression <- boxplot + read_retention + read_length + 
+  plot_annotation(caption = "Note: The boxplot shows the median, and the line plot the mean, of median read lengths per database, hence the slight difference.",
+                  theme = theme(plot.caption = element_text(size = 8, hjust = 0, face = "italic")))
+            
+ggsave("read_progression.png", read_progression, width = 12, height = 4, dpi = 300)
+
 
 #=========================================================
 # Clustering with Ground Truth
@@ -285,95 +290,109 @@ ggsave("read_progression.png", read_progression, width = 12, height = 6, dpi = 3
 
 ##------------- Filter Count Matrix -------------
 
-# Extract count matrix
-mat <- assay(se, "counts")
+se_filtered <- se %>%
+  subset(rowSums(assay(., "counts") >= 20) >= (ncol(.) / 2)) %>% # Keep species with ≥20 reads in ≥50% of samples
+  subset(, colSums(assay(., "counts")) >= 100) # Keep samples with ≥100 total reads
 
-# Keep species with ≥20 reads in ≥50% of samples
-min_reads <- 20
-min_samples <- ncol(se) / 2
-rows_to_keep <- rowSums(mat >= min_reads) >= min_samples
-se_filtered <- se[rows_to_keep, ]
-
-# Keep samples with ≥100 total reads
+# Extract raw counts assay
 filtered_mat <- assay(se_filtered, "counts")
-cols_to_keep <- colSums(filtered_mat) >= 100
-se_filtered <- se_filtered[, cols_to_keep]
+
+# Compute total reads per sample (library size)
+lib_sizes <- colSums(filtered_mat)
 
 ##------------- Visualize Library Sizes -------------
 
-# Compute total reads per sample
-filtered_mat <- assay(se_filtered, "counts")
-lib_sizes <- colSums(filtered_mat)
+# Wrap into a dataframe for plotting
 df_lib <- data.frame(Run = names(lib_sizes), Reads = lib_sizes)
 
-# Barplot: total classified reads per sample
-p1 <- ggplot(df_lib, aes(x = Run, y = Reads, fill = Run)) +
+# Barplot: total classified reads per run
+p1 <- ggplot(
+  data.frame(Run = names(lib_sizes), Reads = lib_sizes), 
+  aes(x = Run, y = Reads, fill = Run)) +
   geom_bar(stat = "identity", show.legend = FALSE) +
-  labs(x = "Pipeline Run", y = "Classified Reads", title = "Classified Reads per Pipeline Run") +
+  scale_fill_viridis_d(option = "D") +  
+  labs(title = "Classified Reads per Pipeline Run", x = "Pipeline Run", y = "Classified Reads") +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(plot.title = element_text(size = 10, face = "bold"),
+        axis.text = element_text(size = 8), axis.title = element_text(size = 9),
+        axis.text.x = element_text(angle = 45, hjust = 1))
 
 ##------------- Normalize Count Matrix -------------
 
-# Correlation between raw species counts and library size
+# Correlation: how strongly does each species' abundance correlate with library size?
+
+# Raw correlations: species abundance vs. library size (shows library size bias)
 cor_vals_raw <- apply(filtered_mat, 1, \(x) cor(x, lib_sizes))
-df_cor_raw <- data.frame(Correlation = cor_vals_raw)
-p2 <- ggplot(df_cor_raw, aes(x = Correlation)) +
-  geom_histogram(binwidth = 0.05, fill = "skyblue", color = "black") +
-  stat_function(fun = dnorm, 
-                args = list(mean = mean(cor_vals_raw), sd = sd(cor_vals_raw)), 
-                color = "red", linewidth = 1) +
-  labs(x = "Correlation Coefficient", y = "Density", title = "Raw Abundance vs. Library Size") +
-  theme_minimal()
+p2 <- tibble(Correlation = cor_vals_raw) %>%
+  ggplot(aes(x = Correlation)) +
+  geom_histogram(binwidth = 0.05, fill = viridis(1, option = "D"), color = "black") +
+  stat_function(fun = dnorm, args = list(mean = mean(cor_vals_raw), sd = sd(cor_vals_raw)), color = "grey", linewidth = 1) + # Normal distribution curve 
+  labs(title = "Species Abundance Correlation with Library Size (Raw)", x = "Correlation", y = "Density") +
+  theme_minimal() + 
+  theme(plot.title = element_text(size = 10, face = "bold"),
+        axis.text = element_text(size = 8), axis.title = element_text(size = 9),
+        axis.text.x = element_text(angle = 45, hjust = 1))
 
-# Convert to CPM
-filtered_cpm <- t(t(filtered_mat) / lib_sizes * 1e6)
+# CPM normalization (adjusts for library size; Zymo is balanced → no genome correction)
+assay(se_filtered, "cpm") <- t(t(filtered_mat) / lib_sizes * 1e6)  # Add as new assay
 
-# Correlation after CPM normalization
-cor_vals_cpm <- apply(filtered_cpm, 1, \(x) cor(x, lib_sizes))
-df_cor_cpm <- data.frame(Correlation = cor_vals_cpm)
-p3 <- ggplot(df_cor_cpm, aes(x = Correlation)) +
-  geom_histogram(binwidth = 0.05, fill = "skyblue", color = "black") +
-  stat_function(fun = dnorm, 
-                args = list(mean = mean(cor_vals_cpm), sd = sd(cor_vals_cpm)), 
-                color = "red", linewidth = 1) +
-  labs(x = "Correlation (CPM)", y = "Number of Species", title = "CPM-Normalized Correlation") +
-  theme_minimal()
+# Correlation after CPM normalization (bias should be reduced)
+cor_vals_cpm <- apply(assay(se_filtered, "cpm"), 1, \(x) cor(x, lib_sizes))
+p3 <- tibble(Correlation = cor_vals_cpm) %>%
+  ggplot(aes(x = Correlation)) +
+  geom_histogram(binwidth = 0.05, fill = viridis(1, option = "D"), color = "black") +
+  stat_function(fun = dnorm, args = list(mean = mean(cor_vals_cpm), sd = sd(cor_vals_cpm)), color = "grey", linewidth = 1) + # Normal distribution curve 
+  labs(title = "Species Abundance Correlation with Library Size (CPM)", x = "Correlation", y = "Density") +
+  theme_minimal() + 
+  theme(plot.title = element_text(size = 10, face = "bold"),
+        axis.text = element_text(size = 8), axis.title = element_text(size = 9),
+        axis.text.x = element_text(angle = 45, hjust = 1))
 
 ## ------------- Log Transformation -------------
 
-# Log mean vs SD (CPM)
-df_var_cpm <- data.frame(Mean = log1p(rowMeans(filtered_cpm)), SD = log1p(rowSds(filtered_cpm)))
-cor_cpm <- cor(df_var_cpm$Mean, df_var_cpm$SD)
-p4 <- ggplot(df_var_cpm, aes(x = Mean, y = SD)) +
-  geom_point() +
-  geom_smooth(method = "lm", se = FALSE, color = "red", linewidth = 1) +
-  annotate("text", x = min(df_var_cpm$Mean), y = max(df_var_cpm$SD), 
-           label = paste0("r = ", round(cor_cpm, 3)), hjust = 0, size = 4, fontface = "italic") +
-  labs(x = "log(Mean CPM + 1)", y = "log(SD CPM + 1)", title = "Species Variability (CPM)") +
-  theme_minimal()
+# Plot log(Mean) vs log(SD) to examine heteroscedasticity; log(+1) avoids issues with 0s
+df_var_cpm <- data.frame(Mean = log1p(rowMeans(assay(se_filtered, "cpm"))), SD = log1p(rowSds(assay(se_filtered, "cpm"))))
+p4 <- ggplot(df_var_cpm, aes(x = Mean, y = SD, color = viridis(1, option = "D"))) +
+  geom_point(size = 2, color = viridis(1, option = "D")) +  
+  geom_smooth(formula = 'y ~ x', method = "lm", se = FALSE, color = "grey", linewidth = 1) +
+  annotate("text", x = min(df_var_cpm$Mean), y = max(df_var_cpm$SD),
+           label = paste0("r = ", round(cor(df_var_cpm$Mean, df_var_cpm$SD), 3)), hjust = 0, size = 3, fontface = "italic") +
+  labs(x = "log(Mean CPM + 1)", y = "log(SD CPM + 1)", title = "Species Abundance Variability (CPM)") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 10, face = "bold"),
+        axis.text = element_text(size = 8), axis.title = element_text(size = 9),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "none")
 
-# Log2 CPM
-filtered_logcpm <- log2(filtered_cpm+1)
+# Variance stabilization: log2 transform CPM 
+assay(se_filtered, "logcpm") <- log2(assay(se_filtered, "cpm")+1)
 
-# Log mean vs SD (logCPM)
-df_var_logcpm <- data.frame(Mean = log1p(rowMeans(filtered_logcpm)), SD = log1p(rowSds(filtered_logcpm)))
-cor_logcpm <- cor(df_var_logcpm$Mean, df_var_logcpm$SD)
+# Analyze mean–SD relationship again
+df_var_logcpm <- data.frame(Mean = rowMeans(assay(se_filtered, "logcpm")), SD = rowSds(assay(se_filtered, "logcpm")))
 p5 <- ggplot(df_var_logcpm, aes(x = Mean, y = SD)) +
-  geom_point() +
-  geom_smooth(method = "lm", se = FALSE, color = "red", linewidth = 1) +
-  annotate("text", x = max(df_var_logcpm$Mean)-0.2, y = max(df_var_logcpm$SD), 
-           label = paste0("r = ", round(cor_logcpm, 3)), hjust = 0, size = 4, fontface = "italic") +
-  labs(x = "log(Mean logCPM + 1)", y = "log(SD logCPM + 1)", title = "Species Variability (logCPM)") +
-  theme_minimal()
+  geom_point(size = 2, color = viridis(1, option = "D")) +  
+  geom_smooth(formula = 'y ~ x', method = "lm", se = FALSE, color = "grey", linewidth = 1) +
+  annotate("text", x = max(df_var_logcpm$Mean) - 0.2, y = max(df_var_logcpm$SD),
+           label = paste0("r = ", round(cor(df_var_logcpm$Mean, df_var_logcpm$SD), 3)), hjust = +1, size = 3, fontface = "italic") +
+  labs(x = "Mean logCPM", y = "SD logCPM", title = "Species Abundance Variability (logCPM)") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 10, face = "bold"),
+        axis.text = element_text(size = 8), axis.title = element_text(size = 9),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "none")
 
+# Combine and export figure
 combined_transformations <- p1 / (p2 + p3) / (p4 + p5) 
 ggsave("combined_transformations.png", combined_transformations, width = 10, height = 10) 
+
+#=========================================================
+# Clustering with Ground Truth
+#=========================================================
 
 ##------------- Dimensionality Reduction -------------
 
 # PCA
-pca <- prcomp(t(filtered_logcpm), scale. = TRUE)
+pca <- prcomp(t(assay(se_filtered, "logcpm") ), scale. = TRUE)
 pca_df <- as.data.frame(pca$x) %>% rownames_to_column("run_id")
 p6 <- ggplot(pca_df, aes(x = PC1, y = PC2, label = sample, color = sample)) +
   geom_point(size = 3, show.legend = FALSE) +
@@ -382,10 +401,10 @@ p6 <- ggplot(pca_df, aes(x = PC1, y = PC2, label = sample, color = sample)) +
   theme_minimal()
 
 # t-SNE
-tsne <- Rtsne(t(filtered_logcpm), perplexity = 1)
+tsne <- Rtsne(t(assay(se_filtered, "logcpm") ), perplexity = 3)
 tsne_df <- as.data.frame(tsne$Y)
 colnames(tsne_df) <- c("tsne_1", "tsne_2")
-tsne_df$run_id <- colnames(filtered_logcpm)
+tsne_df$run_id <- colnames(assay(se_filtered, "logcpm") )
 p7 <- ggplot(tsne_df, aes(x = tsne_1, y = tsne_2, label = sample, color = run_id)) +
   geom_point(size = 3, show.legend = FALSE) +
   geom_text_repel(size = 3, show.legend = FALSE, max.overlaps = Inf) +
@@ -394,10 +413,10 @@ p7 <- ggplot(tsne_df, aes(x = tsne_1, y = tsne_2, label = sample, color = run_id
 
 # UMAP
 umap_cfg <- umap.defaults; umap_cfg$n_neighbors <- 3
-umap_res <- umap(t(filtered_logcpm), config = umap_cfg)
+umap_res <- umap(t(assay(se_filtered, "logcpm") ), config = umap_cfg)
 umap_df <- as.data.frame(umap_res$layout)
 colnames(umap_df) <- c("umap_1", "umap_2")
-umap_df$run_id <- colnames(filtered_logcpm)
+umap_df$run_id <- colnames(assay(se_filtered, "logcpm") )
 p8 <- ggplot(umap_df, aes(x = umap_1, y = umap_2, label = sample, color = run_id)) +
   geom_point(size = 3, show.legend = FALSE) +
   geom_text_repel(size = 3, show.legend = FALSE, max.overlaps = Inf) +
@@ -420,7 +439,7 @@ pheatmap_grob <- function(mat) {
 }
 
 # Distances in original logCPM space (species abundance profiles)
-raw_dists   <- as.matrix(dist(t(filtered_logcpm)))
+raw_dists   <- as.matrix(dist(t(assay(se_filtered, "logcpm") )))
 p9  <- pheatmap_grob(raw_dists)
 
 # Distances in PCA space (first 2 principal components)
@@ -472,7 +491,7 @@ ggsave("combined_distances.png", combined_distances, width = 12, height = 8)
 # 4: Removed 5 rows containing missing values or values outside the scale range (`geom_point()`). 
 # `geom_smooth()` using formula = 'y ~ x'
 # `geom_smooth()` using formula = 'y ~ x'
-# Error in Rtsne.default(t(filtered_logcpm), perplexity = 1) : 
+# Error in Rtsne.default(t(assay(se_filtered, "logcpm") ), perplexity = 1) : 
 #   Remove duplicates before running TSNE.
 # Calls: Rtsne -> Rtsne.default
 # Execution halted
