@@ -317,9 +317,9 @@ read_progression <- boxplot + read_retention + read_length +
 ggsave("read_progression.png", read_progression, width = 12, height = 4.5, dpi = 300)
 
 #=========================================================
-# Compare Normalizations 
+# Data Preprocessing
 #=========================================================
-
+##------------- Compare Normalizations -------------
 # This section compares L2 distance to ground truth using two normalization methods:
 # - Total reads reflect true detection rates but penalize under-classified samples.
 # - Classified reads emphasize relative proportions among detected taxa, but can inflate abundances if classification rates vary.
@@ -367,10 +367,6 @@ p1 <- ggplot(df_l2, aes(x = Database, y = L2, fill = Normalization)) +
   theme(plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
         axis.text.x = element_text(angle = 45, hjust = 1))
-
-#=========================================================
-# Data Preprocessing
-#=========================================================
 
 ##------------- Visualize Library Sizes (Classified) -------------
 # Barplot: total classified reads per run
@@ -489,6 +485,93 @@ combined_transformations <- (p1 + p2) / (p3 + p4) / (p5 + p6)
 ggsave("combined_transformations.png", combined_transformations, width = 10, height = 10) 
 
 #=========================================================
+# Database Precision and Recall 
+#=========================================================
+# TODO: get the Precision and Recall Script to Work 
+# # Load required libraries
+# library(SummarizedExperiment)
+# library(precrec)
+# library(tidyverse)
+# library(viridis)
+# library(patchwork)
+# 
+# # Extract logCPM matrix
+# logcpm_mat <- assay(se, "logcpm")
+# 
+# # Identify ground truth profile
+# gt_profile <- logcpm_mat[, "ground_truth"]
+# gt_species <- names(gt_profile[gt_profile > 0])
+# 
+# # Remove ground truth from test data
+# logcpm_mat <- logcpm_mat[, colnames(logcpm_mat) != "ground_truth"]
+# 
+# # Generate labels: 1 if species is in ground truth, 0 otherwise
+# label_vec <- as.integer(rownames(logcpm_mat) %in% gt_species)
+# 
+# # Convert logCPM matrix to list of vectors for precrec input
+# score_list <- as.list(as.data.frame(logcpm_mat))
+# label_list <- rep(list(label_vec), length(score_list))
+# modnames <- names(score_list)
+# 
+# # Evaluate precision-recall curves
+# mmod <- evalmod(
+#   scores = score_list,
+#   labels = label_list,
+#   modnames = modnames
+# )
+# 
+# # Lookup: run → database
+# db_lookup <- colData(se)[modnames, "db_name"]
+# names(db_lookup) <- modnames
+# 
+# # Extract AUPR per run (non-piped version)
+# aucs <- auc(mmod)
+# aupr_df <- aucs[aucs$curvetype == "PRC", ]
+# aupr_df$Run <- aupr_df$modname
+# aupr_df$AUPR <- aupr_df$auc
+# aupr_df$Database <- db_lookup[aupr_df$Run]
+# 
+# # --------- Boxplot: AUPR per database ---------
+# 
+# p_aupr <- ggplot(aupr_df, aes(x = Database, y = AUPR, fill = Database)) +
+#   geom_boxplot(alpha = 0.8) +
+#   geom_jitter(width = 0.2, size = 1, color = "gray30") +
+#   scale_fill_viridis_d(option = "D", end = 0.85) +
+#   labs(title = "AUPR per Database", x = "Database", y = "Area Under PR Curve") +
+#   theme_minimal() +
+#   theme(
+#     plot.title = element_text(size = 10, face = "bold"),
+#     axis.text.x = element_text(angle = 45, hjust = 1),
+#     axis.text = element_text(size = 8),
+#     axis.title = element_text(size = 9),
+#     legend.position = "none"
+#   )
+# 
+# # --------- PR Curves per database ---------
+# 
+# curve_data <- as.data.frame(mmod) %>%
+#   filter(curvetypes == "PRC") %>%
+#   mutate(Database = db_lookup[modnames])
+# 
+# p_pr <- ggplot(curve_data, aes(x = x, y = y, group = modnames, color = Database)) +
+#   geom_line(alpha = 0.8, linewidth = 0.7) +
+#   scale_color_viridis_d(option = "D", end = 0.85) +
+#   labs(title = "Precision–Recall Curves", x = "Recall", y = "Precision") +
+#   theme_minimal() +
+#   theme(
+#     plot.title = element_text(size = 10, face = "bold"),
+#     axis.text = element_text(size = 8),
+#     axis.title = element_text(size = 9),
+#     legend.title = element_text(size = 9, face = "bold"),
+#     legend.text = element_text(size = 8)
+#   )
+# 
+# # --------- Combine and Save ---------
+# 
+# final_plot <- p_aupr + p_pr + plot_layout(widths = c(1, 1.4))
+# ggsave("logcpm_precision_recall_summary.png", final_plot, width = 12, height = 5)
+
+#=========================================================
 # Clustering with Ground Truth
 #=========================================================
 
@@ -585,7 +668,6 @@ p12 <- pheatmap_grob(tsne_dists)
 
 combined_plot <- (p6 + p7 + p8) / (p10 + p11 + p12)
 ggsave("combined_distances.png", combined_plot, width = 12, height = 8) 
-
 
 # TODO: Use distances from "truth" column to rank best-matching configurations
 
