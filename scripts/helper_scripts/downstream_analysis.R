@@ -68,6 +68,8 @@ invisible(lapply(all_paths, function(f) {
 #=========================================================
 
 ## ------------- Load Bracken reports ------------- 
+# Step 1: Load and merge combined Bracken reports (one per run) into a single species-by-run table
+# Note: These reports are already aggregated per run — no sample-level detail is retained
 
 # Initialize empty table to collect species counts
 combined_table <- data.frame(species = character(), stringsAsFactors = FALSE)
@@ -90,6 +92,9 @@ for (file_path in breport_paths) {
   }
 }
 
+## ------------- Add Ground Truth ------------- 
+# Step 2: Merge ground truth profile into the species table and prepare a count matrix for SummarizedExperiment
+
 # Add ground truth to combined table
 truth_data <- read_csv(opts$`ground-truth`, show_col_types = FALSE) 
 truth_data$ground_truth <- truth_data$abundance
@@ -105,7 +110,8 @@ count_matrix <- combined_table %>%
   column_to_rownames("species") %>%
   as.matrix()
 
-## ------------- Assemble metadata ------------- 
+## ------------- Assemble Metadata ------------- 
+# Step 3: Extract species (row) and run-level (column) metadata
 
 # Create row metadata for species
 row_data <- DataFrame(species = rownames(count_matrix))
@@ -144,6 +150,9 @@ count_matrix <- count_matrix[, ordered_runs]
 col_data <- col_data[ordered_runs, , drop = FALSE]
 col_data["ground_truth", "db_name"] <- "ground_truth"
 
+## ------------- Build & Filter SummarizedExperiment ------------- 
+# Step 4: Construct and clean the final SummarizedExperiment object
+
 # Create SummarizedExperiment object
 se <- SummarizedExperiment(
   assays = list(counts = count_matrix),
@@ -162,6 +171,7 @@ se <- se %>%
 #=========================================================
 
 ## ------------------ Read Retention ------------------
+# Plot how the number of reads changes across pipeline stages (trimming, host removal, classification)
 
 # Define pipeline stages (read counts after major steps)
 stage_names <- c("trim_paired", "bt_paired", "kraken2_total", "kraken2_classified", "bracken_total")
@@ -210,6 +220,7 @@ read_retention <- ggplot(long_summary, aes(x = Stage, y = Fraction, group = db_n
         legend.position = "none")
 
 ## ------------------ Read Length Progression ------------------
+# Plot how the read length changes across pipeline stages (trimming, host removal, classification)
 
 # Define pipeline stages (read counts after major steps)
 bp_cols <- c("preqc_avg_len_r1", "preqc_avg_len_r2", "preqc_med_len_r1", "preqc_med_len_r2",
@@ -274,6 +285,7 @@ read_length <- ggplot(length_long, aes(x = Stage, y = Length, group = interactio
         legend.title = element_text(size = 9, face = "bold"), legend.text = element_text(size = 8))
 
 ## ------------------ Boxplot: Classified vs Unclassified ------------------
+# Compare read lengths between classified and unclassified reads using a boxplot
 
 # Reshape median classified/unclassified read lengths into long format for plotting
 clas_unclas <- length_summary %>%
@@ -304,25 +316,66 @@ read_progression <- boxplot + read_retention + read_length +
 ggsave("read_progression.png", read_progression, width = 12, height = 4.5, dpi = 300)
 
 #=========================================================
-# Clustering with Ground Truth
+# Compare Normalizations 
 #=========================================================
 
-##------------- Filter Count Matrix -------------
+# This section compares L2 distance to ground truth using two normalization methods:
+# - Total reads reflect true detection rates but penalize under-classified samples.
+# - Classified reads emphasize relative proportions among detected taxa, but can inflate abundances if classification rates vary.
+# If classification bias is uniform across taxa, this inflation may cancel out, preserving relative accuracy.
 
-# Extract raw counts assay
-filtered_mat <- assay(se, "counts")
+# Get species count matrix from SummarizedExperiment
+counts_mat <- assay(se, "counts")
 
-lib_sizes <- setNames(colData(se)$bracken_total, colnames(se)) # Number of reads classified and redistributed by Bracken
-# Effective number of reads that contribute to species-level abundance
+# Get list of run IDs
+runs <- colnames(counts_mat)
 
-#lib_sizes      <- setNames(colData(se)$bt_paired, colnames(se)) # Number of reads remaining after Bowtie2 host filtering
-# Reflects the raw metagenomic input available before classification
+# Normalize by total reads (bt_paired)
+lib_sizes <- setNames(colData(se)$bt_paired, runs)
+norm_total <- sweep(counts_mat, 2, lib_sizes, FUN = "/")
 
-##------------- Visualize Library Sizes -------------
+# Normalize by classified reads (bracken_total)
+class_sizes <- setNames(colData(se)$bracken_total, runs)
+norm_class <- sweep(counts_mat, 2, class_sizes, FUN = "/")
+
+# Extract and prepare ground truth profile
+gt_profile <- norm_total[, "ground_truth"]
+gt_profile <- gt_profile / sum(gt_profile)  # Normalize to relative abundance
+norm_total <- norm_total[, runs != "ground_truth"]
+norm_class <- norm_class[, runs != "ground_truth"]
+
+# Define L2 distance to ground truth
+l2_dist <- function(run_col) sqrt(sum((run_col - gt_profile)^2))
+df_l2 <- tibble(
+  Run = rep(colnames(norm_total), 2),
+  L2 = c(
+    apply(norm_class, 2, l2_dist), # Distances using classified read normalization
+    apply(norm_total, 2, l2_dist) #  Distances using total read normalization
+  ),
+  Normalization = rep(c("Classified", "Total"), each = ncol(norm_total))
+) %>%
+  mutate(Database = colData(se)[Run, "db_name"])
+
+# Plot L2 distances by database
+p1 <- ggplot(df_l2, aes(x = Database, y = L2, fill = Normalization)) +
+  geom_boxplot(alpha = 0.8, position = position_dodge(width = 0.8)) +
+  geom_point(aes(group = Normalization), position = position_dodge(width = 0.8), size = 1, color = "gray") +
+  labs(title = "Impact of Normalization on Profile Accuracy", y = "L2 Distance to Ground Truth", x = "Database") +
+  scale_fill_viridis_d(option = "D", end = 0.8) +
+  theme_bw() +
+  theme(plot.title = element_text(size = 10, face = "bold"),
+        axis.text = element_text(size = 8), axis.title = element_text(size = 9),
+        axis.text.x = element_text(angle = 45, hjust = 1))
+
+#=========================================================
+# Data Preprocessing
+#=========================================================
+
+##------------- Visualize Library Sizes (Classified) -------------
 
 # Barplot: total classified reads per run
-p1 <- ggplot(
-  data.frame(Run = names(lib_sizes), Reads = lib_sizes), 
+p2 <- ggplot(
+  data.frame(Run = names(class_sizes), Reads = class_sizes), 
   aes(x = Run, y = Reads, fill = Run)) +
   geom_bar(stat = "identity", show.legend = FALSE) +
   scale_fill_viridis_d(option = "D") +  
@@ -332,47 +385,47 @@ p1 <- ggplot(
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
         axis.text.x = element_text(angle = 45, hjust = 1))
 
-##------------- Normalize Count Matrix -------------
+##------------- Data Normalization -------------
 
-if (length(unique(lib_sizes)) != 1) {
-  cor_vals_raw <- apply(filtered_mat, 1, \(x) cor(x, lib_sizes))
-  p2 <- tibble(Correlation = cor_vals_raw) %>%
-    ggplot(aes(x = Correlation)) +
-    geom_histogram(binwidth = 0.05, fill = viridis(1, option = "D"), color = "black") +
-    stat_function(fun = dnorm, args = list(mean = mean(cor_vals_raw), sd = sd(cor_vals_raw)), 
-                  color = "grey", linewidth = 1) + # Normal distribution curve 
-    labs(title = "Species Abundance Correlation with Library Size (Raw)", x = "Correlation", y = "Density") +
-    theme_minimal() + 
-    theme(plot.title = element_text(size = 10, face = "bold"),
-          axis.text = element_text(size = 8), axis.title = element_text(size = 9),
-          axis.text.x = element_text(angle = 45, hjust = 1))
+cor_vals_raw <- apply(counts_mat, 1, \(x) cor(x, class_sizes))
+p3 <- tibble(Correlation = cor_vals_raw) %>%
+  ggplot(aes(x = Correlation)) +
+  geom_histogram(binwidth = 0.05, fill = viridis(1, option = "D"), color = "black") +
+  stat_function(fun = dnorm, args = list(mean = mean(cor_vals_raw), sd = sd(cor_vals_raw)), 
+                color = "grey", linewidth = 1) + # Normal distribution curve 
+  labs(title = "Species Abundance Correlation with Library Size (Raw)", x = "Correlation", y = "Density") +
+  theme_minimal() + 
+  theme(plot.title = element_text(size = 10, face = "bold"),
+        axis.text = element_text(size = 8), axis.title = element_text(size = 9),
+        axis.text.x = element_text(angle = 45, hjust = 1))
   
-  # CPM normalization (adjusts for library size; Zymo is balanced → no genome correction)
-  assay(se, "cpm") <- t(t(filtered_mat) / lib_sizes * 1e6)  # Add as new assay
-  
-  # Correlation after CPM normalization (bias should be reduced)
-  cor_vals_cpm <- apply(assay(se, "cpm"), 1, \(x) cor(x, lib_sizes))
-  p3 <- tibble(Correlation = cor_vals_cpm) %>%
-    ggplot(aes(x = Correlation)) +
-    geom_histogram(binwidth = 0.05, fill = viridis(1, option = "D"), color = "black") +
-    stat_function(fun = dnorm, args = list(mean = mean(cor_vals_cpm), sd = sd(cor_vals_cpm)),
-                  color = "grey", linewidth = 1) + # Normal distribution curve 
-    labs(title = "Species Abundance Correlation with Library Size (CPM)", x = "Correlation", y = "Density") +
-    theme_minimal() + 
-    theme(plot.title = element_text(size = 10, face = "bold"),
-          axis.text = element_text(size = 8), axis.title = element_text(size = 9),
-          axis.text.x = element_text(angle = 45, hjust = 1))
-} else {
-  # CPM normalization (adjusts for library size; Zymo is balanced → no genome correction)
-  assay(se, "cpm") <- t(t(filtered_mat) / lib_sizes * 1e6)  # Add as new assay
-} 
-  
-## ------------- Log Transformation -------------
+# CPM normalization (adjusts for library size; Zymo is balanced → no genome correction)
+assay(se, "cpm") <- t(t(counts_mat) / class_sizes * 1e6)  # Add as new assay
+cpm_mat <- assay(se, "cpm")
 
-# Plot log(Mean) vs log(SD) to examine heteroscedasticity; log(+1) avoids issues with 0s
-df_var_cpm <- data.frame(Mean = log1p(rowMeans(assay(se, "cpm"))), 
-                         SD = log1p(rowSds(assay(se, "cpm"))))
-p4 <- ggplot(df_var_cpm, aes(x = Mean, y = SD, color = viridis(1, option = "D"))) +
+# Correlation after CPM normalization (bias should be reduced)
+cor_vals_cpm <- apply(cpm_mat, 1, \(x) cor(x, class_sizes))
+p4 <- tibble(Correlation = cor_vals_cpm) %>%
+  ggplot(aes(x = Correlation)) +
+  geom_histogram(binwidth = 0.05, fill = viridis(1, option = "D"), color = "black") +
+  stat_function(fun = dnorm, args = list(mean = mean(cor_vals_cpm), sd = sd(cor_vals_cpm)),
+                color = "grey", linewidth = 1) + # Normal distribution curve 
+  labs(title = "Species Abundance Correlation with Library Size (CPM)", x = "Correlation", y = "Density") +
+  theme_minimal() + 
+  theme(plot.title = element_text(size = 10, face = "bold"),
+        axis.text = element_text(size = 8), axis.title = element_text(size = 9),
+        axis.text.x = element_text(angle = 45, hjust = 1))
+
+## ------------- Variance Stabilisation -------------
+
+# Plot log(Mean) vs log(SD) 
+# - To examine heteroscedasticity (when the variance of a variable depends on its mean)
+# - Log(+1) avoids issues with 0s
+
+df_var_cpm <- data.frame(Mean = log1p(rowMeans(cpm_mat)), 
+                         SD = log1p(rowSds(cpm_mat)))
+
+p5 <- ggplot(df_var_cpm, aes(x = Mean, y = SD, color = viridis(1, option = "D"))) +
   geom_point(size = 2, color = viridis(1, option = "D")) +  
   geom_smooth(formula = 'y ~ x', method = "lm", se = FALSE, color = "grey", linewidth = 1) +
   annotate("text", x = min(df_var_cpm$Mean), y = max(df_var_cpm$SD),
@@ -386,12 +439,12 @@ p4 <- ggplot(df_var_cpm, aes(x = Mean, y = SD, color = viridis(1, option = "D"))
         legend.position = "none")
 
 # Variance stabilization: log2 transform CPM 
-assay(se, "logcpm") <- log2(assay(se, "cpm")+1)
+assay(se, "logcpm") <- log2(cpm_mat+1)
 
 # Analyze mean–SD relationship again
 df_var_logcpm <- data.frame(Mean = rowMeans(assay(se, "logcpm")), 
                             SD = rowSds(assay(se, "logcpm")))
-p5 <- ggplot(df_var_logcpm, aes(x = Mean, y = SD)) +
+p6 <- ggplot(df_var_logcpm, aes(x = Mean, y = SD)) +
   geom_point(size = 2, color = viridis(1, option = "D")) +  
   geom_smooth(formula = 'y ~ x', method = "lm", se = FALSE, color = "grey", linewidth = 1) +
   annotate("text", x = max(df_var_logcpm$Mean) - 0.2, y = max(df_var_logcpm$SD),
@@ -404,14 +457,8 @@ p5 <- ggplot(df_var_logcpm, aes(x = Mean, y = SD)) +
         axis.text.x = element_text(angle = 45, hjust = 1),
         legend.position = "none")
 
-# Combine and export figure
-if (length(unique(lib_sizes)) != 1) {
-  combined_transformations <- p1 / (p2 + p3) / (p4 + p5) 
-  ggsave("combined_transformations_varied.png", combined_transformations, width = 10, height = 10) 
-} else {
-    combined_transformations <- p1 / (p4 + p5) 
-    ggsave("combined_transformations_constant.png", combined_transformations, width = 10, height = 10) 
-}
+combined_transformations <- (p1 + p2) / (p3 + p4) / (p5 + p6) 
+ggsave("combined_transformations.png", combined_transformations, width = 10, height = 10) 
 
 #=========================================================
 # Clustering with Ground Truth
