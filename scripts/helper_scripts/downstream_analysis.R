@@ -167,7 +167,7 @@ se <- SummarizedExperiment(
 # Filter low quality data 
 se <- se %>%
   subset(rowSums(assay(., "counts")) >= 200) %>%  # Keep species with ≥150 total reads across all runs (not per-sample filtering; preserves missing species)
-  subset(, colSums(assay(., "counts")) >= 150) %>%  # Keep runs with ≥100 total reads
+  subset(, colSums(assay(., "counts")) >= 300) %>%  # Keep runs with ≥100 total reads
   subset(, !duplicated(t(assay(., "counts"))))  # Remove duplicated count profiles 
 
 #=========================================================
