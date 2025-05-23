@@ -162,7 +162,7 @@ se <- SummarizedExperiment(
 
 # Filter low quality data 
 se <- se %>%
-  subset(rowSums(assay(., "counts")) >= 150) %>%  # Keep species with ≥150 total reads across all runs (not per-sample filtering; preserves missing species)
+  subset(rowSums(assay(., "counts")) >= 200) %>%  # Keep species with ≥150 total reads across all runs (not per-sample filtering; preserves missing species)
   subset(, colSums(assay(., "counts")) >= 150) %>%  # Keep runs with ≥100 total reads
   subset(, !duplicated(t(assay(., "counts"))))  # Remove duplicated count profiles 
 
@@ -195,7 +195,8 @@ long_summary <- aggregated_summary %>%
                         "kraken2_classified" = "Classified (Kraken)",
                         "bracken_total"      = "Classified (Bracken)"
   )) %>%
-  ungroup()
+  filter(db_name != "ground_truth") %>%
+  ungroup() 
 
 # Mean % retained at each stage across all DBs
 mean_summary <- long_summary %>%
@@ -232,7 +233,7 @@ bp_cols <- c("preqc_avg_len_r1", "preqc_avg_len_r2", "preqc_med_len_r1", "preqc_
 # Calculate per-run min read length per stage (across R1/R2) to account for asymmetry
 min_read_data <- as_tibble(colData(se), rownames = "run_id") %>%
   select(db_name, all_of(bp_cols)) %>%  
-  filter(!is.na(db_name)) %>%
+  filter(db_name != "ground_truth") %>%
   mutate(
     preqc_avg  = pmin(preqc_avg_len_r1, preqc_avg_len_r2, na.rm = TRUE),
     preqc_med  = pmin(preqc_med_len_r1, preqc_med_len_r2, na.rm = TRUE),
@@ -358,11 +359,11 @@ df_l2 <- tibble(
 
 # Plot L2 distances by database
 p1 <- ggplot(df_l2, aes(x = Database, y = L2, fill = Normalization)) +
-  geom_boxplot(alpha = 0.8, position = position_dodge(width = 0.8)) +
+  geom_boxplot(alpha = 0.6, position = position_dodge(width = 0.8)) +
   geom_point(aes(group = Normalization), position = position_dodge(width = 0.8), size = 1, color = "gray") +
   labs(title = "Impact of Normalization on Profile Accuracy", y = "L2 Distance to Ground Truth", x = "Database") +
-  scale_fill_viridis_d(option = "D", end = 0.8) +
-  theme_bw() +
+  scale_fill_viridis_d(option = "D") +
+  theme_minimal() +
   theme(plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
         axis.text.x = element_text(angle = 45, hjust = 1))
@@ -372,11 +373,10 @@ p1 <- ggplot(df_l2, aes(x = Database, y = L2, fill = Normalization)) +
 #=========================================================
 
 ##------------- Visualize Library Sizes (Classified) -------------
-
 # Barplot: total classified reads per run
-p2 <- ggplot(
-  data.frame(Run = names(class_sizes), Reads = class_sizes), 
-  aes(x = Run, y = Reads, fill = Run)) +
+p2 <- data.frame(Run = names(class_sizes), Reads = class_sizes) %>%
+  filter(Run != "ground_truth") %>%
+  ggplot(aes(x = Run, y = Reads, fill = Run)) +
   geom_bar(stat = "identity", show.legend = FALSE) +
   scale_fill_viridis_d(option = "D") +  
   labs(title = "Classified Reads per Pipeline Run", x = "Pipeline Run", y = "Classified Reads") +
@@ -386,44 +386,65 @@ p2 <- ggplot(
         axis.text.x = element_text(angle = 45, hjust = 1))
 
 ##------------- Data Normalization -------------
+# This section examines the correlation of species abundance with classification depth before and after CPM normalization (ground truth excluded).
+# CPM adjusts for number of classified reads; TPM is unnecessary as ZymoBIOMICS is genome-balanced.
 
-cor_vals_raw <- apply(counts_mat, 1, \(x) cor(x, class_sizes))
+# Remove ground truth from class sizes
+class_sizes_nogt <- class_sizes[names(class_sizes) != "ground_truth"] 
+
+# Prepare count matrix 
+counts_mat_nogt <- counts_mat %>%
+  .[, colnames(.) != "ground_truth"] %>%      # Exclude ground truth column
+  .[rowSums(.) > 0, ]                         # Exclude species with zero counts across all samples
+
+# Compute correlation between species abundance and classified read count (pre-CPM)
+cor_vals_raw <- apply(counts_mat_nogt, 1, \(x) cor(x, class_sizes_nogt))
+
+# Plot raw correlation distribution
 p3 <- tibble(Correlation = cor_vals_raw) %>%
   ggplot(aes(x = Correlation)) +
-  geom_histogram(binwidth = 0.05, fill = viridis(1, option = "D"), color = "black") +
+  geom_histogram(binwidth = 0.05, boundary = 0, fill = viridis(1, option = "D"), color = "black") +
   stat_function(fun = dnorm, args = list(mean = mean(cor_vals_raw), sd = sd(cor_vals_raw)), 
                 color = "grey", linewidth = 1) + # Normal distribution curve 
-  labs(title = "Species Abundance Correlation with Library Size (Raw)", x = "Correlation", y = "Density") +
+  scale_x_continuous(limits = c(-1, 1)) +
+  labs(title = "Raw Correlation Distribution", x = "Correlation", y = "Density") +
   theme_minimal() + 
   theme(plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
         axis.text.x = element_text(angle = 45, hjust = 1))
-  
-# CPM normalization (adjusts for library size; Zymo is balanced → no genome correction)
+
+# Apply CPM normalization using classified read depth
 assay(se, "cpm") <- t(t(counts_mat) / class_sizes * 1e6)  # Add as new assay
 cpm_mat <- assay(se, "cpm")
 
-# Correlation after CPM normalization (bias should be reduced)
-cor_vals_cpm <- apply(cpm_mat, 1, \(x) cor(x, class_sizes))
+# Prepare normalized matrix
+cpm_mat_nogt <- cpm_mat %>%
+  .[, colnames(.) != "ground_truth"] %>%      # Exclude ground truth column
+  .[rowSums(.) > 0, ]                         # Exclude species with zero CPM across all samples
+
+# Compute correlation after CPM normalization
+cor_vals_cpm <- apply(cpm_mat_nogt, 1, \(x) cor(x, class_sizes_nogt))
+
+# Plot CPM-normalized correlation distribution
 p4 <- tibble(Correlation = cor_vals_cpm) %>%
   ggplot(aes(x = Correlation)) +
-  geom_histogram(binwidth = 0.05, fill = viridis(1, option = "D"), color = "black") +
+  geom_histogram(binwidth = 0.05, boundary = 0,fill = viridis(1, option = "D"), color = "black") +
   stat_function(fun = dnorm, args = list(mean = mean(cor_vals_cpm), sd = sd(cor_vals_cpm)),
                 color = "grey", linewidth = 1) + # Normal distribution curve 
-  labs(title = "Species Abundance Correlation with Library Size (CPM)", x = "Correlation", y = "Density") +
+  scale_x_continuous(limits = c(-1, 1)) +
+  labs(title = "CPM-Normalized Correlation Distribution", x = "Correlation", y = "Density") +
   theme_minimal() + 
   theme(plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
         axis.text.x = element_text(angle = 45, hjust = 1))
 
 ## ------------- Variance Stabilisation -------------
-
 # Plot log(Mean) vs log(SD) 
 # - To examine heteroscedasticity (when the variance of a variable depends on its mean)
 # - Log(+1) avoids issues with 0s
 
-df_var_cpm <- data.frame(Mean = log1p(rowMeans(cpm_mat)), 
-                         SD = log1p(rowSds(cpm_mat)))
+df_var_cpm <- data.frame(Mean = log1p(rowMeans(cpm_mat_nogt)), 
+                         SD = log1p(rowSds(cpm_mat_nogt)))
 
 p5 <- ggplot(df_var_cpm, aes(x = Mean, y = SD, color = viridis(1, option = "D"))) +
   geom_point(size = 2, color = viridis(1, option = "D")) +  
@@ -440,10 +461,17 @@ p5 <- ggplot(df_var_cpm, aes(x = Mean, y = SD, color = viridis(1, option = "D"))
 
 # Variance stabilization: log2 transform CPM 
 assay(se, "logcpm") <- log2(cpm_mat+1)
+logcpm_mat <- assay(se, "logcpm")
+
+# Prepare normalized matrix
+logcpm_mat_nogt <- logcpm_mat %>%
+  .[, colnames(.) != "ground_truth"] %>%      # Exclude ground truth column
+  .[rowSums(.) > 0, ]                         # Exclude species with zero CPM across all samples
 
 # Analyze mean–SD relationship again
-df_var_logcpm <- data.frame(Mean = rowMeans(assay(se, "logcpm")), 
-                            SD = rowSds(assay(se, "logcpm")))
+df_var_logcpm <- data.frame(Mean = rowMeans(logcpm_mat_nogt), 
+                            SD = rowSds(logcpm_mat_nogt))
+
 p6 <- ggplot(df_var_logcpm, aes(x = Mean, y = SD)) +
   geom_point(size = 2, color = viridis(1, option = "D")) +  
   geom_smooth(formula = 'y ~ x', method = "lm", se = FALSE, color = "grey", linewidth = 1) +
@@ -533,7 +561,7 @@ pheatmap_grob <- function(mat, show_legend=TRUE) {
 # Distances in original logCPM space (species abundance profiles)
 raw_dists   <- as.matrix(dist(t(assay(se, "logcpm"))))
 p9  <- pheatmap_grob(raw_dists) # Plot as heatmap 
-ggsave("log2cpm_distances.png", p9, width = 12, height = 8) 
+# TODO: do we want this plot anywhere? 
 
 # Distances in PCA space (first 2 principal components)
 rownames(pca_df) <- pca_df$run_id
@@ -555,20 +583,9 @@ tsne_dists  <- as.matrix(dist(tsne_df[, c("tsne_1", "tsne_2")]))
 tsne_dists <- tsne_dists / max(tsne_dists)
 p12 <- pheatmap_grob(tsne_dists)
 
-if (length(unique(lib_sizes)) != 1) {
-  combined_plot <- (p6 + p7 + p8) / (p10 + p11 + p12)
-  ggsave("combined_distances_constant.png", combined_plot, width = 12, height = 8) 
-} else {
-  combined_plot <- (p6 + p7 + p8) / (p10 + p11 + p12)
-  ggsave("combined_distances_varied.png", combined_plot, width = 12, height = 8) 
-}
+combined_plot <- (p6 + p7 + p8) / (p10 + p11 + p12)
+ggsave("combined_distances.png", combined_plot, width = 12, height = 8) 
 
 
 # TODO: Use distances from "truth" column to rank best-matching configurations
 
-#=========================================================
-# Precision and Recall Graphs 
-#=========================================================
-
-#gt_species <- unique(truth_data$species)
-#gt_species
