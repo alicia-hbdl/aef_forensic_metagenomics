@@ -3,7 +3,8 @@
 # This script generates a karyotype plot showing the frequency (number of samples) each genomic interval appears in.
 # The input must be a BED file containing 'chrom', 'start', 'end', and 'num' columns.
 
-# Usage: Rscript karyotype.R <path/to/common_intersections.bed>
+# Usage: Rscript karyotype.R <path/to/intervals.bed>
+# Note: This script runs only on HPC/Linux. On other systems, it may throw: Error in options(scipen = old.scipen): invalid 'scipen'
 
 # Load necessary libraries
 suppressPackageStartupMessages({
@@ -14,7 +15,7 @@ suppressPackageStartupMessages({
 
 # Parse command-line arguments
 args <- commandArgs(trailingOnly = TRUE)
-if (length(args) != 1) stop("Usage: Rscript karyotype.R <path/to/common_intersections.bed>")
+if (length(args) != 1) stop("Usage: Rscript karyotype.R <path/to/intervals.bed>")
 file_path <- args[1]
 if (!file.exists(file_path)) stop("Error: Common intersections BED file not found!")
 
@@ -50,10 +51,8 @@ kpAddChromosomeNames(kp)
 kpAddBaseNumbers(kp, tick.dist=20000000, minor.tick.dist=5000000, 
                  tick.len=2, minor.tick.len=1, cex=0.6, add.units=TRUE)
 
-tick_positions <- pretty(c(0, max(bed_data$num)), n = 8) # Define round tick positions (e.g., every 10 units)
-
 # Add y-axis with manual ticks and labels
-kpAxis(kp, r1=1, side=2, tick.pos=tick_positions, labels=as.character(tick_positions),
+kpAxis(kp, r1=1, side=2, tick.pos=max(bed_data$num), labels=as.character(max(bed_data$num)),
        tick.len=15e5, cex=0.3, lwd=0.3)
 
 
