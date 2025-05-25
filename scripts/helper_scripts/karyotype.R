@@ -52,7 +52,7 @@ kpAddBaseNumbers(kp, tick.dist=20000000, minor.tick.dist=5000000,
                  tick.len=2, minor.tick.len=1, cex=0.6, add.units=TRUE)
 
 # Add y-axis with manual ticks and labels
-kpAxis(kp, r1=1, side=2, tick.pos=max(bed_data$num), labels=as.character(max(bed_data$num)),
+kpAxis(kp, r1=1, side=2, tick.pos=max(bed_data$num), numticks=max(bed_data$num)+1,
        tick.len=15e5, cex=0.3, lwd=0.3)
 
 
