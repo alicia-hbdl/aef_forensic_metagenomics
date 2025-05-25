@@ -1,46 +1,59 @@
-# Exclude all .bed files except common_intersections.bed
-*.bed
-!**/common_intersections.bed
-*.fasta*
-# Ignore FASTQ files
+# ----------------------------------------
+# Genomic data files
+# ----------------------------------------
+
+# Ignore FASTA/FASTQ and related raw sequencing files
 *.fastq
 *.fq
-*.gz
 *.fna
 
-# Ignore paired-end files
+# Ignore paired-end read files
 *.1
 *.2
 
-# Ignore zip files
-*.zip
-
-# Ignore intermediate sequencing files
+# Ignore intermediate alignment files
 *.sam
 *human.bam
 
-# Ignore Kraken2, Bracken, and Krona output files
+# Ignore all BED files except 'common_intersections.bed'
+*.bed
+!**/common_intersections.bed
+
+# ----------------------------------------
+# Analysis output files
+# ----------------------------------------
+
+# Ignore Kraken2, Bracken, and Krona outputs
 *.kraken2
 *.bracken
 *.krona.txt
 
-# Ignore analysis and indexing tools
+# Ignore other result artifacts
+*.out
+*.html
+!**/multiqc_report.html
+!**/*krona.html
+*checkpoint.ipynb
+
+# Ignore large container or index files
+*.sif
 tools/
 databases/
 bowtie_index/
 
-# Ignore macOS system file
+# ----------------------------------------
+# Project/system files
+# ----------------------------------------
+
+# macOS system metadata
 .DS_Store
 
-# Ignore RStudio project metadata
-.Rproj.user/
+# R/RStudio project metadata
 .RData
 .Rhistory
+.Rproj.user/
 *.Rproj
-*.html
-!**/multiqc_report.html
-!**/*krona.html
-*.out
-*checkpoint.ipynb
- 
-*.sif
+
+# Ignore compressed files
+*.zip
+*.gz
