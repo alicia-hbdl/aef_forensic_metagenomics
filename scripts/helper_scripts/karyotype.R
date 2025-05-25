@@ -46,13 +46,16 @@ kpDataBackground(kp, data.panel=1)
 
 # Add chromosome names and base number scale
 kpAddChromosomeNames(kp)
+
 kpAddBaseNumbers(kp, tick.dist=20000000, minor.tick.dist=5000000, 
                  tick.len=2, minor.tick.len=1, cex=0.6, add.units=TRUE)
 
-# Add y-axis for coverage values
-kpAxis(kp, r1 = 1, ymin = 0, ymax = max(bed_data$num), 
-       tick.pos = 0:ceiling(max(bed_data$num)),  # Tick only at integer positions
-       tick.len = 15e5, cex = 0.3, side = 2, lwd = 0.3)
+tick_positions <- pretty(c(0, max(bed_data$num)), n = 8) # Define round tick positions (e.g., every 10 units)
+
+# Add y-axis with manual ticks and labels
+kpAxis(kp, r1=1, side=2, tick.pos=tick_positions, labels=as.character(tick_positions),
+       tick.len=15e5, cex=0.3, lwd=0.3)
+
 
 # Plot coverage bars, scaling read counts appropriately
 kpBars(kp, data=regions, y1=mcols(regions)$num / max(bed_data$num), lwd=2)
