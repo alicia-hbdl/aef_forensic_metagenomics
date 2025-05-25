@@ -17,6 +17,7 @@ suppressPackageStartupMessages({
   library(pheatmap)     # to implement heatmaps with control over dimensions and appearance  
   library(ggtext)       # to render of complex formatted plot labels
   library(scales)       # to map data to aesthetics
+  library(cowplot)
 })
 
 # Set NCBI API key for taxonomic queries
@@ -82,18 +83,19 @@ taxonomy_data <- classification(read_counts$species, db = "ncbi", http_version =
 # Construct phylogenetic tree
 tree <- class2tree(taxonomy_data)$phylo  # Convert classification to tree
 
+# Set dynamic scaling based on number of tips
+scale = length(tree$tip.label)
+
 # Plot phylogenetic tree
-tree_plot <- ggtree(tree, layout = "rectangular", size = 0.3) +
-  geom_tiplab(aes(label = label_pad(sub("^(\\w)\\w* (.+)$", "\\1. \\2", ifelse(is.na(label), "Unknown", as.character(label)))),
-                  color = "black", 
-                  fontface = ifelse(label %in% highlight_species, "bold", "plain")),
-              align = TRUE, size = 4, family = 'mono') +  # Add tip labels with conditional formatting
-  scale_color_identity() +  # Use specified text colors
-  geom_label2(aes(label = label, subset = !isTip),  # Show all taxonomic levels
-              hjust = 1.05, fill = "white", size = 3.5, label.size = 0, family = "mono") +
-  theme_tree() +  # Apply tree theme
-  theme(axis.ticks = element_blank()) +  # Remove axis ticks
-  xlim(-mean(tree$edge.length), mean(tree$edge.length)^2/2)  # Adjust x-axis dynamically
+tree_plot <- ggtree(tree, layout = "rectangular", size = 0.3, branch.length="none") +
+  geom_tippoint(aes(color = factor(case_when(label %in% highlight_species ~ "Target species",TRUE ~ "Other species"))), size = 3) +  # Add colored tip points by category
+  scale_color_viridis_d(name = "Category", option = "D") +  # Viridis discrete scale
+  theme(axis.ticks = element_blank(), 
+        legend.position = "inside",
+        legend.position.inside = c(0.25, 0.9),
+        legend.justification = c(0, 0),
+        legend.title = element_text(size = 9, face = "bold"), legend.text = element_text(size = 8)) + 
+  xlim(0, max(6, scale/4)) # Adjust x-axis 
 
 
 # Extract the order of species from the tree
@@ -157,22 +159,18 @@ phylum_differences <- taxonomy_lookup %>%
 plot_heatmap <- function(data, y_var, title, lower_bound, upper_bound, threshold) {
   ggplot(data, aes(x = variable, y = .data[[y_var]], fill = value)) +
     geom_tile(color = "grey80") +  # Add grid borders
-    geom_text(aes(label = sprintf("%+.2f", value)),
-              color = ifelse(is.na(data$value), "transparent", 
-                             ifelse(abs(data$value) > threshold, "white", "black")),
-              size = 3) +
-    scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0, 
-                         limits = c(lower_bound, upper_bound), oob = squish) + # Set fixed bounds
+    geom_text(aes(label = sprintf("%+.2f", value)), color = "white", size = 2) +
+    scale_fill_viridis_c(option = "D", name = "% Difference", limits = c(lower_bound, upper_bound), oob = squish) + 
     scale_color_identity() +  # Maintain original colors
+    labs(title = title, fill = "% Difference") + 
     theme_minimal() +
     theme(
+      plot.title = element_text(size = 10, face = "bold"),
+      axis.title.x = element_blank(), axis.title.y = element_blank(), 
+      axis.text = element_text(size = 8),  # ✅ Missing comma added here
       axis.text.x = element_text(angle = 45, hjust = 1, family = "mono", face = "bold"),  
-      axis.title.x = element_blank(),
-      axis.text.y = if (y_var == "species") element_blank() else element_text(family = "mono", face = "bold"),
-      axis.title.y = element_blank(),
-      legend.position = if (y_var != "genus") "none" else "left",  
-      legend.title = element_text(size = 10)) +
-    labs(title = title, fill = "% Difference")
+      axis.text.y = element_text(family = "mono", face = "bold"), # if (y_var == "species") element_blank() else 
+      legend.position = "none")
 }
 
 # Compute global bounds and threshold
@@ -186,18 +184,19 @@ genus_heatmap <- plot_heatmap(genus_differences, "genus", "Genus-Level Differenc
 phylum_heatmap <- plot_heatmap(phylum_differences, "phylum", "Phylum-Level Differences", lower_bound, upper_bound, threshold)
 
 # Combine phylogenetic tree and heatmaps into a single visualization
-layout <- "
-AAAAABB
-#CCCDDD
-"
-patchwork <- tree_plot + species_heatmap + genus_heatmap + phylum_heatmap + plot_layout(design = layout) +
-  plot_annotation(
-    title = "Phylogenetic Heatmap of Taxa Abundance Changes Across Samples",
-    caption = "**ZC samples**: Derived from the Zymo Microbial Community Standard, a mixture of live microbial cells used for benchmarking DNA extraction methods.  \n**ZP samples**: Obtained from the Zymo Microbial Community DNA Standard, containing pre-extracted purified DNA from the same microbial community to eliminate DNA extraction variability.",
-    theme = theme(
-      plot.title = element_text(hjust = 0.5, size = 19, face = "bold"),
-      plot.caption = element_markdown(hjust = 0, size = 12, lineheight=1.2)))
+main_patch <- (tree_plot + species_heatmap)/(genus_heatmap + phylum_heatmap)
+legend <- get_legend(
+  plot_heatmap(genus_differences, "genus", "", lower_bound, upper_bound, threshold) +
+    theme_void() +
+    theme(legend.background = element_rect(fill = "white", color = NA),
+          legend.title = element_text(size = 9, face="bold"),legend.text = element_text(size = 8)))
+
+# Overlay legend at top-left of full canvas
+patchwork <- wrap_elements(full = main_patch) +
+  inset_element(legend, left = 0.01, bottom = 0.90, right = 0.18, top = 0.99, on_top = TRUE ) +
+  plot_annotation( title = "Heatmaps of Taxa Abundance Changes Across Samples", 
+                   theme = theme( plot.title = element_text(size = 15, face = "bold")))
 
 # Save combined plot as an image
 output_path <- file.path(dirname(opt$reports), "phylo_classification_comparison.png")
-ggsave(output_path, plot = patchwork, width = 20, height = 16, dpi = 300)
+ggsave(output_path, plot = patchwork, width = 15, height = 15, dpi = 300)
