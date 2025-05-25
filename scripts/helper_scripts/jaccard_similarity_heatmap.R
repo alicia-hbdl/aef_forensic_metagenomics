@@ -1,78 +1,50 @@
 #!/usr/bin/env Rscript
 
-# This script generates a Jaccard similarity heatmap from a given Jaccard results file.
-# The input file must be a tab-separated text file with columns: Sample1, Sample2, Jaccard.
+# This script generates a Jaccard similarity heatmap from a tab-separated input file.
+# The file must contain three columns: Sample1, Sample2, and Jaccard (as output by `bedtools jaccard`).
 
 # Usage: Rscript jaccard_similarity_heatmap.R <path/to/jaccard_results.txt>
 
-# Load necessary libraries
+# Load required libraries silently
 suppressPackageStartupMessages({
-  library(tidyverse)    # for data analysis, manipulation, and visualization (loads dplyr, tidyr, ggplot2, readr, stringr, etc.)
-  library(reshape2)     # to restructure and aggregate data
-  library(viridis)      # for generating the color maps
+  library(tidyverse)   # Data manipulation and visualization (dplyr, ggplot2, etc.)
+  library(viridis)     # Colorblind-friendly color scales
 })
 
-# Parse command-line arguments
+# Parse and validate input file path
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) != 1) stop("Usage: Rscript jaccard_similarity_heatmap.R <path/to/jaccard_results.txt>")
 file_path <- args[1]
 if (!file.exists(file_path)) stop("Error: Jaccard result file not found!")
 
-# Read Jaccard similarity data and clean sample names
-jaccard_data <- read.table(file_path, header = TRUE, sep = "\t", stringsAsFactors = FALSE) %>%
-  mutate(
-    Sample1 = str_remove_all(Sample1, "_L001"),  # Remove "_L001" from sample names
-    Sample2 = str_remove_all(Sample2, "_L001"))
+# Read and clean Jaccard data
+jaccard_data <- read_tsv(file_path, show_col_types = FALSE) %>%
+  mutate(across(c(Sample1, Sample2), ~ str_remove_all(.x, "_L001|_human"))) # Remove unwanted suffixes from sample names
 
-# Extract unique sample names
-samples <- sort(unique(c(jaccard_data$Sample1, jaccard_data$Sample2)), decreasing=T)
+# Extract sorted list of unique sample names
+samples <- sort(unique(c(jaccard_data$Sample1, jaccard_data$Sample2)), decreasing = TRUE)
 
-# Initialize a symmetric Jaccard similarity matrix with NA values
-jaccard_matrix <- matrix(NA, nrow = length(samples), ncol = length(samples), dimnames = list(samples, samples))
+# Create full symmetric data
+full_data <- jaccard_data %>%
+  bind_rows(jaccard_data %>% rename(Sample1 = Sample2, Sample2 = Sample1)) %>% # Add mirrored pairs
+  complete(Sample1 = samples, Sample2 = samples) %>% # Ensure all combinations exist
+  filter(Sample1 != Sample2 & match(Sample1, samples) > match(Sample2, samples))  # Lower triangle only
 
-# Populate the matrix with Jaccard similarity values
-for (i in 1:nrow(jaccard_data)) {
-  s1 <- jaccard_data$Sample1[i]
-  s2 <- jaccard_data$Sample2[i]
-  jaccard_matrix[s1, s2] <- jaccard_data$Jaccard[i]  # Assign value to (s1, s2)
-  jaccard_matrix[s2, s1] <- jaccard_data$Jaccard[i]}  # Ensure symmetry
+# Determine upper limit for color scale (minimum 0.01)
+scale_max <- max(0.01, max(jaccard_data$Jaccard, na.rm = TRUE))
 
-# Mask the upper triangle and set diagonal to NA
-for (i in 1:nrow(jaccard_matrix)) {
-  for (j in i:ncol(jaccard_matrix)) {
-    jaccard_matrix[i, j] <- NA}}  # Mask upper triangle
-
-# Flip rows for better visualization
-jaccard_matrix <- jaccard_matrix[nrow(jaccard_matrix):1, ]
-
-# Convert matrix to long format for ggplot
-jaccard_melted <- melt(jaccard_matrix, na.rm = TRUE)  # Remove NA values
-
-# Define output file path for the heatmap
-heatmap_path <- file.path(dirname(file_path), "jaccard_similarity_heatmap.png")
-
-# Save heatmap as a high-resolution PNG
-size = 200
-png(heatmap_path, width = 9*size, height = 8*size, res = 1.5*size)
-
-# Generate the heatmap
-ggplot(jaccard_melted, aes(Var1, Var2, fill = value)) +
-  geom_tile(color = "white") + 
-  scale_fill_viridis_c(option = "A", name = "JSI") +  
-  geom_text(
-    aes(
-      label = sprintf("%.2f", value),
-      color = ifelse(value > quantile(value, 0.75, na.rm = TRUE), "black", "white")),  # Adjust text color for readability
-    size = 3, show.legend = FALSE) +
-  scale_color_identity() +  # Use specified text colors
+# Build the heatmap
+heatmap <- ggplot(full_data, aes(Sample2, Sample1, fill = Jaccard)) +
+  geom_tile(color = "white") +
+  scale_fill_viridis_c(option = "D", name = "JSI", limits = c(0, scale_max)) +  # Use color scale fixed at 0–scale_max
+  labs(x = NULL, y = NULL, title = "Jaccard Similarity Heatmap") +
   theme_minimal() +
-  theme(
-    aspect.ratio=1,
-    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels 
-    panel.grid = element_blank(),  # Remove background grid
-    plot.title = element_text(hjust = 0.5, face = "bold", size = 14)) +  # Center and bold title
-  labs(x = NULL, y = NULL, title = "Jaccard Similarity Heatmap")  # Remove axis titles
-dev.off()
+  theme(plot.title = element_text(size = 10, face = "bold"),
+        axis.text = element_text(size = 8), axis.title = element_text(size = 9),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        panel.grid.major = element_blank(), panel.grid.minor = element_blank(),   
+        plot.background = element_rect(fill = "white", color = NA),
+        legend.title = element_text(size = 9, face = "bold"), legend.text = element_text(size = 8))
 
-# Print confirmation message
-cat("Heatmap saved at:", heatmap_path, "\n")
+# Save the heatmap as a PNG in the same directory as the input file
+ggsave(file.path(dirname(file_path), "jaccard_similarity_heatmap.png"), heatmap, width = 8, height = 8)
