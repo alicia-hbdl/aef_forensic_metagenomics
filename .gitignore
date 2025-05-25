@@ -1,14 +1,14 @@
-l# Exclude all .bed files except common_intersections.bed
+# Exclude all .bed files except common_intersections.bed
 *.bed
 !**/common_intersections.bed
-
+*.fasta*
 # Ignore FASTQ files
 *.fastq
 *.fq
 *.gz
 *.fna
 
-# Ignore paired-end files explicitly
+# Ignore paired-end files
 *.1
 *.2
 
