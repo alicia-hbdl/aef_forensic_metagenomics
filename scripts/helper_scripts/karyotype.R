@@ -32,7 +32,7 @@ regions <- GRanges(seqnames = bed_data$chrom,
                    num = bed_data$num)  # Store read counts as metadata
 
 # Save plot as a high-resolution image
-jpeg(file.path(dirname(file_path), "karyotype_frequency.jpg"), width=15000, height=15000, res=1000)
+jpeg(file.path(dirname(file_path), "karyotype_frequency.jpg"), width=3000, height=3000, res=300)
 
 # Modify plot parameters for better visualization
 custom_params <- getDefaultPlotParams(plot.type = 1)
@@ -57,8 +57,8 @@ kpAxis(kp, r1=1, ymin=0, ymax=max(bed_data$num), numticks=max(bed_data$num)+1,
        tick.len=15e5, side=2, cex=0.3, lwd=0.3)
 
 # Plot coverage bars, scaling read counts appropriately
-color=viridis(max(mcols(regions)$num), option = "D", direction = -1)[mcols(regions)$num]
-kpBars(kp, data=regions, y1=mcols(regions)$num / max(bed_data$num), lwd=2.5, col=color, border=color)
+color=viridis(max(mcols(regions)$num), option = "D", direction=-1)[mcols(regions)$num]
+kpBars(kp, data=regions, y1=mcols(regions)$num / max(bed_data$num), lwd=2, col=color, border=color)
 
 # Close the plotting device to save the output
 dev.off()
