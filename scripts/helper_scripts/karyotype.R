@@ -29,11 +29,8 @@ regions <- GRanges(seqnames = bed_data$chrom,
                    ranges = IRanges(start = bed_data$start, end = bed_data$end),
                    num = bed_data$num)  # Store read counts as metadata
 
-# Define output file path for the karyotype plot
-output_path <- file.path(dirname(file_path), "karyotype_frequency.jpg")
-
 # Save plot as a high-resolution image
-jpeg(output_path, width=15000, height=15000, res=1000)
+jpeg(file.path(dirname(file_path), "karyotype_frequency.jpg"), width=15000, height=15000, res=1000)
 
 # Modify plot parameters for better visualization
 custom_params <- getDefaultPlotParams(plot.type = 1)
@@ -53,13 +50,12 @@ kpAddBaseNumbers(kp, tick.dist=20000000, minor.tick.dist=5000000,
                  tick.len=2, minor.tick.len=1, cex=0.6, add.units=TRUE)
 
 # Add y-axis for coverage values
-kpAxis(kp, r1=1, ymin=0, ymax=max(bed_data$num), numticks=8, 
-       tick.len=15e5, cex=0.3, side=2, lwd=0.3)
+kpAxis(kp, r1 = 1, ymin = 0, ymax = max(bed_data$num), 
+       tick.pos = 0:ceiling(max(bed_data$num)),  # Tick only at integer positions
+       tick.len = 15e5, cex = 0.3, side = 2, lwd = 0.3)
 
 # Plot coverage bars, scaling read counts appropriately
 kpBars(kp, data=regions, y1=mcols(regions)$num / max(bed_data$num), lwd=2)
 
 # Close the plotting device to save the output
 dev.off()
-
-message("Plot saved as: ", output_path)
