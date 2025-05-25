@@ -56,11 +56,9 @@ kpAddBaseNumbers(kp, tick.dist=20000000, minor.tick.dist=5000000,
 kpAxis(kp, r1=1, ymin=0, ymax=max(bed_data$num), numticks=max(bed_data$num)+1,
        tick.len=15e5, side=2, cex=0.3, lwd=0.3)
 
-norm_vals <- mcols(regions)$num / max(mcols(regions)$num) # Normalize the `num` values (between 0 and 1)
-bar_colors <- viridis(length(norm_vals))[rank(norm_vals)] # Map to viridis colors (one color per region)
-
 # Plot coverage bars, scaling read counts appropriately
-kpBars(kp, data=regions, y1=mcols(regions)$num / max(bed_data$num), lwd=2, col=bar_colors)
+color=viridis(max(mcols(regions)$num), option = "D", direction = -1)[mcols(regions)$num]
+kpBars(kp, data=regions, y1=mcols(regions)$num / max(bed_data$num), lwd=2.5, col=color, border=color)
 
 # Close the plotting device to save the output
 dev.off()
