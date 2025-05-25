@@ -48,6 +48,6 @@ heatmap <- ggplot(full_data, aes(fct_rev(Sample2), Sample1, fill = Jaccard)) +
 
 # Set plot size: 0.5 inch per sample, minimum 3
 size <- max(3, (0.5 * length(samples)))
-size
+
 # Save the heatmap as a PNG in the same directory as the input file
 ggsave(file.path(dirname(file_path), "jaccard_similarity_heatmap.png"), heatmap, width = size, height = size, dpi = 300)
