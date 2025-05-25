@@ -1,6 +1,6 @@
 l# Exclude all .bed files except common_intersections.bed
 *.bed
-!common_intersections.bed
+!**/common_intersections.bed
 
 # Ignore FASTQ files
 *.fastq
