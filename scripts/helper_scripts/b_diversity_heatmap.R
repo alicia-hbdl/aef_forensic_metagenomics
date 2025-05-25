@@ -1,7 +1,6 @@
 #!/usr/bin/env Rscript
 
-# This script generates a β-diversity heatmap to visualize the differences in microbial community composition across samples.
-# The input file should be a beta diversity matrix in TSV format. 
+# Generate a β-diversity heatmap from a TSV matrix with optional metadata headers (#).
 
 # Usage: Rscript b_diversity_heatmap.R <path/to/beta_diversity_matrix.tsv>
 
@@ -12,59 +11,64 @@ suppressPackageStartupMessages({
   library(viridis)      # for generating the color maps
 })
 
-# Parse command-line arguments
+# Parse and validate input
 args <- commandArgs(trailingOnly = TRUE)
-if (length(args) != 1) stop("Usage: Rscript b_diversity_heatmap.R <path/to/beta_diversity_matrix.tsv>")
+if (length(args) != 1) stop("Usage: Rscript b_diversity_heatmap.R <matrix.tsv>")
 file_path <- args[1]
-if (!file.exists(file_path)) stop("Error: Beta diversity matrix file not found!")
+if (!file.exists(file_path)) stop("Error: File not found!")
 
-# Read the file and separate metadata from data
-file_content <- readLines(file_path)
+# Parse and validate input
+args <- commandArgs(trailingOnly = TRUE)
+if (length(args) != 1) stop("Usage: Rscript b_diversity_heatmap.R <matrix.tsv>")
+file_path <- args[1]
+if (!file.exists(file_path)) stop("Error: File not found!")
 
-metadata_lines <- grep("^#", file_content, value = TRUE)  # Extract metadata lines
-df <- read.table(text = file_content[!grepl("^#", file_content)], # Extract data lines (excluding metadata)
-                 header = TRUE, sep = "\t", check.names = FALSE, stringsAsFactors = FALSE, row.names = 1) %>% 
-  {diag(.) <- NA  # Set diagonal values to NA
-  .[, ncol(.):1]}  # Reverse column order
+# Read full file lines (to separate metadata from data)
+lines <- readLines(file_path)
 
-# Create a lookup table for correct sample name matching
-sample_lookup <- setNames(
-  sub("_L001", "", sub(".*/", "", sub("\\.bracken.*", "", metadata_lines))),  # Extract and clean sample names
-  sub("^#(\\d+).*", "\\1", metadata_lines))  # Extract numeric indices
+# Extract metadata lines (starting with "#") for sample ID lookup
+metadata <- grep("^#", lines, value = TRUE)
 
-# Convert dataframe to a numeric matrix
-df_matrix <- as.matrix(suppressWarnings(apply(df, 2, as.numeric)))  
-rownames(df_matrix) <- ifelse(rownames(df) %in% names(sample_lookup), sample_lookup[rownames(df)], rownames(df))
-colnames(df_matrix) <- ifelse(colnames(df_matrix) %in% names(sample_lookup), sample_lookup[colnames(df_matrix)], colnames(df_matrix))
+# Read β-diversity matrix as a data frame
+data <- read.table(header = TRUE, sep = "\t", check.names = FALSE, stringsAsFactors = FALSE, 
+                   text = lines[!grepl("^#", lines)], # Skips metadata lines
+                   row.names = 1, # Keeps row names
+                   na.strings = "x.xxx") # Treats 'x.xxx' strings as NA
 
-# Convert matrix to long format for ggplot
-b_diversity_melted <- melt(df_matrix, na.rm = TRUE)  # Remove NA values
+# Set diagonal to NA (self-comparisons) and reverse column order 
+diag(data) <- NA
+data <- data[, rev(seq_len(ncol(data)))]
 
-# Define output file path for the heatmap
-heatmap_path <- file.path(dirname(file_path), "beta_diversity_heatmap.png")
+# Build a lookup table to map numeric IDs to cleaned sample names from metadata
+lookup <- setNames(
+  sub("_L001", "", sub(".*/", "", sub("\\.bracken.*", "", metadata))),
+  sub("^#(\\d+).*", "\\1", metadata)
+)
 
-# Save heatmap as a high-resolution PNG
-size = 200
-png(heatmap_path, width = 9*size, height = 8*size, res = 1.5*size)
+# Convert data to numeric matrix and apply cleaned sample names as dimnames
+matrix <- apply(data, 2, as.numeric) %>% `dimnames<-`(list(
+  ifelse(rownames(data) %in% names(lookup), lookup[rownames(data)], rownames(data)),
+  ifelse(colnames(data) %in% names(lookup), lookup[colnames(data)], colnames(data))
+))
 
-# Generate the heatmap
-ggplot(b_diversity_melted, aes(Var1, Var2, fill = value)) +
-  geom_tile(color = "white") +  # Use white grid lines
-  scale_fill_viridis_c(option = "D", name = "β-diversity") +  
-  geom_text(
-    aes(
-      label = sprintf("%.2f", value),
-      color = ifelse(value > quantile(value, 0.75, na.rm = TRUE), "black", "white")),  # Adjust text color for readability
-    size = 3, show.legend = FALSE) +
-  scale_color_identity() +  # Use specified text colors
+# Melt the matrix into long format for ggplot
+df_long <- melt(matrix, na.rm = TRUE)
+
+# Create heatmap plot object
+heatmap <- ggplot(df_long, aes(Var1, Var2, fill = value)) +
+  geom_tile(color = "white") +
+  scale_fill_viridis_c(option = "D", name = "β-diversity") + 
+  labs(x = NULL, y = NULL, title = "Jaccard Similarity Heatmap") +
   theme_minimal() +
-  theme(
-    aspect.ratio=1,
-    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels 
-    panel.grid = element_blank(),  # Remove background grid
-    plot.title = element_text(hjust = 0.5, face = "bold", size = 14)) +  # Center and bold title
-  labs(x = NULL, y = NULL, title = "β-diversity Heatmap")  # Remove axis titles
-dev.off()
+  theme(aspect.ratio=1, plot.title = element_text(size = 10, face = "bold"),
+        axis.text = element_text(size = 8), axis.title = element_text(size = 9),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        panel.grid.major = element_blank(), panel.grid.minor = element_blank(),   
+        plot.background = element_rect(fill = "white", color = NA),
+        legend.title = element_text(size = 9, face = "bold"), legend.text = element_text(size = 8))
 
-# Print confirmation message
-cat("Heatmap saved to:", heatmap_path, "\n")
+# Set plot size: 0.5 inch per sample, minimum 3
+size <- max(3, (0.5 * ncol(data)))
+
+# Save heatmap 
+ggsave(file.path(dirname(file_path), "beta_diversity_heatmap.png"), heatmap, width = size, height = size, dpi = 300)
