@@ -17,7 +17,7 @@
 
 # Ignore all BED files except 'common_intersections.bed'
 *.bed
-!**/common_intervals.bed
+!**/intervals.bed
 
 # ----------------------------------------
 # Analysis output files
