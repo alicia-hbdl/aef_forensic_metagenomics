@@ -39,12 +39,15 @@ heatmap <- ggplot(full_data, aes(Sample2, Sample1, fill = Jaccard)) +
   scale_fill_viridis_c(option = "D", name = "JSI", limits = c(0, scale_max)) +  # Use color scale fixed at 0–scale_max
   labs(x = NULL, y = NULL, title = "Jaccard Similarity Heatmap") +
   theme_minimal() +
-  theme(plot.title = element_text(size = 10, face = "bold"),
+  theme(aspect.ratio=1, plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
         axis.text.x = element_text(angle = 45, hjust = 1),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),   
         plot.background = element_rect(fill = "white", color = NA),
         legend.title = element_text(size = 9, face = "bold"), legend.text = element_text(size = 8))
 
+# Set plot size: 0.5 inch per sample, minimum 3
+size <- max(3, (0.5 * ncol(data)))
+
 # Save the heatmap as a PNG in the same directory as the input file
-ggsave(file.path(dirname(file_path), "jaccard_similarity_heatmap.png"), heatmap, width = 8, height = 8)
+ggsave(file.path(dirname(file_path), "jaccard_similarity_heatmap.png"), heatmap, width = size, height = size)
