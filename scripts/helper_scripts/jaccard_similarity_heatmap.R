@@ -34,7 +34,7 @@ full_data <- jaccard_data %>%
 scale_max <- max(0.01, max(jaccard_data$Jaccard, na.rm = TRUE))
 
 # Build the heatmap
-heatmap <- ggplot(full_data, aes(Sample2, Sample1, fill = Jaccard)) +
+heatmap <- ggplot(full_data, aes(fct_rev(Sample2), Sample1, fill = Jaccard)) +
   geom_tile(color = "white") +
   scale_fill_viridis_c(option = "D", name = "JSI", limits = c(0, scale_max)) +  # Use color scale fixed at 0–scale_max
   labs(x = NULL, y = NULL, title = "Jaccard Similarity Heatmap") +
