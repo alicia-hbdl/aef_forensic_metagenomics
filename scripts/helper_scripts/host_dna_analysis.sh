@@ -19,6 +19,7 @@ BED_FILES_DIR="$ALIGNED_SAM_DIR/../bed_files"
 HOST_DNA_ANALYSIS_DIR="$ALIGNED_SAM_DIR/../../../results/host_dna_analysis"  
 mkdir -p "$SORTED_BAM_DIR" "$BED_FILES_DIR" "$HOST_DNA_ANALYSIS_DIR"
 ROOT_DIR="$ALIGNED_SAM_DIR/../../../.."
+GROUND_TRUTH="$ALIGNED_SAM_DIR/../../../raw_data/ground_truth.csv"
 
 # Convert and process each SAM file
 for file in "$ALIGNED_SAM_DIR"/*.sam; do  
@@ -107,7 +108,7 @@ else
     # Run taxonomy tree only if ≥ 3 unique tax IDs (column 2) exist
     if [ "$(cut -f2 "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" | sort -u | wc -l)" -ge 3 ]; then
        # Generate taxonomy tree from BLAST results
-       Rscript "$ROOT_DIR/scripts/helper_scripts/human_aligned_tree.R" "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" || { echo "❌ Failed to generate taxonomy tree."; exit 1; }
+       Rscript "$ROOT_DIR/scripts/helper_scripts/human_aligned_tree.R" -b "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" -t "$GROUND_TRUTH"|| { echo "❌ Failed to generate taxonomy tree."; exit 1; }
         echo "✅ Taxonomy tree generated."
     else
         echo "⚠️ Skipping taxonomy tree: fewer than 3 unique tax IDs."
