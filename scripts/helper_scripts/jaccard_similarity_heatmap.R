@@ -47,7 +47,7 @@ heatmap <- ggplot(full_data, aes(fct_rev(Sample2), Sample1, fill = Jaccard)) +
         legend.title = element_text(size = 9, face = "bold"), legend.text = element_text(size = 8))
 
 # Set plot size: 0.5 inch per sample, minimum 3
-size <- max(3, (0.5 * ncol(data)))
-
+size <- max(3, (0.5 * length(samples)))
+size
 # Save the heatmap as a PNG in the same directory as the input file
-ggsave(file.path(dirname(file_path), "jaccard_similarity_heatmap.png"), heatmap, width = size, height = size)
+ggsave(file.path(dirname(file_path), "jaccard_similarity_heatmap.png"), heatmap, width = size, height = size, dpi = 300)
