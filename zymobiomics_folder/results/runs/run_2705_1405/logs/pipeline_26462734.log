@@ -588,3 +588,82 @@ Combining Bracken reports...
 ✅ Bracken reports combined.
 
 Copying SLURM job logs...
+✅ SLURM job logs copied.
+
+================================================= COMPARISON TO GROUND TRUTH =================================================
+
+================================================= METAGENOMIC DIVERSITY ANALYSIS =================================================
+Calculating alpha and beta diversity...
+✅ Alpha diversity calculated.
+✅ Beta diversity heatmap generated.
+✅  Diversity analysis completed successfully.
+
+====================================================== HUMAN DNA ANALYSIS ======================================================
+
+Processing host reads from sample: ZC1_S4_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: ZC2_S5_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: ZC3_S6_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: ZC4_S7_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: ZP1_S20_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: ZP2_S21_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: ZP3_S22_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+=============================================== KARYOTYPE ================================================
+Finding overlapping regions across samples...
+✅ Overlapping regions saved.
+Generating karyotype plot...
+null device 
+          1 
+✅ Karyotype plot generated.
+✅ Filtered common intervals saved.
+
+================================================== BLAST ==================================================
+
+Extracting sequences for BLAST query...
+✅ Sequences saved to BLAST query.
+✅ Duplicate sequences removed.
+✅ 15 random sequences selected.
+Running BLAST search...
+✅ BLAST completed.
+Get all ranks and their taxIDs
+Align taxonomy hierarchies...
+Taxonomy alignment done!
+Calculate distance matrix
+Add node labels
+✅ Taxonomy tree generated.
+
+=========================================== JACCARD SIMILARITY ===========================================
+Generating Jaccard similarity heatmap...
+✅ Jaccard analysis complete.
+✅  Host DNA analysis completed successfully.
+
+✅  Pipeline completed successfully.
+
+Copying final SLURM job logs
