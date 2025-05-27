@@ -13,7 +13,7 @@
 # maybe don't need to create fastqc directories here since they are created in the sub-script
 
 set -e # Exit on error 
-set -x  # Print each command and its arguments as it is executed for debugging 
+#set -x  # Print each command and its arguments as it is executed for debugging 
 
 << 'COMMENT'
 =============================================================================================
@@ -87,7 +87,7 @@ while [[ $# -gt 0 ]]; do
             if [[ -z "$2" || "$2" == -* ]]; then
                 echo "⚠️  No database provided. Using default."
                 shift 
-            elif [[ ! -d "$2" || ! -f "$2/hash.k2d" || ! -f "$2/taxo.k2d" || ! -f "$2/opts.k2d" || ! compgen -G "$2"/*kmer_distrib > /dev/null ]]; then
+            elif [[ ! -d "$2" || ! -f "$2/hash.k2d" || ! -f "$2/taxo.k2d" || ! -f "$2/opts.k2d" ]] || ! compgen -G "$2"/*kmer_distrib > /dev/null; then
               echo "⚠️ '$2' is an invalid database. Using default."
               shift 2
             else
@@ -128,7 +128,7 @@ while [[ $# -gt 0 ]]; do
         if [[ -z "$2" || "$2" == -* ]]; then
           echo "⚠️  No ground truth file provided. Skipping."
           shift
-        elif [[ -f "$2" ]] && head -n1 "$2" | grep -q "^species,abundance$" && awk -F',' 'NR>1 {if($2 !~ /^[0-9.]+$/) exit 1}' "$2"; then
+	elif [[ -f "$2" && "$2" == *.csv ]]; then
           GROUND_TRUTH="$2"
           GT_FLAG=true
           shift 2
@@ -149,7 +149,7 @@ done
 [[ -z "$RAW_FASTQ_DIR" ]] && { echo "❌  No raw FASTQ directory provided"; print_usage; }
 
 if  [[ $TRIM == false || $REMOVE_HOST_DNA == false ]]; then
-echo "⚠️  Trimming and host DNA removal are optional but must be done once; if skipped, ensure trimmed and filtered files exist in the correct directories."
+echo "⚠️  Trimming and host DNA removal are optional but must be done once; if skipped, ensure trimmed and filtered files exist in the correct directories.\n"
 fi 
 
 # Pipeline configuration summary
