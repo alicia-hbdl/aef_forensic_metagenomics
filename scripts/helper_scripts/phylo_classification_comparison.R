@@ -117,11 +117,11 @@ tree <- class2tree(taxonomy_data)$phylo
 scale = length(tree$tip.label)
 
 # Initialize base tree plot
-tree_plot <- ggtree(tree, layout = "rectangular", size = 0.3, branch.length = "none") +
+base_tree_plot <- ggtree(tree, layout = "rectangular", size = 0.3, branch.length = "none") +
   theme(axis.ticks = element_blank())
 
 # Match species order to tree tips
-species_order <- get_taxa_name(tree_plot)
+species_order <- get_taxa_name(base_tree_plot)
 
 # Clean and format taxonomy table
 taxonomy_lookup <- bind_rows(lapply(taxonomy_data, as_tibble), .id = "id") %>%
@@ -133,7 +133,7 @@ taxonomy_lookup <- bind_rows(lapply(taxonomy_data, as_tibble), .id = "id") %>%
 # Extract unique genus and phylum names
 genus_order  <- unique(taxonomy_lookup$genus)
 phylum_order <- unique(taxonomy_lookup$phylum)
-tree_data    <- tree_plot$data
+tree_data    <- base_tree_plot$data
 
 # Compute label coordinates for genus and phylum
 genus_annots  <- get_taxa_annot_positions(genus_order, "genus")
@@ -145,24 +145,18 @@ highlight_data <- bind_rows(
   get_taxon_nodes("genus")  %>% mutate(group = genus,  rank = "genus"))
 
 # Compose tree with labels and highlighted clades
-tree_plot <- tree_plot +
+tree_plot <- base_tree_plot +
   geom_label2(data = genus_annots,  aes(x = x, y = y, label = tax_label),
               fill = "white", size = 3, label.size = 0, family = "mono") +
   geom_label2(data = phylum_annots, aes(x = x, y = y, label = tax_label),
               fill = "white", size = 3, label.size = 0, family = "mono") +
-  geom_hilight(data = highlight_data, aes(node = node, fill = group, alpha = rank)) +
-  scale_fill_viridis_d(option = "D", name = "Taxonomic Group") +
-  scale_alpha_manual(values = c(phylum = 0.15, genus = 0.3)) 
-
-# Optionally color tree tips by ground truth membership
-tree_plot <- tree_plot + if (gt_flag) {
-  list( geom_tippoint(aes(color = factor(if_else(label %in% gt_species, "Target species", "Other species"))), size = 3),
-        scale_color_viridis_d(name = "Category", option = "D"),
-        theme(legend.position = "inside", legend.position.inside = c(0.25, 0.9), legend.justification = c(0, 0),
-              legend.title = element_text(size = 9, face = "bold"), legend.text  = element_text(size = 8)))
-} else {
-  theme(legend.position = "none")
-}
+  geom_hilight(data = highlight_data, aes(node = node, fill = group, alpha = rank),
+               show.legend = FALSE) +
+  scale_fill_viridis_d(option = "D") +
+  scale_alpha_manual(values = c(phylum = 0.15, genus = 0.3)) +
+  geom_tippoint(aes(color = factor(if_else(label %in% gt_species, "Target species", "Other species"))),
+                size = 3, show.legend = FALSE) +
+  scale_color_viridis_d(option = "D")
 
 # ---------------------------------------
 # HEATMAP CALCULATIONS & PLOTTING
@@ -238,19 +232,37 @@ phylum_heatmap <- plot_heatmap(phylum_differences, "phylum", "Phylum-Level Diffe
 # ---------------------------------------
 # FINAL COMPOSITE PLOT
 # ---------------------------------------
-
 # Combine phylogenetic tree and heatmaps into a single visualization
-main_patch <- (tree_plot + species_heatmap)/(genus_heatmap + phylum_heatmap)
-legend <- get_legend(
+main_patch <- (tree_plot + species_heatmap) / (genus_heatmap + phylum_heatmap)
+
+legend_hm <- get_legend(
   plot_heatmap(genus_differences, "genus", "", lower_bound, upper_bound, threshold) +
     theme_void() +
-    theme(legend.title = element_text(size = 9, face="bold"),legend.text = element_text(size = 8)))
+    theme(legend.title = element_text(size = 9, face = "bold"),
+          legend.text = element_text(size = 8))
+)
 
-# Overlay legend at top-left of full canvas
+if (gt_flag) {
+  base_tree_plot <- base_tree_plot +
+    geom_tippoint(aes(color = factor(if_else(label %in% gt_species, "Target species", "Other species"))), size = 3) +
+    scale_color_viridis_d(option = "D", name = "Category")
+} else {
+  base_tree_plot <- base_tree_plot + theme(legend.position = "none")
+}
+
+# Extract legend
+legend_tree <- get_legend(base_tree_plot  +
+                            theme(legend.title = element_text(size = 9, face = "bold"),
+                                  legend.text = element_text(size = 8)))
+
+# Overlay legends at top-left of full canvas
 patchwork <- wrap_elements(full = main_patch) +
-  inset_element(legend, left = 0.01, bottom = 0.90, right = 0.07, top = 0.99, on_top = TRUE ) +
-  plot_annotation( title = "Heatmaps of Taxa Abundance Changes Across Samples", 
-                   theme = theme( plot.title = element_text(size = 15, face = "bold")))
+  inset_element(legend_hm, left = 0.01, bottom = 0.90, right = 0.05, top = 0.99, on_top = TRUE) +
+  inset_element(legend_tree, left = 0.01, bottom = 0.80, right = 0.07, top = 0.89, on_top = TRUE) +
+  plot_annotation(
+    title = "Heatmaps of Taxa Abundance Changes Across Samples",
+    theme = theme(plot.title = element_text(size = 15, face = "bold"))
+  )
 
 # Save combined plot as an image
 output_path <- file.path(dirname(opt$reports), "phylo_classification_comparison.png")
