@@ -16,13 +16,12 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-# Define and create output directories for FastQC and trimmed data
-# These are also initialized here to support standalone use of this script
-FASTQC_DIR="$RAW_FASTQ_DIR/../results/fastqc"
+# Create output directories 
+FASTQC_DIR="$(dirname "$RAW_FASTQ_DIR")/results/fastqc"
 mkdir -p "$FASTQC_DIR/pre_trimming" "$FASTQC_DIR/post_trimming"
-TRIMMED_DIR="$RAW_FASTQ_DIR/../processed_data/trimmed"
-mkdir -p "$TRIMMED_DIR/paired" "$TRIMMED_DIR/unpaired"
 
+TRIMMED_DIR="$(dirname "$RAW_FASTQ_DIR")/processed_data/trimmed"
+mkdir -p "$TRIMMED_DIR/paired" "$TRIMMED_DIR/unpaired" # Created in main pipeline but needed for standalone use
 # ------------ PRE-TRIMMING QC ------------ 
 
 echo -e "\nRunning FastQC on all raw reads..."
