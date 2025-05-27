@@ -4,6 +4,7 @@
 # The input requires a combined Bracken report and a ground truth species file, both in CSV format.
 
 # Usage: Rscript script.R -r/--reports <path/to/combined_reports.csv> [-t/--ground-truth <path/to/ground_truth.csv>]
+# Note: This script requires internet access to query NCBI via taxize::classification(). Run locally to avoid HPC timeouts.
 
 # Load necessary libraries
 suppressPackageStartupMessages({
@@ -109,7 +110,7 @@ get_taxon_nodes <- function(rank) {
 
 # Get taxonomy from NCBI (based on species names)
 options(ENTREZ_KEY = "5a8133264ac32a3f11c0f1e666a90d96c908")
-taxonomy_data <- classification(read_counts$species, db = "ncbi", http_version = 2L)  
+taxonomy_data <- classification(read_counts$species, db = "ncbi")  
 
 # Build tree from taxonomy
 tree <- class2tree(taxonomy_data)$phylo  
