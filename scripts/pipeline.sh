@@ -9,7 +9,7 @@
 #SBATCH --ntasks=1  
 #SBATCH --partition=cpu 
 
-# TO DO: match the usage with the mac mini and requirements + allow user to specify adaptor file
+# TO DO: match the usage with the mac mini and requirements 
 # maybe don't need to create fastqc directories here since they are created in the sub-script
 
 set -e # Exit on error 
