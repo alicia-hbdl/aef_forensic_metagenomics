@@ -10,10 +10,12 @@
 #SBATCH --partition=cpu 
 
 # TO DO: match the usage with the mac mini and requirements 
-# maybe don't need to create fastqc directories here since they are created in the sub-script
 
 set -e # Exit on error 
-#set -x  # Print each command and its arguments as it is executed for debugging 
+set -x  # Print each command and its arguments as it is executed for debugging 
+
+# Project root path (user-specific)
+ROOT_DIR="/scratch/users/k24087895/final_project"
 
 << 'COMMENT'
 =============================================================================================
@@ -39,19 +41,15 @@ COMMENT
 
 echo -e "\n================================================= ARGUMENT PARSING & VALIDATION =================================================\n"
 
-# User specific path: 
-ROOT_DIR="/scratch/users/k24087895/final_project"
-
-# Default flags
+# Default flags and file paths (can be overridden by arguments)
 TRIM=false
 REMOVE_HOST_DNA=false
 GT_FLAG=false
-
-# Default values 
 DATABASE="$ROOT_DIR/data/databases/k2_standard_16gb_20250402"
 BOWTIE_PREFIX="$ROOT_DIR/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as"           
 ADAPTER_FILE="$ROOT_DIR/data/adapters/TruSeq3-PE-2.fa"            
 
+# Usage message
 print_usage() {
   echo "Usage: $0 --raw-fastq/-f <reads_dir> \
   [--database/-d <database_path>] [-t|--trim [adapter_file.fa]] \
@@ -70,7 +68,7 @@ while [[ $# -gt 0 ]]; do
             # Validate input directory and FASTQ file presence
             if [[ -z "$2" || "$2" == -* || ! -d "$2" || -z "$(find "$2" -maxdepth 1 -type f \( -name "*.fq" -o -name "*.fastq" -o -name "*.fq.gz" -o -name "*.fastq.gz" \) 2>/dev/null)" ]]; then
               echo "❌  '$2' is an invalid/missing FASTQ directory. Ensure it contains .fq, .fastq, .fq.gz, or .fastq.gz files."
-              exit 1
+              print_usage
             fi
             
             # Compress and rename FASTQ files to .fastq.gz
@@ -79,7 +77,7 @@ while [[ $# -gt 0 ]]; do
 
             # Set project paths
             RAW_FASTQ_DIR="$2" 
-            PROJ_DIR=$(dirname "$RAW_FASTQ_DIR")  # Current subproject directory
+            PROJ_DIR="$(dirname "$RAW_FASTQ_DIR")"  # Current subproject directory
             shift 2
             ;;
     
@@ -128,7 +126,7 @@ while [[ $# -gt 0 ]]; do
         if [[ -z "$2" || "$2" == -* ]]; then
           echo "⚠️  No ground truth file provided. Skipping."
           shift
-	elif [[ -f "$2" && "$2" == *.csv ]]; then
+        elif [[ -f "$2" && "$2" == *.csv ]]; then
           GROUND_TRUTH="$2"
           GT_FLAG=true
           shift 2
@@ -148,6 +146,7 @@ done
 # Ensure raw FASTQ directory is provided
 [[ -z "$RAW_FASTQ_DIR" ]] && { echo "❌  No raw FASTQ directory provided"; print_usage; }
 
+# TODO: Validate the directories and exit 
 if  [[ $TRIM == false || $REMOVE_HOST_DNA == false ]]; then
 echo "⚠️  Trimming and host DNA removal are optional but must be done once; if skipped, ensure trimmed and filtered files exist in the correct directories.\n"
 fi 
@@ -168,14 +167,13 @@ echo -e "\n====================================================== PROJECT STRUCT
 
 # Define output directories
 RESULTS_DIR="$PROJ_DIR/results"  # General results of the entire project
-FASTQC_DIR="$RESULTS_DIR/fastqc"  # FastQC reports for quality control analysis
 HOST_DNA_ANALYSIS_DIR="$RESULTS_DIR/host_dna_analysis"  # Host DNA-related outputs (e.g., BLAST, karyotype)
 
 PROCESSED_DIR="$(dirname "$RAW_FASTQ_DIR")/processed_data"  # Root directory for processed data
 TRIMMED_DIR="$PROCESSED_DIR/trimmed"  # Trimmed FASTQ files
 
 # Define human DNA alignment outputs
-# These files are created once for the entire sub-project and do not change with each pipeline run.
+# Created once per sub-project; only updated when -t or -r is used
 HUMAN_DIR="$PROCESSED_DIR/human"  # Human DNA-related outputs
 ALIGNED_SAM_DIR="$HUMAN_DIR/aligned_sam"  # SAM files of host-aligned reads
 SORTED_BAM_DIR="$HUMAN_DIR/sorted_bam"  # Sorted BAM files of host-alignments
@@ -199,7 +197,7 @@ DIVERSITY_DIR="$RUN_DIR/diversity"  # Diversity analysis results (e.g., alpha/be
 LOG_DIR="$RUN_DIR/logs"  # Log files for the pipeline run
 
 # Create all necessary directories
-mkdir -p "$RESULTS_DIR" "$HOST_DNA_ANALYSIS_DIR" "$FASTQC_DIR/pre_trimming" "$FASTQC_DIR/post_trimming" \
+mkdir -p "$RESULTS_DIR" "$HOST_DNA_ANALYSIS_DIR" \
     "$TRIMMED_DIR/paired" "$TRIMMED_DIR/unpaired" "$ALIGNED_SAM_DIR" "$FILTERED_FASTQ_DIR" \
     "$KRAKEN2_DIR" "$CLASSIFIED_DIR" "$UNCLASSIFIED_DIR" "$BRACKEN_DIR" "$REPORTS_DIR" \
     "$KRONA_DIR" "$DIVERSITY_DIR" "$LOG_DIR" "$SORTED_BAM_DIR" "$BED_FILES_DIR"
@@ -296,7 +294,7 @@ echo "✅ SLURM job logs copied."
 echo -e "\n================================================= COMPARISON TO GROUND TRUTH ================================================="
 
 # Generate the heatmap that looks at how the run differs from the groundn truth 
-# Rscript "$ROOT_DIR/scripts/helper_scripts/phylo_classification_comparison.R" -r "$REPORTS_DIR/../combined_breports.csv" -t "$RAW_FASTQ_DIR/ground_truth.csv" 
+# Rscript "$ROOT_DIR/scripts/helper_scripts/phylo_classification_comparison.R" -r "$(dirname "$REPORTS_DIR")/combined_breports.csv" -t "$GROUND_TRUTH" 
 
 echo -e "\n================================================= METAGENOMIC DIVERSITY ANALYSIS ================================================="
 
@@ -321,8 +319,15 @@ if cp "$ROOT_DIR"/scripts/logs/*_"$SLURM_JOB_ID".* "$LOG_DIR"; then
   
     # Generate the summary table and evaluation metrics including this run 
     "$ROOT_DIR/scripts/helper_scripts/runs_summary.sh" "$RESULTS_DIR/runs/" 2>&1 || { echo "❌ Summary generation failed!"; exit 1; }
-    python "$ROOT_DIR/scripts/helper_scripts/evaluation_metrics.py" --run-dir "$RESULTS_DIR/runs/" --ground-truth "$RAW_FASTQ_DIR/ground_truth.csv" 2>&1 || { echo "❌ Evaluation metrics generation failed!"; exit 1; }
-    Rscript "$ROOT_DIR/scripts/helper_scripts/read_progression.R" "$RESULTS_DIR/" 2>&1 || { echo "❌ Read progression plot generation failed!"; exit 1; }
+    
+    # Run downstream analysis if breport files are found
+    BREPORT_FILES=("$RESULTS_DIR"/runs/*/combined_breports.csv)
+    if [[ ${#BREPORT_FILES[@]} -gt 0 ]]; then
+      Rscript "$ROOT_DIR/scripts/helper_scripts/downstream_analysis.R" -t "$GROUND_TRUTH" -s "$RESULTS_DIR/runs/runs_summary.csv" \
+        "${BREPORT_FILES[@]}" || { echo "❌ Downstream analysis failed."; exit 1; }
+    else
+      echo "⚠️  No breport files found. Skipping downstream analysis."
+    fi
     
     # Remove the original log file when successful 
     echo -e "\nRemoving original SLURM job logs"
