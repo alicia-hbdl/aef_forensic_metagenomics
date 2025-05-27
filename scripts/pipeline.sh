@@ -52,6 +52,16 @@ DATABASE="$ROOT_DIR/data/databases/k2_standard_16gb_20250402"
 BOWTIE_PREFIX="$ROOT_DIR/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as"           
 ADAPTER_FILE="$ROOT_DIR/data/adapters/TruSeq3-PE-2.fa"            
 
+print_usage() {
+  echo "Usage: $0 --raw-fastq/-f <reads_dir> \
+  [--database/-d <database_path>] [-t|--trim [adapter_file.fa]] \
+  [-r|--remove-host-dna [index_prefix]] [-g|--ground-truth <file.csv>]"
+  exit 1
+}
+
+# Exit immediately if no arguments are provided
+[[ $# -eq 0 ]] && { echo "❌ No arguments provided."; print_usage; }
+
 # Parse command-line arguments
 while [[ $# -gt 0 ]]; do 
     case "$1" in
@@ -130,22 +140,13 @@ while [[ $# -gt 0 ]]; do
   
       # Handle unknown arguments
       *) 
-        echo "❌ Unknown argument: $1. Usage: $0 --raw-fastq/-f <reads_dir> \
-        [--database/-d <database_path>] [-t|--trim [adapter_file.fa]] \
-        [-r|--remove-host-dna [index_prefix]] [-g|--ground-truth <file.csv>]"
-        exit 1
-        ;;   
-          
+      echo "❌ Unknown argument '$2'"; print_usage        
+      ;;   
     esac
 done
 
 # Ensure raw FASTQ directory is provided
-if [[ -z "$RAW_FASTQ_DIR" ]]; then  
-    echo "❌  --raw-fastq/-f is required. Usage: $0 --raw-fastq/-f <reads_dir> \
-    [--database/-d <database_path>] [-t|--trim [adapter_file.fa]] \
-    [-r|--remove-host-dna [index_prefix]] [-g|--ground-truth <file.csv>]"
-    exit 1
-fi
+[[ -z "$RAW_FASTQ_DIR" ]] && { echo "❌  No raw FASTQ directory provided"; print_usage; }
 
 if  [[ $TRIM == false || $REMOVE_HOST_DNA == false ]]; then
 echo "⚠️  Trimming and host DNA removal are optional but must be done once; if skipped, ensure trimmed and filtered files exist in the correct directories."
