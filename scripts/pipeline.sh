@@ -4,133 +4,160 @@
 #SBATCH --output=logs/pipeline_%j.log
 #SBATCH --error=logs/pipeline_%j.err
 #SBATCH --time=02:00:00
-#SBATCH --mem=200G  
+#SBATCH --mem=60G  
 #SBATCH --cpus-per-task=8 
 #SBATCH --ntasks=1  
 #SBATCH --partition=cpu 
 
 # TO DO: match the usage with the mac mini and requirements + allow user to specify adaptor file
 # maybe don't need to create fastqc directories here since they are created in the sub-script
+
 set -e # Exit on error 
 set -x  # Print each command and its arguments as it is executed for debugging 
 
 << 'COMMENT'
 =============================================================================================
 Usage:
-    ./pipeline.sh --raw-fastq/-f <reads_dir> [--database/-d <database_path>] [-t | --trim] [-r | --remove-host-dna <index_path>]
+    ./pipeline.sh --raw-fastq/-f <reads_dir> 
+                  [--database/-d <database_path>] 
+                  [-t|--trim [adapter_file.fa]] 
+                  [-r|--remove-host-dna <index_prefix>] 
+                  [-g|--ground-truth <ground_truth.csv>]
 
 Arguments:
-    -f, --raw-fastq <path>       Path to the directory containing raw FASTQ reads to process.
-    -d, --database <path>        (Optional) Path to the Kraken2/Bracken database used for metagenomic classification.
-    -t, --trim                    (Optional) Enable adapter and quality trimming of reads.
-    -r, --remove-host-dna <path>  (Optional) Remove host DNA contamination.
-
+    -f, --raw-fastq <path>            Path to the directory containing raw FASTQ reads to process. (Required)
+    -d, --database <path>             Path to the Kraken2/Bracken database for classification. (Optional)
+    -t, --trim [adapter_file.fa]      Enable adapter and quality trimming. Optionally provide a FASTA adapter file. (Optional)
+    -r, --remove-host-dna [prefix]    Enable host DNA removal. Optionally provide a Bowtie2 index prefix. (Optional)
+    -g, --ground-truth <file.csv>     CSV file with 'species,abundance' columns for validation. (Optional)
+    
 Notes:
-    - Ensure that all necessary dependencies (Kraken2, Trimmomatic, etc.) are installed before running.
+    - The FASTQ directory must contain at least one file ending in .fq, .fastq, .fq.gz, or .fastq.gz.
+    - Ensure all required tools (Kraken2, Bracken, Bowtie2, Trimmomatic, etc.) are installed and accessible.
 =============================================================================================
 COMMENT
 
 echo -e "\n================================================= ARGUMENT PARSING & VALIDATION =================================================\n"
 
-# Default values
+# User specific path: 
+ROOT_DIR="/scratch/users/k24087895/final_project"
+
+# Default flags
 TRIM=false
 REMOVE_HOST_DNA=false
+GT_FLAG=false
+
+# Default values 
+DATABASE="$ROOT_DIR/data/databases/k2_standard_16gb_20250402"
+BOWTIE_PREFIX="$ROOT_DIR/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as"           
+ADAPTER_FILE="$ROOT_DIR/data/adapters/TruSeq3-PE-2.fa"            
 
 # Parse command-line arguments
 while [[ $# -gt 0 ]]; do 
     case "$1" in
-    # Process raw FASTQ directory
-        -f|--raw-fastq) 
-            # Validate FASTQ directory and its contents
+    
+        -f|--raw-fastq) # Process raw FASTQ directory
+            # Validate input directory and FASTQ file presence
             if [[ -z "$2" || "$2" == -* || ! -d "$2" || -z "$(find "$2" -maxdepth 1 -type f \( -name "*.fq" -o -name "*.fastq" -o -name "*.fq.gz" -o -name "*.fastq.gz" \) 2>/dev/null)" ]]; then
-              echo "❌  "$2" is an invalid/missing FASTQ directory. Ensure it contains .fq, .fastq, .fq.gz, or .fastq.gz files."
+              echo "❌  '$2' is an invalid/missing FASTQ directory. Ensure it contains .fq, .fastq, .fq.gz, or .fastq.gz files."
               exit 1
             fi
             
-            # Compress uncompressed FASTQ files
-            for file in "$2"/*.{fq,fastq}; do [[ -f "$file" ]] && gzip "$file" && echo "Compressing '$file'..."; done
-            
-            # Standardize file extension to .fastq.gz
-            for file in "$2"/*.fq.gz; do [[ -f "$file" ]] && mv "$file" "${file%.*}.fastq.gz" && echo "Renaming '$file'..."; done
-                    
-            # Set raw FASTQ directory path
-            RAW_FASTQ_DIR="$2" && echo "Raw FASTQ directory path: $RAW_FASTQ_DIR" 
-            
-            # Define project root directory and default database/index paths
+            # Compress and rename FASTQ files to .fastq.gz
+            for file in "$2"/*.{fq,fastq}; do [[ -f "$file" ]] && gzip "$file" && echo "Compressing '$file'..."; done     
+            for file in "$2"/*.fq.gz; do [[ -f "$file" ]] && mv "$file" "${file%.*}.fastq.gz" && echo "Renaming '$file'..."; done 
+
+            # Set project paths
+            RAW_FASTQ_DIR="$2" 
             PROJ_DIR=$(dirname "$RAW_FASTQ_DIR")  # Current subproject directory
-            ROOT_DIR=$(dirname "$PROJ_DIR")  # Root directory with all subprojects and tools
-            DATABASE="$ROOT_DIR/data/databases/k2_standard_16gb_20250402"
-            BOWTIE_PREFIX="$ROOT_DIR/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as"           
-            
             shift 2
             ;;
     
-        # Process Kraken2/Bracken database directory argument
-        -d|--database) 
-            if [[ -z "$2" || "$2" == -* || ! -d "$2" || ! -f "$2/hash.k2d" || ! -f "$2/taxo.k2d" || ! -f "$2/opts.k2d" || ! $(ls "$2"/*kmer_distrib 2>/dev/null) ]]; then
-                echo "⚠️  "$2" is an invalid/missing database. Using default: $DATABASE"
+        -d|--database) # Process Kraken2/Bracken database directory argument (Optional)
+            if [[ -z "$2" || "$2" == -* ]]; then
+                echo "⚠️  No database provided. Using default."
+                shift 
+            elif [[ ! -d "$2" || ! -f "$2/hash.k2d" || ! -f "$2/taxo.k2d" || ! -f "$2/opts.k2d" || ! compgen -G "$2"/*kmer_distrib > /dev/null ]]; then
+              echo "⚠️ '$2' is an invalid database. Using default."
+              shift 2
             else
                 DATABASE="$2"
-                echo "✅  Database set to: $DATABASE"
+                shift 2
             fi
-            shift 2
             ;;
-            
-      # Enable trimming
-      -t|--trim)
-          TRIM=true
-          echo "✅  Trimming enabled."
-          shift
-          ;;            
-        
-    # Process host DNA Bowtie2 index prefix
-    -r|--remove-host-dna)
-        if [[ -z "$2" || "$2" == -* ]]; then
-            echo "⚠️  No Bowtie2 index provided. Using default: $BOWTIE_PREFIX"
-            shift 
-        elif [[ ! -f "$2.1.bt2" || ! -f "$2.2.bt2" || ! -f "$2.3.bt2" || ! -f "$2.4.bt2" || ! -f "$2.rev.1.bt2" || ! -f "$2.rev.2.bt2" ]]; then
-            echo "⚠️  "$2" is an incomplete/ missing Bowtie2 index. Using default: $BOWTIE_PREFIX"
-            shift 2
-        else
-            BOWTIE_PREFIX="$2"
-            echo "✅  Bowtie2 index set to: $BOWTIE_PREFIX"
-            shift 2
-        fi
-        REMOVE_HOST_DNA=true
-        ;;       
 
+        -t|--trim) # Enable trimming and set adapter file (Optional)
+          TRIM=true
+          if [[ -z "$2" || "$2" == -* ]]; then
+              echo "⚠️  No adapter file provided. Using default."
+              shift
+          elif [[ -f "$2" ]] && grep -q "^>" "$2"; then
+              ADAPTER_FILE="$2"
+              shift 2
+          else
+            echo "⚠️  '$2' is not a valid FASTA adapter file. Using default."
+            shift 2
+          fi
+          ;;    
+          
+      -r|--remove-host-dna) # Process host DNA Bowtie2 index prefix  (Optional)
+          REMOVE_HOST_DNA=true
+          if [[ -z "$2" || "$2" == -* ]]; then
+              echo "⚠️  No Bowtie2 index provided. Using default."
+              shift 
+          elif [[ ! -f "$2.1.bt2" || ! -f "$2.2.bt2" || ! -f "$2.3.bt2" || ! -f "$2.4.bt2" || ! -f "$2.rev.1.bt2" || ! -f "$2.rev.2.bt2" ]]; then
+              echo "⚠️  '$2' is an incomplete/ missing Bowtie2 index. Using default."
+              shift 2
+          else
+              BOWTIE_PREFIX="$2"
+              shift 2
+          fi
+          ;;
+  
+      -g|--ground-truth)  # Ground truth file  (Optional)
+        if [[ -z "$2" || "$2" == -* ]]; then
+          echo "⚠️  No ground truth file provided. Skipping."
+          shift
+        elif [[ -f "$2" ]] && head -n1 "$2" | grep -q "^species,abundance$" && awk -F',' 'NR>1 {if($2 !~ /^[0-9.]+$/) exit 1}' "$2"; then
+          GROUND_TRUTH="$2"
+          GT_FLAG=true
+          shift 2
+        else
+          echo "⚠️  '$2' is an invalid or incorrectly formatted ground truth file. Skipping."
+          shift 2
+        fi
+        ;;
+  
       # Handle unknown arguments
       *) 
-          echo "❌ Unknown argument: $1. Usage: $0 --raw-fastq/-f <reads_dir> [--database/-d <database_path>] [-t | --trim] [-r | --remove-host-dna <index_path>]"
-          exit 1
-          ;;    
+        echo "❌ Unknown argument: $1. Usage: $0 --raw-fastq/-f <reads_dir> \
+        [--database/-d <database_path>] [-t|--trim [adapter_file.fa]] \
+        [-r|--remove-host-dna [index_prefix]] [-g|--ground-truth <file.csv>]"
+        exit 1
+        ;;   
+          
     esac
 done
 
-# Ensure --raw-fastq is provided
+# Ensure raw FASTQ directory is provided
 if [[ -z "$RAW_FASTQ_DIR" ]]; then  
-    echo "❌  --raw-fastq/-f is required. Usage: $0 --raw-fastq/-f <reads_dir> [--database/-d <database_path>] [-t | --trim] [-r | --remove-host-dna <index_path>]"
+    echo "❌  --raw-fastq/-f is required. Usage: $0 --raw-fastq/-f <reads_dir> \
+    [--database/-d <database_path>] [-t|--trim [adapter_file.fa]] \
+    [-r|--remove-host-dna [index_prefix]] [-g|--ground-truth <file.csv>]"
     exit 1
 fi
 
-# Display quality control and trimming status
-echo -e "Quality Control & Trimming: $( [[ $TRIM == true ]] && echo 'Enabled ✅' || echo 'Disabled ❌' )"
-echo "⚠️  Optional, but must be done at least once on the raw reads for the pipeline to work."
+if  [[ $TRIM == false || $REMOVE_HOST_DNA == false ]]; then
+echo "⚠️  Trimming and host DNA removal are optional but must be done once; if skipped, ensure trimmed and filtered files exist in the correct directories."
+fi 
 
-echo ""
-
-# Display host DNA removal status and index
-if [[ $REMOVE_HOST_DNA == true ]]; then
-    echo -e "Host DNA Removal: Enabled ✅"
-    echo "Bowtie2 Index Prefix: $BOWTIE_PREFIX"
-else
-    echo -e "Host DNA Removal: Disabled ❌"
-fi
-echo "⚠️  Optional, but must be done at least once on the trimmed reads for the pipeline to work."
-echo ""
-
-# Display Kraken2/Bracken database path
+# Pipeline configuration summary
+echo "===== Pipeline Configuration Summary ====="
+echo "Raw FASTQ directory path: $RAW_FASTQ_DIR" 
 echo "Kraken2/Bracken Database: $DATABASE"
+echo "Ground Truth: $( [[ $GT_FLAG == true ]] && echo "$GROUND_TRUTH ✅" || echo "Not provided ❌" )"
+echo "Quality Control & Trimming: $( [[ $TRIM == true ]] && echo "Enabled ✅ (Adapter: $ADAPTER_FILE)" || echo "Disabled ❌" )"
+echo "Host DNA Removal: $( [[ $REMOVE_HOST_DNA == true ]] && echo "Enabled ✅ (Index: $BOWTIE_PREFIX)" || echo "Disabled ❌" )"
 
 echo -e "\n================================================= CONDA ENVIRONMENT ACTIVATION ==================================================\n"
 
@@ -187,7 +214,7 @@ echo "Results are stored in the 'results' directory (including FastQC, host DNA 
 if [[ "$TRIM" == true ]]; then
     echo -e "\n=================================================== QUALITY CONTROL & TRIMMING ===================================================\n"
 
-    "$ROOT_DIR/scripts/helper_scripts/qc_trim.sh" "$RAW_FASTQ_DIR" || { echo "❌ Quality control and trimming failed!"; exit 1; }
+    "$ROOT_DIR/scripts/helper_scripts/qc_trim.sh" --reads "$RAW_FASTQ_DIR" --adapters "$ADAPTER_FILE" || { echo "❌ Quality control and trimming failed!"; exit 1; }
     echo -e "✅  QC and trimming completed successfully."
 
     # Calculate read length stats (raw and trimmed)
