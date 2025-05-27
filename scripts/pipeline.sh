@@ -9,10 +9,8 @@
 #SBATCH --ntasks=1  
 #SBATCH --partition=cpu 
 
-# TO DO: match the usage with the mac mini and requirements 
-
 set -e # Exit on error 
-set -x  # Print each command and its arguments as it is executed for debugging 
+set -x  # Print each command for debugging 
 
 # Project root path (user-specific)
 ROOT_DIR="/scratch/users/k24087895/final_project"

@@ -29,7 +29,7 @@ fastqc "$RAW_FASTQ_DIR"/*.fastq.gz --outdir "$FASTQC_DIR/pre_trimming" >&2 || { 
 echo "✅ FastQC completed successfully."
 
 # Run MultiQC to summarize FastQC reports and clean up zip files
-multiqc "$FASTQC_DIR/pre_trimming" --no-data-dir -o "$FASTQC_DIR/pre_trimming" --force 2>&1 || { echo "❌ MultiQC failed!"; exit 1; }
+multiqc "$FASTQC_DIR/pre_trimming" --no-data-dir -o "$FASTQC_DIR/pre_trimming" 2>&1 || { echo "❌ MultiQC failed!"; exit 1; } # -Removed --force 
 echo -e "✅ MultiQC report generated successfully.\n"
 rm -f "$FASTQC_DIR/pre_trimming"/*.zip  
 

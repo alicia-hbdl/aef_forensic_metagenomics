@@ -138,14 +138,21 @@ rownames(empty_row) <- "ground_truth"
 col_data <- rbind(col_data, empty_row)
 col_data["ground_truth", "db_name"] <- "ground_truth"
 
+cols_to_fill <- c(
+  "trim_clip", "trim_head", "trim_lead", "trim_crop", "trim_sliding_win", "trim_trail",
+  "trim_min_len", "trim_paired", "trim_both", "trim_fw_only", "trim_rev_only", "trim_dropped",
+  "bt_prefix", "bt_mode", "bt_sensitivity", "bt_mixed", "bt_discordant",
+  "bt_paired", "bt_conc_0", "bt_conc_1", "bt_conc_more"
+)
+
 # Fill in missing values and finalize format
 col_data <- col_data %>%
-  mutate(across(where(is.numeric), ~ ifelse(is.na(.), mean(.x, na.rm = TRUE), .))) %>%
   mutate(
+    across(where(is.numeric), ~ ifelse(is.na(.), mean(., na.rm = TRUE), .)),
     trim_sliding_win = as.character(trim_sliding_win),  # Force character
-    runtime = as.character(runtime),  # Force character
-    across(where(is.character), ~ ifelse(is.na(.), dplyr::first(na.omit(.)), .))
+    runtime = as.character(runtime)                       # Force character
   ) %>%
+  fill(all_of(cols_to_fill), .direction = "down") %>%    # Forward fill NAs in specified columns
   DataFrame()
 
 # Align run order between count matrix and metadata
