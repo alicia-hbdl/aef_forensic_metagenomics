@@ -1,0 +1,590 @@
+
+================================================= ARGUMENT PARSING & VALIDATION =================================================
+
+===== Pipeline Configuration Summary =====
+Raw FASTQ directory path: ../zymobiomics_folder/raw_data/
+Kraken2/Bracken Database: /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20250402
+Ground Truth: ../zymobiomics_folder/raw_data/ground_truth.csv ✅
+Quality Control & Trimming: Enabled ✅ (Adapter: ../data/adapters/zymobiomics_adaptors.fa)
+Host DNA Removal: Enabled ✅ (Index: ../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as)
+
+================================================= CONDA ENVIRONMENT ACTIVATION ==================================================
+
+✅ 'metagenomics' environment activated successfully.
+
+====================================================== PROJECT STRUCTURE ======================================================
+
+../zymobiomics_folder
+├── processed_data
+│   ├── human
+│   │   ├── aligned_sam
+│   │   ├── bed_files
+│   │   └── sorted_bam
+│   ├── metagenomic
+│   │   ├── bracken
+│   │   ├── classified
+│   │   ├── filtered_fastq
+│   │   ├── kraken2
+│   │   └── unclassified
+│   └── trimmed
+│       ├── paired
+│       └── unpaired
+├── raw_data
+└── results
+    ├── fastqc
+    │   ├── post_trimming
+    │   └── pre_trimming
+    ├── host_dna_analysis
+    └── runs
+        ├── run_2005_1637
+        ├── run_2005_1655
+        ├── run_2005_1658
+        ├── run_2005_1706
+        ├── run_2005_1730
+        ├── run_2005_1744
+        ├── run_2105_1617
+        ├── run_2105_1632
+        ├── run_2105_1640
+        ├── run_2105_1653
+        ├── run_2105_1700
+        ├── run_2105_1708
+        ├── run_2105_1713
+        ├── run_2105_1722
+        ├── run_2205_1556
+        ├── run_2205_1603
+        ├── run_2205_1608
+        ├── run_2205_1648
+        ├── run_2205_1702
+        ├── run_2205_1708
+        ├── run_2205_1718
+        ├── run_2205_1725
+        ├── run_2305_1437
+        ├── run_2305_1444
+        ├── run_2305_1459
+        ├── run_2305_1505
+        ├── run_2305_1511
+        ├── run_2305_1526
+        ├── run_2305_1536
+        ├── run_2305_1550
+        ├── run_2305_1554
+        ├── run_2305_1611
+        ├── run_2505_2018
+        ├── run_2705_1328
+        ├── run_2705_1329
+        ├── run_2705_1331
+        ├── run_2705_1332
+        ├── run_2705_1340
+        └── run_2705_1405
+
+60 directories
+Human DNA-related files (SAM, BAM, and BED) in the 'human' directory are created once per sub-project and remain unchanged across runs.
+Intermediate metagenomic files in the 'metagenomic' directory are overwritten with each run and should be inspected beforehand if desired.
+Results are stored in the 'results' directory (including FastQC, host DNA analysis, and run-specific results like Kraken2 and Bracken).
+
+=================================================== QUALITY CONTROL & TRIMMING ===================================================
+
+
+Running FastQC on all raw reads...
+✅ FastQC completed successfully.
+
+/// MultiQC 🔍 v1.28
+
+       file_search | Search path: /cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/zymobiomics_folder/results/fastqc/pre_trimming
+
+            fastqc | Found 14 reports
+
+     write_results | Data        : None
+     write_results | Report      : /cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/zymobiomics_folder/results/fastqc/pre_trimming/multiqc_report.html   (overwritten)
+           multiqc | MultiQC complete
+✅ MultiQC report generated successfully.
+
+Running Trimmomatic...
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../zymobiomics_folder/raw_data//ZC1_S4_L001_R1_001.fastq.gz ../zymobiomics_folder/raw_data//ZC1_S4_L001_R2_001.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R1_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/unpaired/ZC1_S4_R1_unpaired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R2_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/unpaired/ZC1_S4_R2_unpaired.fastq.gz ILLUMINACLIP:../data/adapters/zymobiomics_adaptors.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT'
+ILLUMINACLIP: Using 0 prefix pairs, 2 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 327187 Both Surviving: 287719 (87.94%) Forward Only Surviving: 4706 (1.44%) Reverse Only Surviving: 1214 (0.37%) Dropped: 33548 (10.25%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed ZC1_S4!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../zymobiomics_folder/raw_data//ZC2_S5_L001_R1_001.fastq.gz ../zymobiomics_folder/raw_data//ZC2_S5_L001_R2_001.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZC2_S5_R1_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/unpaired/ZC2_S5_R1_unpaired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZC2_S5_R2_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/unpaired/ZC2_S5_R2_unpaired.fastq.gz ILLUMINACLIP:../data/adapters/zymobiomics_adaptors.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT'
+ILLUMINACLIP: Using 0 prefix pairs, 2 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 331292 Both Surviving: 267587 (80.77%) Forward Only Surviving: 3618 (1.09%) Reverse Only Surviving: 1325 (0.40%) Dropped: 58762 (17.74%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed ZC2_S5!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../zymobiomics_folder/raw_data//ZC3_S6_L001_R1_001.fastq.gz ../zymobiomics_folder/raw_data//ZC3_S6_L001_R2_001.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZC3_S6_R1_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/unpaired/ZC3_S6_R1_unpaired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZC3_S6_R2_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/unpaired/ZC3_S6_R2_unpaired.fastq.gz ILLUMINACLIP:../data/adapters/zymobiomics_adaptors.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT'
+ILLUMINACLIP: Using 0 prefix pairs, 2 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 328660 Both Surviving: 273959 (83.36%) Forward Only Surviving: 3645 (1.11%) Reverse Only Surviving: 1300 (0.40%) Dropped: 49756 (15.14%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed ZC3_S6!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../zymobiomics_folder/raw_data//ZC4_S7_L001_R1_001.fastq.gz ../zymobiomics_folder/raw_data//ZC4_S7_L001_R2_001.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZC4_S7_R1_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/unpaired/ZC4_S7_R1_unpaired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZC4_S7_R2_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/unpaired/ZC4_S7_R2_unpaired.fastq.gz ILLUMINACLIP:../data/adapters/zymobiomics_adaptors.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT'
+ILLUMINACLIP: Using 0 prefix pairs, 2 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 298033 Both Surviving: 238890 (80.16%) Forward Only Surviving: 3275 (1.10%) Reverse Only Surviving: 1199 (0.40%) Dropped: 54669 (18.34%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed ZC4_S7!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../zymobiomics_folder/raw_data//ZP1_S20_L001_R1_001.fastq.gz ../zymobiomics_folder/raw_data//ZP1_S20_L001_R2_001.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZP1_S20_R1_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/unpaired/ZP1_S20_R1_unpaired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZP1_S20_R2_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/unpaired/ZP1_S20_R2_unpaired.fastq.gz ILLUMINACLIP:../data/adapters/zymobiomics_adaptors.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT'
+ILLUMINACLIP: Using 0 prefix pairs, 2 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 349154 Both Surviving: 299546 (85.79%) Forward Only Surviving: 4740 (1.36%) Reverse Only Surviving: 1394 (0.40%) Dropped: 43474 (12.45%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed ZP1_S20!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../zymobiomics_folder/raw_data//ZP2_S21_L001_R1_001.fastq.gz ../zymobiomics_folder/raw_data//ZP2_S21_L001_R2_001.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZP2_S21_R1_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/unpaired/ZP2_S21_R1_unpaired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZP2_S21_R2_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/unpaired/ZP2_S21_R2_unpaired.fastq.gz ILLUMINACLIP:../data/adapters/zymobiomics_adaptors.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT'
+ILLUMINACLIP: Using 0 prefix pairs, 2 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 358936 Both Surviving: 293459 (81.76%) Forward Only Surviving: 6547 (1.82%) Reverse Only Surviving: 1629 (0.45%) Dropped: 57301 (15.96%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed ZP2_S21!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../zymobiomics_folder/raw_data//ZP3_S22_L001_R1_001.fastq.gz ../zymobiomics_folder/raw_data//ZP3_S22_L001_R2_001.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZP3_S22_R1_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/unpaired/ZP3_S22_R1_unpaired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/paired/ZP3_S22_R2_paired.fastq.gz ../zymobiomics_folder/processed_data/trimmed/unpaired/ZP3_S22_R2_unpaired.fastq.gz ILLUMINACLIP:../data/adapters/zymobiomics_adaptors.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT'
+ILLUMINACLIP: Using 0 prefix pairs, 2 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 404941 Both Surviving: 326877 (80.72%) Forward Only Surviving: 3802 (0.94%) Reverse Only Surviving: 1628 (0.40%) Dropped: 72634 (17.94%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed ZP3_S22!
+
+
+Running FastQC on paired trimmed reads...
+✅ FastQC completed successfully.
+
+/// MultiQC 🔍 v1.28
+
+     version_check | MultiQC Version v1.29 now available!
+       file_search | Search path: /cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/zymobiomics_folder/results/fastqc/post_trimming
+
+            fastqc | Found 14 reports
+            violin | Tried to make table/violin plot, but had no data. pconfig: {'namespace': 'FastQC', 'id': 'fastqc_top_overrepresented_sequences_table', 'title': 'FastQC: Top overrepresented sequences', 'col1_header': 'Overrepresented sequence', 'sort_rows': False}
+
+     write_results | Data        : None
+     write_results | Report      : /cephfs/volumes/hpc_data_usr/k24087895/8bae1efe-9269-480e-9bb9-de76b8bdc9e7/final_project/zymobiomics_folder/results/fastqc/post_trimming/multiqc_report.html   (overwritten)
+           multiqc | MultiQC complete
+✅ MultiQC report generated successfully.
+
+✅  QC and trimming completed successfully.
+
+Calculating read length statistics...
+ZC1_S4_L001_R1_001.fastq.gz: mean = 98.9, median = 79.0
+ZC1_S4_L001_R2_001.fastq.gz: mean = 101.8, median = 80.0
+ZC2_S5_L001_R1_001.fastq.gz: mean = 77.9, median = 62.0
+ZC2_S5_L001_R2_001.fastq.gz: mean = 78.9, median = 62.0
+ZC3_S6_L001_R1_001.fastq.gz: mean = 84.8, median = 67.0
+ZC3_S6_L001_R2_001.fastq.gz: mean = 85.4, median = 67.0
+ZC4_S7_L001_R1_001.fastq.gz: mean = 78.9, median = 60.0
+ZC4_S7_L001_R2_001.fastq.gz: mean = 79.9, median = 60.0
+ZP1_S20_L001_R1_001.fastq.gz: mean = 85.2, median = 70.0
+ZP1_S20_L001_R2_001.fastq.gz: mean = 86.2, median = 70.0
+ZP2_S21_L001_R1_001.fastq.gz: mean = 79.1, median = 64.0
+ZP2_S21_L001_R2_001.fastq.gz: mean = 82.8, median = 64.0
+ZP3_S22_L001_R1_001.fastq.gz: mean = 78.2, median = 62.0
+ZP3_S22_L001_R2_001.fastq.gz: mean = 77.8, median = 61.0
+ZC1_S4_R1_paired.fastq.gz: mean = 90.7, median = 79.0
+ZC1_S4_R2_paired.fastq.gz: mean = 89.8, median = 78.0
+ZC2_S5_R1_paired.fastq.gz: mean = 72.0, median = 63.0
+ZC2_S5_R2_paired.fastq.gz: mean = 71.8, median = 63.0
+ZC3_S6_R1_paired.fastq.gz: mean = 78.8, median = 67.0
+ZC3_S6_R2_paired.fastq.gz: mean = 78.3, median = 67.0
+ZC4_S7_R1_paired.fastq.gz: mean = 73.7, median = 62.0
+ZC4_S7_R2_paired.fastq.gz: mean = 73.3, median = 62.0
+ZP1_S20_R1_paired.fastq.gz: mean = 78.5, median = 69.0
+ZP1_S20_R2_paired.fastq.gz: mean = 78.2, median = 69.0
+ZP2_S21_R1_paired.fastq.gz: mean = 73.7, median = 64.0
+ZP2_S21_R2_paired.fastq.gz: mean = 73.4, median = 64.0
+ZP3_S22_R1_paired.fastq.gz: mean = 72.3, median = 63.0
+ZP3_S22_R2_paired.fastq.gz: mean = 72.1, median = 63.0
+✅ Statistics generated.
+
+================================================= METAGENOMIC ABUNDANCE ESTIMATION =================================================
+⚠️  This step assumes reads have already been trimmed with Trimmomatic and host DNA removed with Bowtie2. Processed reads must be in the correct directory.
+
+Processing sample: ZC1_S4
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZC1_S4_R2_paired.fastq.gz" 	                --un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZC1_S4_human.sam" 2>&1
+287719 reads; of these:
+  287719 (100.00%) were paired; of these:
+    287718 (100.00%) aligned concordantly 0 times
+    0 (0.00%) aligned concordantly exactly 1 time
+    1 (0.00%) aligned concordantly >1 times
+0.00% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20250402" --threads 8 --report "../zymobiomics_folder/results/runs/run_2705_1405/reports/ZC1_S4.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 10 		--classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZC1_S4_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC1_S4_unclassified#.fastq" 		--output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC1_S4.kraken2" --use-names "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.1" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.2" 2>&1
+Loading database information... done.
+287718 sequences (51.94 Mbp) processed in 0.970s (17800.2 Kseq/m, 3213.18 Mbp/m).
+  62820 sequences classified (21.83%)
+  224898 sequences unclassified (78.17%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../zymobiomics_folder/results/runs/run_2705_1405/reports/ZC1_S4.k2report -o ../zymobiomics_folder/processed_data/metagenomic/bracken/ZC1_S4.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20250402/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../zymobiomics_folder/results/runs/run_2705_1405/reports/ZC1_S4.k2report
+PROGRAM START TIME: 05-27-2025 13:11:03
+BRACKEN SUMMARY (Kraken report: ../zymobiomics_folder/results/runs/run_2705_1405/reports/ZC1_S4.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 114 
+	  >> Number of species with reads > threshold: 114 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 287718
+	  >> Total reads kept at species level (reads > threshold): 22991
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 39826
+	  >> Reads not distributed (eg. no species above threshold): 3
+	  >> Unclassified reads: 224898
+BRACKEN OUTPUT PRODUCED: ../zymobiomics_folder/processed_data/metagenomic/bracken/ZC1_S4.bracken
+PROGRAM END TIME: 05-27-2025 13:11:03
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../zymobiomics_folder/results/runs/run_2705_1405/krona/ZC1_S4.krona.html...
+✅  Krona plot generated.
+
+Processing sample: ZC2_S5
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../zymobiomics_folder/processed_data/trimmed/paired/ZC2_S5_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZC2_S5_R2_paired.fastq.gz" 	                --un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZC2_S5_human.sam" 2>&1
+267587 reads; of these:
+  267587 (100.00%) were paired; of these:
+    267587 (100.00%) aligned concordantly 0 times
+    0 (0.00%) aligned concordantly exactly 1 time
+    0 (0.00%) aligned concordantly >1 times
+0.00% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20250402" --threads 8 --report "../zymobiomics_folder/results/runs/run_2705_1405/reports/ZC2_S5.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 10 		--classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZC2_S5_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC2_S5_unclassified#.fastq" 		--output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC2_S5.kraken2" --use-names "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic.1" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic.2" 2>&1
+Loading database information... done.
+267587 sequences (38.48 Mbp) processed in 0.793s (20256.8 Kseq/m, 2913.02 Mbp/m).
+  28127 sequences classified (10.51%)
+  239460 sequences unclassified (89.49%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../zymobiomics_folder/results/runs/run_2705_1405/reports/ZC2_S5.k2report -o ../zymobiomics_folder/processed_data/metagenomic/bracken/ZC2_S5.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20250402/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../zymobiomics_folder/results/runs/run_2705_1405/reports/ZC2_S5.k2report
+PROGRAM START TIME: 05-27-2025 13:11:25
+BRACKEN SUMMARY (Kraken report: ../zymobiomics_folder/results/runs/run_2705_1405/reports/ZC2_S5.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 60 
+	  >> Number of species with reads > threshold: 60 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 267587
+	  >> Total reads kept at species level (reads > threshold): 9658
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 18464
+	  >> Reads not distributed (eg. no species above threshold): 5
+	  >> Unclassified reads: 239460
+BRACKEN OUTPUT PRODUCED: ../zymobiomics_folder/processed_data/metagenomic/bracken/ZC2_S5.bracken
+PROGRAM END TIME: 05-27-2025 13:11:25
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../zymobiomics_folder/results/runs/run_2705_1405/krona/ZC2_S5.krona.html...
+✅  Krona plot generated.
+
+Processing sample: ZC3_S6
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../zymobiomics_folder/processed_data/trimmed/paired/ZC3_S6_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZC3_S6_R2_paired.fastq.gz" 	                --un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZC3_S6_human.sam" 2>&1
+273959 reads; of these:
+  273959 (100.00%) were paired; of these:
+    273957 (100.00%) aligned concordantly 0 times
+    1 (0.00%) aligned concordantly exactly 1 time
+    1 (0.00%) aligned concordantly >1 times
+0.00% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20250402" --threads 8 --report "../zymobiomics_folder/results/runs/run_2705_1405/reports/ZC3_S6.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 10 		--classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZC3_S6_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC3_S6_unclassified#.fastq" 		--output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC3_S6.kraken2" --use-names "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic.1" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic.2" 2>&1
+Loading database information... done.
+273957 sequences (43.03 Mbp) processed in 0.835s (19691.5 Kseq/m, 3093.16 Mbp/m).
+  38429 sequences classified (14.03%)
+  235528 sequences unclassified (85.97%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../zymobiomics_folder/results/runs/run_2705_1405/reports/ZC3_S6.k2report -o ../zymobiomics_folder/processed_data/metagenomic/bracken/ZC3_S6.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20250402/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../zymobiomics_folder/results/runs/run_2705_1405/reports/ZC3_S6.k2report
+PROGRAM START TIME: 05-27-2025 13:11:48
+BRACKEN SUMMARY (Kraken report: ../zymobiomics_folder/results/runs/run_2705_1405/reports/ZC3_S6.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 77 
+	  >> Number of species with reads > threshold: 77 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 273957
+	  >> Total reads kept at species level (reads > threshold): 14298
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 24125
+	  >> Reads not distributed (eg. no species above threshold): 6
+	  >> Unclassified reads: 235528
+BRACKEN OUTPUT PRODUCED: ../zymobiomics_folder/processed_data/metagenomic/bracken/ZC3_S6.bracken
+PROGRAM END TIME: 05-27-2025 13:11:48
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../zymobiomics_folder/results/runs/run_2705_1405/krona/ZC3_S6.krona.html...
+✅  Krona plot generated.
+
+Processing sample: ZC4_S7
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../zymobiomics_folder/processed_data/trimmed/paired/ZC4_S7_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZC4_S7_R2_paired.fastq.gz" 	                --un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZC4_S7_human.sam" 2>&1
+238890 reads; of these:
+  238890 (100.00%) were paired; of these:
+    238889 (100.00%) aligned concordantly 0 times
+    0 (0.00%) aligned concordantly exactly 1 time
+    1 (0.00%) aligned concordantly >1 times
+0.00% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20250402" --threads 8 --report "../zymobiomics_folder/results/runs/run_2705_1405/reports/ZC4_S7.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 10 		--classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZC4_S7_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZC4_S7_unclassified#.fastq" 		--output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZC4_S7.kraken2" --use-names "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic.1" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic.2" 2>&1
+Loading database information... done.
+238889 sequences (35.12 Mbp) processed in 0.827s (17337.5 Kseq/m, 2548.55 Mbp/m).
+  28764 sequences classified (12.04%)
+  210125 sequences unclassified (87.96%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../zymobiomics_folder/results/runs/run_2705_1405/reports/ZC4_S7.k2report -o ../zymobiomics_folder/processed_data/metagenomic/bracken/ZC4_S7.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20250402/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../zymobiomics_folder/results/runs/run_2705_1405/reports/ZC4_S7.k2report
+PROGRAM START TIME: 05-27-2025 13:12:09
+BRACKEN SUMMARY (Kraken report: ../zymobiomics_folder/results/runs/run_2705_1405/reports/ZC4_S7.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 59 
+	  >> Number of species with reads > threshold: 59 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 238889
+	  >> Total reads kept at species level (reads > threshold): 10732
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 18024
+	  >> Reads not distributed (eg. no species above threshold): 8
+	  >> Unclassified reads: 210125
+BRACKEN OUTPUT PRODUCED: ../zymobiomics_folder/processed_data/metagenomic/bracken/ZC4_S7.bracken
+PROGRAM END TIME: 05-27-2025 13:12:09
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../zymobiomics_folder/results/runs/run_2705_1405/krona/ZC4_S7.krona.html...
+✅  Krona plot generated.
+
+Processing sample: ZP1_S20
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../zymobiomics_folder/processed_data/trimmed/paired/ZP1_S20_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZP1_S20_R2_paired.fastq.gz" 	                --un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZP1_S20_human.sam" 2>&1
+299546 reads; of these:
+  299546 (100.00%) were paired; of these:
+    299544 (100.00%) aligned concordantly 0 times
+    0 (0.00%) aligned concordantly exactly 1 time
+    2 (0.00%) aligned concordantly >1 times
+0.00% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20250402" --threads 8 --report "../zymobiomics_folder/results/runs/run_2705_1405/reports/ZP1_S20.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 10 		--classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZP1_S20_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP1_S20_unclassified#.fastq" 		--output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP1_S20.kraken2" --use-names "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic.1" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic.2" 2>&1
+Loading database information... done.
+299544 sequences (46.94 Mbp) processed in 0.863s (20832.3 Kseq/m, 3264.46 Mbp/m).
+  43378 sequences classified (14.48%)
+  256166 sequences unclassified (85.52%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../zymobiomics_folder/results/runs/run_2705_1405/reports/ZP1_S20.k2report -o ../zymobiomics_folder/processed_data/metagenomic/bracken/ZP1_S20.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20250402/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../zymobiomics_folder/results/runs/run_2705_1405/reports/ZP1_S20.k2report
+PROGRAM START TIME: 05-27-2025 13:12:33
+BRACKEN SUMMARY (Kraken report: ../zymobiomics_folder/results/runs/run_2705_1405/reports/ZP1_S20.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 81 
+	  >> Number of species with reads > threshold: 81 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 299544
+	  >> Total reads kept at species level (reads > threshold): 15365
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 28010
+	  >> Reads not distributed (eg. no species above threshold): 3
+	  >> Unclassified reads: 256166
+BRACKEN OUTPUT PRODUCED: ../zymobiomics_folder/processed_data/metagenomic/bracken/ZP1_S20.bracken
+PROGRAM END TIME: 05-27-2025 13:12:33
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../zymobiomics_folder/results/runs/run_2705_1405/krona/ZP1_S20.krona.html...
+✅  Krona plot generated.
+
+Processing sample: ZP2_S21
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../zymobiomics_folder/processed_data/trimmed/paired/ZP2_S21_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZP2_S21_R2_paired.fastq.gz" 	                --un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZP2_S21_human.sam" 2>&1
+293459 reads; of these:
+  293459 (100.00%) were paired; of these:
+    293458 (100.00%) aligned concordantly 0 times
+    0 (0.00%) aligned concordantly exactly 1 time
+    1 (0.00%) aligned concordantly >1 times
+0.00% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20250402" --threads 8 --report "../zymobiomics_folder/results/runs/run_2705_1405/reports/ZP2_S21.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 10 		--classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZP2_S21_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP2_S21_unclassified#.fastq" 		--output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP2_S21.kraken2" --use-names "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic.1" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic.2" 2>&1
+Loading database information... done.
+293458 sequences (43.16 Mbp) processed in 0.855s (20590.5 Kseq/m, 3028.08 Mbp/m).
+  34179 sequences classified (11.65%)
+  259279 sequences unclassified (88.35%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../zymobiomics_folder/results/runs/run_2705_1405/reports/ZP2_S21.k2report -o ../zymobiomics_folder/processed_data/metagenomic/bracken/ZP2_S21.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20250402/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../zymobiomics_folder/results/runs/run_2705_1405/reports/ZP2_S21.k2report
+PROGRAM START TIME: 05-27-2025 13:12:56
+BRACKEN SUMMARY (Kraken report: ../zymobiomics_folder/results/runs/run_2705_1405/reports/ZP2_S21.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 65 
+	  >> Number of species with reads > threshold: 65 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 293458
+	  >> Total reads kept at species level (reads > threshold): 12166
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 22006
+	  >> Reads not distributed (eg. no species above threshold): 7
+	  >> Unclassified reads: 259279
+BRACKEN OUTPUT PRODUCED: ../zymobiomics_folder/processed_data/metagenomic/bracken/ZP2_S21.bracken
+PROGRAM END TIME: 05-27-2025 13:12:57
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../zymobiomics_folder/results/runs/run_2705_1405/krona/ZP2_S21.krona.html...
+✅  Krona plot generated.
+
+Processing sample: ZP3_S22
+
+Removing human reads with Bowtie2...
+bowtie2 -x "../data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../zymobiomics_folder/processed_data/trimmed/paired/ZP3_S22_R1_paired.fastq.gz" -2 "../zymobiomics_folder/processed_data/trimmed/paired/ZP3_S22_R2_paired.fastq.gz" 	                --un-conc "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic" -S "../zymobiomics_folder/processed_data/human/aligned_sam/ZP3_S22_human.sam" 2>&1
+326877 reads; of these:
+  326877 (100.00%) were paired; of these:
+    326874 (100.00%) aligned concordantly 0 times
+    2 (0.00%) aligned concordantly exactly 1 time
+    1 (0.00%) aligned concordantly >1 times
+0.00% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20250402" --threads 8 --report "../zymobiomics_folder/results/runs/run_2705_1405/reports/ZP3_S22.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 10 		--classified-out "../zymobiomics_folder/processed_data/metagenomic/classified/ZP3_S22_classified#.fastq" --unclassified-out "../zymobiomics_folder/processed_data/metagenomic/unclassified/ZP3_S22_unclassified#.fastq" 		--output "../zymobiomics_folder/processed_data/metagenomic/kraken2/ZP3_S22.kraken2" --use-names "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic.1" "../zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic.2" 2>&1
+Loading database information... done.
+326874 sequences (47.19 Mbp) processed in 1.078s (18195.5 Kseq/m, 2626.87 Mbp/m).
+  36829 sequences classified (11.27%)
+  290045 sequences unclassified (88.73%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../zymobiomics_folder/results/runs/run_2705_1405/reports/ZP3_S22.k2report -o ../zymobiomics_folder/processed_data/metagenomic/bracken/ZP3_S22.bracken -k /scratch/users/k24087895/final_project/data/databases/k2_standard_16gb_20250402/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: ../zymobiomics_folder/results/runs/run_2705_1405/reports/ZP3_S22.k2report
+PROGRAM START TIME: 05-27-2025 13:13:23
+BRACKEN SUMMARY (Kraken report: ../zymobiomics_folder/results/runs/run_2705_1405/reports/ZP3_S22.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 71 
+	  >> Number of species with reads > threshold: 71 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 326874
+	  >> Total reads kept at species level (reads > threshold): 12993
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 23833
+	  >> Reads not distributed (eg. no species above threshold): 3
+	  >> Unclassified reads: 290045
+BRACKEN OUTPUT PRODUCED: ../zymobiomics_folder/processed_data/metagenomic/bracken/ZP3_S22.bracken
+PROGRAM END TIME: 05-27-2025 13:13:23
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../zymobiomics_folder/results/runs/run_2705_1405/krona/ZP3_S22.krona.html...
+✅  Krona plot generated.
+
+Metagenomic classification completed in: 00:03:24
+
+Calculating read length statistics...
+ZC1_S4_metagenomic.1: mean = 90.7, median = 79.0
+ZC2_S5_metagenomic.1: mean = 72.0, median = 63.0
+ZC3_S6_metagenomic.1: mean = 78.8, median = 67.0
+ZC4_S7_metagenomic.1: mean = 73.7, median = 62.0
+ZP1_S20_metagenomic.1: mean = 78.5, median = 69.0
+ZP2_S21_metagenomic.1: mean = 73.7, median = 64.0
+ZP3_S22_metagenomic.1: mean = 72.3, median = 63.0
+ZC1_S4_metagenomic.2: mean = 89.8, median = 78.0
+ZC2_S5_metagenomic.2: mean = 71.8, median = 63.0
+ZC3_S6_metagenomic.2: mean = 78.3, median = 67.0
+ZC4_S7_metagenomic.2: mean = 73.3, median = 62.0
+ZP1_S20_metagenomic.2: mean = 78.2, median = 69.0
+ZP2_S21_metagenomic.2: mean = 73.4, median = 64.0
+ZP3_S22_metagenomic.2: mean = 72.1, median = 63.0
+ZC1_S4_classified_1.fastq: mean = 147.8, median = 143.0
+ZC1_S4_classified_2.fastq: mean = 144.9, median = 143.0
+ZC2_S5_classified_1.fastq: mean = 128.1, median = 122.0
+ZC2_S5_classified_2.fastq: mean = 127.2, median = 122.0
+ZC3_S6_classified_1.fastq: mean = 138.9, median = 133.0
+ZC3_S6_classified_2.fastq: mean = 136.8, median = 132.0
+ZC4_S7_classified_1.fastq: mean = 138.7, median = 132.0
+ZC4_S7_classified_2.fastq: mean = 136.4, median = 131.0
+ZP1_S20_classified_1.fastq: mean = 132.7, median = 127.0
+ZP1_S20_classified_2.fastq: mean = 131.4, median = 126.0
+ZP2_S21_classified_1.fastq: mean = 130.3, median = 124.0
+ZP2_S21_classified_2.fastq: mean = 129.3, median = 124.0
+ZP3_S22_classified_1.fastq: mean = 129.5, median = 123.0
+ZP3_S22_classified_2.fastq: mean = 128.6, median = 123.0
+ZC1_S4_unclassified_1.fastq: mean = 74.8, median = 67.0
+ZC1_S4_unclassified_2.fastq: mean = 74.4, median = 67.0
+ZC2_S5_unclassified_1.fastq: mean = 65.4, median = 59.0
+ZC2_S5_unclassified_2.fastq: mean = 65.3, median = 59.0
+ZC3_S6_unclassified_1.fastq: mean = 69.0, median = 62.0
+ZC3_S6_unclassified_2.fastq: mean = 68.8, median = 62.0
+ZC4_S7_unclassified_1.fastq: mean = 64.8, median = 58.0
+ZC4_S7_unclassified_2.fastq: mean = 64.7, median = 58.0
+ZP1_S20_unclassified_1.fastq: mean = 69.4, median = 63.0
+ZP1_S20_unclassified_2.fastq: mean = 69.2, median = 63.0
+ZP2_S21_unclassified_1.fastq: mean = 66.2, median = 60.0
+ZP2_S21_unclassified_2.fastq: mean = 66.0, median = 60.0
+ZP3_S22_unclassified_1.fastq: mean = 65.0, median = 59.0
+ZP3_S22_unclassified_2.fastq: mean = 64.9, median = 59.0
+✅ Statistics generated.
+
+Combining Bracken reports...
+✅ Bracken reports combined.
+
+Copying SLURM job logs...
