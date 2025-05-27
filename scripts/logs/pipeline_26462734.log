@@ -651,3 +651,22 @@ Extracting sequences for BLAST query...
 ✅ Duplicate sequences removed.
 ✅ 15 random sequences selected.
 Running BLAST search...
+✅ BLAST completed.
+Get all ranks and their taxIDs
+Align taxonomy hierarchies...
+Taxonomy alignment done!
+Calculate distance matrix
+Add node labels
+✅ Taxonomy tree generated.
+
+=========================================== JACCARD SIMILARITY ===========================================
+Generating Jaccard similarity heatmap...
+✅ Jaccard analysis complete.
+✅  Host DNA analysis completed successfully.
+
+✅  Pipeline completed successfully.
+
+Copying final SLURM job logs
+
+====================================================== COMPARISON TO OTHER RUNS ======================================================
+❌ Downstream analysis failed.
