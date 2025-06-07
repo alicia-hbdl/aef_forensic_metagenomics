@@ -318,14 +318,17 @@ if cp "$ROOT_DIR"/scripts/logs/*_"$SLURM_JOB_ID".* "$LOG_DIR"; then
     # Generate the summary table and evaluation metrics including this run 
     "$ROOT_DIR/scripts/helper_scripts/runs_summary.sh" "$RESULTS_DIR/runs/" 2>&1 || { echo "❌ Summary generation failed!"; exit 1; }
     
-    # Run downstream analysis if breport files are found
-    BREPORT_FILES=("$RESULTS_DIR"/runs/*/combined_breports.csv)
-    if [[ ${#BREPORT_FILES[@]} -gt 0 ]]; then
-      Rscript "$ROOT_DIR/scripts/helper_scripts/downstream_analysis.R" -t "$GROUND_TRUTH" -s "$RESULTS_DIR/runs/runs_summary.csv" \
-        "${BREPORT_FILES[@]}" || { echo "❌ Downstream analysis failed."; exit 1; }
+    if [[ "$GT_FLAG" == true ]]; then # Check if ground truth file is set and exists
+        BREPORT_FILES=("$RESULTS_DIR"/runs/*/combined_breports.csv)
+        if [[ ${#BREPORT_FILES[@]} -gt 0 ]]; then # Then check if breport files exist
+            Rscript "$ROOT_DIR/scripts/helper_scripts/downstream_analysis.R" -t "$GROUND_TRUTH" -s "$RESULTS_DIR/runs/runs_summary.csv" \
+              "${BREPORT_FILES[@]}" || { echo "❌ Downstream analysis failed."; exit 1; }
+        else
+            echo "⚠️  No breport files found. Skipping downstream analysis."
+        fi
     else
-      echo "⚠️  No breport files found. Skipping downstream analysis."
-    fi
+        echo "⚠️  No ground truth provided. Skipping downstream analysis."
+    fi    
     
     # Remove the original log file when successful 
     echo -e "\nRemoving original SLURM job logs"
