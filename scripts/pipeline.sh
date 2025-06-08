@@ -275,6 +275,7 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
     echo "✅  Classification complete."
 
     # Abundance estimation with Bracken
+    # -t 100 makes sense since the median read length is 110bp at this point. 
     echo -e "\nEstimating species abundance with Bracken..."
     bracken -d "$DATABASE" -i "$REPORTS_DIR/${base}.k2report" -l S \
             -r 100 -t \"$B_THRESHOLD\" -w "$REPORTS_DIR/${base}.breport" -o "$BRACKEN_DIR/${base}.bracken" 2>&1 
