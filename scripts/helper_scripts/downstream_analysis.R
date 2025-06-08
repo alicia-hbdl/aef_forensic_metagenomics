@@ -8,6 +8,11 @@
 
 # Usage: Rscript downstream_analysis.R -t <path/to/ground_truth.csv> -s <path/to/runs_summary.csv> breport1.csv breport2.csv ...
 
+# Rscript downstream_analysis.R \
+# -t /Users/aliciahobdell/Desktop/final_project/zymobiomics_folder/raw_data/ground_truth.csv \
+# -s /Users/aliciahobdell/Desktop/final_project/zymobiomics_folder/results/runs/runs_summary.csv \
+# $(find /Users/aliciahobdell/Desktop/final_project/zymobiomics_folder/results/runs/ -type f -name "combined_breports.csv" | sort)
+
 #=========================================================
 # Environment Setup
 #=========================================================
@@ -162,7 +167,6 @@ col_data <- col_data[ordered_runs, , drop = FALSE]
 col_data["ground_truth", "db_name"] <- "ground_truth"
 
 ## ------------- Build & Filter SummarizedExperiment ------------- 
-# Construct and clean the final SummarizedExperiment object
 
 # Create SummarizedExperiment object
 se <- SummarizedExperiment(
@@ -176,6 +180,11 @@ se <- se %>%
   subset(rowSums(assay(., "counts")) >= 200) %>%  # Keep species with ≥150 total reads across all runs (not per-sample filtering; preserves missing species)
   subset(, colSums(assay(., "counts")) >= 300) %>%  # Keep runs with ≥100 total reads
   subset(, !duplicated(t(assay(., "counts"))))  # Remove duplicated count profiles 
+
+# Create global legend
+legend_df <- unique(colData(se)[, "db_name", drop = FALSE])  # Drop = FALSE to keep as dataframe
+db_colors <- setNames(viridis(nrow(legend_df), option = "D"), legend_df$db_name)
+db_colors["ground_truth"] <- "red"
 
 #=========================================================
 # Read Length and Size Progression Analysis 
@@ -216,14 +225,14 @@ mean_summary <- long_summary %>%
 
 # Plot read retention progression across pipeline stages
 read_retention <- ggplot(long_summary, aes(x = Stage, y = Fraction, group = db_name, color = db_name)) +
-  geom_line(linewidth = 0.5, alpha = 0.6) + # Per-database trend
+  geom_line(linewidth = 0.5) + # Per-database trend
   geom_line(data = mean_summary, aes(x = Stage, y = Fraction, group = 1), 
             color = "grey", linewidth = 1, inherit.aes = FALSE) + # Mean trend 
   geom_point(data = mean_summary, aes(x = Stage, y = Fraction), 
              color = "grey", size = 2, inherit.aes = FALSE) + # Mean values 
   geom_text_repel(data = mean_summary, aes(x = Stage, y = Fraction, label = percent(Fraction, accuracy = 0.01)), 
                   color = "black", size = 3, inherit.aes = FALSE) + # Add % labels to mean
-  scale_color_viridis_d(option = "D") +
+  scale_color_manual(values = db_colors) +  # Use global color mapping
   labs(title = "Progression of Read Count", y = "Proportion of Raw Reads", x = NULL, color = "Database") +
   theme_bw() +
   theme(plot.title = element_text(size = 10, face = "bold"),
@@ -279,7 +288,7 @@ mean_length_summary <- length_long %>%
 # Plot progression of read length across pipeline stages
 read_length <- ggplot(length_long, aes(x = Stage, y = Length, group = interaction(db_name, Metric), 
                                        color = db_name, linetype = Metric)) +
-  geom_line(linewidth = 0.6, alpha = 0.6, na.rm = TRUE) +
+  geom_line(linewidth = 0.6, na.rm = TRUE) +
   geom_line(data = mean_length_summary, aes(x = Stage, y = Length, group = Metric), 
             color = "grey", linewidth = 1) +
   geom_point(data = mean_length_summary, aes(x = Stage, y = Length), 
@@ -289,7 +298,7 @@ read_length <- ggplot(length_long, aes(x = Stage, y = Length, group = interactio
   labs(title = "Progression of Read Length", y = "Read Length (bp)", x = NULL, linetype = "Metric", 
        color = "Database") +
   scale_linetype_manual(values = c("Median" = "dashed", "Mean" = "solid")) +
-  scale_color_viridis_d(option = "D") +
+  scale_color_manual(values = db_colors) +  # Use global color mapping
   theme_bw() +
   theme(plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
@@ -308,7 +317,7 @@ clas_unclas <- length_summary %>%
 # Boxplot comparing median read lengths of classified vs unclassified reads
 # Unpaired Wilcoxon test: non-parametric (handles skewed data), compares medians of independent groups (classified vs unclassified reads)
 boxplot <- ggplot(clas_unclas, aes(x = Type, y = Reads, fill = Type)) +
-  geom_boxplot(alpha = 0.8, color = "gray", size = 0.5) + 
+  geom_boxplot(alpha = 0.7, color = "gray", size = 0.5) + 
   geom_point(size = 1, color = "gray") + # Add raw data points
   stat_compare_means(comparisons = list(c("Classified", "Unclassified")), method = "wilcox.test", size = 3) + # Unpaired Wilcoxon test
   stat_summary(fun = median, geom = "text", aes(label = round(after_stat(y), 1)), size = 3, color = "black") + # Show median values
@@ -371,10 +380,10 @@ df_l2 <- tibble(
 
 # Plot L2 distances by database
 p1 <- ggplot(df_l2, aes(x = Database, y = L2, fill = Normalization)) +
-  geom_boxplot(alpha = 0.6, position = position_dodge(width = 0.8)) +
+  geom_boxplot(position = position_dodge(width = 0.8)) +
   geom_point(aes(group = Normalization), position = position_dodge(width = 0.8), size = 1, color = "gray") +
   labs(title = "Impact of Normalization on Profile Accuracy", y = "L2 Distance to Ground Truth", x = "Database") +
-  scale_fill_viridis_d(option = "D") +
+  scale_color_manual(values = db_colors) +  # Use global color mapping
   theme_minimal() +
   theme(plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
@@ -387,7 +396,7 @@ p2 <- data.frame(Run = names(class_sizes), Reads = class_sizes) %>%
   filter(Run != "ground_truth") %>%
   ggplot(aes(x = Run, y = Reads, fill = Run)) +
   geom_bar(stat = "identity", show.legend = FALSE) +
-  scale_fill_viridis_d(option = "D") +  
+  scale_color_manual(values = db_colors) +  # Use global color mapping
   labs(title = "Classified Reads per Pipeline Run", x = "Pipeline Run", y = "Classified Reads") +
   theme_minimal() +
   theme(plot.title = element_text(size = 10, face = "bold"),
@@ -545,9 +554,9 @@ median_labels <- aupr_df %>%
 
 # Boxplot of AUPR per database
 p_aupr <- ggplot(aupr_df, aes(x = Database, y = aucs, fill = Database)) +
-  geom_boxplot(alpha = 0.8, size = 0.2) + 
+  geom_boxplot(size = 0.2) + 
   geom_point(size = 1, color = "gray") +
-  scale_fill_viridis_d(option = "D") +
+  scale_fill_manual(values = db_colors) +  # Use global color mapping
   labs(title = "AUPR per Database", x = "Database", y = "AUPR") +
   theme_minimal() + 
   theme(plot.title = element_text(size = 10, face = "bold"),
@@ -567,9 +576,9 @@ curve_df <- curve_df %>%
   mutate(LegendLabel = paste0(Database, " (AUPR=", round(Median, 3), ")"))
 
 # Precision-Recall Curves
-p_prc <- ggplot(curve_df %>% filter(type == "PRC"), aes(x = x, y = y, group = modname, color = LegendLabel)) +
-  geom_line(alpha = 0.6, linewidth = 0.6) +
-  scale_color_viridis_d(option = "D") +
+p_prc <- ggplot(curve_df %>% filter(type == "PRC"), aes(x = x, y = y, group = modname, color = Database)) +
+  geom_line(linewidth = 0.6) +
+  scale_color_manual(values = db_colors) +  # Use global color mapping
   labs(title = "Precision-Recall Curves", x = "Recall", y = "Precision", color = "Database (Median AUPR)") +
   theme_minimal() + 
   theme(plot.title = element_text(size = 10, face = "bold"),
@@ -578,9 +587,9 @@ p_prc <- ggplot(curve_df %>% filter(type == "PRC"), aes(x = x, y = y, group = mo
         legend.position = "none")
 
 # Receiver Operating Characteristic Curves
-p_roc <- ggplot(curve_df %>% filter(type == "ROC"), aes(x = x, y = y, group = modname, color = LegendLabel)) +
-  geom_line(alpha = 0.6, linewidth = 0.6) +
-  scale_color_viridis_d(option = "D") +
+p_roc <- ggplot(curve_df %>% filter(type == "ROC"), aes(x = x, y = y, group = modname, color = Database)) +
+  geom_line(linewidth = 0.6) +
+  scale_color_manual(values = db_colors) +  # Use global color mapping
   labs(title = "Receiver Operating Characteristic (ROC)", x = "False Positive Rate (1 - Specificity)", y = "True Positive Rate (Sensitivity)", color = "Database (Median AUPR)") +
   theme_minimal() + 
   theme(plot.title = element_text(size = 10, face = "bold"),
@@ -596,70 +605,111 @@ ggsave(file.path(results_dir, "precision_recall.png"), curves, width = 12, heigh
 # Clustering with Ground Truth
 #=========================================================
 
+# Create a global mapping of run IDs to database names for consistent coloring
+db_name_map <- setNames(col_data$db_name, rownames(col_data))
+
 #------------- Dimensionality Reduction -------------
 
-# TODO: set the database for ground_truth to "ground_truth" and color the clusters per database 
+# Plotting function for PCA, t-SNE, UMAP
+plot_embedding <- function(df, xvar, yvar, title, subtitle = NULL) {
+  # Add db_name to the embedding dataframe if not already present
+  if (!"db_name" %in% colnames(df)) {
+    df$db_name <- db_name_map[match(df$run_id, names(db_name_map))]
+  }
+  
+  # Compute equal x/y axis limits
+  lims <- range(c(df[[xvar]], df[[yvar]]), na.rm = TRUE)
+  
+  
+  ggplot(df, aes_string(x = xvar, y = yvar, label = 'sub("^run_", "", run_id)')) +
+    # Plot all non-ground-truth runs
+    geom_point(data = subset(df, run_id != "ground_truth"), aes(color = db_name), size = 3) +
+    # Highlight the ground truth
+    geom_point(data = subset(df, run_id == "ground_truth"), color = "red", size = 4) +
+    # Add text labels for non-ground-truth
+    geom_text_repel(data = subset(df, run_id != "ground_truth"), aes(color = db_name),
+                    size = 3, max.overlaps = 10) +
+    scale_color_manual(values = db_colors) +  # Use global color mapping
+    coord_fixed(xlim = lims, ylim = lims) +  # Force equal scaling
+    labs(title = title, subtitle = subtitle, x = xvar, y = yvar) +
+    theme_minimal() +
+    theme(plot.title = element_text(size = 10, face = "bold"),
+          axis.text = element_text(size = 8),
+          axis.title = element_text(size = 9),
+          axis.text.x = element_text(angle = 45, hjust = 1), 
+          legend.position = "none")
+}
 
 # PCA plot: projects runs based on species composition in logCPM space
-pca_df <- prcomp(t(assay(se, "logcpm")), scale. = TRUE)$x %>%  # Run PCA and extract principal components
-  as.data.frame() %>% 
-  rownames_to_column("run_id") # # Add run labels
+pca_df <- prcomp(t(assay(se, "logcpm")), scale. = TRUE)$x %>%
+  as.data.frame() %>%
+  rownames_to_column("run_id")  # Add run ID as a column
 
-p6 <- ggplot(pca_df, aes(x = PC1, y = PC2, label = run_id, color = run_id)) +
-  geom_point(aes(color = run_id == "ground_truth"), size = 3, show.legend = FALSE) +
-  geom_text_repel(aes(color = run_id == "ground_truth"), size = 3, show.legend = FALSE, max.overlaps = Inf) +
-  scale_color_manual(values = c("TRUE" = "red", "FALSE" = "gray")) +
-  labs(title = "PCA", x = "PC1", y = "PC2") +
-  theme_minimal() +
-  theme(plot.title = element_text(size = 10, face = "bold"),
-        axis.text = element_text(size = 8), axis.title = element_text(size = 9),
-        axis.text.x = element_text(angle = 45, hjust = 1),
-        legend.position = "none")
+p6 <- plot_embedding(pca_df, "PC1", "PC2", "PCA")
 
 # t-SNE (optimized for local structure)
-perplexity <- min(30, floor(( ncol(assay(se, "logcpm")) - 1) / 3)) # Set perplexity (30 or lower if needed)
-tsne_df <- Rtsne(t(assay(se, "logcpm")), perplexity = perplexity)$Y %>% # Run t-SNE on transposed logCPM matrix
-  as.data.frame() %>% 
-  setNames(c("tsne_1", "tsne_2")) %>% 
-  mutate(run_id = colnames(se)) # Add run labels
+perplexity <- min(30, floor((ncol(assay(se, "logcpm")) - 1) / 3))  # Auto-adjust perplexity
+tsne_df <- Rtsne(t(assay(se, "logcpm")), perplexity = perplexity)$Y %>%
+  as.data.frame() %>%
+  setNames(c("tsne_1", "tsne_2")) %>%
+  mutate(run_id = colnames(se))  # Attach run IDs
 
-p7 <- ggplot(tsne_df, aes(x = tsne_1, y = tsne_2, label = run_id, color = run_id)) +
-  geom_point(aes(color = run_id == "ground_truth"), size = 3, show.legend = FALSE) +
-  geom_text_repel(aes(color = run_id == "ground_truth"), size = 3, show.legend = FALSE, max.overlaps = Inf) +
-  scale_color_manual(values = c("TRUE" = "red", "FALSE" = "gray")) +
-  labs(title = "t-SNE", subtitle = paste("Perplexity:", perplexity), x = "t-SNE 1", y = "t-SNE 2") +
-  theme_minimal() + 
-  theme(plot.title = element_text(size = 10, face = "bold"),
-        axis.text = element_text(size = 8), axis.title = element_text(size = 9),
-        axis.text.x = element_text(angle = 45, hjust = 1))
+p7 <- plot_embedding(tsne_df, "tsne_1", "tsne_2", "t-SNE", subtitle = paste("Perplexity:", perplexity))
 
 # UMAP (preserves global and local structure)
-n_neighbors <- min(15, max(2, floor(ncol(assay(se, "logcpm")) / 2)))  # Compute safe neighbor count
-umap_cfg <- umap.defaults; umap_cfg$n_neighbors <- n_neighbors                 # Update config
-umap_df <- umap(t(assay(se, "logcpm")), config = umap_cfg)$layout %>% # Run UMAP and extract results
-  as.data.frame() %>% setNames(c("umap_1", "umap_2")) %>% 
-  mutate(run_id = colnames(assay(se, "logcpm"))) # Add run labels
+n_neighbors <- min(15, max(2, floor(ncol(assay(se, "logcpm")) / 2)))  # Auto-adjust neighbors
+umap_cfg <- umap.defaults
+umap_cfg$n_neighbors <- n_neighbors
 
-p8 <- ggplot(umap_df, aes(x = umap_1, y = umap_2, label = run_id, color = run_id)) + 
-  geom_point(aes(color = run_id == "ground_truth"), size = 3, show.legend = FALSE) +
-  geom_text_repel(aes(color = run_id == "ground_truth"), size = 3, show.legend = FALSE, max.overlaps = Inf) +
-  scale_color_manual(values = c("TRUE" = "red", "FALSE" = "gray")) +
-  labs(title = "UMAP", subtitle = paste("N° Neighbors:", n_neighbors), x = "UMAP 1", y = "UMAP 2") +
-  theme_minimal() + 
-  theme(plot.title = element_text(size = 10, face = "bold"),
-        axis.text = element_text(size = 8), axis.title = element_text(size = 9),
-        axis.text.x = element_text(angle = 45, hjust = 1))
+umap_df <- umap(t(assay(se, "logcpm")), config = umap_cfg)$layout %>%
+  as.data.frame() %>%
+  setNames(c("umap_1", "umap_2")) %>%
+  mutate(run_id = colnames(assay(se, "logcpm")))  # Attach run IDs
+
+p8 <- plot_embedding(umap_df, "umap_1", "umap_2", "UMAP", subtitle = paste("N° Neighbors:", n_neighbors))
+
+# 2. Extract the legend from that plot
+# 1. Create one plot with the legend
+p_legend <- plot_embedding(umap_df, "umap_1", "umap_2", "UMAP", subtitle = paste("N° Neighbors:", n_neighbors)) +
+  theme(legend.position = "right")
+legend_shared <- get_legend(p_legend)
 
 #------------- Distance Computation -------------
 
-# TODO: eventually highlight ground truth label in red ? 
-
-# Helper: wrap pheatmap as a ggplot-compatible grob
-pheatmap_grob <- function(mat, show_legend=TRUE) {
-  p <- pheatmap(mat,clustering_distance_rows = "euclidean",clustering_distance_cols = "euclidean",
-    color = viridis(100, option = "D"),angle_col = 45,silent = TRUE,show_colnames = FALSE, 
-    legend = show_legend)
-  as.ggplot(p[[4]]) 
+# Helper: wrap pheatmap as a ggplot-compatible grob with db_name annotations
+pheatmap_grob <- function(mat, show_legend = TRUE) {
+  
+  # Ensure mat has matching run IDs as rownames
+  run_ids <- rownames(mat)
+  
+  # Retrieve database names using the global map
+  db_annot <- data.frame(Database = db_name_map[run_ids], row.names = run_ids)
+  
+  # Generate annotation colors: red for ground_truth, viridis for others
+  # Use globally defined db_colors for annotation colors
+  ann_colors <- list(Database = db_colors[names(db_colors) %in% db_annot$Database])
+  
+  # Clean visual display of run IDs (remove 'run_' prefix)
+  clean_names <- sub("^run_", "", run_ids)
+  rownames(mat) <- clean_names
+  colnames(mat) <- clean_names
+  rownames(db_annot) <- clean_names  # Match updated names
+  
+  # Generate heatmap with database annotations
+  p <- pheatmap(
+    mat,
+    clustering_distance_rows = "euclidean",
+    #clustering_distance_cols = "euclidean",
+    color = colorRampPalette(c("white", "black"))(100),
+    angle_col = 45,
+    annotation_row = db_annot,
+    annotation_colors = ann_colors,
+    silent = TRUE,
+    legend = show_legend,     
+    annotation_legend = FALSE           # Hides the annotation ("Database") legend
+  )
+  
+  as.ggplot(p[[4]])
 }
 
 # Distances in original logCPM space (species abundance profiles)
@@ -685,9 +735,9 @@ p11 <- pheatmap_grob(umap_dists, show_legend=FALSE) # Plot as heatmap
 rownames(tsne_df) <- tsne_df$run_id
 tsne_dists  <- as.matrix(dist(tsne_df[, c("tsne_1", "tsne_2")]))
 tsne_dists <- tsne_dists / max(tsne_dists)
-p12 <- pheatmap_grob(tsne_dists)
+p12 <- pheatmap_grob(tsne_dists, show_legend=FALSE)
 
 combined_plot <- (p6 + p7 + p8) / (p10 + p11 + p12)
-ggsave(file.path(results_dir, "combined_distances.png"), combined_plot, width = 12, height = 8)
+ggsave(file.path(results_dir, "combined_distances.png"), combined_plot, width = 15, height = 10)
 # TODO: Use distances from "truth" column to rank best-matching configurations
 
