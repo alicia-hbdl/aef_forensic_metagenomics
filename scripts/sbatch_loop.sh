@@ -12,6 +12,9 @@ databases=(
   "$DB_PATH/k2_zymobiomics_250509"
 )
 
+K2_MIN_HIT_VALUES=(1 2 3 4)
+B_THRESHOLD_VALUES=(0 5 10 20 40)
+
 # Run a single pipeline job with trimming and host DNA removal enabled before looping over all databases
 jid_first=$(sbatch --parsable pipeline.sh \
   -f /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data \
@@ -23,14 +26,23 @@ while squeue -j "$jid_first" >/dev/null 2>&1; do
     sleep 60
 done
 
-# Loop over all databases
-for db in "${databases[@]}"; do
-    jid=$(sbatch --parsable pipeline.sh \
-      -f /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data \
-      -d "$db" -g /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ground_truth.csv)
-    
-    # Wait for the submitted job to complete before submitting the next
-    while squeue -j "$jid" >/dev/null 2>&1; do
+# Loop through all database paths
+for db in "${databases[@]}"; do # Loop through all database paths
+  for k2_hit in "${K2_MIN_HIT_VALUES[@]}"; do # Loop through all k2-min-hit values
+    for b_thresh in "${B_THRESHOLD_VALUES[@]}"; do # Loop through all b-threshold values
+      
+      echo "Submitting job for DB: $db | k2-min-hit: $k2_hit | b-threshold: $b_thresh"
+      
+      jid=$(sbatch --parsable pipeline.sh \
+        -f /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data \
+        -d "$db" --k2-min-hit "$k2_hit" --b-threshold "$b_thresh" \
+        -g /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ground_truth.csv)
+      
+      # Wait for job completion before launching the next
+      while squeue -j "$jid" >/dev/null 2>&1; do
         sleep 60
+      done
+
     done
+  done
 done

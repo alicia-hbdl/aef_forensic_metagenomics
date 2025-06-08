@@ -23,6 +23,8 @@ Usage:
                   [-t|--trim [adapter_file.fa]] 
                   [-r|--remove-host-dna <index_prefix>] 
                   [-g|--ground-truth <ground_truth.csv>]
+                  [--k2-min-hit <int>] 
+                  [--b-threshold <int>]
 
 Arguments:
     -f, --raw-fastq <path>            Path to the directory containing raw FASTQ reads to process. (Required)
@@ -30,7 +32,9 @@ Arguments:
     -t, --trim [adapter_file.fa]      Enable adapter and quality trimming. Optionally provide a FASTA adapter file. (Optional)
     -r, --remove-host-dna [prefix]    Enable host DNA removal. Optionally provide a Bowtie2 index prefix. (Optional)
     -g, --ground-truth <file.csv>     CSV file with 'species,abundance' columns for validation. (Optional)
-    
+    --k2-min-hit <int>                Minimum number of k-mer hits required for Kraken2 to classify a read. (Optional)
+    --b-threshold <int>               Minimum relative abundance threshold used by Bracken. (Optional)
+
 Notes:
     - The FASTQ directory must contain at least one file ending in .fq, .fastq, .fq.gz, or .fastq.gz.
     - Ensure all required tools (Kraken2, Bracken, Bowtie2, Trimmomatic, etc.) are installed and accessible.
@@ -55,7 +59,8 @@ K2_MIN_HIT=10                  # Default Kraken2 minimum hit threshold (must be 
 print_usage() {
   echo "Usage: $0 --raw-fastq/-f <reads_dir> \
   [--database/-d <database_path>] [-t|--trim [adapter_file.fa]] \
-  [-r|--remove-host-dna [index_prefix]] [-g|--ground-truth <file.csv>]"
+  [-r|--remove-host-dna [index_prefix]] [-g|--ground-truth <file.csv>] \
+  [--k2-min-hit <int>] [--b-threshold <float>]"
   exit 1
 }
 
