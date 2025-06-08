@@ -40,12 +40,16 @@ COMMENT
 echo -e "\n================================================= ARGUMENT PARSING & VALIDATION =================================================\n"
 
 # Default flags and file paths (can be overridden by arguments)
-TRIM=false
-REMOVE_HOST_DNA=false
-GT_FLAG=false
-DATABASE="$ROOT_DIR/data/databases/k2_standard_16gb_20250402"
-BOWTIE_PREFIX="$ROOT_DIR/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as"           
-ADAPTER_FILE="$ROOT_DIR/data/adapters/TruSeq3-PE-2.fa"            
+TRIM=false                     # Whether to perform adapter/quality trimming (default: disabled)
+REMOVE_HOST_DNA=false          # Whether to perform host DNA removal via Bowtie2 (default: disabled)
+GT_FLAG=false                  # Whether ground truth was provided (default: no)
+
+DATABASE="$ROOT_DIR/data/databases/k2_standard_16gb_20250402"       # Default Kraken2/Bracken database
+BOWTIE_PREFIX="$ROOT_DIR/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as"  # Default Bowtie2 host index
+ADAPTER_FILE="$ROOT_DIR/data/adapters/TruSeq3-PE-2.fa"              # Default adapter file for Trimmomatic
+
+B_THRESHOLD=0                  # Default Bracken abundance threshold (must be overridden by user)
+K2_MIN_HIT=10                  # Default Kraken2 minimum hit threshold (must be overridden by user)
 
 # Usage message
 print_usage() {
@@ -133,7 +137,23 @@ while [[ $# -gt 0 ]]; do
           shift 2
         fi
         ;;
-  
+    
+      --k2-min-hit) # Set Kraken2 minimum hit threshold
+        if [[ -z "$2" || "$2" == -* ]]; then
+          echo "❌ '--k2-min-hit' requires a positive integer argument."; print_usage
+        fi
+        K2_MIN_HIT="$2"
+        shift 2
+        ;;
+
+      --b-threshold) # Set Bracken abundance threshold
+        if [[ -z "$2" || "$2" == -* ]]; then
+          echo "❌ '--b-threshold' requires a numeric argument."; print_usage
+        fi
+        B_THRESHOLD="$2"
+        shift 2
+        ;;  
+
       # Handle unknown arguments
       *) 
       echo "❌ Unknown argument '$2'"; print_usage        
@@ -247,7 +267,7 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
     # Note: Argument order matters—input files must come last, or it may cause a segmentation fault.
     echo -e "\nClassifying metagenomic reads with Kraken2..."
     KRAKEN_CMD="kraken2 --db \"$DATABASE\" --threads 8 --report \"$REPORTS_DIR/${base}.k2report\" \
-		--report-minimizer-data --paired --minimum-hit-groups 10 \
+		--report-minimizer-data --paired --minimum-hit-groups \"$K2_MIN_HIT\" \
 		--classified-out \"$CLASSIFIED_DIR/${base}_classified#.fastq\" --unclassified-out \"$UNCLASSIFIED_DIR/${base}_unclassified#.fastq\" \
 		--output \"$KRAKEN2_DIR/${base}.kraken2\" --use-names \"$FILTERED_FASTQ_DIR/${base}_metagenomic.1\" \"$FILTERED_FASTQ_DIR/${base}_metagenomic.2\" 2>&1"
     echo "$KRAKEN_CMD"
@@ -257,7 +277,7 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
     # Abundance estimation with Bracken
     echo -e "\nEstimating species abundance with Bracken..."
     bracken -d "$DATABASE" -i "$REPORTS_DIR/${base}.k2report" -l S \
-            -r 100 -t 0 -w "$REPORTS_DIR/${base}.breport" -o "$BRACKEN_DIR/${base}.bracken" 2>&1 
+            -r 100 -t \"$B_THRESHOLD\" -w "$REPORTS_DIR/${base}.breport" -o "$BRACKEN_DIR/${base}.bracken" 2>&1 
     echo "✅  Abundance estimated."
     
     # Generate Krona interactive plot
