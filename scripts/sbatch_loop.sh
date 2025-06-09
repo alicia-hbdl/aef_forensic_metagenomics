@@ -35,7 +35,7 @@ for db in "${databases[@]}"; do # Loop through all database paths
       
       jid=$(sbatch --parsable pipeline.sh \
         -f /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data \
-        -d "$db" --k2-min-hit "$k2_hit" --b-threshold "$b_thresh" \
+        -d "$db" --k2-min-hit $k2_hit --b-threshold $b_thresh \
         -g /scratch/users/k24087895/final_project/zymobiomics_folder/raw_data/ground_truth.csv)
       
       # Wait for job completion before launching the next
