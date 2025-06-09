@@ -605,32 +605,27 @@ ggsave(file.path(results_dir, "precision_recall.png"), curves, width = 12, heigh
 # Clustering with Ground Truth
 #=========================================================
 
-# Create a global mapping of run IDs to database names for consistent coloring
+# Create global mappings of run IDs to parameters
 db_name_map <- setNames(col_data$db_name, rownames(col_data))
+kraken_min_hit_map <- setNames(col_data$kraken2_min_hits, rownames(col_data))
+bracken_threshold_map <- setNames(col_data$bracken_thresh, rownames(col_data))
 
 #------------- Dimensionality Reduction -------------
 
 # Plotting function for PCA, t-SNE, UMAP
 plot_embedding <- function(df, xvar, yvar, title, subtitle = NULL) {
+  
   # Add db_name to the embedding dataframe if not already present
   if (!"db_name" %in% colnames(df)) {
     df$db_name <- db_name_map[match(df$run_id, names(db_name_map))]
   }
   
-  # Compute equal x/y axis limits
-  lims <- range(c(df[[xvar]], df[[yvar]]), na.rm = TRUE)
-  
-  
   ggplot(df, aes_string(x = xvar, y = yvar, label = 'sub("^run_", "", run_id)')) +
-    # Plot all non-ground-truth runs
     geom_point(data = subset(df, run_id != "ground_truth"), aes(color = db_name), size = 3) +
-    # Highlight the ground truth
     geom_point(data = subset(df, run_id == "ground_truth"), color = "red", size = 4) +
-    # Add text labels for non-ground-truth
-    geom_text_repel(data = subset(df, run_id != "ground_truth"), aes(color = db_name),
-                    size = 3, max.overlaps = 10) +
+    geom_text_repel(data = subset(df, run_id != "ground_truth"), aes(color = db_name), 
+                    size = 3, max.overlaps = Inf) +
     scale_color_manual(values = db_colors) +  # Use global color mapping
-    coord_fixed(xlim = lims, ylim = lims) +  # Force equal scaling
     labs(title = title, subtitle = subtitle, x = xvar, y = yvar) +
     theme_minimal() +
     theme(plot.title = element_text(size = 10, face = "bold"),
@@ -645,16 +640,16 @@ pca_df <- prcomp(t(assay(se, "logcpm")), scale. = TRUE)$x %>%
   as.data.frame() %>%
   rownames_to_column("run_id")  # Add run ID as a column
 
-p6 <- plot_embedding(pca_df, "PC1", "PC2", "PCA")
+pca_plot <- plot_embedding(pca_df, "PC1", "PC2", "PCA")
 
 # t-SNE (optimized for local structure)
 perplexity <- min(30, floor((ncol(assay(se, "logcpm")) - 1) / 3))  # Auto-adjust perplexity
 tsne_df <- Rtsne(t(assay(se, "logcpm")), perplexity = perplexity)$Y %>%
   as.data.frame() %>%
-  setNames(c("tsne_1", "tsne_2")) %>%
+  setNames(c("tSNE1", "tSNE2")) %>%
   mutate(run_id = colnames(se))  # Attach run IDs
 
-p7 <- plot_embedding(tsne_df, "tsne_1", "tsne_2", "t-SNE", subtitle = paste("Perplexity:", perplexity))
+tsne_plot <- plot_embedding(tsne_df, "tSNE1", "tSNE2", "t-SNE", subtitle = paste("Perplexity:", perplexity))
 
 # UMAP (preserves global and local structure)
 n_neighbors <- min(15, max(2, floor(ncol(assay(se, "logcpm")) / 2)))  # Auto-adjust neighbors
@@ -663,50 +658,43 @@ umap_cfg$n_neighbors <- n_neighbors
 
 umap_df <- umap(t(assay(se, "logcpm")), config = umap_cfg)$layout %>%
   as.data.frame() %>%
-  setNames(c("umap_1", "umap_2")) %>%
+  setNames(c("UMAP1", "UMAP2")) %>%
   mutate(run_id = colnames(assay(se, "logcpm")))  # Attach run IDs
 
-p8 <- plot_embedding(umap_df, "umap_1", "umap_2", "UMAP", subtitle = paste("N° Neighbors:", n_neighbors))
-
-# 2. Extract the legend from that plot
-# 1. Create one plot with the legend
-p_legend <- plot_embedding(umap_df, "umap_1", "umap_2", "UMAP", subtitle = paste("N° Neighbors:", n_neighbors)) +
-  theme(legend.position = "right")
-legend_shared <- get_legend(p_legend)
+umap_plot <- plot_embedding(umap_df, "UMAP1", "UMAP2", "UMAP", subtitle = paste("N° Neighbors:", n_neighbors))
 
 #------------- Distance Computation -------------
 
 # Helper: wrap pheatmap as a ggplot-compatible grob with db_name annotations
 pheatmap_grob <- function(mat, show_legend = TRUE) {
+  run_ids <- rownames(mat) # Extract run IDs from the matrix
+  is_gt <- db_name_map[run_ids] == "ground_truth" # Identify ground truth
+  annotation_row <- data.frame(Database = db_name_map[run_ids],row.names = run_ids) # Create row annotations (database name)
+  annotation_col <- data.frame( # Create column annotations (k2_min_hit and b_threshold)
+    KrakenMinHit = factor(ifelse(is_gt, "ground_truth", as.character(kraken_min_hit_map[run_ids]))),
+    BrackenThreshold = factor(ifelse(is_gt, "ground_truth", as.character(bracken_threshold_map[run_ids]))),
+    row.names = run_ids
+  )
   
-  # Ensure mat has matching run IDs as rownames
-  run_ids <- rownames(mat)
+  # Annotation color mappings with red for GT
+  ann_colors <- list(
+    Database = {col <- db_colors; col["ground_truth"] <- "red"; col[names(col) %in% annotation_row$Database] },
+    KrakenMinHit = {lv <- levels(annotation_col$KrakenMinHit);lv_num <- sort(as.numeric(lv[lv != "ground_truth"]))
+      col <- setNames(colorRampPalette(c("white", "orange"))(length(lv_num)), as.character(lv_num))
+      col["ground_truth"] <- "red";col },
+    BrackenThreshold = {lv <- levels(annotation_col$BrackenThreshold); lv_num <- sort(as.numeric(lv[lv != "ground_truth"]))
+      col <- setNames(colorRampPalette(c("white", "blue"))(length(lv_num)), as.character(lv_num))
+      col["ground_truth"] <- "red"; col }
+  )  
   
-  # Retrieve database names using the global map
-  db_annot <- data.frame(Database = db_name_map[run_ids], row.names = run_ids)
-  
-  # Generate annotation colors: red for ground_truth, viridis for others
-  # Use globally defined db_colors for annotation colors
-  ann_colors <- list(Database = db_colors[names(db_colors) %in% db_annot$Database])
-  
-  # Clean visual display of run IDs (remove 'run_' prefix)
-  clean_names <- sub("^run_", "", run_ids)
-  rownames(mat) <- clean_names
-  colnames(mat) <- clean_names
-  rownames(db_annot) <- clean_names  # Match updated names
-  
-  # Generate heatmap with database annotations
+  # Generate heatmap
   p <- pheatmap(
-    mat,
-    clustering_distance_rows = "euclidean",
-    #clustering_distance_cols = "euclidean",
-    color = colorRampPalette(c("white", "black"))(100),
-    angle_col = 45,
-    annotation_row = db_annot,
+    mat,color = colorRampPalette(c("white", "black"))(100),
+    annotation_row = annotation_row, annotation_col = annotation_col,
     annotation_colors = ann_colors,
-    silent = TRUE,
-    legend = show_legend,     
-    annotation_legend = FALSE           # Hides the annotation ("Database") legend
+    annotation_names_row = FALSE, annotation_names_col = FALSE,
+    show_rownames = FALSE, show_colnames = FALSE,
+    legend = show_legend, annotation_legend = show_legend
   )
   
   as.ggplot(p[[4]])
@@ -714,30 +702,36 @@ pheatmap_grob <- function(mat, show_legend = TRUE) {
 
 # Distances in original logCPM space (species abundance profiles)
 raw_dists   <- as.matrix(dist(t(assay(se, "logcpm"))))
-p9  <- pheatmap_grob(raw_dists) # Plot as heatmap 
-# TODO: do we want this plot anywhere? 
+l2_dist  <- pheatmap_grob(raw_dists, show_legend=TRUE) # Plot as heatmap 
 
 # Distances in PCA space (first 2 principal components)
 rownames(pca_df) <- pca_df$run_id
 pca_dists <- pca_df[, c("PC1", "PC2")] %>%
   dist() %>% # Euclidean distance between runs
   as.matrix()
-pca_dists <- pca_dists / max(pca_dists) # Normalize to [0, 1] range for scale consistency
-p10 <- pheatmap_grob(pca_dists, show_legend=FALSE) # Plot as heatmap 
+pca_dist <- pheatmap_grob(pca_dists, show_legend=FALSE) # Plot as heatmap 
 
 # Distances in UMAP space
 rownames(umap_df) <- umap_df$run_id
-umap_dists  <- as.matrix(dist(umap_df[, c("umap_1", "umap_2")]))
-umap_dists <- umap_dists / max(umap_dists) # Normalize to [0, 1] range for scale consistency
-p11 <- pheatmap_grob(umap_dists, show_legend=FALSE) # Plot as heatmap 
+umap_dists  <- as.matrix(dist(umap_df[, c("UMAP1", "UMAP2")]))
+umap_dist <- pheatmap_grob(umap_dists, show_legend=FALSE) # Plot as heatmap 
 
 # Distances in t-SNE space
 rownames(tsne_df) <- tsne_df$run_id
-tsne_dists  <- as.matrix(dist(tsne_df[, c("tsne_1", "tsne_2")]))
-tsne_dists <- tsne_dists / max(tsne_dists)
-p12 <- pheatmap_grob(tsne_dists, show_legend=FALSE)
+tsne_dists  <- as.matrix(dist(tsne_df[, c("tSNE1", "tSNE2")]))
+tsne_dist <- pheatmap_grob(tsne_dists, show_legend=FALSE)
 
-combined_plot <- (p6 + p7 + p8) / (p10 + p11 + p12)
-ggsave(file.path(results_dir, "combined_distances.png"), combined_plot, width = 15, height = 10)
+design <- "
+AAA.
+BBCC
+DDEE
+FFGG
+"
+combined_plot <- wrap_plots(list(
+  A = l2_dist, B = pca_plot, C = pca_dist,
+  D = tsne_plot, E = tsne_dist,
+  F = umap_plot, G = umap_dist), design = design)
+
+ggsave(file.path(results_dir, "combined_distances.png"), combined_plot, width = 14, height = 22)
 # TODO: Use distances from "truth" column to rank best-matching configurations
 
