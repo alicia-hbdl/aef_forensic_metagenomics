@@ -233,8 +233,8 @@ read_retention <- ggplot(long_summary, aes(x = Stage, y = Fraction, group = db_n
   geom_text_repel(data = mean_summary, aes(x = Stage, y = Fraction, label = percent(Fraction, accuracy = 0.01)), 
                   color = "black", size = 3, inherit.aes = FALSE) + # Add % labels to mean
   scale_color_manual(values = db_colors) +  # Use global color mapping
-  labs(title = "Progression of Read Count", y = "Proportion of Raw Reads", x = NULL, color = "Database") +
-  theme_bw() +
+  labs(y = "Proportion of Raw Reads", x = NULL, color = "Database") +
+  theme_minimal() +
   theme(plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
         axis.text.x = element_text(angle = 45, hjust = 1),
@@ -295,11 +295,10 @@ read_length <- ggplot(length_long, aes(x = Stage, y = Length, group = interactio
              color = "grey", size = 2, inherit.aes = FALSE) +
   geom_text_repel(data = mean_length_summary, aes(x = Stage, y = Length, label = round(Length, 1)), 
                   color = "black", size = 3, inherit.aes = FALSE) +
-  labs(title = "Progression of Read Length", y = "Read Length (bp)", x = NULL, linetype = "Metric", 
-       color = "Database") +
+  labs(y = "Read Length (bp)", x = NULL, linetype = "Metric", color = "Database") +
   scale_linetype_manual(values = c("Median" = "dashed", "Mean" = "solid")) +
   scale_color_manual(values = db_colors) +  # Use global color mapping
-  theme_bw() +
+  theme_minimal() +
   theme(plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
         axis.text.x = element_text(angle = 45, hjust = 1),
@@ -321,9 +320,9 @@ boxplot <- ggplot(clas_unclas, aes(x = Type, y = Reads, fill = Type)) +
   geom_point(size = 1, color = "gray") + # Add raw data points
   stat_compare_means(comparisons = list(c("Classified", "Unclassified")), method = "wilcox.test", size = 3) + # Unpaired Wilcoxon test
   stat_summary(fun = median, geom = "text", aes(label = round(after_stat(y), 1)), size = 3, color = "black") + # Show median values
-  scale_fill_viridis_d(option = "D") + 
-  labs(title = "Median Read Length Comparison", x = NULL, y = "Read Length (bp)") +
-  theme_bw() +                                                
+  scale_fill_manual(values = c("Classified" = "firebrick", "Unclassified" = "navy")) +  #
+  labs(x = NULL, y = "Read Length (bp)") +
+  theme_minimal() +
   theme(plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
         axis.text.x = element_text(angle = 45, hjust = 1),
@@ -331,7 +330,8 @@ boxplot <- ggplot(clas_unclas, aes(x = Type, y = Reads, fill = Type)) +
 
 # Combine all plots (boxplot, read retention, and read length progression) and save
 read_progression <- boxplot + read_retention + read_length + 
-  plot_annotation(caption = "Note: The boxplot shows the median, and the line plot the mean, of median read lengths per database, hence the slight difference.",
+  plot_annotation(tag_levels = 'A', 
+                  caption = "Note: The boxplot shows the median, and the line plot the mean, of median read lengths per database, hence the slight difference.",
                   theme = theme(plot.caption = element_text(size = 8, hjust = 0, face = "italic")))
             
 ggsave(file.path(results_dir, "read_progression.png"), read_progression, width = 12, height = 4.5, dpi = 300)
@@ -478,7 +478,7 @@ p5 <- ggplot(df_var_cpm, aes(x = Mean, y = SD, color = viridis(1, option = "D"))
         legend.position = "none")
 
 # Variance stabilization: log2 transform CPM 
-assay(se, "logcpm") <- log2(cpm_mat+1) # Log(+1) avoids issues with 0s
+assay(se, "logcpm") <- log10(cpm_mat+1) # Log(+1) avoids issues with 0s
 logcpm_mat <- assay(se, "logcpm")
 
 # Prepare normalized matrix
@@ -557,12 +557,14 @@ p_aupr <- ggplot(aupr_df, aes(x = Database, y = aucs, fill = Database)) +
   geom_boxplot(size = 0.2) + 
   geom_point(size = 1, color = "gray") +
   scale_fill_manual(values = db_colors) +  # Use global color mapping
-  labs(title = "AUPR per Database", x = "Database", y = "AUPR") +
+  labs(x = "Database", y = "AUPR") +
+  stat_summary(fun = median, geom = "text",
+               aes(label = round(after_stat(y), 2)),
+               size = 3, color = "black", vjust = -0.5) +
   theme_minimal() + 
   theme(plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
-        axis.text.x = element_blank(),
-        legend.position = "none")
+        axis.text.x = element_blank(), legend.position = "none")
 
 #------------- Plot PRC and ROC Curves -------------
 
@@ -579,7 +581,7 @@ curve_df <- curve_df %>%
 p_prc <- ggplot(curve_df %>% filter(type == "PRC"), aes(x = x, y = y, group = modname, color = Database)) +
   geom_line(linewidth = 0.6) +
   scale_color_manual(values = db_colors) +  # Use global color mapping
-  labs(title = "Precision-Recall Curves", x = "Recall", y = "Precision", color = "Database (Median AUPR)") +
+  labs(x = "Recall", y = "Precision", color = "Database") +
   theme_minimal() + 
   theme(plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
@@ -590,7 +592,7 @@ p_prc <- ggplot(curve_df %>% filter(type == "PRC"), aes(x = x, y = y, group = mo
 p_roc <- ggplot(curve_df %>% filter(type == "ROC"), aes(x = x, y = y, group = modname, color = Database)) +
   geom_line(linewidth = 0.6) +
   scale_color_manual(values = db_colors) +  # Use global color mapping
-  labs(title = "Receiver Operating Characteristic (ROC)", x = "False Positive Rate (1 - Specificity)", y = "True Positive Rate (Sensitivity)", color = "Database (Median AUPR)") +
+  labs(x = "False Positive Rate (1 - Specificity)", y = "True Positive Rate (Sensitivity)", color = "Database") +
   theme_minimal() + 
   theme(plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
@@ -598,7 +600,8 @@ p_roc <- ggplot(curve_df %>% filter(type == "ROC"), aes(x = x, y = y, group = mo
         legend.title = element_text(size = 9, face = "bold"), legend.text = element_text(size = 8))
 
 # Combine and save plots
-curves <- p_aupr + p_prc +  p_roc
+curves <- p_aupr + p_prc +  p_roc + 
+  plot_annotation(tag_levels = 'A')  
 ggsave(file.path(results_dir, "precision_recall.png"), curves, width = 12, height = 3.5)
 
 #=========================================================
@@ -623,8 +626,8 @@ plot_embedding <- function(df, xvar, yvar, title, subtitle = NULL) {
   ggplot(df, aes_string(x = xvar, y = yvar, label = 'sub("^run_", "", run_id)')) +
     geom_point(data = subset(df, run_id != "ground_truth"), aes(color = db_name), size = 3) +
     geom_point(data = subset(df, run_id == "ground_truth"), color = "red", size = 4) +
-    geom_text_repel(data = subset(df, run_id != "ground_truth"), aes(color = db_name), 
-                    size = 3, max.overlaps = Inf) +
+    #geom_text_repel(data = subset(df, run_id != "ground_truth"), aes(color = db_name), 
+                   # size = 3, max.overlaps = Inf) +
     scale_color_manual(values = db_colors) +  # Use global color mapping
     labs(title = title, subtitle = subtitle, x = xvar, y = yvar) +
     theme_minimal() +
@@ -680,36 +683,53 @@ pheatmap_grob <- function(mat, show_legend = TRUE) {
   ann_colors <- list(
     Database = {col <- db_colors; col["ground_truth"] <- "red"; col[names(col) %in% annotation_row$Database] },
     KrakenMinHit = {lv <- levels(annotation_col$KrakenMinHit);lv_num <- sort(as.numeric(lv[lv != "ground_truth"]))
-      col <- setNames(colorRampPalette(c("white", "orange"))(length(lv_num)), as.character(lv_num))
+      col <- setNames(colorRampPalette(c("white", "firebrick"))(length(lv_num)), as.character(lv_num))
       col["ground_truth"] <- "red";col },
     BrackenThreshold = {lv <- levels(annotation_col$BrackenThreshold); lv_num <- sort(as.numeric(lv[lv != "ground_truth"]))
-      col <- setNames(colorRampPalette(c("white", "blue"))(length(lv_num)), as.character(lv_num))
+      col <- setNames(colorRampPalette(c("white", "navy"))(length(lv_num)), as.character(lv_num))
       col["ground_truth"] <- "red"; col }
   )  
   
   # Generate heatmap
   p <- pheatmap(
-    mat,color = colorRampPalette(c("white", "black"))(100),
+    mat,
+    #color = colorRampPalette(c("white", "black"))(100),
     annotation_row = annotation_row, annotation_col = annotation_col,
     annotation_colors = ann_colors,
     annotation_names_row = FALSE, annotation_names_col = FALSE,
     show_rownames = FALSE, show_colnames = FALSE,
-    legend = show_legend, annotation_legend = show_legend
+    legend = show_legend, annotation_legend = show_legend, border_color = "NA"
   )
   
   as.ggplot(p[[4]])
 }
 
 # Distances in original logCPM space (species abundance profiles)
-raw_dists   <- as.matrix(dist(t(assay(se, "logcpm"))))
-l2_dist  <- pheatmap_grob(raw_dists, show_legend=TRUE) # Plot as heatmap 
+count_dists <- as.matrix(dist(t(assay(se, "counts"))))
+count_dist  <- pheatmap_grob(count_dists, show_legend = FALSE)
+
+cpm_dists <- as.matrix(dist(t(assay(se, "cpm"))))
+cpm_dist  <- pheatmap_grob(cpm_dists, show_legend = FALSE)
+
+logcpm_dists <- as.matrix(dist(t(assay(se, "logcpm"))))  # Corrected to use "logcpm"
+logcpm_dist  <- pheatmap_grob(logcpm_dists, show_legend = TRUE)
+
+# Combine plots with layout design
+combined_dist <- wrap_plots(
+  list(A = count_dist, B = cpm_dist, C = logcpm_dist),
+  design = "AAABBBCCCCC") + 
+  plot_annotation(tag_levels = 'A')  
+
+# Save output
+ggsave(file.path(results_dir, "l2_distance_transformations.jpg"), combined_dist, width = 20, height = 6)
+
 
 # Distances in PCA space (first 2 principal components)
 rownames(pca_df) <- pca_df$run_id
 pca_dists <- pca_df[, c("PC1", "PC2")] %>%
   dist() %>% # Euclidean distance between runs
   as.matrix()
-pca_dist <- pheatmap_grob(pca_dists, show_legend=FALSE) # Plot as heatmap 
+pca_dist <- pheatmap_grob(pca_dists, show_legend=TRUE) # Plot as heatmap 
 
 # Distances in UMAP space
 rownames(umap_df) <- umap_df$run_id
@@ -722,16 +742,19 @@ tsne_dists  <- as.matrix(dist(tsne_df[, c("tSNE1", "tSNE2")]))
 tsne_dist <- pheatmap_grob(tsne_dists, show_legend=FALSE)
 
 design <- "
-AAA.
-BBCC
-DDEE
-FFGG
+BBCCC
+DDEE.
+FFGG.
 "
-combined_plot <- wrap_plots(list(
-  A = l2_dist, B = pca_plot, C = pca_dist,
+combined_cluster <- wrap_plots(list(
+  B = pca_plot, C = pca_dist,
   D = tsne_plot, E = tsne_dist,
-  F = umap_plot, G = umap_dist), design = design)
+  F = umap_plot, G = umap_dist), design = design) + 
+  plot_annotation(tag_levels = 'A')  
 
-ggsave(file.path(results_dir, "combined_distances.png"), combined_plot, width = 14, height = 22)
+ggsave(file.path(results_dir, "combined_distances.png"), combined_cluster, width = 15, height = 20)
+# TODO: Use distances from "truth" column to rank best-matching configurations
+
+
 # TODO: Use distances from "truth" column to rank best-matching configurations
 
