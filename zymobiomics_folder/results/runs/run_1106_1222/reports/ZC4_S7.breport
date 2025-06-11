@@ -1,0 +1,104 @@
+100.00	235986	0	R	1	root
+100.00	235986	0	R1	131567	  cellular organisms
+94.09	222036	0	D	2	    Bacteria
+61.87	145994	0	D1	1783272	      Terrabacteria group
+61.87	145994	0	P	1239	        Bacillota
+61.87	145994	0	C	91061	          Bacilli
+38.55	90977	0	O	1385	            Bacillales
+15.16	35768	0	F	186817	              Bacillaceae
+15.16	35768	0	G	1386	                Bacillus
+15.13	35710	0	G1	653685	                  Bacillus subtilis group
+12.60	29728	29728	S	96241	                    Bacillus spizizenii
+0.07	160	0	G2	1938374	                    Bacillus amyloliquefaciens group
+0.07	160	160	S	492670	                      Bacillus velezensis
+2.28	5378	5378	S	1423	                    Bacillus subtilis
+0.04	102	102	S	483913	                    Bacillus inaquosorum
+0.03	67	0	G2	653388	                    Bacillus mojavensis subgroup
+0.03	67	67	S	260554	                      Bacillus halotolerans
+0.03	75	75	S	72361	                    Bacillus vallismortis
+0.05	125	125	S	2054641	                    Bacillus stercoris
+0.02	47	47	S	227866	                    Bacillus tequilensis
+0.01	25	25	S	1452	                    Bacillus atrophaeus
+0.02	40	40	S	2715209	                  Bacillus rugosus
+0.01	17	17	S	2487276	                  Bacillus cabrialesii
+12.03	28389	0	F	186820	              Listeriaceae
+12.03	28389	0	G	1637	                Listeria
+11.90	28083	28083	S	1639	                  Listeria monocytogenes
+0.07	155	155	S	1642	                  Listeria innocua
+0.03	66	66	S	2713501	                  Listeria swaminathanii
+0.01	31	31	S	1638	                  Listeria ivanovii
+0.01	29	29	S	1643	                  Listeria welshimeri
+0.01	23	23	S	1640	                  Listeria seeligeri
+11.36	26819	0	F	90964	              Staphylococcaceae
+11.36	26819	0	G	1279	                Staphylococcus
+11.35	26778	26778	S	1280	                  Staphylococcus aureus
+0.01	29	29	S	985002	                  Staphylococcus argenteus
+0.00	11	11	S	1654388	                  Staphylococcus schweitzeri
+23.31	55017	0	O	186826	            Lactobacillales
+14.25	33619	0	F	81852	              Enterococcaceae
+14.25	33619	0	G	1350	                Enterococcus
+14.25	33619	33619	S	1351	                  Enterococcus faecalis
+9.07	21398	0	F	33958	              Lactobacillaceae
+9.07	21398	0	G	2742598	                Limosilactobacillus
+9.07	21398	21398	S	1613	                  Limosilactobacillus fermentum
+32.20	75984	0	P	1224	      Pseudomonadota
+32.20	75984	0	C	1236	        Gammaproteobacteria
+25.04	59080	0	O	91347	          Enterobacterales
+25.04	59080	0	F	543	            Enterobacteriaceae
+15.01	35419	0	G	590	              Salmonella
+15.00	35395	35395	S	28901	                Salmonella enterica
+0.01	24	24	S	54736	                Salmonella bongori
+9.73	22958	0	G	561	              Escherichia
+9.69	22865	22865	S	562	                Escherichia coli
+0.02	37	37	S	208962	                Escherichia albertii
+0.01	31	31	S	564	                Escherichia fergusonii
+0.01	24	24	S	1499973	                Escherichia marmotae
+0.22	528	0	G	620	              Shigella
+0.18	414	414	S	623	                Shigella flexneri
+0.05	114	114	S	622	                Shigella dysenteriae
+0.07	173	0	F1	2890311	              Klebsiella/Raoultella group
+0.07	173	0	G	570	                Klebsiella
+0.07	173	173	S	573	                  Klebsiella pneumoniae
+7.16	16904	0	O	72274	          Pseudomonadales
+7.16	16904	0	F	135621	            Pseudomonadaceae
+7.16	16904	0	G	286	              Pseudomonas
+7.16	16904	0	G1	136841	                Pseudomonas aeruginosa group
+7.16	16904	16904	S	287	                  Pseudomonas aeruginosa
+0.02	57	0	D1	48479	      environmental samples
+0.02	57	57	S	77133	        uncultured bacterium
+5.91	13949	0	D	2759	    Eukaryota
+5.91	13949	0	D1	33154	      Opisthokonta
+5.91	13936	0	K	4751	        Fungi
+5.91	13936	0	K1	451864	          Dikarya
+3.03	7158	0	P	4890	            Ascomycota
+3.03	7158	0	P1	716545	              saccharomyceta
+3.03	7158	0	P2	147537	                Saccharomycotina
+3.03	7158	0	C	4891	                  Saccharomycetes
+3.03	7158	0	O	4892	                    Saccharomycetales
+3.03	7158	0	F	4893	                      Saccharomycetaceae
+3.03	7158	0	G	4930	                        Saccharomyces
+3.01	7110	7110	S	4932	                          Saccharomyces cerevisiae
+0.02	47	47	S	27291	                          Saccharomyces paradoxus
+2.87	6778	0	P	5204	            Basidiomycota
+2.87	6778	0	P1	5302	              Agaricomycotina
+2.87	6778	0	C	155616	                Tremellomycetes
+2.87	6778	0	O	5234	                  Tremellales
+2.87	6778	0	F	1884633	                    Cryptococcaceae
+2.87	6778	0	G	5206	                      Cryptococcus
+2.87	6778	0	G1	1897064	                        Cryptococcus neoformans species complex
+2.87	6778	6778	S	5207	                          Cryptococcus neoformans
+0.01	13	0	K	33208	        Metazoa
+0.01	13	0	K1	6072	          Eumetazoa
+0.01	13	0	K2	33213	            Bilateria
+0.01	13	0	K3	33317	              Protostomia
+0.01	13	0	K4	2697495	                Spiralia
+0.01	13	0	K5	1206795	                  Lophotrochozoa
+0.01	13	0	P	6157	                    Platyhelminthes
+0.01	13	0	C	6178	                      Trematoda
+0.01	13	0	C1	6179	                        Digenea
+0.01	13	0	O	27871	                          Plagiorchiida
+0.01	13	0	O1	27872	                            Xiphidiata
+0.01	13	0	O2	1776223	                              Gorgoderoidea
+0.01	13	0	F	73421	                                Dicrocoeliidae
+0.01	13	0	G	57077	                                  Dicrocoelium
+0.01	13	13	S	57078	                                    Dicrocoelium dendriticum
