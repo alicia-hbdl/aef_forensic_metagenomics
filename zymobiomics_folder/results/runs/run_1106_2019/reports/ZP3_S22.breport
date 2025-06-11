@@ -1,0 +1,92 @@
+100.00	309186	0	R	1	root
+99.70	308271	0	R1	131567	  cellular organisms
+96.01	296854	0	D	2	    Bacteria
+62.24	192430	0	D1	1783272	      Terrabacteria group
+62.24	192430	0	P	1239	        Bacillota
+62.24	192430	0	C	91061	          Bacilli
+39.52	122199	0	O	1385	            Bacillales
+13.53	41833	0	F	186817	              Bacillaceae
+13.53	41833	0	G	1386	                Bacillus
+13.50	41754	0	G1	653685	                  Bacillus subtilis group
+11.47	35460	35460	S	96241	                    Bacillus spizizenii
+1.87	5770	5770	S	1423	                    Bacillus subtilis
+0.04	111	111	S	72361	                    Bacillus vallismortis
+0.04	122	122	S	483913	                    Bacillus inaquosorum
+0.02	73	0	G2	653388	                    Bacillus mojavensis subgroup
+0.02	73	73	S	260554	                      Bacillus halotolerans
+0.02	56	56	S	227866	                    Bacillus tequilensis
+0.04	132	132	S	2054641	                    Bacillus stercoris
+0.01	26	26	S	1452	                    Bacillus atrophaeus
+0.02	47	47	S	2715209	                  Bacillus rugosus
+0.01	31	31	S	2487276	                  Bacillus cabrialesii
+13.16	40687	0	F	90964	              Staphylococcaceae
+13.16	40687	0	G	1279	                Staphylococcus
+13.14	40638	40638	S	1280	                  Staphylococcus aureus
+0.01	26	26	S	1654388	                  Staphylococcus schweitzeri
+0.01	21	21	S	985002	                  Staphylococcus argenteus
+12.83	39678	0	F	186820	              Listeriaceae
+12.83	39678	0	G	1637	                Listeria
+12.71	39306	39306	S	1639	                  Listeria monocytogenes
+0.06	196	196	S	1642	                  Listeria innocua
+0.02	57	57	S	2713501	                  Listeria swaminathanii
+0.02	49	49	S	1643	                  Listeria welshimeri
+0.01	42	42	S	1638	                  Listeria ivanovii
+0.01	24	24	S	1640	                  Listeria seeligeri
+22.71	70231	0	O	186826	            Lactobacillales
+12.60	38968	0	F	81852	              Enterococcaceae
+12.60	38968	0	G	1350	                Enterococcus
+12.60	38968	38968	S	1351	                  Enterococcus faecalis
+10.11	31262	0	F	33958	              Lactobacillaceae
+10.11	31262	0	G	2742598	                Limosilactobacillus
+10.11	31262	31262	S	1613	                  Limosilactobacillus fermentum
+33.77	104424	0	P	1224	      Pseudomonadota
+33.77	104424	0	C	1236	        Gammaproteobacteria
+22.58	69800	0	O	91347	          Enterobacterales
+22.58	69800	0	F	543	            Enterobacteriaceae
+13.73	42461	0	G	590	              Salmonella
+13.73	42461	42461	S	28901	                Salmonella enterica
+8.79	27169	0	G	561	              Escherichia
+8.77	27108	27108	S	562	                Escherichia coli
+0.01	28	28	S	208962	                Escherichia albertii
+0.01	32	32	S	564	                Escherichia fergusonii
+0.05	169	0	F1	2890311	              Klebsiella/Raoultella group
+0.05	169	0	G	570	                Klebsiella
+0.05	169	169	S	573	                  Klebsiella pneumoniae
+11.20	34623	0	O	72274	          Pseudomonadales
+11.20	34623	0	F	135621	            Pseudomonadaceae
+11.20	34623	0	G	286	              Pseudomonas
+11.20	34623	0	G1	136841	                Pseudomonas aeruginosa group
+11.20	34623	34623	S	287	                  Pseudomonas aeruginosa
+3.69	11417	0	D	2759	    Eukaryota
+3.69	11417	0	D1	33154	      Opisthokonta
+3.69	11417	0	K	4751	        Fungi
+3.69	11417	0	K1	451864	          Dikarya
+1.98	6112	0	P	4890	            Ascomycota
+1.98	6112	0	P1	716545	              saccharomyceta
+1.98	6112	0	P2	147537	                Saccharomycotina
+1.98	6112	0	C	4891	                  Saccharomycetes
+1.98	6112	0	O	4892	                    Saccharomycetales
+1.98	6112	0	F	4893	                      Saccharomycetaceae
+1.98	6112	0	G	4930	                        Saccharomyces
+1.96	6058	6058	S	4932	                          Saccharomyces cerevisiae
+0.02	53	53	S	27291	                          Saccharomyces paradoxus
+1.72	5304	0	P	5204	            Basidiomycota
+1.72	5304	0	P1	5302	              Agaricomycotina
+1.72	5304	0	C	155616	                Tremellomycetes
+1.72	5304	0	O	5234	                  Tremellales
+1.72	5304	0	F	1884633	                    Cryptococcaceae
+1.72	5304	0	G	5206	                      Cryptococcus
+1.72	5304	0	G1	1897064	                        Cryptococcus neoformans species complex
+1.72	5304	5304	S	5207	                          Cryptococcus neoformans
+0.30	914	0	D	10239	  Viruses
+0.30	914	0	D1	2559587	    Riboviria
+0.30	914	0	K	2732396	      Orthornavirae
+0.30	914	0	P	2732408	        Pisuviricota
+0.30	914	0	C	2732506	          Pisoniviricetes
+0.30	914	0	O	76804	            Nidovirales
+0.30	914	0	O1	2499399	              Cornidovirineae
+0.30	914	0	F	11118	                Coronaviridae
+0.30	914	0	F1	2501931	                  Orthocoronavirinae
+0.30	914	0	G	694002	                    Betacoronavirus
+0.30	914	0	G1	2509511	                      Sarbecovirus
+0.30	914	914	S	694009	                        Severe acute respiratory syndrome-related coronavirus
