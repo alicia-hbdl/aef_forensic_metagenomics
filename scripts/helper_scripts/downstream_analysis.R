@@ -181,10 +181,23 @@ se <- se %>%
   subset(, colSums(assay(., "counts")) >= 300) %>%  # Keep runs with ≥100 total reads
   subset(, !duplicated(t(assay(., "counts"))))  # Remove duplicated count profiles 
 
-# Create global legend
-legend_df <- unique(colData(se)[, "db_name", drop = FALSE])  # Drop = FALSE to keep as dataframe
+# Create global legend (auto-assign colors for all detected databases)
+legend_df <- unique(colData(se)[, "db_name", drop = FALSE])
 db_colors <- setNames(viridis(nrow(legend_df), option = "D"), legend_df$db_name)
-db_colors["ground_truth"] <- "red"
+
+# Manually assign distinct, readable colors by database group; lighter shades = smaller versions.
+db_colors["ground_truth"] <- "#e6194B"
+db_colors["k2_core_nt_20240904"] <- "#f58231"
+db_colors["k2_eupathdb48_20230407"] <- "#ffe119"
+db_colors["k2_pluspfp_20250402"] <- "#267330"
+db_colors["k2_pluspfp_16gb_20250402"] <- "#3cb44b"
+db_colors["k2_pluspfp_08gb_20241228"] <- "#b3e6b9"
+db_colors["k2_standard_20250402"] <- "#1c3387"
+db_colors["k2_standard_16gb_20250402"] <- "#4363d8"
+db_colors["k2_standard_08gb_20241228"] <- "#b6c2f0"
+db_colors["k2_zymobiomics_250509"] <- "#911eb4"
+db_colors["k2_housepets_250510"] <- "#f032e6"
+db_colors <- db_colors[order(names(db_colors))]
 
 #=========================================================
 # Read Length and Size Progression Analysis 
