@@ -8,10 +8,7 @@
 
 # Usage: Rscript downstream_analysis.R -t <path/to/ground_truth.csv> -s <path/to/runs_summary.csv> breport1.csv breport2.csv ...
 
-# Rscript downstream_analysis.R \
-# -t /Users/aliciahobdell/Desktop/final_project/zymobiomics_folder/raw_data/ground_truth.csv \
-# -s /Users/aliciahobdell/Desktop/final_project/zymobiomics_folder/results/runs/runs_summary.csv \
-# $(find /Users/aliciahobdell/Desktop/final_project/zymobiomics_folder/results/runs/ -type f -name "combined_breports.csv" | sort)
+# Rscript ./scripts/helper_scripts/downstream_analysis.R   -t ./zymobiomics_folder/raw_data/ground_truth.csv   -s ./zymobiomics_folder/results/runs/runs_summary.csv   $(find ./zymobiomics_folder/results/runs/ -type f -name "combined_breports.csv" | sort)
 
 #=========================================================
 # Environment Setup
@@ -246,7 +243,7 @@ read_retention <- ggplot(long_summary, aes(x = Stage, y = Fraction, group = db_n
   geom_text_repel(data = mean_summary, aes(x = Stage, y = Fraction, label = percent(Fraction, accuracy = 0.01)), 
                   color = "black", size = 3, inherit.aes = FALSE) + # Add % labels to mean
   scale_color_manual(values = db_colors) +  # Use global color mapping
-  labs(y = "Proportion of Raw Reads", x = NULL, color = "Database") +
+  labs(title = "Read Retention Across Stages", y = "Proportion of Raw Reads", x = NULL, color = "Database") +
   theme_minimal() +
   theme(plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
@@ -308,7 +305,7 @@ read_length <- ggplot(length_long, aes(x = Stage, y = Length, group = interactio
              color = "grey", size = 2, inherit.aes = FALSE) +
   geom_text_repel(data = mean_length_summary, aes(x = Stage, y = Length, label = round(Length, 1)), 
                   color = "black", size = 3, inherit.aes = FALSE) +
-  labs(y = "Read Length (bp)", x = NULL, linetype = "Metric", color = "Database") +
+  labs(title = "Read Length Across Stages", y = "Read Length (bp)", x = NULL, linetype = "Metric", color = "Database") +
   scale_linetype_manual(values = c("Median" = "dashed", "Mean" = "solid")) +
   scale_color_manual(values = db_colors) +  # Use global color mapping
   theme_minimal() +
@@ -321,20 +318,30 @@ read_length <- ggplot(length_long, aes(x = Stage, y = Length, group = interactio
 # Compare read lengths between classified and unclassified reads using a boxplot
 
 # Reshape median classified/unclassified read lengths into long format for plotting
-clas_unclas <- length_summary %>%
-  select(db_name, clas_med, unclas_med) %>%  # Keep relevant columns
-  pivot_longer(cols = c(clas_med, unclas_med), names_to = "Type", values_to = "Reads") %>%
-  mutate(Type = recode(Type, "clas_med" = "Classified", "unclas_med" = "Unclassified"))  # Rename for clarity
+clas_unclas <- min_read_data %>%
+  select(db_name, clas_med, unclas_med) %>%                            # Select relevant columns
+  pivot_longer(cols = c(clas_med, unclas_med),                         # Reshape to long format
+               names_to = "Type", values_to = "Reads") %>%
+  mutate(Type = recode(Type,                                           # Rename for clarity
+                       "clas_med" = "Classified",
+                       "unclas_med" = "Unclassified")) %>%
+  slice_sample(n = nrow(.))                                            # Shuffle row order
+
+library(gghalves)
+library(ggpp)
+
 
 # Boxplot comparing median read lengths of classified vs unclassified reads
 # Unpaired Wilcoxon test: non-parametric (handles skewed data), compares medians of independent groups (classified vs unclassified reads)
 boxplot <- ggplot(clas_unclas, aes(x = Type, y = Reads, fill = Type)) +
-  geom_boxplot(alpha = 0.7, color = "gray", size = 0.5) + 
-  geom_point(size = 1, color = "gray") + # Add raw data points
+  geom_half_violin(side = "l", color = "black", size = 0.5, trim = FALSE, alpha = 0.5) +  # Half violin on left
+  geom_point(aes(color = db_name), size = 0.8, position = position_jitternudge(width = 0.2, x = 0.23, nudge.from = "jittered"))+
+  geom_boxplot(width = 0.2, outlier.shape = NA, fill = "white") +  # Boxplot filled white
   stat_compare_means(comparisons = list(c("Classified", "Unclassified")), method = "wilcox.test", size = 3) + # Unpaired Wilcoxon test
-  stat_summary(fun = median, geom = "text", aes(label = round(after_stat(y), 1)), size = 3, color = "black") + # Show median values
-  scale_fill_manual(values = c("Classified" = "firebrick", "Unclassified" = "navy")) +  #
-  labs(x = NULL, y = "Read Length (bp)") +
+  stat_summary(fun = median, geom = "text", aes(label = round(after_stat(y), 1)), size = 2.5, color = "black", vjust = -0.65) + # Show median values
+  scale_fill_manual(values = c("Classified" = "#000075", "Unclassified" = "#800000")) +
+  scale_color_manual(values = db_colors) +  # Use your existing db_colors
+  labs(title = "Classified vs Unclassified Read Length", x = NULL, y = "Read Length (bp)") +
   theme_minimal() +
   theme(plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
@@ -343,9 +350,7 @@ boxplot <- ggplot(clas_unclas, aes(x = Type, y = Reads, fill = Type)) +
 
 # Combine all plots (boxplot, read retention, and read length progression) and save
 read_progression <- boxplot + read_retention + read_length + 
-  plot_annotation(tag_levels = 'A', 
-                  caption = "Note: The boxplot shows the median, and the line plot the mean, of median read lengths per database, hence the slight difference.",
-                  theme = theme(plot.caption = element_text(size = 8, hjust = 0, face = "italic")))
+  plot_annotation(tag_levels = 'A', theme = theme(plot.caption = element_text(size = 8, hjust = 0, face = "italic")))
             
 ggsave(file.path(results_dir, "read_progression.png"), read_progression, width = 12, height = 4.5, dpi = 300)
 
@@ -560,17 +565,13 @@ aupr_df <- aucs_df %>%
 
 #------------- Plot AUPR per Database -------------
 
-# Compute median AUPR per database
-median_labels <- aupr_df %>%
-  group_by(Database) %>%
-  summarise(Median = median(aucs, na.rm = TRUE), .groups = "drop")
-
 # Boxplot of AUPR per database
 p_aupr <- ggplot(aupr_df, aes(x = Database, y = aucs, fill = Database)) +
-  geom_boxplot(size = 0.2) + 
-  geom_point(size = 1, color = "gray") +
-  scale_fill_manual(values = db_colors) +  # Use global color mapping
-  labs(x = "Database", y = "AUPR") +
+  geom_boxplot(alpha = 0.5, size = 0.2) + 
+  geom_point(aes(color = Database), size = 1) +  # Correct color mapping
+  scale_color_manual(values = db_colors) +
+  scale_fill_manual(values = db_colors) +
+  labs(title = "AUPR by Database", x = "Database", y = "AUPR") +
   stat_summary(fun = median, geom = "text",
                aes(label = round(after_stat(y), 2)),
                size = 3, color = "black", vjust = -0.5) +
@@ -581,32 +582,70 @@ p_aupr <- ggplot(aupr_df, aes(x = Database, y = aucs, fill = Database)) +
 
 #------------- Plot PRC and ROC Curves -------------
 
+# Compute median AUPR per database
+median_labels <- aupr_df %>%
+  group_by(Database) %>%
+  summarise(Median = median(aucs, na.rm = TRUE), .groups = "drop")
+
 # Convert curves to long-format dataframe
-curve_df <- as.data.frame(sscurves) 
+curve_df <- as.data.frame(sscurves) %>%
+  left_join(db_df, by = "modname") 
 
-# Add database and median AUPR to each run
-curve_df <- curve_df %>% 
-  left_join(db_df, by = "modname") %>%
-  left_join(median_labels, by = "Database") %>%
-  mutate(LegendLabel = paste0(Database, " (AUPR=", round(Median, 3), ")"))
+# Define common x-axis grid
+x_grid <- seq(0, 1, length.out = 100)
 
-# Precision-Recall Curves
-p_prc <- ggplot(curve_df %>% filter(type == "PRC"), aes(x = x, y = y, group = modname, color = Database)) +
-  geom_line(linewidth = 0.6) +
-  scale_color_manual(values = db_colors) +  # Use global color mapping
-  labs(x = "Recall", y = "Precision", color = "Database") +
-  theme_minimal() + 
+# Interpolate and compute summary stats
+prc_summary <- curve_df %>%
+  filter(type == "PRC") %>%
+  group_by(Database, modname) %>%
+  summarise(y_interp = list(approx(x, y, xout = x_grid, rule = 2)$y), .groups = "drop") %>%
+  unnest_wider(y_interp, names_sep = "_") %>%
+  pivot_longer(cols = starts_with("y_interp_"), names_prefix = "y_interp_", names_to = "x_idx", values_to = "y") %>%
+  mutate(x = x_grid[as.integer(x_idx)]) %>%
+  group_by(Database, x) %>%
+  summarise(
+    ymin = min(y, na.rm = TRUE),
+    ymax = max(y, na.rm = TRUE),
+    ymed = median(y, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+p_prc <- ggplot(prc_summary, aes(x = x, color = Database, fill = Database)) +
+  geom_ribbon(aes(ymin = ymin, ymax = ymax), alpha = 0.3, color = NA) +
+  geom_line(aes(y = ymed), size = 0.7) +
+  scale_color_manual(values = db_colors) +
+  scale_fill_manual(values = db_colors) +
+  labs(title = "PR Curves per Database", x = "Recall", y = "Precision") +
+  theme_minimal() +
   theme(plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
         axis.text.x = element_text(angle = 45, hjust = 1),
         legend.position = "none")
 
+# Interpolate and compute summary stats for ROC
+roc_summary <- curve_df %>%
+  filter(type == "ROC") %>%
+  group_by(Database, modname) %>%
+  summarise(y_interp = list(approx(x, y, xout = x_grid, rule = 2)$y), .groups = "drop") %>%
+  unnest_wider(y_interp, names_sep = "_") %>%
+  pivot_longer(cols = starts_with("y_interp_"), names_prefix = "y_interp_", names_to = "x_idx", values_to = "y") %>%
+  mutate(x = x_grid[as.integer(x_idx)]) %>%
+  group_by(Database, x) %>%
+  summarise(
+    ymin = min(y, na.rm = TRUE),
+    ymax = max(y, na.rm = TRUE),
+    ymed = median(y, na.rm = TRUE),
+    .groups = "drop"
+  )
+
 # Receiver Operating Characteristic Curves
-p_roc <- ggplot(curve_df %>% filter(type == "ROC"), aes(x = x, y = y, group = modname, color = Database)) +
-  geom_line(linewidth = 0.6) +
-  scale_color_manual(values = db_colors) +  # Use global color mapping
-  labs(x = "False Positive Rate (1 - Specificity)", y = "True Positive Rate (Sensitivity)", color = "Database") +
-  theme_minimal() + 
+p_roc <- ggplot(roc_summary, aes(x = x, color = Database, fill = Database)) +
+  geom_ribbon(aes(ymin = ymin, ymax = ymax), alpha = 0.1, color = NA) +
+  geom_line(aes(y = ymed), size = 0.7) +
+  scale_color_manual(values = db_colors) +
+  scale_fill_manual(values = db_colors) +
+  labs(title = "ROC Curves per Database", x = "False Positive Rate (1 - Specificity)", y = "True Positive Rate (Sensitivity)", color = "Database", fill = "Database") +
+  theme_minimal() +
   theme(plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
         axis.text.x = element_text(angle = 45, hjust = 1),
@@ -638,7 +677,7 @@ plot_embedding <- function(df, xvar, yvar, title, subtitle = NULL) {
   
   ggplot(df, aes_string(x = xvar, y = yvar, label = 'sub("^run_", "", run_id)')) +
     geom_point(data = subset(df, run_id != "ground_truth"), aes(color = db_name), size = 3) +
-    geom_point(data = subset(df, run_id == "ground_truth"), color = "red", size = 4) +
+    geom_point(data = subset(df, run_id == "ground_truth"), color = "#e6194B", size = 4) +
     #geom_text_repel(data = subset(df, run_id != "ground_truth"), aes(color = db_name), 
                    # size = 3, max.overlaps = Inf) +
     scale_color_manual(values = db_colors) +  # Use global color mapping
@@ -694,13 +733,13 @@ pheatmap_grob <- function(mat, show_legend = TRUE) {
   
   # Annotation color mappings with red for GT
   ann_colors <- list(
-    Database = {col <- db_colors; col["ground_truth"] <- "red"; col[names(col) %in% annotation_row$Database] },
+    Database = {col <- db_colors; col["ground_truth"] <- "#e6194B"; col[names(col) %in% annotation_row$Database] },
     KrakenMinHit = {lv <- levels(annotation_col$KrakenMinHit);lv_num <- sort(as.numeric(lv[lv != "ground_truth"]))
-      col <- setNames(colorRampPalette(c("white", "firebrick"))(length(lv_num)), as.character(lv_num))
-      col["ground_truth"] <- "red";col },
+      col <- setNames(colorRampPalette(c("white", "#000075"))(length(lv_num)), as.character(lv_num))
+      col["ground_truth"] <- "#e6194B";col },
     BrackenThreshold = {lv <- levels(annotation_col$BrackenThreshold); lv_num <- sort(as.numeric(lv[lv != "ground_truth"]))
-      col <- setNames(colorRampPalette(c("white", "navy"))(length(lv_num)), as.character(lv_num))
-      col["ground_truth"] <- "red"; col }
+      col <- setNames(colorRampPalette(c("white", "#800000"))(length(lv_num)), as.character(lv_num))
+      col["ground_truth"] <- "#e6194B"; col }
   )  
   
   # Generate heatmap
