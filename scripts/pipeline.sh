@@ -13,7 +13,7 @@ set -e # Exit on error
 set -x  # Print each command for debugging 
 
 # Project root path (user-specific)
-ROOT_DIR="/scratch/users/k24087895/final_project"
+ROOT_DIR="/scratch/prj/aef_forensic_metagenomics"
 
 << 'COMMENT'
 =============================================================================================

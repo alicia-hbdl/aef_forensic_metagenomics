@@ -721,7 +721,7 @@ combined_dist <- wrap_plots(
   plot_annotation(tag_levels = 'A')  
 
 # Save output
-ggsave(file.path(results_dir, "l2_distance_transformations.jpg"), combined_dist, width = 20, height = 6)
+ggsave(file.path(results_dir, "l2_distance_transformations.jpg"), combined_dist, width = 20, height = 7)
 
 
 # Distances in PCA space (first 2 principal components)
