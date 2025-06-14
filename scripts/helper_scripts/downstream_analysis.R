@@ -87,8 +87,16 @@ for (file_path in breport_paths) {
   # Read report and compute mean across numeric columns
   run_species <- read_csv(file_path, show_col_types = FALSE) %>%
     mutate(!!run_id := rowMeans(across(where(is.numeric), ~ replace_na(.x, 0)))) %>% # Replace NA with 0 
-    select(species, !!sym(run_id)) # Keep only species and new column
-
+    select(species, !!sym(run_id)) %>% # Keep only species and new column
+    mutate(
+      species = case_when( # Replaces the misclassified species names with the desired ones
+        species == "Bacillus spizizenii" ~ "Bacillus subtilis",
+        species == "Limosilactobacillus fermentum" ~ "Lactobacillus fermentum",
+        TRUE ~ species
+      )
+    ) %>%
+    group_by(species) %>%
+    summarise(!!run_id := sum(.data[[run_id]]), .groups = "drop")  # Aggregate duplicate names
   # Merge into the combined table
   combined_table <- if (nrow(combined_table) == 0) {
     run_species
@@ -172,12 +180,21 @@ se <- SummarizedExperiment(
   colData = col_data
 )
 
-# Filter low quality data 
-se <- se %>%
-  subset(rowSums(assay(., "counts")) >= 200) %>%  # Keep species with ≥150 total reads across all runs (not per-sample filtering; preserves missing species)
-  subset(, colSums(assay(., "counts")) >= 300) %>%  # Keep runs with ≥100 total reads
-  subset(, !duplicated(t(assay(., "counts"))))  # Remove duplicated count profiles 
 
+
+# Count columns before filtering
+n_before <- ncol(se)
+
+# Filter low-quality data
+se <- se %>%
+  subset(, !duplicated(as.data.frame(colData(.)[, c("db_name", "kraken2_min_hits", "bracken_thresh")])))
+
+# Count columns after filtering
+n_after <- ncol(se)
+
+# Print the result
+cat("Number of samples before filtering:", n_before, "\n")
+cat("Number of samples after filtering:", n_after, "\n")
 # Create global legend (auto-assign colors for all detected databases)
 legend_df <- unique(colData(se)[, "db_name", drop = FALSE])
 db_colors <- setNames(viridis(nrow(legend_df), option = "D"), legend_df$db_name)
@@ -421,7 +438,7 @@ p2 <- data.frame(Run = names(class_sizes), Reads = class_sizes) %>%
   theme(plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
         axis.text.x = element_text(angle = 45, hjust = 1))
-
+summary(class_sizes)
 #------------- Data Normalization -------------
 # This section examines the correlation of species abundance with classification depth before and after CPM normalization (ground truth excluded).
 # CPM adjusts for number of classified reads; TPM is unnecessary as ZymoBIOMICS is genome-balanced.
@@ -571,7 +588,7 @@ p_aupr <- ggplot(aupr_df, aes(x = Database, y = aucs, fill = Database)) +
   geom_boxplot(alpha = 0.5, size = 0.2) + 
   geom_point(aes(color = Database), size = 1) +  # Correct color mapping
   scale_color_manual(values = db_colors) +
-  scale_fill_manual(values = db_colors) +
+  scale_fill_manual(values = db_colors, guide = "none") +
   labs(title = "AUPR by Database", x = "Database", y = "AUPR") +
   stat_summary(fun = median, geom = "text",
                aes(label = round(after_stat(y), 2)),
@@ -579,7 +596,8 @@ p_aupr <- ggplot(aupr_df, aes(x = Database, y = aucs, fill = Database)) +
   theme_minimal() + 
   theme(plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
-        axis.text.x = element_blank(), legend.position = "none")
+        axis.text.x = element_blank(), legend.title = element_text(size = 9, face = "bold"), 
+        legend.text = element_text(size = 8))
 
 #------------- Plot PRC and ROC Curves -------------
 
@@ -616,7 +634,7 @@ p_prc <- ggplot(prc_summary, aes(x = x, color = Database, fill = Database)) +
   geom_line(aes(y = ymed), size = 0.7) +
   scale_color_manual(values = db_colors) +
   scale_fill_manual(values = db_colors) +
-  labs(title = "PR Curves per Database", x = "Recall", y = "Precision") +
+  labs(title = "PR Curves", x = "Recall", y = "Precision") +
   theme_minimal() +
   theme(plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
@@ -645,15 +663,16 @@ p_roc <- ggplot(roc_summary, aes(x = x, color = Database, fill = Database)) +
   geom_line(aes(y = ymed), size = 0.7) +
   scale_color_manual(values = db_colors) +
   scale_fill_manual(values = db_colors) +
-  labs(title = "ROC Curves per Database", x = "False Positive Rate (1 - Specificity)", y = "True Positive Rate (Sensitivity)", color = "Database", fill = "Database") +
+  labs(title = "ROC Curves", x = "FPR", y = "TPR", color = "Database", fill = "Database") +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "black", size = 0.5) +
   theme_minimal() +
   theme(plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
         axis.text.x = element_text(angle = 45, hjust = 1),
-        legend.title = element_text(size = 9, face = "bold"), legend.text = element_text(size = 8))
+        legend.position = "none")
 
 # Combine and save plots
-curves <- p_prc + p_aupr +  p_roc + 
+curves <- p_roc + p_prc + p_aupr +  
   plot_annotation(tag_levels = 'A')  
 ggsave(file.path(results_dir, "precision_recall.png"), curves, width = 12, height = 3.5)
 
@@ -767,7 +786,7 @@ cpm_dist  <- pheatmap_grob(cpm_dists, show_legend = FALSE, title = "CPM-Normaliz
 
 
 logcpm_dists <- as.matrix(dist(t(assay(se, "logcpm"))))  # Corrected to use "logcpm"
-logcpm_dist  <- pheatmap_grob(logcpm_dists, show_legend = TRUE, title = "logCPM-Normalized")
+logcpm_dist  <- pheatmap_grob(logcpm_dists, show_legend = TRUE, title = "All Configurations")
 
 # Combine plots with layout design
 combined_dist <- wrap_plots(
@@ -787,10 +806,13 @@ top_names <- logcpm_dists["ground_truth", ] %>%
 top_matrix <- logcpm_dists[top_names, top_names]
 
 # Plot heatmap
-top_logcpm_dist <- pheatmap_grob(top_matrix, show_legend = TRUE)
+top_logcpm_dist <- pheatmap_grob(top_matrix, show_legend = FALSE, title = "Top 35 Configurations")
+
+dist <- wrap_plots(list(A = top_logcpm_dist, B = logcpm_dist), design = "AABBB") + 
+  plot_annotation(tag_levels = 'A')
 
 # Save output
-ggsave(file.path(results_dir, "top_logcpm_dist.jpg"), top_logcpm_dist, width = 10, height = 7)
+ggsave(file.path(results_dir, "top_logcpm_dist.jpg"), dist, width = 16, height = 7)
 
 
 # Distances in PCA space (first 2 principal components)
