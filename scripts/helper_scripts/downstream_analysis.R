@@ -305,14 +305,14 @@ read_length <- ggplot(length_long, aes(x = Stage, y = Length, group = interactio
              color = "grey", size = 2, inherit.aes = FALSE) +
   geom_text_repel(data = mean_length_summary, aes(x = Stage, y = Length, label = round(Length, 1)), 
                   color = "black", size = 3, inherit.aes = FALSE) +
-  labs(title = "Read Length Across Stages", y = "Read Length (bp)", x = NULL, linetype = "Metric", color = "Database") +
+  labs(title = "Read Length Progression", y = "Read Length (bp)", x = NULL, linetype = "Metric", color = "Database") +
   scale_linetype_manual(values = c("Median" = "dashed", "Mean" = "solid")) +
-  scale_color_manual(values = db_colors) +  # Use global color mapping
+  scale_color_manual(values = db_colors, guide = "none") +  # Use global color mapping
   theme_minimal() +
   theme(plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
         axis.text.x = element_text(angle = 45, hjust = 1),
-        legend.title = element_text(size = 9, face = "bold"), legend.text = element_text(size = 8))
+        legend.title = element_text(size = 9, face = "bold"), legend.position = "none")
 
 ## ------------------ Boxplot: Classified vs Unclassified ------------------
 # Compare read lengths between classified and unclassified reads using a boxplot
@@ -339,20 +339,21 @@ boxplot <- ggplot(clas_unclas, aes(x = Type, y = Reads, fill = Type)) +
   geom_boxplot(width = 0.2, outlier.shape = NA, fill = "white") +  # Boxplot filled white
   stat_compare_means(comparisons = list(c("Classified", "Unclassified")), method = "wilcox.test", size = 3) + # Unpaired Wilcoxon test
   stat_summary(fun = median, geom = "text", aes(label = round(after_stat(y), 1)), size = 2.5, color = "black", vjust = -0.65) + # Show median values
-  scale_fill_manual(values = c("Classified" = "#000075", "Unclassified" = "#800000")) +
-  scale_color_manual(values = db_colors) +  # Use your existing db_colors
+  scale_fill_manual(values = c("Classified" = "#000075", "Unclassified" = "#800000"), guide = "none") +
+  scale_color_manual(values = db_colors, name = "Database") +  # Use your existing db_colors
   labs(title = "Classified vs Unclassified Read Length", x = NULL, y = "Read Length (bp)") +
   theme_minimal() +
   theme(plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
         axis.text.x = element_text(angle = 45, hjust = 1),
-        legend.position = "none")
+        legend.text = element_text(size = 8), legend.title = element_text(size = 9, face = "bold")
+  )
 
 # Combine all plots (boxplot, read retention, and read length progression) and save
-read_progression <- boxplot + read_retention + read_length + 
+read_progression <- (read_retention + read_length + boxplot) + 
   plot_annotation(tag_levels = 'A', theme = theme(plot.caption = element_text(size = 8, hjust = 0, face = "italic")))
             
-ggsave(file.path(results_dir, "read_progression.png"), read_progression, width = 12, height = 4.5, dpi = 300)
+ggsave(file.path(results_dir, "read_progression.png"), read_progression, width = 12, height = 4, dpi = 300)
 
 #=========================================================
 # Data Preprocessing
@@ -652,7 +653,7 @@ p_roc <- ggplot(roc_summary, aes(x = x, color = Database, fill = Database)) +
         legend.title = element_text(size = 9, face = "bold"), legend.text = element_text(size = 8))
 
 # Combine and save plots
-curves <- p_aupr + p_prc +  p_roc + 
+curves <- p_prc + p_aupr +  p_roc + 
   plot_annotation(tag_levels = 'A')  
 ggsave(file.path(results_dir, "precision_recall.png"), curves, width = 12, height = 3.5)
 
@@ -668,7 +669,7 @@ bracken_threshold_map <- setNames(col_data$bracken_thresh, rownames(col_data))
 #------------- Dimensionality Reduction -------------
 
 # Plotting function for PCA, t-SNE, UMAP
-plot_embedding <- function(df, xvar, yvar, title, subtitle = NULL) {
+plot_embedding <- function(df, xvar, yvar, title, subtitle = NULL, legend = "none") {
   
   # Add db_name to the embedding dataframe if not already present
   if (!"db_name" %in% colnames(df)) {
@@ -676,18 +677,16 @@ plot_embedding <- function(df, xvar, yvar, title, subtitle = NULL) {
   }
   
   ggplot(df, aes_string(x = xvar, y = yvar, label = 'sub("^run_", "", run_id)')) +
-    geom_point(data = subset(df, run_id != "ground_truth"), aes(color = db_name), size = 3) +
-    geom_point(data = subset(df, run_id == "ground_truth"), color = "#e6194B", size = 4) +
-    #geom_text_repel(data = subset(df, run_id != "ground_truth"), aes(color = db_name), 
-                   # size = 3, max.overlaps = Inf) +
-    scale_color_manual(values = db_colors) +  # Use global color mapping
+    geom_point(data = subset(df, run_id != "ground_truth"), aes(color = db_name), size = 2) +
+    geom_point(data = subset(df, run_id == "ground_truth"), color = "#e6194B", size = 3) +
+    scale_color_manual(values = db_colors, name = "Database") +  # Use global color mapping
     labs(title = title, subtitle = subtitle, x = xvar, y = yvar) +
     theme_minimal() +
     theme(plot.title = element_text(size = 10, face = "bold"),
           axis.text = element_text(size = 8),
           axis.title = element_text(size = 9),
           axis.text.x = element_text(angle = 45, hjust = 1), 
-          legend.position = "none")
+          legend.position = legend)
 }
 
 # PCA plot: projects runs based on species composition in logCPM space
@@ -704,7 +703,7 @@ tsne_df <- Rtsne(t(assay(se, "logcpm")), perplexity = perplexity)$Y %>%
   setNames(c("tSNE1", "tSNE2")) %>%
   mutate(run_id = colnames(se))  # Attach run IDs
 
-tsne_plot <- plot_embedding(tsne_df, "tSNE1", "tSNE2", "t-SNE", subtitle = paste("Perplexity:", perplexity))
+tsne_plot <- plot_embedding(tsne_df, "tSNE1", "tSNE2", "t-SNE", subtitle = paste("Perplexity:", perplexity), legend = "right")
 
 # UMAP (preserves global and local structure)
 n_neighbors <- min(15, max(2, floor(ncol(assay(se, "logcpm")) / 2)))  # Auto-adjust neighbors
@@ -721,7 +720,7 @@ umap_plot <- plot_embedding(umap_df, "UMAP1", "UMAP2", "UMAP", subtitle = paste(
 #------------- Distance Computation -------------
 
 # Helper: wrap pheatmap as a ggplot-compatible grob with db_name annotations
-pheatmap_grob <- function(mat, show_legend = TRUE) {
+pheatmap_grob <- function(mat, show_legend = TRUE, title = NULL) {
   run_ids <- rownames(mat) # Extract run IDs from the matrix
   is_gt <- db_name_map[run_ids] == "ground_truth" # Identify ground truth
   annotation_row <- data.frame(Database = db_name_map[run_ids],row.names = run_ids) # Create row annotations (database name)
@@ -753,27 +752,45 @@ pheatmap_grob <- function(mat, show_legend = TRUE) {
     legend = show_legend, annotation_legend = show_legend, border_color = "NA"
   )
   
-  as.ggplot(p[[4]])
+  as.ggplot(p[[4]]) +     
+    labs(title = title, y = NULL, x = NULL) +
+    theme(plot.title = element_text(size = 13, face = "bold"))
 }
+
 
 # Distances in original logCPM space (species abundance profiles)
 count_dists <- as.matrix(dist(t(assay(se, "counts"))))
-count_dist  <- pheatmap_grob(count_dists, show_legend = FALSE)
+count_dist  <- pheatmap_grob(count_dists, show_legend = FALSE, title = "Raw Counts")
 
 cpm_dists <- as.matrix(dist(t(assay(se, "cpm"))))
-cpm_dist  <- pheatmap_grob(cpm_dists, show_legend = FALSE)
+cpm_dist  <- pheatmap_grob(cpm_dists, show_legend = FALSE, title = "CPM-Normalized") 
+
 
 logcpm_dists <- as.matrix(dist(t(assay(se, "logcpm"))))  # Corrected to use "logcpm"
-logcpm_dist  <- pheatmap_grob(logcpm_dists, show_legend = TRUE)
+logcpm_dist  <- pheatmap_grob(logcpm_dists, show_legend = TRUE, title = "logCPM-Normalized")
 
 # Combine plots with layout design
 combined_dist <- wrap_plots(
   list(A = count_dist, B = cpm_dist, C = logcpm_dist),
-  design = "AAABBBCCCCC") + 
-  plot_annotation(tag_levels = 'A')  
+  design = "AAAABBBBCCCCCC") + 
+  plot_annotation(tag_levels = 'A')
+# Save output
+ggsave(file.path(results_dir, "l2_distance_transformations.jpg"), combined_dist, width = 23, height = 7)
+
+# Get names of 40 samples closest to "ground truth"
+top_names <- logcpm_dists["ground_truth", ] %>%
+  sort() %>%
+  head(35) %>%
+  names()
+
+# Subset distance matrix to include only those 20 closest samples + "ground truth"
+top_matrix <- logcpm_dists[top_names, top_names]
+
+# Plot heatmap
+top_logcpm_dist <- pheatmap_grob(top_matrix, show_legend = TRUE)
 
 # Save output
-ggsave(file.path(results_dir, "l2_distance_transformations.jpg"), combined_dist, width = 20, height = 7)
+ggsave(file.path(results_dir, "top_logcpm_dist.jpg"), top_logcpm_dist, width = 10, height = 7)
 
 
 # Distances in PCA space (first 2 principal components)
@@ -808,5 +825,9 @@ ggsave(file.path(results_dir, "combined_distances.png"), combined_cluster, width
 # TODO: Use distances from "truth" column to rank best-matching configurations
 
 
-# TODO: Use distances from "truth" column to rank best-matching configurations
+clustering <- (pca_plot + tsne_plot) + 
+  plot_annotation(tag_levels = 'A')
+
+ggsave(file.path(results_dir, "tsne_pca.png"), clustering, width = 10, height = 4)  
+  # TODO: Use distances from "truth" column to rank best-matching configurations
 
