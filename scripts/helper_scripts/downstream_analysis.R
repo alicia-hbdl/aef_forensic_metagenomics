@@ -333,7 +333,7 @@ clas_unclas <- min_read_data %>%
 
 # Boxplot comparing median read lengths of classified vs unclassified reads
 # Unpaired Wilcoxon test: non-parametric (handles skewed data), compares medians of independent groups (classified vs unclassified reads)
-boxplot <- ggplot(clas_unclas, aes(x = Type, y = Reads, fill = Type)) +
+classification_length <- ggplot(clas_unclas, aes(x = Type, y = Reads, fill = Type)) +
   geom_half_violin(side = "l", color = "black", size = 0.5, trim = FALSE, alpha = 0.5) +  # Half violin on left
   geom_point(aes(color = db_name), size = 0.8, position = position_jitternudge(width = 0.2, x = 0.23, nudge.from = "jittered"))+
   geom_boxplot(width = 0.2, outlier.shape = NA, fill = "white") +  # Boxplot filled white
@@ -341,7 +341,7 @@ boxplot <- ggplot(clas_unclas, aes(x = Type, y = Reads, fill = Type)) +
   stat_summary(fun = median, geom = "text", aes(label = round(after_stat(y), 1)), size = 2.5, color = "black", vjust = -0.65) + # Show median values
   scale_fill_manual(values = c("Classified" = "#000075", "Unclassified" = "#800000"), guide = "none") +
   scale_color_manual(values = db_colors, name = "Database") +  # Use your existing db_colors
-  labs(title = "Classified vs Unclassified Read Length", x = NULL, y = "Read Length (bp)") +
+  labs(title = "Classified vs Unclassified Length", x = NULL, y = "Read Length (bp)") +
   theme_minimal() +
   theme(plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
@@ -350,65 +350,76 @@ boxplot <- ggplot(clas_unclas, aes(x = Type, y = Reads, fill = Type)) +
   )
 
 # Combine all plots (boxplot, read retention, and read length progression) and save
-read_progression <- (read_retention + read_length + boxplot) + 
+read_progression <- (read_retention + read_length + classification_length) + 
   plot_annotation(tag_levels = 'A', theme = theme(plot.caption = element_text(size = 8, hjust = 0, face = "italic")))
             
-ggsave(file.path(results_dir, "read_progression.png"), read_progression, width = 12, height = 4, dpi = 300)
+ggsave(file.path(results_dir, "read_progression.png"), read_progression,  width = 12, height = 4, dpi = 600)
+
 
 #=========================================================
 # Data Preprocessing
 #=========================================================
 
+# Prepare variables
 counts_mat <- assay(se, "counts")
-runs <- colnames(counts_mat)
+run_ids <- colnames(counts_mat)
+non_gt_ids <- run_ids[run_ids != "ground_truth"]
+db_names <- colData(se)[non_gt_ids, "db_name"]
 
-# Normalize by classified reads (Bracken total) to compute CPM
-class_sizes <- setNames(colData(se)$bracken_total, runs)
+# Normalize using classified reads (Bracken total)
+class_sizes <- setNames(colData(se)$bracken_total, run_ids)
 assay(se, "clas_cpm") <- t(t(counts_mat) / class_sizes * 1e6)  # Add CPM assay
-assay(se, "log_clas_cpm") <- log10(assay(se, "clas_cpm") + 1)  # Log-transform to stabilize variance
 
-# Normalize by total reads (bt_paired) to compute CPM
-lib_sizes <- setNames(colData(se)$bt_paired, runs)
-assay(se, "lib_cpm") <- t(t(counts_mat) / lib_sizes * 1e6)  # Add CPM assay
-assay(se, "log_lib_cpm") <- log10(assay(se, "lib_cpm") + 1)  # Log-transform to stabilize variance
+# Determine pseudocount 
+min <- min(assay(se, "clas_cpm")[assay(se, "clas_cpm") > 0])
+min
+log10(min)
+max <- max(assay(se, "clas_cpm"))
+max 
+log10(max)
+log10(0.5)
 
-# TODO: Boxplot of distances with each 
+# Log-transform to stabilize variance
+assay(se, "log_clas_cpm") <- log10(assay(se, "clas_cpm") + 0.5)  
+metadata(se)$log_clas_cpm_dist <- as.matrix(dist(t(assay(se, "log_clas_cpm"))))
+dist_clas <- metadata(se)$log_clas_cpm_dist["ground_truth", non_gt_ids]
 
-# # Extract and prepare ground truth profile
-# gt_profile <- norm_total[, "ground_truth"]
-# gt_profile <- gt_profile / sum(gt_profile)  # Normalize to relative abundance
-# norm_total <- norm_total[, runs != "ground_truth"]
-# norm_class <- norm_class[, runs != "ground_truth"]
-# 
-# # Define L2 distance to ground truth
-# l2_dist <- function(run_col) sqrt(sum((run_col - gt_profile)^2))
-# df_l2 <- tibble(
-#   Run = rep(colnames(norm_total), 2),
-#   L2 = c(
-#     apply(norm_class, 2, l2_dist), # Distances using classified read normalization
-#     apply(norm_total, 2, l2_dist) #  Distances using total read normalization
-#   ),
-#   Normalization = rep(c("Classified", "Total"), each = ncol(norm_total))
-# ) %>%
-#   mutate(Database = colData(se)[Run, "db_name"])
-# 
-# # Plot L2 distances by database
-# p1 <- ggplot(df_l2, aes(x = Database, y = L2, fill = Normalization)) +
-#   geom_boxplot(position = position_dodge(width = 0.8)) +
-#   geom_point(aes(group = Normalization), position = position_dodge(width = 0.8), size = 1, color = "gray") +
-#   labs(title = "Impact of Normalization on Profile Accuracy", y = "L2 Distance to Ground Truth", x = "Database") +
-#   scale_color_manual(values = db_colors) +  # Use global color mapping
-#   theme_minimal() +
-#   theme(plot.title = element_text(size = 10, face = "bold"),
-#         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
-#         axis.text.x = element_text(angle = 45, hjust = 1))
-# 
+# Normalize using total reads (bt_paired)
+lib_sizes <- setNames(colData(se)$bt_paired, run_ids)
+assay(se, "tot_cpm") <- t(t(counts_mat) / lib_sizes * 1e6)  # Add CPM assay
+assay(se, "log_tot_cpm") <- log10(assay(se, "tot_cpm") + 0.5)  # Log-transform to stabilize variance
+metadata(se)$log_tot_cpm_dist <- as.matrix(dist(t(assay(se, "log_tot_cpm"))))
+dist_lib <- metadata(se)$log_tot_cpm_dist["ground_truth", non_gt_ids]
+
+# Construct tidy dataframe
+df <- tibble(
+  run_id = rep(non_gt_ids, 2),
+  Database = rep(db_names, 2),
+  Normalization = rep(c("/Classified", "/Total"), each = length(non_gt_ids)),
+  L2_Distance = c(dist_clas, dist_lib)
+)
+
+normalization <- ggplot(df, aes(x = Database, y = L2_Distance, fill = Normalization)) +
+  geom_boxplot(position = position_dodge(width = 0.8), alpha = 0.4) +
+  geom_jitter(aes(group = Normalization, color = Database), position = position_jitterdodge(jitter.width = 0.2, dodge.width = 0.8), size = 1) +
+  stat_compare_means(method = "wilcox.test",label = "p.format",paired = FALSE, size = 3) +
+  labs(x = "Database", y = "L2 Distance (logCPM)") +
+  scale_color_manual(values = db_colors) +
+  scale_fill_manual(values = c("/Classified" = "#000075", "/Total" = "#800000"), name = "Normalization Method") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 10, face = "bold"),
+        axis.text = element_text(size = 8), axis.title = element_text(size = 9),
+        axis.text.x = element_blank(), legend.title = element_text(size = 9, face = "bold"), 
+        legend.text = element_text(size = 8))
+
+ggsave(file.path(results_dir, "normalization_boxplot.jpg"), normalization,  width = 10, height = 5, dpi = 600)
+
 #=========================================================
 # Database Precision and Recall 
 #=========================================================
 
-# Remove duplicated **columns** (i.e., runs) based on the log_clas_cpm assay
-logcpm_mat <- assay(se, "log_clas_cpm")
+# Remove duplicated **columns** (i.e., runs) based on the log_tot_cpm assay
+logcpm_mat <- assay(se, "log_tot_cpm")
 
 #------------- Define Labels & Scores -------------
 
@@ -538,7 +549,8 @@ p_roc <- ggplot(roc_summary, aes(x = x, color = Database, fill = Database)) +
 # Combine and save plots
 curves <- p_roc + p_prc + p_aupr +  
   plot_annotation(tag_levels = 'A')  
-ggsave(file.path(results_dir, "precision_recall.png"), curves, width = 12, height = 3.5)
+ggsave(file.path(results_dir, "precision_recall.png"), curves,  width = 10, height = 3, dpi = 600)
+
 
 #=========================================================
 # Clustering with Ground Truth
@@ -576,7 +588,7 @@ pheatmap_grob <- function(mat, show_legend = TRUE, title = NULL) {
   # Generate heatmap
   p <- pheatmap(
     mat,
-    #color = colorRampPalette(c("white", "black"))(100),
+    color = viridis(100, option = "D"),
     annotation_row = annotation_row, annotation_col = annotation_col,
     annotation_colors = ann_colors,
     annotation_names_row = FALSE, annotation_names_col = FALSE,
@@ -591,7 +603,7 @@ pheatmap_grob <- function(mat, show_legend = TRUE, title = NULL) {
 
 # -------------CPM vs log-transformed profiles -------------
 # Compute Euclidean distances between CPM-normalized profiles
-cpm_distance_matrix <- as.matrix(dist(t(assay(se, "clas_cpm"))))
+cpm_distance_matrix <- as.matrix(dist(t(assay(se, "tot_cpm"))))
 cpm_heatmap <- pheatmap_grob(cpm_distance_matrix, show_legend = FALSE, title = "CPM-Normalized")
 
 # Compute Euclidean distances between log-CPM-normalized profiles
@@ -604,29 +616,29 @@ log_transform_comparison_plot <- wrap_plots(list(A = cpm_heatmap, B = logcpm_hea
 
 # Save the figure to the benchmarking results directory
 ggsave(filename = file.path(results_dir, "log_transform_comparison_heatmap.png"),
-  plot = log_transform_comparison_plot,width = 16, height = 7)
+  plot = log_transform_comparison_plot, width = 16, height = 7, dpi = 600)
 
-# ------------- Top 35 Profiles -------------
-# Identify the 35 configurations closest to the ground truth based on Euclidean distance
+# ------------- Top 40 Profiles -------------
+# Identify the 40 configurations closest to the ground truth based on Euclidean distance
 closest_run_names <- logcpm_distance_matrix["ground_truth", ] %>%
   sort() %>%
-  head(35) %>%
+  head(50) %>%
   names()
 
 # Subset the distance matrix to include only the 35 closest runs + ground truth
 top_logcpm_matrix <- logcpm_distance_matrix[closest_run_names, closest_run_names]
 
 # Generate heatmap for the selected subset
-logcpm_heatmap <- pheatmap_grob(logcpm_distance_matrix, show_legend = TRUE, title = "All Configurations")
-top_logcpm_heatmap <- pheatmap_grob(top_logcpm_matrix,show_legend = FALSE, title = "35 Closest Configurations")
+#logcpm_heatmap <- pheatmap_grob(logcpm_distance_matrix, show_legend = TRUE, title = "All Configurations")
+top_logcpm_heatmap <- pheatmap_grob(top_logcpm_matrix,show_legend = TRUE)
 
 # Combine with full logCPM heatmap for comparison
-logcpm_comparison_plot <- wrap_plots(list(A = top_logcpm_heatmap, B = logcpm_heatmap), design = "AABBB") + 
-  plot_annotation(tag_levels = 'A')
+#logcpm_comparison_plot <- wrap_plots(list(A = top_logcpm_heatmap, B = logcpm_heatmap), design = "AABBB") + 
+ # plot_annotation(tag_levels = 'A')
 
 # Save the figure
-ggsave(filename = file.path(results_dir, "top_35_logcpm_comparison.jpg"),
-  plot = logcpm_comparison_plot, width = 16, height = 7)
+ggsave(filename = file.path(results_dir, "top_50_logcpm_comparison.jpg"),
+  plot = top_logcpm_heatmap,  width = 8, height = 5.2, dpi = 600)
 
 #------------- Dimensionality Reduction -------------
 set.seed = 42 
@@ -663,8 +675,8 @@ pca_plot <- plot_embedding(pca_df, "PC1", "PC2", "PCA")
 perplexity <- min(30, floor((ncol(logcpm_mat) - 1) / 3))  # Dynamically set perplexity
 
 # Remove duplicated runs
-se <- se[, !duplicated(t(assay(se, "log_clas_cpm")))]  
-logcpm_mat <- assay(se, "log_clas_cpm")
+se <- se[, !duplicated(t(assay(se, "log_tot_cpm")))]  
+logcpm_mat <- assay(se, "log_tot_cpm")
 
 tsne_df <- Rtsne(t(logcpm_mat), perplexity = perplexity)$Y %>%
   as.data.frame() %>%
@@ -672,8 +684,9 @@ tsne_df <- Rtsne(t(logcpm_mat), perplexity = perplexity)$Y %>%
   mutate(run_id = colnames(se))  # Re-attach run IDs
 
 tsne_plot <- plot_embedding(tsne_df, "tSNE1", "tSNE2", title = "t-SNE", 
-                            subtitle = paste("Perplexity:", perplexity))
+                            subtitle = paste("Perplexity:", perplexity), legend = "right")
 
 clustering_plot <- pca_plot + tsne_plot + plot_annotation(tag_levels = 'A')
 
-ggsave(file.path(results_dir, "pca_tsne_embedding.png"), clustering_plot, width = 10, height = 4)
+ggsave(file.path(results_dir, "pca_tsne_embedding.png"), clustering_plot,  width = 10, height = 4, dpi = 600)
+
