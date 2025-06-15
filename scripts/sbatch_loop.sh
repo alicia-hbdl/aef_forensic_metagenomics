@@ -7,12 +7,12 @@ databases=(
 #"$DB_PATH/k2_housepets_250510"
 #"$DB_PATH/k2_pluspfp_16gb_20250402"
 #"$DB_PATH/k2_standard_08gb_20241228"
-"$DB_PATH/k2_standard_20250402"
+#"$DB_PATH/k2_standard_20250402"
 #"$DB_PATH/k2_eupathdb48_20230407"
 #"$DB_PATH/k2_pluspfp_08gb_20241228"
-"$DB_PATH/k2_pluspfp_20250402"
+#"$DB_PATH/k2_pluspfp_20250402"
 #"$DB_PATH/k2_standard_16gb_20250402"
-#"$DB_PATH/k2_zymobiomics_250509"
+"$DB_PATH/k2_zymobiomics_250509"
 )
 
 K2_MIN_HIT_VALUES=(1 2 3 4)
