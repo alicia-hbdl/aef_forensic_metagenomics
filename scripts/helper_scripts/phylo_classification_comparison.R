@@ -36,8 +36,10 @@ if (is.null(opt$reports)) {
     read_counts <- read_csv(opt$reports, show_col_types = FALSE) %>%
       mutate(
         species = recode(species,  # Rename species to reflect current NCBI taxonomy.
+                         "Bacillus subtilis" = "Bacillus spizizenii",
                          "Bacillus intestinalis" = "Bacillus spizizenii",
                          "Cryptococcus gattii VGI" = "Cryptococcus gattii",
+                         "Lactobacillus fermentum" = "Limosilactobacillus fermentum",
                          "Cryptococcus gattii VGII" = "Cryptococcus deuterogattii" )) %>%
       replace(is.na(.), 0) %>%  # Replace any NA values with 0s.
       filter(rowMeans(select(., -species)) > 10)  # Filter species with average read count ≤ 10.
@@ -50,7 +52,11 @@ if (is.null(opt$reports)) {
 # Load ground truth species or create empty table if not provided
 if (!is.null(opt$`ground-truth`)) {
   if (file.exists(opt$`ground-truth`)) {
-    ground_truth <- read_csv(opt$`ground-truth`, show_col_types = FALSE)
+    ground_truth <- read_csv(opt$`ground-truth`, show_col_types = FALSE) %>%
+      mutate(
+        species = recode(species,  # Rename species to reflect current NCBI taxonomy.
+                         "Bacillus subtilis" = "Bacillus spizizenii",
+                         "Lactobacillus fermentum" = "Limosilactobacillus fermentum" ))
     gt_flag <- TRUE  # Ground truth is present
   } else {
     stop("❌ Ground truth file path provided does not exist.")
