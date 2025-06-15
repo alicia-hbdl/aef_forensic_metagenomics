@@ -1,0 +1,610 @@
++ ROOT_DIR=/scratch/prj/aef_forensic_metagenomics
++ echo -e '\n================================================= ARGUMENT PARSING & VALIDATION =================================================\n'
++ TRIM=false
++ REMOVE_HOST_DNA=false
++ GT_FLAG=false
++ DATABASE=/scratch/prj/aef_forensic_metagenomics/data/databases/k2_standard_16gb_20250402
++ BOWTIE_PREFIX=/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as
++ ADAPTER_FILE=/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa
++ B_THRESHOLD=0
++ K2_MIN_HIT=10
++ [[ 8 -eq 0 ]]
++ [[ 8 -gt 0 ]]
++ case "$1" in
++ [[ -z /scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data ]]
++ [[ /scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data == -* ]]
++ [[ ! -d /scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data ]]
+++ find /scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data -maxdepth 1 -type f '(' -name '*.fq' -o -name '*.fastq' -o -name '*.fq.gz' -o -name '*.fastq.gz' ')'
++ [[ -z /scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/L2RP_S14_L001_R1_001.fastq.gz
+/scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/L1SG_S5_L001_R1_001.fastq.gz
+/scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/D1RP_S9_L001_R1_001.fastq.gz
+/scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/S1SG_S3_L001_R1_001.fastq.gz
+/scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/S1RP_S11_L001_R2_001.fastq.gz
+/scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/S2RP_S12_L001_R1_001.fastq.gz
+/scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/L2RP_S14_L001_R2_001.fastq.gz
+/scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/D2RP_S10_L001_R2_001.fastq.gz
+/scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/L1SG_S5_L001_R2_001.fastq.gz
+/scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/D1RP_S9_L001_R2_001.fastq.gz
+/scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/S2SG_S4_L001_R1_001.fastq.gz
+/scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/S1SG_S3_L001_R2_001.fastq.gz
+/scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/S1RP_S11_L001_R1_001.fastq.gz
+/scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/D2SG_S2_L001_R2_001.fastq.gz
+/scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/L1RP_S13_L001_R2_001.fastq.gz
+/scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/L2SG_S6_L001_R2_001.fastq.gz
+/scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/D2RP_S10_L001_R1_001.fastq.gz
+/scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/L2SG_S6_L001_R1_001.fastq.gz
+/scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/S2RP_S12_L001_R2_001.fastq.gz
+/scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/L1RP_S13_L001_R1_001.fastq.gz
+/scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/D2SG_S2_L001_R1_001.fastq.gz
+/scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/S2SG_S4_L001_R2_001.fastq.gz
+/scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/D1SG_S1_L001_R1_001.fastq.gz
+/scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/D1SG_S1_L001_R2_001.fastq.gz ]]
++ for file in "$2"/*.{fq,fastq}
++ [[ -f /scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/*.fq ]]
++ for file in "$2"/*.{fq,fastq}
++ [[ -f /scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/*.fastq ]]
++ for file in "$2"/*.fq.gz
++ [[ -f /scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data/*.fq.gz ]]
++ RAW_FASTQ_DIR=/scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data
+++ dirname /scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data
++ PROJ_DIR=/scratch/prj/aef_forensic_metagenomics/exposure_folder
++ shift 2
++ [[ 6 -gt 0 ]]
++ case "$1" in
++ [[ -z /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 ]]
++ [[ /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 == -* ]]
++ [[ ! -d /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 ]]
++ [[ ! -f /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510/hash.k2d ]]
++ [[ ! -f /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510/taxo.k2d ]]
++ [[ ! -f /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510/opts.k2d ]]
++ compgen -G /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510/database100mers.kmer_distrib /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510/database150mers.kmer_distrib /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510/database200mers.kmer_distrib /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510/database250mers.kmer_distrib /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510/database300mers.kmer_distrib /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510/database50mers.kmer_distrib /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510/database75mers.kmer_distrib
++ DATABASE=/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510
++ shift 2
++ [[ 4 -gt 0 ]]
++ case "$1" in
++ [[ -z 4 ]]
++ [[ 4 == -* ]]
++ K2_MIN_HIT=4
++ shift 2
++ [[ 2 -gt 0 ]]
++ case "$1" in
++ [[ -z 0 ]]
++ [[ 0 == -* ]]
++ B_THRESHOLD=0
++ shift 2
++ [[ 0 -gt 0 ]]
++ [[ -z /scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data ]]
++ [[ false == false ]]
++ echo '⚠️  Trimming and host DNA removal are optional but must be done once; if skipped, ensure trimmed and filtered files exist in the correct directories.\n'
++ echo '===== Pipeline Configuration Summary ====='
++ echo 'Raw FASTQ directory path: /scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data'
++ echo 'Kraken2/Bracken Database: /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510'
+++ [[ false == true ]]
+++ echo 'Not provided ❌'
++ echo 'Ground Truth: Not provided ❌'
+++ [[ false == true ]]
+++ echo 'Disabled ❌'
++ echo 'Quality Control & Trimming: Disabled ❌'
+++ [[ false == true ]]
+++ echo 'Disabled ❌'
++ echo 'Host DNA Removal: Disabled ❌'
++ echo -e '\n================================================= CONDA ENVIRONMENT ACTIVATION ==================================================\n'
++ source /scratch/prj/aef_forensic_metagenomics/scripts/helper_scripts/environment_setup.sh /scratch/prj/aef_forensic_metagenomics/scripts/metagenomics.yml
+++ [[ -z /scratch/prj/aef_forensic_metagenomics/scripts/metagenomics.yml ]]
+++ [[ /scratch/prj/aef_forensic_metagenomics/scripts/metagenomics.yml != *.yml ]]
+++ [[ ! -f /scratch/prj/aef_forensic_metagenomics/scripts/metagenomics.yml ]]
+++ ENV_FILE=/scratch/prj/aef_forensic_metagenomics/scripts/metagenomics.yml
++++ basename /scratch/prj/aef_forensic_metagenomics/scripts/metagenomics.yml .yml
+++ ENV_NAME=metagenomics
+++ command -v conda
++++ conda shell.bash hook
+++ eval 'export CONDA_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python'\''
+
+# Copyright (C) 2012 Anaconda, Inc
+# SPDX-License-Identifier: BSD-3-Clause
+
+__conda_exe() (
+    "$CONDA_EXE" $_CE_M $_CE_CONDA "$@"
+)
+
+__conda_hashr() {
+    if [ -n "${ZSH_VERSION:+x}" ]; then
+        \rehash
+    elif [ -n "${POSH_VERSION:+x}" ]; then
+        :  # pass
+    else
+        \hash -r
+    fi
+}
+
+__conda_activate() {
+    if [ -n "${CONDA_PS1_BACKUP:+x}" ]; then
+        # Handle transition from shell activated with conda <= 4.3 to a subsequent activation
+        # after conda updated to >= 4.4. See issue #6173.
+        PS1="$CONDA_PS1_BACKUP"
+        \unset CONDA_PS1_BACKUP
+    fi
+    \local ask_conda
+    ask_conda="$(PS1="${PS1:-}" __conda_exe shell.posix "$@")" || \return
+    \eval "$ask_conda"
+    __conda_hashr
+}
+
+__conda_reactivate() {
+    \local ask_conda
+    ask_conda="$(PS1="${PS1:-}" __conda_exe shell.posix reactivate)" || \return
+    \eval "$ask_conda"
+    __conda_hashr
+}
+
+conda() {
+    \local cmd="${1-__missing__}"
+    case "$cmd" in
+        activate|deactivate)
+            __conda_activate "$@"
+            ;;
+        install|update|upgrade|remove|uninstall)
+            __conda_exe "$@" || \return
+            __conda_reactivate
+            ;;
+        *)
+            __conda_exe "$@"
+            ;;
+    esac
+}
+
+if [ -z "${CONDA_SHLVL+x}" ]; then
+    \export CONDA_SHLVL=0
+    # In dev-mode CONDA_EXE is python.exe and on Windows
+    # it is in a different relative location to condabin.
+    if [ -n "${_CE_CONDA:+x}" ] && [ -n "${WINDIR+x}" ]; then
+        PATH="$(\dirname "$CONDA_EXE")/condabin${PATH:+":${PATH}"}"
+    else
+        PATH="$(\dirname "$(\dirname "$CONDA_EXE")")/condabin${PATH:+":${PATH}"}"
+    fi
+    \export PATH
+
+    # We'\''re not allowing PS1 to be unbound. It must at least be set.
+    # However, we'\''re not exporting it, which can cause problems when starting a second shell
+    # via a first shell (i.e. starting zsh from bash).
+    if [ -z "${PS1+x}" ]; then
+        PS1=
+    fi
+fi
+
+conda activate base'
++++ export CONDA_EXE=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda
++++ CONDA_EXE=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda
++++ export _CE_M=
++++ _CE_M=
++++ export _CE_CONDA=
++++ _CE_CONDA=
++++ export CONDA_PYTHON_EXE=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python
++++ CONDA_PYTHON_EXE=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python
++++ '[' -z x ']'
++++ conda activate base
++++ local cmd=activate
++++ case "$cmd" in
++++ __conda_activate activate base
++++ '[' -n '' ']'
++++ local ask_conda
+++++ PS1=
+++++ __conda_exe shell.posix activate base
+++++ /software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda shell.posix activate base
++++ ask_conda='PS1='\''(base) '\''
+export PATH='\''/users/k24087895/.local/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin'\''
+export CONDA_SHLVL='\''1'\''
+export CONDA_PROMPT_MODIFIER='\''(base) '\'''
++++ eval 'PS1='\''(base) '\''
+export PATH='\''/users/k24087895/.local/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin'\''
+export CONDA_SHLVL='\''1'\''
+export CONDA_PROMPT_MODIFIER='\''(base) '\'''
+++++ PS1='(base) '
+++++ export PATH=/users/k24087895/.local/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin
+++++ PATH=/users/k24087895/.local/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin
+++++ export CONDA_SHLVL=1
+++++ CONDA_SHLVL=1
+++++ export 'CONDA_PROMPT_MODIFIER=(base) '
+++++ CONDA_PROMPT_MODIFIER='(base) '
++++ __conda_hashr
++++ '[' -n '' ']'
++++ '[' -n '' ']'
++++ hash -r
+++ conda env list
+++ local cmd=env
+++ case "$cmd" in
+++ __conda_exe env list
+++ grep -q metagenomics
+++ /software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda env list
+++ conda activate metagenomics
+++ local cmd=activate
+++ case "$cmd" in
+++ __conda_activate activate metagenomics
+++ '[' -n '' ']'
+++ local ask_conda
++++ PS1='(base) '
++++ __conda_exe shell.posix activate metagenomics
++++ /software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda shell.posix activate metagenomics
+++ ask_conda='PS1='\''(metagenomics) '\''
+export PATH='\''/users/k24087895/.local/bin:/users/k24087895/.conda/envs/metagenomics/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin'\''
+export CONDA_PREFIX='\''/users/k24087895/.conda/envs/metagenomics'\''
+export CONDA_SHLVL='\''2'\''
+export CONDA_DEFAULT_ENV='\''metagenomics'\''
+export CONDA_PROMPT_MODIFIER='\''(metagenomics) '\''
+export CONDA_PREFIX_1='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe'\''
+export CONDA_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python'\''
+. "/users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/activate-r-base.sh"
+. "/users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/libglib_activate.sh"
+. "/users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/libxml2_activate.sh"
+. "/users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/openjdk_activate.sh"'
+++ eval 'PS1='\''(metagenomics) '\''
+export PATH='\''/users/k24087895/.local/bin:/users/k24087895/.conda/envs/metagenomics/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin'\''
+export CONDA_PREFIX='\''/users/k24087895/.conda/envs/metagenomics'\''
+export CONDA_SHLVL='\''2'\''
+export CONDA_DEFAULT_ENV='\''metagenomics'\''
+export CONDA_PROMPT_MODIFIER='\''(metagenomics) '\''
+export CONDA_PREFIX_1='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe'\''
+export CONDA_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python'\''
+. "/users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/activate-r-base.sh"
+. "/users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/libglib_activate.sh"
+. "/users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/libxml2_activate.sh"
+. "/users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/openjdk_activate.sh"'
++++ PS1='(metagenomics) '
++++ export PATH=/users/k24087895/.local/bin:/users/k24087895/.conda/envs/metagenomics/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin
++++ PATH=/users/k24087895/.local/bin:/users/k24087895/.conda/envs/metagenomics/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin
++++ export CONDA_PREFIX=/users/k24087895/.conda/envs/metagenomics
++++ CONDA_PREFIX=/users/k24087895/.conda/envs/metagenomics
++++ export CONDA_SHLVL=2
++++ CONDA_SHLVL=2
++++ export CONDA_DEFAULT_ENV=metagenomics
++++ CONDA_DEFAULT_ENV=metagenomics
++++ export 'CONDA_PROMPT_MODIFIER=(metagenomics) '
++++ CONDA_PROMPT_MODIFIER='(metagenomics) '
++++ export CONDA_PREFIX_1=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe
++++ CONDA_PREFIX_1=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe
++++ export CONDA_EXE=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda
++++ CONDA_EXE=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/conda
++++ export _CE_M=
++++ _CE_M=
++++ export _CE_CONDA=
++++ _CE_CONDA=
++++ export CONDA_PYTHON_EXE=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python
++++ CONDA_PYTHON_EXE=/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/bin/python
++++ . /users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/activate-r-base.sh
+++++ R CMD javareconf
+++++ '[' -n '' ']'
+++++ export RSTUDIO_WHICH_R=/users/k24087895/.conda/envs/metagenomics/bin/R
+++++ RSTUDIO_WHICH_R=/users/k24087895/.conda/envs/metagenomics/bin/R
++++ . /users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/libglib_activate.sh
+++++ export GSETTINGS_SCHEMA_DIR_CONDA_BACKUP=
+++++ GSETTINGS_SCHEMA_DIR_CONDA_BACKUP=
+++++ export GSETTINGS_SCHEMA_DIR=/users/k24087895/.conda/envs/metagenomics/share/glib-2.0/schemas
+++++ GSETTINGS_SCHEMA_DIR=/users/k24087895/.conda/envs/metagenomics/share/glib-2.0/schemas
++++ . /users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/libxml2_activate.sh
+++++ test -n ''
+++++ xml_catalog_files_libxml2=
+++++ XML_CATALOG_FILES=
+++++ conda_catalog_files=
+++++ ifs_libxml2=' 	
+'
+++++ IFS=' '
+++++ rem=/users/k24087895/.conda/envs/metagenomics
+++++ for pre in ${rem}
+++++ test '' = /users/k24087895/.conda/envs/metagenomics
+++++ conda_catalog_files=/users/k24087895/.conda/envs/metagenomics
+++++ rem=
+++++ IFS=' 	
+'
+++++ conda_catalog_files='file:///users/k24087895/.conda/envs/metagenomics/etc/xml/catalog file:///etc/xml/catalog'
+++++ export 'XML_CATALOG_FILES=file:///users/k24087895/.conda/envs/metagenomics/etc/xml/catalog file:///etc/xml/catalog'
+++++ XML_CATALOG_FILES='file:///users/k24087895/.conda/envs/metagenomics/etc/xml/catalog file:///etc/xml/catalog'
+++++ unset conda_catalog_files ifs_libxml2 rem
++++ . /users/k24087895/.conda/envs/metagenomics/etc/conda/activate.d/openjdk_activate.sh
+++++ '[' '' ']'
+++++ export JAVA_HOME=/users/k24087895/.conda/envs/metagenomics/lib/jvm
+++++ JAVA_HOME=/users/k24087895/.conda/envs/metagenomics/lib/jvm
+++++ '[' '' ']'
+++++ export JAVA_LD_LIBRARY_PATH=/users/k24087895/.conda/envs/metagenomics/lib/jvm/lib/server
+++++ JAVA_LD_LIBRARY_PATH=/users/k24087895/.conda/envs/metagenomics/lib/jvm/lib/server
+++ __conda_hashr
+++ '[' -n '' ']'
+++ '[' -n '' ']'
+++ hash -r
+++ echo '✅ '\''metagenomics'\'' environment activated successfully.'
+++ export PATH=/users/k24087895/.conda/envs/metagenomics/bin:/users/k24087895/.local/bin:/users/k24087895/.conda/envs/metagenomics/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin
+++ PATH=/users/k24087895/.conda/envs/metagenomics/bin:/users/k24087895/.local/bin:/users/k24087895/.conda/envs/metagenomics/bin:/software/spackages_v0_21_prod/apps/linux-ubuntu22.04-zen2/gcc-13.2.0/anaconda3-2022.10-5wy43yh5crcsmws4afls5thwoskzarhe/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin
++++ python -c 'import sys; print(".".join(map(str, sys.version_info[:3])))'
+++ export PYTHONPATH=/users/k24087895/.conda/envs/metagenomics/lib/python3.12.10/site-packages:
+++ PYTHONPATH=/users/k24087895/.conda/envs/metagenomics/lib/python3.12.10/site-packages:
++ echo -e '\n====================================================== PROJECT STRUCTURE ======================================================\n'
++ RESULTS_DIR=/scratch/prj/aef_forensic_metagenomics/exposure_folder/results
++ HOST_DNA_ANALYSIS_DIR=/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/host_dna_analysis
+++ dirname /scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data
++ PROCESSED_DIR=/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data
++ TRIMMED_DIR=/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/trimmed
++ HUMAN_DIR=/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/human
++ ALIGNED_SAM_DIR=/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/human/aligned_sam
++ SORTED_BAM_DIR=/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/human/sorted_bam
++ BED_FILES_DIR=/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/human/bed_files
++ METAGENOMIC_DIR=/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic
++ FILTERED_FASTQ_DIR=/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq
++ KRAKEN2_DIR=/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2
++ CLASSIFIED_DIR=/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified
++ UNCLASSIFIED_DIR=/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified
++ BRACKEN_DIR=/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken
+++ date +run_%d%m_%H%M
++ RUN_DIR=/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102
++ REPORTS_DIR=/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports
++ KRONA_DIR=/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona
++ DIVERSITY_DIR=/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/diversity
++ LOG_DIR=/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/logs
++ mkdir -p /scratch/prj/aef_forensic_metagenomics/exposure_folder/results /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/host_dna_analysis /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/trimmed/paired /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/trimmed/unpaired /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/human/aligned_sam /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/diversity /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/logs /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/human/sorted_bam /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/human/bed_files
++ tree -L 3 -d /scratch/prj/aef_forensic_metagenomics/exposure_folder
++ echo 'Human DNA-related files (SAM, BAM, and BED) in the '\''human'\'' directory are created once per sub-project and remain unchanged across runs.'
++ echo 'Intermediate metagenomic files in the '\''metagenomic'\'' directory are overwritten with each run and should be inspected beforehand if desired.'
++ echo 'Results are stored in the '\''results'\'' directory (including FastQC, host DNA analysis, and run-specific results like Kraken2 and Bracken).'
++ [[ false == true ]]
++ echo -e '\n================================================= METAGENOMIC ABUNDANCE ESTIMATION ================================================='
++ echo '⚠️  This step assumes reads have already been trimmed with Trimmomatic and host DNA removed with Bowtie2. Processed reads must be in the correct directory.'
+++ date +%s
++ START_TIME=1750017753
++ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz
+++ basename /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/trimmed/paired/D1RP_S9_R1_paired.fastq.gz _R1_paired.fastq.gz
++ base=D1RP_S9
++ echo -e '\nProcessing sample: D1RP_S9'
++ [[ false == true ]]
++ echo -e '\nClassifying metagenomic reads with Kraken2...'
++ KRAKEN_CMD='kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D1RP_S9.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D1RP_S9_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D1RP_S9_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/D1RP_S9.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D1RP_S9_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D1RP_S9_metagenomic.2" 2>&1'
++ echo 'kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D1RP_S9.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D1RP_S9_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D1RP_S9_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/D1RP_S9.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D1RP_S9_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D1RP_S9_metagenomic.2" 2>&1'
++ eval 'kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D1RP_S9.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D1RP_S9_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D1RP_S9_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/D1RP_S9.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D1RP_S9_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D1RP_S9_metagenomic.2" 2>&1'
+++ kraken2 --db /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 --threads 8 --report /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D1RP_S9.k2report --report-minimizer-data --paired --minimum-hit-groups 4 --classified-out /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D1RP_S9_classified#.fastq --unclassified-out /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D1RP_S9_unclassified#.fastq --output /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/D1RP_S9.kraken2 --use-names /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D1RP_S9_metagenomic.1 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D1RP_S9_metagenomic.2
++ echo '✅  Classification complete.'
++ echo -e '\nEstimating species abundance with Bracken...'
++ bracken -d /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 -i /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D1RP_S9.k2report -l S -r 100 -t 0 -w /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D1RP_S9.breport -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/D1RP_S9.bracken
++ echo '✅  Abundance estimated.'
++ echo -e '\nGenerating Krona visualization...'
++ python /scratch/prj/aef_forensic_metagenomics/tools/KrakenTools/kreport2krona.py -r /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D1RP_S9.breport -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/D1RP_S9.krona.txt --no-intermediate-ranks
++ /scratch/prj/aef_forensic_metagenomics/tools/Krona/KronaTools/scripts/ImportText.pl /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/D1RP_S9.krona.txt -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/D1RP_S9.krona.html
++ rm /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/D1RP_S9.krona.txt
++ echo '✅  Krona plot generated.'
++ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz
+++ basename /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/trimmed/paired/D1SG_S1_R1_paired.fastq.gz _R1_paired.fastq.gz
++ base=D1SG_S1
++ echo -e '\nProcessing sample: D1SG_S1'
++ [[ false == true ]]
++ echo -e '\nClassifying metagenomic reads with Kraken2...'
++ KRAKEN_CMD='kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D1SG_S1.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D1SG_S1_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D1SG_S1_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/D1SG_S1.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D1SG_S1_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D1SG_S1_metagenomic.2" 2>&1'
++ echo 'kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D1SG_S1.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D1SG_S1_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D1SG_S1_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/D1SG_S1.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D1SG_S1_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D1SG_S1_metagenomic.2" 2>&1'
++ eval 'kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D1SG_S1.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D1SG_S1_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D1SG_S1_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/D1SG_S1.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D1SG_S1_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D1SG_S1_metagenomic.2" 2>&1'
+++ kraken2 --db /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 --threads 8 --report /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D1SG_S1.k2report --report-minimizer-data --paired --minimum-hit-groups 4 --classified-out /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D1SG_S1_classified#.fastq --unclassified-out /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D1SG_S1_unclassified#.fastq --output /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/D1SG_S1.kraken2 --use-names /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D1SG_S1_metagenomic.1 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D1SG_S1_metagenomic.2
++ echo '✅  Classification complete.'
++ echo -e '\nEstimating species abundance with Bracken...'
++ bracken -d /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 -i /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D1SG_S1.k2report -l S -r 100 -t 0 -w /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D1SG_S1.breport -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/D1SG_S1.bracken
++ echo '✅  Abundance estimated.'
++ echo -e '\nGenerating Krona visualization...'
++ python /scratch/prj/aef_forensic_metagenomics/tools/KrakenTools/kreport2krona.py -r /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D1SG_S1.breport -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/D1SG_S1.krona.txt --no-intermediate-ranks
++ /scratch/prj/aef_forensic_metagenomics/tools/Krona/KronaTools/scripts/ImportText.pl /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/D1SG_S1.krona.txt -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/D1SG_S1.krona.html
++ rm /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/D1SG_S1.krona.txt
++ echo '✅  Krona plot generated.'
++ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz
+++ basename /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/trimmed/paired/D2RP_S10_R1_paired.fastq.gz _R1_paired.fastq.gz
++ base=D2RP_S10
++ echo -e '\nProcessing sample: D2RP_S10'
++ [[ false == true ]]
++ echo -e '\nClassifying metagenomic reads with Kraken2...'
++ KRAKEN_CMD='kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D2RP_S10.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D2RP_S10_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D2RP_S10_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/D2RP_S10.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D2RP_S10_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D2RP_S10_metagenomic.2" 2>&1'
++ echo 'kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D2RP_S10.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D2RP_S10_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D2RP_S10_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/D2RP_S10.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D2RP_S10_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D2RP_S10_metagenomic.2" 2>&1'
++ eval 'kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D2RP_S10.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D2RP_S10_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D2RP_S10_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/D2RP_S10.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D2RP_S10_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D2RP_S10_metagenomic.2" 2>&1'
+++ kraken2 --db /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 --threads 8 --report /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D2RP_S10.k2report --report-minimizer-data --paired --minimum-hit-groups 4 --classified-out /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D2RP_S10_classified#.fastq --unclassified-out /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D2RP_S10_unclassified#.fastq --output /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/D2RP_S10.kraken2 --use-names /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D2RP_S10_metagenomic.1 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D2RP_S10_metagenomic.2
++ echo '✅  Classification complete.'
++ echo -e '\nEstimating species abundance with Bracken...'
++ bracken -d /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 -i /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D2RP_S10.k2report -l S -r 100 -t 0 -w /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D2RP_S10.breport -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/D2RP_S10.bracken
++ echo '✅  Abundance estimated.'
++ echo -e '\nGenerating Krona visualization...'
++ python /scratch/prj/aef_forensic_metagenomics/tools/KrakenTools/kreport2krona.py -r /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D2RP_S10.breport -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/D2RP_S10.krona.txt --no-intermediate-ranks
++ /scratch/prj/aef_forensic_metagenomics/tools/Krona/KronaTools/scripts/ImportText.pl /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/D2RP_S10.krona.txt -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/D2RP_S10.krona.html
++ rm /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/D2RP_S10.krona.txt
++ echo '✅  Krona plot generated.'
++ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz
+++ basename /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/trimmed/paired/D2SG_S2_R1_paired.fastq.gz _R1_paired.fastq.gz
++ base=D2SG_S2
++ echo -e '\nProcessing sample: D2SG_S2'
++ [[ false == true ]]
++ echo -e '\nClassifying metagenomic reads with Kraken2...'
++ KRAKEN_CMD='kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D2SG_S2.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D2SG_S2_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D2SG_S2_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/D2SG_S2.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D2SG_S2_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D2SG_S2_metagenomic.2" 2>&1'
++ echo 'kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D2SG_S2.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D2SG_S2_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D2SG_S2_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/D2SG_S2.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D2SG_S2_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D2SG_S2_metagenomic.2" 2>&1'
++ eval 'kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D2SG_S2.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D2SG_S2_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D2SG_S2_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/D2SG_S2.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D2SG_S2_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D2SG_S2_metagenomic.2" 2>&1'
+++ kraken2 --db /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 --threads 8 --report /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D2SG_S2.k2report --report-minimizer-data --paired --minimum-hit-groups 4 --classified-out /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D2SG_S2_classified#.fastq --unclassified-out /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D2SG_S2_unclassified#.fastq --output /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/D2SG_S2.kraken2 --use-names /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D2SG_S2_metagenomic.1 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D2SG_S2_metagenomic.2
++ echo '✅  Classification complete.'
++ echo -e '\nEstimating species abundance with Bracken...'
++ bracken -d /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 -i /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D2SG_S2.k2report -l S -r 100 -t 0 -w /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D2SG_S2.breport -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/D2SG_S2.bracken
++ echo '✅  Abundance estimated.'
++ echo -e '\nGenerating Krona visualization...'
++ python /scratch/prj/aef_forensic_metagenomics/tools/KrakenTools/kreport2krona.py -r /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D2SG_S2.breport -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/D2SG_S2.krona.txt --no-intermediate-ranks
++ /scratch/prj/aef_forensic_metagenomics/tools/Krona/KronaTools/scripts/ImportText.pl /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/D2SG_S2.krona.txt -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/D2SG_S2.krona.html
++ rm /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/D2SG_S2.krona.txt
++ echo '✅  Krona plot generated.'
++ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz
+++ basename /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/trimmed/paired/L1RP_S13_R1_paired.fastq.gz _R1_paired.fastq.gz
++ base=L1RP_S13
++ echo -e '\nProcessing sample: L1RP_S13'
++ [[ false == true ]]
++ echo -e '\nClassifying metagenomic reads with Kraken2...'
++ KRAKEN_CMD='kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L1RP_S13.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L1RP_S13_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L1RP_S13_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/L1RP_S13.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L1RP_S13_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L1RP_S13_metagenomic.2" 2>&1'
++ echo 'kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L1RP_S13.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L1RP_S13_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L1RP_S13_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/L1RP_S13.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L1RP_S13_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L1RP_S13_metagenomic.2" 2>&1'
++ eval 'kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L1RP_S13.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L1RP_S13_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L1RP_S13_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/L1RP_S13.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L1RP_S13_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L1RP_S13_metagenomic.2" 2>&1'
+++ kraken2 --db /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 --threads 8 --report /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L1RP_S13.k2report --report-minimizer-data --paired --minimum-hit-groups 4 --classified-out /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L1RP_S13_classified#.fastq --unclassified-out /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L1RP_S13_unclassified#.fastq --output /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/L1RP_S13.kraken2 --use-names /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L1RP_S13_metagenomic.1 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L1RP_S13_metagenomic.2
++ echo '✅  Classification complete.'
++ echo -e '\nEstimating species abundance with Bracken...'
++ bracken -d /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 -i /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L1RP_S13.k2report -l S -r 100 -t 0 -w /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L1RP_S13.breport -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/L1RP_S13.bracken
++ echo '✅  Abundance estimated.'
++ echo -e '\nGenerating Krona visualization...'
++ python /scratch/prj/aef_forensic_metagenomics/tools/KrakenTools/kreport2krona.py -r /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L1RP_S13.breport -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/L1RP_S13.krona.txt --no-intermediate-ranks
++ /scratch/prj/aef_forensic_metagenomics/tools/Krona/KronaTools/scripts/ImportText.pl /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/L1RP_S13.krona.txt -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/L1RP_S13.krona.html
++ rm /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/L1RP_S13.krona.txt
++ echo '✅  Krona plot generated.'
++ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz
+++ basename /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/trimmed/paired/L1SG_S5_R1_paired.fastq.gz _R1_paired.fastq.gz
++ base=L1SG_S5
++ echo -e '\nProcessing sample: L1SG_S5'
++ [[ false == true ]]
++ echo -e '\nClassifying metagenomic reads with Kraken2...'
++ KRAKEN_CMD='kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L1SG_S5.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L1SG_S5_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L1SG_S5_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/L1SG_S5.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L1SG_S5_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L1SG_S5_metagenomic.2" 2>&1'
++ echo 'kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L1SG_S5.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L1SG_S5_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L1SG_S5_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/L1SG_S5.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L1SG_S5_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L1SG_S5_metagenomic.2" 2>&1'
++ eval 'kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L1SG_S5.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L1SG_S5_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L1SG_S5_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/L1SG_S5.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L1SG_S5_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L1SG_S5_metagenomic.2" 2>&1'
+++ kraken2 --db /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 --threads 8 --report /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L1SG_S5.k2report --report-minimizer-data --paired --minimum-hit-groups 4 --classified-out /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L1SG_S5_classified#.fastq --unclassified-out /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L1SG_S5_unclassified#.fastq --output /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/L1SG_S5.kraken2 --use-names /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L1SG_S5_metagenomic.1 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L1SG_S5_metagenomic.2
++ echo '✅  Classification complete.'
++ echo -e '\nEstimating species abundance with Bracken...'
++ bracken -d /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 -i /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L1SG_S5.k2report -l S -r 100 -t 0 -w /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L1SG_S5.breport -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/L1SG_S5.bracken
++ echo '✅  Abundance estimated.'
++ echo -e '\nGenerating Krona visualization...'
++ python /scratch/prj/aef_forensic_metagenomics/tools/KrakenTools/kreport2krona.py -r /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L1SG_S5.breport -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/L1SG_S5.krona.txt --no-intermediate-ranks
++ /scratch/prj/aef_forensic_metagenomics/tools/Krona/KronaTools/scripts/ImportText.pl /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/L1SG_S5.krona.txt -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/L1SG_S5.krona.html
++ rm /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/L1SG_S5.krona.txt
++ echo '✅  Krona plot generated.'
++ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz
+++ basename /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/trimmed/paired/L2RP_S14_R1_paired.fastq.gz _R1_paired.fastq.gz
++ base=L2RP_S14
++ echo -e '\nProcessing sample: L2RP_S14'
++ [[ false == true ]]
++ echo -e '\nClassifying metagenomic reads with Kraken2...'
++ KRAKEN_CMD='kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L2RP_S14.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L2RP_S14_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L2RP_S14_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/L2RP_S14.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L2RP_S14_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L2RP_S14_metagenomic.2" 2>&1'
++ echo 'kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L2RP_S14.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L2RP_S14_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L2RP_S14_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/L2RP_S14.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L2RP_S14_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L2RP_S14_metagenomic.2" 2>&1'
++ eval 'kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L2RP_S14.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L2RP_S14_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L2RP_S14_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/L2RP_S14.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L2RP_S14_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L2RP_S14_metagenomic.2" 2>&1'
+++ kraken2 --db /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 --threads 8 --report /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L2RP_S14.k2report --report-minimizer-data --paired --minimum-hit-groups 4 --classified-out /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L2RP_S14_classified#.fastq --unclassified-out /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L2RP_S14_unclassified#.fastq --output /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/L2RP_S14.kraken2 --use-names /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L2RP_S14_metagenomic.1 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L2RP_S14_metagenomic.2
++ echo '✅  Classification complete.'
++ echo -e '\nEstimating species abundance with Bracken...'
++ bracken -d /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 -i /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L2RP_S14.k2report -l S -r 100 -t 0 -w /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L2RP_S14.breport -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/L2RP_S14.bracken
++ echo '✅  Abundance estimated.'
++ echo -e '\nGenerating Krona visualization...'
++ python /scratch/prj/aef_forensic_metagenomics/tools/KrakenTools/kreport2krona.py -r /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L2RP_S14.breport -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/L2RP_S14.krona.txt --no-intermediate-ranks
++ /scratch/prj/aef_forensic_metagenomics/tools/Krona/KronaTools/scripts/ImportText.pl /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/L2RP_S14.krona.txt -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/L2RP_S14.krona.html
++ rm /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/L2RP_S14.krona.txt
++ echo '✅  Krona plot generated.'
++ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz
+++ basename /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/trimmed/paired/L2SG_S6_R1_paired.fastq.gz _R1_paired.fastq.gz
++ base=L2SG_S6
++ echo -e '\nProcessing sample: L2SG_S6'
++ [[ false == true ]]
++ echo -e '\nClassifying metagenomic reads with Kraken2...'
++ KRAKEN_CMD='kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L2SG_S6.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L2SG_S6_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L2SG_S6_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/L2SG_S6.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L2SG_S6_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L2SG_S6_metagenomic.2" 2>&1'
++ echo 'kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L2SG_S6.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L2SG_S6_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L2SG_S6_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/L2SG_S6.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L2SG_S6_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L2SG_S6_metagenomic.2" 2>&1'
++ eval 'kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L2SG_S6.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L2SG_S6_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L2SG_S6_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/L2SG_S6.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L2SG_S6_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L2SG_S6_metagenomic.2" 2>&1'
+++ kraken2 --db /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 --threads 8 --report /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L2SG_S6.k2report --report-minimizer-data --paired --minimum-hit-groups 4 --classified-out /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L2SG_S6_classified#.fastq --unclassified-out /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L2SG_S6_unclassified#.fastq --output /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/L2SG_S6.kraken2 --use-names /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L2SG_S6_metagenomic.1 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L2SG_S6_metagenomic.2
++ echo '✅  Classification complete.'
++ echo -e '\nEstimating species abundance with Bracken...'
++ bracken -d /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 -i /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L2SG_S6.k2report -l S -r 100 -t 0 -w /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L2SG_S6.breport -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/L2SG_S6.bracken
++ echo '✅  Abundance estimated.'
++ echo -e '\nGenerating Krona visualization...'
++ python /scratch/prj/aef_forensic_metagenomics/tools/KrakenTools/kreport2krona.py -r /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L2SG_S6.breport -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/L2SG_S6.krona.txt --no-intermediate-ranks
++ /scratch/prj/aef_forensic_metagenomics/tools/Krona/KronaTools/scripts/ImportText.pl /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/L2SG_S6.krona.txt -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/L2SG_S6.krona.html
++ rm /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/L2SG_S6.krona.txt
++ echo '✅  Krona plot generated.'
++ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz
+++ basename /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/trimmed/paired/S1RP_S11_R1_paired.fastq.gz _R1_paired.fastq.gz
++ base=S1RP_S11
++ echo -e '\nProcessing sample: S1RP_S11'
++ [[ false == true ]]
++ echo -e '\nClassifying metagenomic reads with Kraken2...'
++ KRAKEN_CMD='kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S1RP_S11.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S1RP_S11_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S1RP_S11_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/S1RP_S11.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S1RP_S11_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S1RP_S11_metagenomic.2" 2>&1'
++ echo 'kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S1RP_S11.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S1RP_S11_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S1RP_S11_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/S1RP_S11.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S1RP_S11_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S1RP_S11_metagenomic.2" 2>&1'
++ eval 'kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S1RP_S11.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S1RP_S11_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S1RP_S11_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/S1RP_S11.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S1RP_S11_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S1RP_S11_metagenomic.2" 2>&1'
+++ kraken2 --db /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 --threads 8 --report /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S1RP_S11.k2report --report-minimizer-data --paired --minimum-hit-groups 4 --classified-out /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S1RP_S11_classified#.fastq --unclassified-out /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S1RP_S11_unclassified#.fastq --output /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/S1RP_S11.kraken2 --use-names /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S1RP_S11_metagenomic.1 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S1RP_S11_metagenomic.2
++ echo '✅  Classification complete.'
++ echo -e '\nEstimating species abundance with Bracken...'
++ bracken -d /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 -i /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S1RP_S11.k2report -l S -r 100 -t 0 -w /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S1RP_S11.breport -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/S1RP_S11.bracken
++ echo '✅  Abundance estimated.'
++ echo -e '\nGenerating Krona visualization...'
++ python /scratch/prj/aef_forensic_metagenomics/tools/KrakenTools/kreport2krona.py -r /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S1RP_S11.breport -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/S1RP_S11.krona.txt --no-intermediate-ranks
++ /scratch/prj/aef_forensic_metagenomics/tools/Krona/KronaTools/scripts/ImportText.pl /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/S1RP_S11.krona.txt -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/S1RP_S11.krona.html
++ rm /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/S1RP_S11.krona.txt
++ echo '✅  Krona plot generated.'
++ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz
+++ basename /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/trimmed/paired/S1SG_S3_R1_paired.fastq.gz _R1_paired.fastq.gz
++ base=S1SG_S3
++ echo -e '\nProcessing sample: S1SG_S3'
++ [[ false == true ]]
++ echo -e '\nClassifying metagenomic reads with Kraken2...'
++ KRAKEN_CMD='kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S1SG_S3.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S1SG_S3_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S1SG_S3_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/S1SG_S3.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S1SG_S3_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S1SG_S3_metagenomic.2" 2>&1'
++ echo 'kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S1SG_S3.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S1SG_S3_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S1SG_S3_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/S1SG_S3.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S1SG_S3_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S1SG_S3_metagenomic.2" 2>&1'
++ eval 'kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S1SG_S3.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S1SG_S3_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S1SG_S3_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/S1SG_S3.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S1SG_S3_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S1SG_S3_metagenomic.2" 2>&1'
+++ kraken2 --db /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 --threads 8 --report /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S1SG_S3.k2report --report-minimizer-data --paired --minimum-hit-groups 4 --classified-out /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S1SG_S3_classified#.fastq --unclassified-out /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S1SG_S3_unclassified#.fastq --output /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/S1SG_S3.kraken2 --use-names /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S1SG_S3_metagenomic.1 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S1SG_S3_metagenomic.2
++ echo '✅  Classification complete.'
++ echo -e '\nEstimating species abundance with Bracken...'
++ bracken -d /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 -i /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S1SG_S3.k2report -l S -r 100 -t 0 -w /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S1SG_S3.breport -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/S1SG_S3.bracken
++ echo '✅  Abundance estimated.'
++ echo -e '\nGenerating Krona visualization...'
++ python /scratch/prj/aef_forensic_metagenomics/tools/KrakenTools/kreport2krona.py -r /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S1SG_S3.breport -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/S1SG_S3.krona.txt --no-intermediate-ranks
++ /scratch/prj/aef_forensic_metagenomics/tools/Krona/KronaTools/scripts/ImportText.pl /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/S1SG_S3.krona.txt -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/S1SG_S3.krona.html
++ rm /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/S1SG_S3.krona.txt
++ echo '✅  Krona plot generated.'
++ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz
+++ basename /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/trimmed/paired/S2RP_S12_R1_paired.fastq.gz _R1_paired.fastq.gz
++ base=S2RP_S12
++ echo -e '\nProcessing sample: S2RP_S12'
++ [[ false == true ]]
++ echo -e '\nClassifying metagenomic reads with Kraken2...'
++ KRAKEN_CMD='kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S2RP_S12.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S2RP_S12_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S2RP_S12_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/S2RP_S12.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S2RP_S12_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S2RP_S12_metagenomic.2" 2>&1'
++ echo 'kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S2RP_S12.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S2RP_S12_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S2RP_S12_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/S2RP_S12.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S2RP_S12_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S2RP_S12_metagenomic.2" 2>&1'
++ eval 'kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S2RP_S12.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S2RP_S12_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S2RP_S12_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/S2RP_S12.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S2RP_S12_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S2RP_S12_metagenomic.2" 2>&1'
+++ kraken2 --db /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 --threads 8 --report /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S2RP_S12.k2report --report-minimizer-data --paired --minimum-hit-groups 4 --classified-out /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S2RP_S12_classified#.fastq --unclassified-out /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S2RP_S12_unclassified#.fastq --output /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/S2RP_S12.kraken2 --use-names /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S2RP_S12_metagenomic.1 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S2RP_S12_metagenomic.2
++ echo '✅  Classification complete.'
++ echo -e '\nEstimating species abundance with Bracken...'
++ bracken -d /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 -i /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S2RP_S12.k2report -l S -r 100 -t 0 -w /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S2RP_S12.breport -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/S2RP_S12.bracken
++ echo '✅  Abundance estimated.'
++ echo -e '\nGenerating Krona visualization...'
++ python /scratch/prj/aef_forensic_metagenomics/tools/KrakenTools/kreport2krona.py -r /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S2RP_S12.breport -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/S2RP_S12.krona.txt --no-intermediate-ranks
++ /scratch/prj/aef_forensic_metagenomics/tools/Krona/KronaTools/scripts/ImportText.pl /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/S2RP_S12.krona.txt -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/S2RP_S12.krona.html
++ rm /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/S2RP_S12.krona.txt
++ echo '✅  Krona plot generated.'
++ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz
+++ basename /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/trimmed/paired/S2SG_S4_R1_paired.fastq.gz _R1_paired.fastq.gz
++ base=S2SG_S4
++ echo -e '\nProcessing sample: S2SG_S4'
++ [[ false == true ]]
++ echo -e '\nClassifying metagenomic reads with Kraken2...'
++ KRAKEN_CMD='kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S2SG_S4.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S2SG_S4_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S2SG_S4_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/S2SG_S4.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S2SG_S4_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S2SG_S4_metagenomic.2" 2>&1'
++ echo 'kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S2SG_S4.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S2SG_S4_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S2SG_S4_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/S2SG_S4.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S2SG_S4_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S2SG_S4_metagenomic.2" 2>&1'
++ eval 'kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S2SG_S4.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 4 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S2SG_S4_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S2SG_S4_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/S2SG_S4.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S2SG_S4_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S2SG_S4_metagenomic.2" 2>&1'
+++ kraken2 --db /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 --threads 8 --report /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S2SG_S4.k2report --report-minimizer-data --paired --minimum-hit-groups 4 --classified-out /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S2SG_S4_classified#.fastq --unclassified-out /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S2SG_S4_unclassified#.fastq --output /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/S2SG_S4.kraken2 --use-names /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S2SG_S4_metagenomic.1 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S2SG_S4_metagenomic.2
++ echo '✅  Classification complete.'
++ echo -e '\nEstimating species abundance with Bracken...'
++ bracken -d /scratch/prj/aef_forensic_metagenomics/data/databases/k2_housepets_250510 -i /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S2SG_S4.k2report -l S -r 100 -t 0 -w /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S2SG_S4.breport -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/S2SG_S4.bracken
++ echo '✅  Abundance estimated.'
++ echo -e '\nGenerating Krona visualization...'
++ python /scratch/prj/aef_forensic_metagenomics/tools/KrakenTools/kreport2krona.py -r /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S2SG_S4.breport -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/S2SG_S4.krona.txt --no-intermediate-ranks
++ /scratch/prj/aef_forensic_metagenomics/tools/Krona/KronaTools/scripts/ImportText.pl /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/S2SG_S4.krona.txt -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/S2SG_S4.krona.html
++ rm /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/krona/S2SG_S4.krona.txt
++ echo '✅  Krona plot generated.'
+++ date +%s
++ END_TIME=1750017877
++ DURATION=124
++ printf -v FORMATTED_DURATION %02d:%02d:%02d 0 2 4
++ echo -e '\nMetagenomic classification completed in: 00:02:04'
++ echo -e '\nCalculating read length statistics...'
++ files=("$FILTERED_FASTQ_DIR"/*.1 "$FILTERED_FASTQ_DIR"/*.2 "$CLASSIFIED_DIR"/*.fastq "$UNCLASSIFIED_DIR"/*.fastq)
++ /scratch/prj/aef_forensic_metagenomics/scripts/helper_scripts/get_fastq_stats.sh /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D1RP_S9_metagenomic.1 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D1SG_S1_metagenomic.1 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D2RP_S10_metagenomic.1 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D2SG_S2_metagenomic.1 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L1RP_S13_metagenomic.1 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L1SG_S5_metagenomic.1 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L2RP_S14_metagenomic.1 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L2SG_S6_metagenomic.1 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S1RP_S11_metagenomic.1 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S1SG_S3_metagenomic.1 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S2RP_S12_metagenomic.1 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S2SG_S4_metagenomic.1 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D1RP_S9_metagenomic.2 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D1SG_S1_metagenomic.2 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D2RP_S10_metagenomic.2 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D2SG_S2_metagenomic.2 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L1RP_S13_metagenomic.2 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L1SG_S5_metagenomic.2 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L2RP_S14_metagenomic.2 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L2SG_S6_metagenomic.2 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S1RP_S11_metagenomic.2 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S1SG_S3_metagenomic.2 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S2RP_S12_metagenomic.2 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S2SG_S4_metagenomic.2 /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D1RP_S9_classified_1.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D1RP_S9_classified_2.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D1SG_S1_classified_1.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D1SG_S1_classified_2.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D2RP_S10_classified_1.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D2RP_S10_classified_2.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D2SG_S2_classified_1.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D2SG_S2_classified_2.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L1RP_S13_classified_1.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L1RP_S13_classified_2.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L1SG_S5_classified_1.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L1SG_S5_classified_2.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L2RP_S14_classified_1.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L2RP_S14_classified_2.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L2SG_S6_classified_1.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L2SG_S6_classified_2.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S1RP_S11_classified_1.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S1RP_S11_classified_2.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S1SG_S3_classified_1.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S1SG_S3_classified_2.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S2RP_S12_classified_1.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S2RP_S12_classified_2.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S2SG_S4_classified_1.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S2SG_S4_classified_2.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D1RP_S9_unclassified_1.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D1RP_S9_unclassified_2.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D1SG_S1_unclassified_1.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D1SG_S1_unclassified_2.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D2RP_S10_unclassified_1.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D2RP_S10_unclassified_2.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D2SG_S2_unclassified_1.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D2SG_S2_unclassified_2.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L1RP_S13_unclassified_1.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L1RP_S13_unclassified_2.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L1SG_S5_unclassified_1.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L1SG_S5_unclassified_2.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L2RP_S14_unclassified_1.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L2RP_S14_unclassified_2.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L2SG_S6_unclassified_1.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L2SG_S6_unclassified_2.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S1RP_S11_unclassified_1.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S1RP_S11_unclassified_2.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S1SG_S3_unclassified_1.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S1SG_S3_unclassified_2.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S2RP_S12_unclassified_1.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S2RP_S12_unclassified_2.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S2SG_S4_unclassified_1.fastq /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S2SG_S4_unclassified_2.fastq
++ echo '✅ Statistics generated.'
++ echo -e '\nCombining Bracken reports...'
++ Rscript /scratch/prj/aef_forensic_metagenomics/scripts/helper_scripts/combine_breports.R /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D1RP_S9.breport /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D1SG_S1.breport /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D2RP_S10.breport /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/D2SG_S2.breport /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L1RP_S13.breport /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L1SG_S5.breport /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L2RP_S14.breport /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/L2SG_S6.breport /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S1RP_S11.breport /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S1SG_S3.breport /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S2RP_S12.breport /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/reports/S2SG_S4.breport
++ echo '✅ Bracken reports combined.'
++ echo -e '\nCopying SLURM job logs...'
++ cp /scratch/prj/aef_forensic_metagenomics/scripts/logs/pipeline_26917135.err /scratch/prj/aef_forensic_metagenomics/scripts/logs/pipeline_26917135.log /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/logs
++ echo '✅ SLURM job logs copied.'
++ echo -e '\n================================================= COMPARISON TO GROUND TRUTH ================================================='
++ echo -e '\n================================================= METAGENOMIC DIVERSITY ANALYSIS ================================================='
++ /scratch/prj/aef_forensic_metagenomics/scripts/helper_scripts/diversity_analysis.sh -b /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken -d /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/diversity
++ echo -e '✅  Diversity analysis completed successfully.'
++ [[ false == true ]]
++ echo -e '\n✅  Pipeline completed successfully.'
++ echo -e '\nCopying final SLURM job logs'
++ cp /scratch/prj/aef_forensic_metagenomics/scripts/logs/pipeline_26917135.err /scratch/prj/aef_forensic_metagenomics/scripts/logs/pipeline_26917135.log /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1506_2102/logs
