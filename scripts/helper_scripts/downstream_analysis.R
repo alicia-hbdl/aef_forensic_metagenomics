@@ -1,12 +1,8 @@
 #!/usr/bin/env Rscript
 
-# This script aggregates Bracken output and associated metadata into a SummarizedExperiment object,
-# and performs downstream analysis of metagenomic pipeline performance. It generates:
-# - Read retention and read length progression plots across pipeline stages,
-# - Clustering visualizations of species profiles (PCA, t-SNE, UMAP),
-# - Comparative analyses of classification accuracy against ground truth (L2, AUPR, precision/recall).
-
-# Usage: Rscript downstream_analysis.R -t <path/to/ground_truth.csv> -s <path/to/runs_summary.csv> breport1.csv breport2.csv ...
+# Aggregates Bracken output and metadata into a SummarizedExperiment,
+# then analyzes pipeline performance via read retention, classification accuracy 
+# (L2, AUPR, precision/recall) and dimensionality reduction (PCA, t-SNE, UMAP),
 
 # Rscript ./scripts/helper_scripts/downstream_analysis.R   -t ./zymobiomics_folder/raw_data/ground_truth.csv   -s ./zymobiomics_folder/results/runs/runs_summary.csv   $(find ./zymobiomics_folder/results/runs/ -type f -name "combined_breports.csv" | sort)
 
@@ -67,15 +63,15 @@ invisible(lapply(all_paths, function(f) {
 }))
 
 # Define output directory for plots 
-results_dir <- file.path(dirname(opts$`runs-summary`))
+results_dir <- file.path(dirname(dirname(opts$`runs-summary`)), "benchmarking")
+if (!dir.exists(results_dir)) dir.create(results_dir, recursive = TRUE)
 
 #=========================================================
 # Creating Summarized Experiment 
 #=========================================================
 
 ## ------------- Load Bracken reports ------------- 
-# Load and merge combined Bracken reports (one per run) into a single species-by-run table
-# Note: These reports are already aggregated per run — no sample-level detail is retained
+# Loading and merging multiple Bracken reports (already aggregated per run; no sample-level detail)
 
 # Initialize empty table to collect species counts
 combined_table <- data.frame(species = character(), stringsAsFactors = FALSE)
@@ -88,21 +84,19 @@ for (file_path in breport_paths) {
   run_species <- read_csv(file_path, show_col_types = FALSE) %>%
     mutate(!!run_id := rowMeans(across(where(is.numeric), ~ replace_na(.x, 0)))) %>% # Replace NA with 0 
     select(species, !!sym(run_id)) %>% # Keep only species and new column
-    mutate(
-      species = case_when( # Replaces the misclassified species names with the desired ones
-        species == "Bacillus spizizenii" ~ "Bacillus subtilis",
-        species == "Limosilactobacillus fermentum" ~ "Lactobacillus fermentum",
-        TRUE ~ species
-      )
-    ) %>%
+    mutate(species = case_when( 
+      species == "Bacillus spizizenii" ~ "Bacillus subtilis",
+      species == "Limosilactobacillus fermentum" ~ "Lactobacillus fermentum",
+      TRUE ~ species)) %>%
     group_by(species) %>%
-    summarise(!!run_id := sum(.data[[run_id]]), .groups = "drop")  # Aggregate duplicate names
-  # Merge into the combined table
+    summarise(!!run_id := sum(.data[[run_id]]), .groups = "drop")  # Aggregate rows for the same species name
+  
+  # Merge into combined table
   combined_table <- if (nrow(combined_table) == 0) {
-    run_species
+    run_species  # First run sets the table
   } else {
     full_join(combined_table, run_species, by = "species") %>%
-      mutate(across(where(is.numeric), ~ replace_na(.x, 0))) # Fill missing values with 0
+      mutate(across(where(is.numeric), ~ replace_na(.x, 0)))  # Fill missing values with 0
   }
 }
 
@@ -180,21 +174,10 @@ se <- SummarizedExperiment(
   colData = col_data
 )
 
-
-
-# Count columns before filtering
-n_before <- ncol(se)
-
 # Filter low-quality data
 se <- se %>%
   subset(, !duplicated(as.data.frame(colData(.)[, c("db_name", "kraken2_min_hits", "bracken_thresh")])))
 
-# Count columns after filtering
-n_after <- ncol(se)
-
-# Print the result
-cat("Number of samples before filtering:", n_before, "\n")
-cat("Number of samples after filtering:", n_after, "\n")
 # Create global legend (auto-assign colors for all detected databases)
 legend_df <- unique(colData(se)[, "db_name", drop = FALSE])
 db_colors <- setNames(viridis(nrow(legend_df), option = "D"), legend_df$db_name)
@@ -376,175 +359,28 @@ ggsave(file.path(results_dir, "read_progression.png"), read_progression, width =
 # Data Preprocessing
 #=========================================================
 
-#------------- Compare Normalizations -------------
-# This section compares L2 distance to ground truth using two normalization methods:
-# - Total reads reflect true detection rates but penalize under-classified samples.
-# - Classified reads emphasize relative proportions among detected taxa, but can inflate abundances if classification rates vary.
-# If classification bias is uniform across taxa, this inflation may cancel out, preserving relative accuracy.
-
-# Get species count matrix from SummarizedExperiment
 counts_mat <- assay(se, "counts")
-
-# Get list of run IDs
 runs <- colnames(counts_mat)
 
-# Normalize by total reads (bt_paired)
-lib_sizes <- setNames(colData(se)$bt_paired, runs)
-norm_total <- sweep(counts_mat, 2, lib_sizes, FUN = "/")
-
-# Normalize by classified reads (bracken_total)
+# Normalize by classified reads (Bracken total) to compute CPM
 class_sizes <- setNames(colData(se)$bracken_total, runs)
-norm_class <- sweep(counts_mat, 2, class_sizes, FUN = "/")
+assay(se, "clas_cpm") <- t(t(counts_mat) / class_sizes * 1e6)  # Add CPM assay
+assay(se, "log_clas_cpm") <- log10(assay(se, "clas_cpm") + 1)  # Log-transform to stabilize variance
 
-# Extract and prepare ground truth profile
-gt_profile <- norm_total[, "ground_truth"]
-gt_profile <- gt_profile / sum(gt_profile)  # Normalize to relative abundance
-norm_total <- norm_total[, runs != "ground_truth"]
-norm_class <- norm_class[, runs != "ground_truth"]
+# Normalize by total reads (bt_paired) to compute CPM
+lib_sizes <- setNames(colData(se)$bt_paired, runs)
+assay(se, "lib_cpm") <- t(t(counts_mat) / lib_sizes * 1e6)  # Add CPM assay
+assay(se, "log_lib_cpm") <- log10(assay(se, "lib_cpm") + 1)  # Log-transform to stabilize variance
 
-# Define L2 distance to ground truth
-l2_dist <- function(run_col) sqrt(sum((run_col - gt_profile)^2))
-df_l2 <- tibble(
-  Run = rep(colnames(norm_total), 2),
-  L2 = c(
-    apply(norm_class, 2, l2_dist), # Distances using classified read normalization
-    apply(norm_total, 2, l2_dist) #  Distances using total read normalization
-  ),
-  Normalization = rep(c("Classified", "Total"), each = ncol(norm_total))
-) %>%
-  mutate(Database = colData(se)[Run, "db_name"])
-
-# Plot L2 distances by database
-p1 <- ggplot(df_l2, aes(x = Database, y = L2, fill = Normalization)) +
-  geom_boxplot(position = position_dodge(width = 0.8)) +
-  geom_point(aes(group = Normalization), position = position_dodge(width = 0.8), size = 1, color = "gray") +
-  labs(title = "Impact of Normalization on Profile Accuracy", y = "L2 Distance to Ground Truth", x = "Database") +
-  scale_color_manual(values = db_colors) +  # Use global color mapping
-  theme_minimal() +
-  theme(plot.title = element_text(size = 10, face = "bold"),
-        axis.text = element_text(size = 8), axis.title = element_text(size = 9),
-        axis.text.x = element_text(angle = 45, hjust = 1))
-
-#------------- Visualize Library Sizes (Classified) -------------
-
-# Barplot: total classified reads per run
-p2 <- data.frame(Run = names(class_sizes), Reads = class_sizes) %>%
-  filter(Run != "ground_truth") %>%
-  ggplot(aes(x = Run, y = Reads, fill = Run)) +
-  geom_bar(stat = "identity", show.legend = FALSE) +
-  scale_color_manual(values = db_colors) +  # Use global color mapping
-  labs(title = "Classified Reads per Pipeline Run", x = "Pipeline Run", y = "Classified Reads") +
-  theme_minimal() +
-  theme(plot.title = element_text(size = 10, face = "bold"),
-        axis.text = element_text(size = 8), axis.title = element_text(size = 9),
-        axis.text.x = element_text(angle = 45, hjust = 1))
-summary(class_sizes)
-#------------- Data Normalization -------------
-# This section examines the correlation of species abundance with classification depth before and after CPM normalization (ground truth excluded).
-# CPM adjusts for number of classified reads; TPM is unnecessary as ZymoBIOMICS is genome-balanced.
-
-# Remove ground truth from class sizes
-class_sizes_nogt <- class_sizes[names(class_sizes) != "ground_truth"] 
-
-# Prepare count matrix 
-counts_mat_nogt <- counts_mat %>%
-  .[, colnames(.) != "ground_truth"] %>%      # Exclude ground truth column
-  .[rowSums(.) > 0, ]                         # Exclude species with zero counts across all samples
-
-# Compute correlation between species abundance and classified read count (pre-CPM)
-cor_vals_raw <- apply(counts_mat_nogt, 1, \(x) cor(x, class_sizes_nogt))
-
-# Plot raw correlation distribution
-p3 <- tibble(Correlation = cor_vals_raw) %>%
-  ggplot(aes(x = Correlation)) +
-  geom_histogram(binwidth = 0.05, boundary = 0, fill = viridis(1, option = "D"), color = "black") +
-  stat_function(fun = dnorm, args = list(mean = mean(cor_vals_raw), sd = sd(cor_vals_raw)), 
-                color = "grey", linewidth = 1) + # Normal distribution curve 
-  scale_x_continuous(limits = c(-1, 1)) +
-  labs(title = "Raw Correlation Distribution", x = "Correlation", y = "Density") +
-  theme_minimal() + 
-  theme(plot.title = element_text(size = 10, face = "bold"),
-        axis.text = element_text(size = 8), axis.title = element_text(size = 9),
-        axis.text.x = element_text(angle = 45, hjust = 1))
-
-# Apply CPM normalization using classified read depth
-assay(se, "cpm") <- t(t(counts_mat) / class_sizes * 1e6)  # Add as new assay
-cpm_mat <- assay(se, "cpm")
-
-# Prepare normalized matrix
-cpm_mat_nogt <- cpm_mat %>%
-  .[, colnames(.) != "ground_truth"] %>%      # Exclude ground truth column
-  .[rowSums(.) > 0, ]                         # Exclude species with zero CPM across all samples
-
-# Compute correlation after CPM normalization
-cor_vals_cpm <- apply(cpm_mat_nogt, 1, \(x) cor(x, class_sizes_nogt))
-
-# Plot CPM-normalized correlation distribution
-p4 <- tibble(Correlation = cor_vals_cpm) %>%
-  ggplot(aes(x = Correlation)) +
-  geom_histogram(binwidth = 0.05, boundary = 0,fill = viridis(1, option = "D"), color = "black") +
-  stat_function(fun = dnorm, args = list(mean = mean(cor_vals_cpm), sd = sd(cor_vals_cpm)),
-                color = "grey", linewidth = 1) + # Normal distribution curve 
-  scale_x_continuous(limits = c(-1, 1)) +
-  labs(title = "CPM-Normalized Correlation Distribution", x = "Correlation", y = "Density") +
-  theme_minimal() + 
-  theme(plot.title = element_text(size = 10, face = "bold"),
-        axis.text = element_text(size = 8), axis.title = element_text(size = 9),
-        axis.text.x = element_text(angle = 45, hjust = 1))
-
-## ------------- Variance Stabilisation -------------
-# Plot log(Mean) vs log(SD) to examine heteroscedasticity (when the variance of a variable depends on its mean)
-
-# Compute log-transformed mean and standard deviation per species
-df_var_cpm <- data.frame(Mean = log1p(rowMeans(cpm_mat_nogt)), 
-                         SD = log1p(rowSds(cpm_mat_nogt)))
-
-# Scatter plot before
-p5 <- ggplot(df_var_cpm, aes(x = Mean, y = SD, color = viridis(1, option = "D"))) +
-  geom_point(size = 2, color = viridis(1, option = "D")) +  
-  geom_smooth(formula = 'y ~ x', method = "lm", se = FALSE, color = "grey", linewidth = 1) +
-  annotate("text", x = min(df_var_cpm$Mean), y = max(df_var_cpm$SD),
-           label = paste0("r = ", round(cor(df_var_cpm$Mean, df_var_cpm$SD), 3)), 
-           hjust = 0, size = 3, fontface = "italic") +
-  labs(x = "log(Mean CPM + 1)", y = "log(SD CPM + 1)", title = "Species Abundance Variability (CPM)") +
-  theme_minimal() +
-  theme(plot.title = element_text(size = 10, face = "bold"),
-        axis.text = element_text(size = 8), axis.title = element_text(size = 9),
-        axis.text.x = element_text(angle = 45, hjust = 1),
-        legend.position = "none")
-
-# Variance stabilization: log2 transform CPM 
-assay(se, "logcpm") <- log10(cpm_mat+1) # Log(+1) avoids issues with 0s
-logcpm_mat <- assay(se, "logcpm")
-
-# Prepare normalized matrix
-logcpm_mat_nogt <- logcpm_mat %>%
-  .[, colnames(.) != "ground_truth"] %>%      # Exclude ground truth column
-  .[rowSums(.) > 0, ]                         # Exclude species with zero CPM across all samples
-
-# Analyze mean–SD relationship again
-df_var_logcpm <- data.frame(Mean = rowMeans(logcpm_mat_nogt), 
-                            SD = rowSds(logcpm_mat_nogt))
-# Scatter plot after
-p6 <- ggplot(df_var_logcpm, aes(x = Mean, y = SD)) +
-  geom_point(size = 2, color = viridis(1, option = "D")) +  
-  geom_smooth(formula = 'y ~ x', method = "lm", se = FALSE, color = "grey", linewidth = 1) +
-  annotate("text", x = max(df_var_logcpm$Mean) - 0.2, y = max(df_var_logcpm$SD),
-           label = paste0("r = ", round(cor(df_var_logcpm$Mean, df_var_logcpm$SD), 3)), 
-           hjust = +1, size = 3, fontface = "italic") +
-  labs(x = "Mean logCPM", y = "SD logCPM", title = "Species Abundance Variability (logCPM)") +
-  theme_minimal() +
-  theme(plot.title = element_text(size = 10, face = "bold"),
-        axis.text = element_text(size = 8), axis.title = element_text(size = 9),
-        axis.text.x = element_text(angle = 45, hjust = 1),
-        legend.position = "none")
-
-combined_transformations <- (p1 + p2) / (p3 + p4) / (p5 + p6) 
-ggsave(file.path(results_dir, "data_preprocessing.png"), combined_transformations, width = 10, height = 10)
+# TODO: Boxplot of distances with each 
 
 #=========================================================
 # Database Precision and Recall 
 #=========================================================
+
+# Remove duplicated **columns** (i.e., runs) based on the log_clas_cpm assay
+se <- se[, !duplicated(t(assay(se, "log_clas_cpm")))]  # Remove duplicated runs
+logcpm_mat <- assay(se, "log_clas_cpm")
 
 #------------- Define Labels & Scores -------------
 
@@ -685,57 +521,6 @@ db_name_map <- setNames(col_data$db_name, rownames(col_data))
 kraken_min_hit_map <- setNames(col_data$kraken2_min_hits, rownames(col_data))
 bracken_threshold_map <- setNames(col_data$bracken_thresh, rownames(col_data))
 
-#------------- Dimensionality Reduction -------------
-
-# Plotting function for PCA, t-SNE, UMAP
-plot_embedding <- function(df, xvar, yvar, title, subtitle = NULL, legend = "none") {
-  
-  # Add db_name to the embedding dataframe if not already present
-  if (!"db_name" %in% colnames(df)) {
-    df$db_name <- db_name_map[match(df$run_id, names(db_name_map))]
-  }
-  
-  ggplot(df, aes_string(x = xvar, y = yvar, label = 'sub("^run_", "", run_id)')) +
-    geom_point(data = subset(df, run_id != "ground_truth"), aes(color = db_name), size = 2) +
-    geom_point(data = subset(df, run_id == "ground_truth"), color = "#e6194B", size = 3) +
-    scale_color_manual(values = db_colors, name = "Database") +  # Use global color mapping
-    labs(title = title, subtitle = subtitle, x = xvar, y = yvar) +
-    theme_minimal() +
-    theme(plot.title = element_text(size = 10, face = "bold"),
-          axis.text = element_text(size = 8),
-          axis.title = element_text(size = 9),
-          axis.text.x = element_text(angle = 45, hjust = 1), 
-          legend.position = legend)
-}
-
-# PCA plot: projects runs based on species composition in logCPM space
-pca_df <- prcomp(t(assay(se, "logcpm")), scale. = TRUE)$x %>%
-  as.data.frame() %>%
-  rownames_to_column("run_id")  # Add run ID as a column
-
-pca_plot <- plot_embedding(pca_df, "PC1", "PC2", "PCA")
-
-# t-SNE (optimized for local structure)
-perplexity <- min(30, floor((ncol(assay(se, "logcpm")) - 1) / 3))  # Auto-adjust perplexity
-tsne_df <- Rtsne(t(assay(se, "logcpm")), perplexity = perplexity)$Y %>%
-  as.data.frame() %>%
-  setNames(c("tSNE1", "tSNE2")) %>%
-  mutate(run_id = colnames(se))  # Attach run IDs
-
-tsne_plot <- plot_embedding(tsne_df, "tSNE1", "tSNE2", "t-SNE", subtitle = paste("Perplexity:", perplexity), legend = "right")
-
-# UMAP (preserves global and local structure)
-n_neighbors <- min(15, max(2, floor(ncol(assay(se, "logcpm")) / 2)))  # Auto-adjust neighbors
-umap_cfg <- umap.defaults
-umap_cfg$n_neighbors <- n_neighbors
-
-umap_df <- umap(t(assay(se, "logcpm")), config = umap_cfg)$layout %>%
-  as.data.frame() %>%
-  setNames(c("UMAP1", "UMAP2")) %>%
-  mutate(run_id = colnames(assay(se, "logcpm")))  # Attach run IDs
-
-umap_plot <- plot_embedding(umap_df, "UMAP1", "UMAP2", "UMAP", subtitle = paste("N° Neighbors:", n_neighbors))
-
 #------------- Distance Computation -------------
 
 # Helper: wrap pheatmap as a ggplot-compatible grob with db_name annotations
@@ -776,80 +561,85 @@ pheatmap_grob <- function(mat, show_legend = TRUE, title = NULL) {
     theme(plot.title = element_text(size = 13, face = "bold"))
 }
 
+# -------------CPM vs log-transformed profiles -------------
+# Compute Euclidean distances between CPM-normalized profiles
+cpm_distance_matrix <- as.matrix(dist(t(assay(se, "clas_cpm"))))
+cpm_heatmap <- pheatmap_grob(cpm_distance_matrix, show_legend = FALSE, title = "CPM-Normalized")
 
-# Distances in original logCPM space (species abundance profiles)
-count_dists <- as.matrix(dist(t(assay(se, "counts"))))
-count_dist  <- pheatmap_grob(count_dists, show_legend = FALSE, title = "Raw Counts")
+# Compute Euclidean distances between log-CPM-normalized profiles
+logcpm_distance_matrix <- as.matrix(dist(t(logcpm_mat)))  # Uses already filtered matrix
+logcpm_heatmap <- pheatmap_grob(logcpm_distance_matrix, show_legend = TRUE, title = "logCPM-Normalized")
 
-cpm_dists <- as.matrix(dist(t(assay(se, "cpm"))))
-cpm_dist  <- pheatmap_grob(cpm_dists, show_legend = FALSE, title = "CPM-Normalized") 
-
-
-logcpm_dists <- as.matrix(dist(t(assay(se, "logcpm"))))  # Corrected to use "logcpm"
-logcpm_dist  <- pheatmap_grob(logcpm_dists, show_legend = TRUE, title = "All Configurations")
-
-# Combine plots with layout design
-combined_dist <- wrap_plots(
-  list(A = count_dist, B = cpm_dist, C = logcpm_dist),
-  design = "AAAABBBBCCCCCC") + 
+# Combine and layout the heatmaps to compare raw vs log-transformed profiles
+log_transform_comparison_plot <- wrap_plots(list(A = cpm_heatmap, B = logcpm_heatmap),design = "AABBB") + 
   plot_annotation(tag_levels = 'A')
-# Save output
-ggsave(file.path(results_dir, "l2_distance_transformations.jpg"), combined_dist, width = 23, height = 7)
 
-# Get names of 40 samples closest to "ground truth"
-top_names <- logcpm_dists["ground_truth", ] %>%
+# Save the figure to the benchmarking results directory
+ggsave(filename = file.path(results_dir, "log_transform_comparison_heatmap.png"),
+  plot = log_transform_comparison_plot,width = 16, height = 7)
+
+# ------------- Top 35 Profiles -------------
+# Identify the 35 configurations closest to the ground truth based on Euclidean distance
+closest_run_names <- logcpm_distance_matrix["ground_truth", ] %>%
   sort() %>%
   head(35) %>%
   names()
 
-# Subset distance matrix to include only those 20 closest samples + "ground truth"
-top_matrix <- logcpm_dists[top_names, top_names]
+# Subset the distance matrix to include only the 35 closest runs + ground truth
+top_logcpm_matrix <- logcpm_distance_matrix[closest_run_names, closest_run_names]
 
-# Plot heatmap
-top_logcpm_dist <- pheatmap_grob(top_matrix, show_legend = FALSE, title = "Top 35 Configurations")
+# Generate heatmap for the selected subset
+top_logcpm_heatmap <- pheatmap_grob(top_logcpm_matrix,show_legend = FALSE, title = "35 Closest Configurations")
 
-dist <- wrap_plots(list(A = top_logcpm_dist, B = logcpm_dist), design = "AABBB") + 
+# Combine with full logCPM heatmap for comparison
+logcpm_comparison_plot <- wrap_plots(list(A = top_logcpm_heatmap, B = logcpm_heatmap), design = "AABBB") + 
   plot_annotation(tag_levels = 'A')
 
-# Save output
-ggsave(file.path(results_dir, "top_logcpm_dist.jpg"), dist, width = 16, height = 7)
+# Save the figure
+ggsave(filename = file.path(results_dir, "top_35_logcpm_comparison.jpg"),
+  plot = logcpm_comparison_plot, width = 16, height = 7)
 
+#------------- Dimensionality Reduction -------------
+set.seed = 42 
 
-# Distances in PCA space (first 2 principal components)
-rownames(pca_df) <- pca_df$run_id
-pca_dists <- pca_df[, c("PC1", "PC2")] %>%
-  dist() %>% # Euclidean distance between runs
-  as.matrix()
-pca_dist <- pheatmap_grob(pca_dists, show_legend=TRUE) # Plot as heatmap 
+# Plotting function for PCA, t-SNE, UMAP
+plot_embedding <- function(df, xvar, yvar, title, subtitle = NULL, legend = "none") {
+  
+  # Add db_name to the embedding dataframe if not already present
+  if (!"db_name" %in% colnames(df)) {
+    df$db_name <- db_name_map[match(df$run_id, names(db_name_map))]
+  }
+  
+  ggplot(df, aes_string(x = xvar, y = yvar, label = 'sub("^run_", "", run_id)')) +
+    geom_point(data = subset(df, run_id != "ground_truth"), aes(color = db_name), size = 2) +
+    geom_point(data = subset(df, run_id == "ground_truth"), color = "#e6194B", size = 3) +
+    scale_color_manual(values = db_colors, name = "Database") +  # Use global color mapping
+    labs(title = title, subtitle = subtitle, x = xvar, y = yvar) +
+    theme_minimal() +
+    theme(plot.title = element_text(size = 10, face = "bold"),
+          axis.text = element_text(size = 8),
+          axis.title = element_text(size = 9),
+          axis.text.x = element_text(angle = 45, hjust = 1), 
+          legend.position = legend)
+}
 
-# Distances in UMAP space
-rownames(umap_df) <- umap_df$run_id
-umap_dists  <- as.matrix(dist(umap_df[, c("UMAP1", "UMAP2")]))
-umap_dist <- pheatmap_grob(umap_dists, show_legend=FALSE) # Plot as heatmap 
+# Principal Component Analysis captures global variance structure
+pca_df <- prcomp(t(logcpm_mat), scale. = TRUE)$x %>%
+  as.data.frame() %>%
+  rownames_to_column("run_id")  # Add run IDs as a column
 
-# Distances in t-SNE space
-rownames(tsne_df) <- tsne_df$run_id
-tsne_dists  <- as.matrix(dist(tsne_df[, c("tSNE1", "tSNE2")]))
-tsne_dist <- pheatmap_grob(tsne_dists, show_legend=FALSE)
+pca_plot <- plot_embedding(pca_df, "PC1", "PC2", title = "PCA")
 
-design <- "
-BBCCC
-DDEE.
-FFGG.
-"
-combined_cluster <- wrap_plots(list(
-  B = pca_plot, C = pca_dist,
-  D = tsne_plot, E = tsne_dist,
-  F = umap_plot, G = umap_dist), design = design) + 
-  plot_annotation(tag_levels = 'A')  
+# t-SNE (optimized for local structure)
+perplexity <- min(30, floor((ncol(logcpm_mat) - 1) / 3))  # Dynamically set perplexity
+tsne_df <- Rtsne(t(logcpm_mat), perplexity = perplexity)$Y %>%
+  as.data.frame() %>%
+  setNames(c("tSNE1", "tSNE2")) %>%
+  mutate(run_id = colnames(se))  # Re-attach run IDs
 
-ggsave(file.path(results_dir, "combined_distances.png"), combined_cluster, width = 15, height = 20)
-# TODO: Use distances from "truth" column to rank best-matching configurations
+tsne_plot <- plot_embedding(tsne_df, "tSNE1", "tSNE2", title = "t-SNE", 
+                            subtitle = paste("Perplexity:", perplexity))
 
+clustering_plot <- pca_plot + tsne_plot + plot_annotation(tag_levels = 'A')
 
-clustering <- (pca_plot + tsne_plot) + 
-  plot_annotation(tag_levels = 'A')
-
-ggsave(file.path(results_dir, "tsne_pca.png"), clustering, width = 10, height = 4)  
-  # TODO: Use distances from "truth" column to rank best-matching configurations
-
+ggsave(file.path(results_dir, "pca_tsne_embedding.png"), clustering_plot, width = 10, height = 4)
