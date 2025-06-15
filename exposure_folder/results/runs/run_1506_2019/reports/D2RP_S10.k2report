@@ -1,0 +1,74 @@
+ 98.64	121046	121046	0	0	U	0	unclassified
+  1.36	1674	0	10815	540	R	1	root
+  1.36	1674	0	10815	540	R1	131567	  cellular organisms
+  1.36	1674	0	10815	540	R2	2759	    Eukaryota
+  1.36	1674	0	10815	540	R3	33154	      Opisthokonta
+  1.36	1674	0	10815	540	K	33208	        Metazoa
+  1.36	1674	0	10815	540	K1	6072	          Eumetazoa
+  1.36	1674	0	10815	540	K2	33213	            Bilateria
+  1.36	1674	0	10815	540	K3	33511	              Deuterostomia
+  1.36	1674	0	10815	540	P	7711	                Chordata
+  1.36	1674	0	10815	540	P1	89593	                  Craniata
+  1.36	1674	0	10815	540	P2	7742	                    Vertebrata
+  1.36	1674	0	10815	540	P3	7776	                      Gnathostomata
+  1.36	1674	0	10815	540	P4	117570	                        Teleostomi
+  1.36	1674	0	10815	540	P5	117571	                          Euteleostomi
+  1.36	1674	0	10815	540	P6	8287	                            Sarcopterygii
+  1.36	1674	0	10815	540	P7	1338369	                              Dipnotetrapodomorpha
+  1.36	1674	0	10815	540	P8	32523	                                Tetrapoda
+  1.36	1674	0	10815	540	P9	32524	                                  Amniota
+  1.36	1674	0	10803	534	C	40674	                                    Mammalia
+  1.36	1674	0	10803	534	C1	32525	                                      Theria
+  1.36	1674	0	10803	534	C2	9347	                                        Eutheria
+  1.36	1674	6	10803	534	C3	1437010	                                          Boreoeutheria
+  1.14	1402	0	8529	283	C4	314146	                                            Euarchontoglires
+  1.14	1402	2	8529	283	C5	314147	                                              Glires
+  0.66	805	84	5297	230	O	9989	                                                Rodentia
+  0.42	518	0	1479	77	O1	33550	                                                  Hystricomorpha
+  0.42	518	0	1479	77	F	10139	                                                    Caviidae
+  0.42	518	0	1479	77	G	10140	                                                      Cavia
+  0.42	518	518	1479	77	S	10141	                                                        Cavia porcellus
+  0.17	203	0	619	67	O1	1963758	                                                  Myomorpha
+  0.17	203	4	619	67	O2	337687	                                                    Muroidea
+  0.15	178	0	437	27	F	337677	                                                      Cricetidae
+  0.15	178	0	437	27	F1	10026	                                                        Cricetinae
+  0.15	178	0	437	27	G	10028	                                                          Cricetulus
+  0.15	178	178	437	27	S	10029	                                                            Cricetulus griseus
+  0.02	21	0	167	35	F	10066	                                                      Muridae
+  0.02	21	1	167	35	F1	39107	                                                        Murinae
+  0.01	11	0	69	14	G	10088	                                                          Mus
+  0.01	11	0	69	14	G1	862507	                                                            Mus
+  0.01	11	11	69	14	S	10090	                                                              Mus musculus
+  0.01	9	0	95	18	G	10114	                                                          Rattus
+  0.01	9	9	95	18	S	10116	                                                            Rattus norvegicus
+  0.48	595	0	2495	41	O	9975	                                                Lagomorpha
+  0.48	595	0	2495	41	F	9979	                                                  Leporidae
+  0.48	595	0	2495	41	G	9984	                                                    Oryctolagus
+  0.48	595	595	2495	41	S	9986	                                                      Oryctolagus cuniculus
+  0.22	266	24	1741	203	C4	314145	                                            Laurasiatheria
+  0.09	115	0	600	43	O	9787	                                              Perissodactyla
+  0.09	115	0	600	43	F	9788	                                                Equidae
+  0.09	115	0	600	43	G	9789	                                                  Equus
+  0.09	115	115	600	43	S	9796	                                                    Equus caballus
+  0.05	66	3	373	63	O	33554	                                              Carnivora
+  0.03	42	0	164	33	O1	379583	                                                Feliformia
+  0.03	42	0	164	33	F	9681	                                                  Felidae
+  0.03	42	0	164	33	F1	338152	                                                    Felinae
+  0.03	42	0	164	33	G	9682	                                                      Felis
+  0.03	42	42	164	33	S	9685	                                                        Felis catus
+  0.02	21	0	165	23	O1	379584	                                                Caniformia
+  0.02	21	0	165	23	F	9608	                                                  Canidae
+  0.02	21	0	165	23	G	9611	                                                    Canis
+  0.02	21	0	165	23	S	9612	                                                      Canis lupus
+  0.02	21	21	165	23	S1	9615	                                                        Canis lupus familiaris
+  0.05	61	3	205	44	O	91561	                                              Artiodactyla
+  0.04	45	0	128	24	O1	9845	                                                Ruminantia
+  0.04	45	0	128	24	O2	35500	                                                  Pecora
+  0.04	45	0	128	24	F	9895	                                                    Bovidae
+  0.04	45	0	128	24	F1	27592	                                                      Bovinae
+  0.04	45	0	128	24	G	9903	                                                        Bos
+  0.04	45	45	128	24	S	9913	                                                          Bos taurus
+  0.01	13	0	64	17	O1	35497	                                                Suina
+  0.01	13	0	64	17	F	9821	                                                  Suidae
+  0.01	13	0	64	17	G	9822	                                                    Sus
+  0.01	13	13	64	17	S	9823	                                                      Sus scrofa

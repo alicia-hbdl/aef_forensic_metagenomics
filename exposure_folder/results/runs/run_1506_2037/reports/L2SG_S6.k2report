@@ -1,0 +1,84 @@
+ 99.42	10072	10072	0	0	U	0	unclassified
+  0.58	59	0	881	335	R	1	root
+  0.58	59	0	881	335	R1	131567	  cellular organisms
+  0.58	59	0	881	335	R2	2759	    Eukaryota
+  0.58	59	0	881	335	R3	33154	      Opisthokonta
+  0.58	59	0	881	335	K	33208	        Metazoa
+  0.58	59	0	881	335	K1	6072	          Eumetazoa
+  0.58	59	0	881	335	K2	33213	            Bilateria
+  0.58	59	0	881	335	K3	33511	              Deuterostomia
+  0.58	59	0	881	335	P	7711	                Chordata
+  0.58	59	0	881	335	P1	89593	                  Craniata
+  0.58	59	0	881	335	P2	7742	                    Vertebrata
+  0.58	59	0	881	335	P3	7776	                      Gnathostomata
+  0.58	59	0	881	335	P4	117570	                        Teleostomi
+  0.58	59	0	881	335	P5	117571	                          Euteleostomi
+  0.58	59	0	881	335	P6	8287	                            Sarcopterygii
+  0.58	59	0	881	335	P7	1338369	                              Dipnotetrapodomorpha
+  0.58	59	0	881	335	P8	32523	                                Tetrapoda
+  0.58	59	0	881	335	P9	32524	                                  Amniota
+  0.56	57	0	795	301	C	40674	                                    Mammalia
+  0.56	57	0	795	301	C1	32525	                                      Theria
+  0.56	57	0	795	301	C2	9347	                                        Eutheria
+  0.56	57	0	795	301	C3	1437010	                                          Boreoeutheria
+  0.31	31	0	373	101	C4	314146	                                            Euarchontoglires
+  0.31	31	0	373	101	C5	314147	                                              Glires
+  0.23	23	0	170	22	O	9975	                                                Lagomorpha
+  0.23	23	0	170	22	F	9979	                                                  Leporidae
+  0.23	23	0	170	22	G	9984	                                                    Oryctolagus
+  0.23	23	23	170	22	S	9986	                                                      Oryctolagus cuniculus
+  0.08	8	1	133	74	O	9989	                                                Rodentia
+  0.05	5	0	60	34	O1	33550	                                                  Hystricomorpha
+  0.05	5	0	60	34	F	10139	                                                    Caviidae
+  0.05	5	0	60	34	G	10140	                                                      Cavia
+  0.05	5	5	60	34	S	10141	                                                        Cavia porcellus
+  0.02	2	0	49	28	O1	1963758	                                                  Myomorpha
+  0.02	2	1	49	28	O2	337687	                                                    Muroidea
+  0.01	1	0	30	17	F	10066	                                                      Muridae
+  0.01	1	0	30	17	F1	39107	                                                        Murinae
+  0.01	1	0	18	10	G	10088	                                                          Mus
+  0.01	1	0	18	10	G1	862507	                                                            Mus
+  0.01	1	1	18	10	S	10090	                                                              Mus musculus
+  0.26	26	5	319	167	C4	314145	                                            Laurasiatheria
+  0.09	9	0	57	25	O	9787	                                              Perissodactyla
+  0.09	9	0	57	25	F	9788	                                                Equidae
+  0.09	9	0	57	25	G	9789	                                                  Equus
+  0.09	9	9	57	25	S	9796	                                                    Equus caballus
+  0.07	7	0	166	91	O	91561	                                              Artiodactyla
+  0.04	4	0	67	38	O1	35497	                                                Suina
+  0.04	4	0	67	38	F	9821	                                                  Suidae
+  0.04	4	0	67	38	G	9822	                                                    Sus
+  0.04	4	4	67	38	S	9823	                                                      Sus scrofa
+  0.03	3	0	95	51	O1	9845	                                                Ruminantia
+  0.03	3	0	95	51	O2	35500	                                                  Pecora
+  0.03	3	0	95	51	F	9895	                                                    Bovidae
+  0.03	3	0	95	51	F1	27592	                                                      Bovinae
+  0.03	3	0	95	51	G	9903	                                                        Bos
+  0.03	3	3	95	51	S	9913	                                                          Bos taurus
+  0.05	5	2	54	27	O	33554	                                              Carnivora
+  0.02	2	0	26	12	O1	379584	                                                Caniformia
+  0.02	2	0	26	12	F	9608	                                                  Canidae
+  0.02	2	0	26	12	G	9611	                                                    Canis
+  0.02	2	0	26	12	S	9612	                                                      Canis lupus
+  0.02	2	2	26	12	S1	9615	                                                        Canis lupus familiaris
+  0.01	1	0	22	12	O1	379583	                                                Feliformia
+  0.01	1	0	22	12	F	9681	                                                  Felidae
+  0.01	1	0	22	12	F1	338152	                                                    Felinae
+  0.01	1	0	22	12	G	9682	                                                      Felis
+  0.01	1	1	22	12	S	9685	                                                        Felis catus
+  0.02	2	0	55	31	P10	8457	                                    Sauropsida
+  0.02	2	0	55	31	P11	32561	                                      Sauria
+  0.02	2	0	55	31	P12	1329799	                                        Archelosauria
+  0.02	2	0	55	31	P13	8492	                                          Archosauria
+  0.02	2	0	55	31	P14	436486	                                            Dinosauria
+  0.02	2	0	55	31	P15	436489	                                              Saurischia
+  0.02	2	0	55	31	P16	436491	                                                Theropoda
+  0.02	2	0	55	31	P17	436492	                                                  Coelurosauria
+  0.02	2	0	55	31	C	8782	                                                    Aves
+  0.02	2	0	55	31	C1	8825	                                                      Neognathae
+  0.02	2	0	55	31	C2	1549675	                                                        Galloanserae
+  0.02	2	0	55	31	O	8976	                                                          Galliformes
+  0.02	2	0	55	31	F	9005	                                                            Phasianidae
+  0.02	2	0	55	31	F1	9072	                                                              Phasianinae
+  0.02	2	0	55	31	G	9030	                                                                Gallus
+  0.02	2	2	55	31	S	9031	                                                                  Gallus gallus
