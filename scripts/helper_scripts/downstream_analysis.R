@@ -29,6 +29,8 @@ suppressPackageStartupMessages({
   library(ggpubr)               # Statistical tests and plot annotation
   library(scales)               # Axis scaling and label formatting
   library(precrec)              # Precision-Recall and ROC curve evaluation
+  library(gghalves)
+  library(ggpp)
 })
 
 ## ------------------ Parse Command-Line Arguments ------------------
@@ -177,6 +179,8 @@ se <- SummarizedExperiment(
 # Filter low-quality data
 se <- se %>%
   subset(, !duplicated(as.data.frame(colData(.)[, c("db_name", "kraken2_min_hits", "bracken_thresh")])))
+
+# TODO: SOP CHECK CONSISTENCY OF DATA 
 
 # Create global legend (auto-assign colors for all detected databases)
 legend_df <- unique(colData(se)[, "db_name", drop = FALSE])
@@ -327,10 +331,6 @@ clas_unclas <- min_read_data %>%
                        "unclas_med" = "Unclassified")) %>%
   slice_sample(n = nrow(.))                                            # Shuffle row order
 
-library(gghalves)
-library(ggpp)
-
-
 # Boxplot comparing median read lengths of classified vs unclassified reads
 # Unpaired Wilcoxon test: non-parametric (handles skewed data), compares medians of independent groups (classified vs unclassified reads)
 boxplot <- ggplot(clas_unclas, aes(x = Type, y = Reads, fill = Type)) +
@@ -374,12 +374,40 @@ assay(se, "log_lib_cpm") <- log10(assay(se, "lib_cpm") + 1)  # Log-transform to 
 
 # TODO: Boxplot of distances with each 
 
+# # Extract and prepare ground truth profile
+# gt_profile <- norm_total[, "ground_truth"]
+# gt_profile <- gt_profile / sum(gt_profile)  # Normalize to relative abundance
+# norm_total <- norm_total[, runs != "ground_truth"]
+# norm_class <- norm_class[, runs != "ground_truth"]
+# 
+# # Define L2 distance to ground truth
+# l2_dist <- function(run_col) sqrt(sum((run_col - gt_profile)^2))
+# df_l2 <- tibble(
+#   Run = rep(colnames(norm_total), 2),
+#   L2 = c(
+#     apply(norm_class, 2, l2_dist), # Distances using classified read normalization
+#     apply(norm_total, 2, l2_dist) #  Distances using total read normalization
+#   ),
+#   Normalization = rep(c("Classified", "Total"), each = ncol(norm_total))
+# ) %>%
+#   mutate(Database = colData(se)[Run, "db_name"])
+# 
+# # Plot L2 distances by database
+# p1 <- ggplot(df_l2, aes(x = Database, y = L2, fill = Normalization)) +
+#   geom_boxplot(position = position_dodge(width = 0.8)) +
+#   geom_point(aes(group = Normalization), position = position_dodge(width = 0.8), size = 1, color = "gray") +
+#   labs(title = "Impact of Normalization on Profile Accuracy", y = "L2 Distance to Ground Truth", x = "Database") +
+#   scale_color_manual(values = db_colors) +  # Use global color mapping
+#   theme_minimal() +
+#   theme(plot.title = element_text(size = 10, face = "bold"),
+#         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
+#         axis.text.x = element_text(angle = 45, hjust = 1))
+# 
 #=========================================================
 # Database Precision and Recall 
 #=========================================================
 
 # Remove duplicated **columns** (i.e., runs) based on the log_clas_cpm assay
-se <- se[, !duplicated(t(assay(se, "log_clas_cpm")))]  # Remove duplicated runs
 logcpm_mat <- assay(se, "log_clas_cpm")
 
 #------------- Define Labels & Scores -------------
@@ -589,6 +617,7 @@ closest_run_names <- logcpm_distance_matrix["ground_truth", ] %>%
 top_logcpm_matrix <- logcpm_distance_matrix[closest_run_names, closest_run_names]
 
 # Generate heatmap for the selected subset
+logcpm_heatmap <- pheatmap_grob(logcpm_distance_matrix, show_legend = TRUE, title = "All Configurations")
 top_logcpm_heatmap <- pheatmap_grob(top_logcpm_matrix,show_legend = FALSE, title = "35 Closest Configurations")
 
 # Combine with full logCPM heatmap for comparison
@@ -626,12 +655,17 @@ plot_embedding <- function(df, xvar, yvar, title, subtitle = NULL, legend = "non
 # Principal Component Analysis captures global variance structure
 pca_df <- prcomp(t(logcpm_mat), scale. = TRUE)$x %>%
   as.data.frame() %>%
-  rownames_to_column("run_id")  # Add run IDs as a column
+  rownames_to_column("run_id")  # Add run ID as a column
 
-pca_plot <- plot_embedding(pca_df, "PC1", "PC2", title = "PCA")
+pca_plot <- plot_embedding(pca_df, "PC1", "PC2", "PCA")
 
 # t-SNE (optimized for local structure)
 perplexity <- min(30, floor((ncol(logcpm_mat) - 1) / 3))  # Dynamically set perplexity
+
+# Remove duplicated runs
+se <- se[, !duplicated(t(assay(se, "log_clas_cpm")))]  
+logcpm_mat <- assay(se, "log_clas_cpm")
+
 tsne_df <- Rtsne(t(logcpm_mat), perplexity = perplexity)$Y %>%
   as.data.frame() %>%
   setNames(c("tSNE1", "tSNE2")) %>%
