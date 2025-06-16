@@ -1,0 +1,616 @@
+
+================================================= ARGUMENT PARSING & VALIDATION =================================================
+
+⚠️  Trimming and host DNA removal are optional but must be done once; if skipped, ensure trimmed and filtered files exist in the correct directories.\n
+===== Pipeline Configuration Summary =====
+Raw FASTQ directory path: /scratch/prj/aef_forensic_metagenomics/exposure_folder/raw_data
+Kraken2/Bracken Database: /scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228
+Ground Truth: Not provided ❌
+Quality Control & Trimming: Disabled ❌
+Host DNA Removal: Disabled ❌
+
+================================================= CONDA ENVIRONMENT ACTIVATION ==================================================
+
+✅ 'metagenomics' environment activated successfully.
+
+====================================================== PROJECT STRUCTURE ======================================================
+
+/scratch/prj/aef_forensic_metagenomics/exposure_folder
+├── processed_data
+│   ├── human
+│   │   ├── aligned_sam
+│   │   ├── bed_files
+│   │   └── sorted_bam
+│   ├── metagenomic
+│   │   ├── bracken
+│   │   ├── classified
+│   │   ├── filtered_fastq
+│   │   ├── kraken2
+│   │   └── unclassified
+│   └── trimmed
+│       ├── paired
+│       └── unpaired
+├── raw_data
+└── results
+    ├── fastqc
+    │   ├── post_trimming
+    │   └── pre_trimming
+    ├── host_dna_analysis
+    └── runs
+        ├── run_1506_1837
+        ├── run_1506_1852
+        ├── run_1506_1902
+        ├── run_1506_1911
+        ├── run_1506_1920
+        ├── run_1506_1929
+        ├── run_1506_1937
+        ├── run_1506_1947
+        ├── run_1506_1956
+        ├── run_1506_2004
+        ├── run_1506_2012
+        ├── run_1506_2019
+        ├── run_1506_2029
+        ├── run_1506_2037
+        ├── run_1506_2045
+        ├── run_1506_2053
+        ├── run_1506_2102
+        ├── run_1506_2112
+        ├── run_1506_2120
+        ├── run_1506_2129
+        ├── run_1506_2138
+        ├── run_1506_2146
+        ├── run_1506_2157
+        ├── run_1506_2207
+        ├── run_1506_2218
+        ├── run_1506_2228
+        ├── run_1506_2238
+        ├── run_1506_2249
+        ├── run_1506_2258
+        ├── run_1506_2310
+        ├── run_1506_2319
+        ├── run_1506_2332
+        ├── run_1506_2342
+        ├── run_1506_2352
+        ├── run_1606_0005
+        ├── run_1606_0017
+        ├── run_1606_0028
+        ├── run_1606_0038
+        ├── run_1606_0049
+        ├── run_1606_0101
+        ├── run_1606_0111
+        └── run_1606_0121
+
+63 directories
+Human DNA-related files (SAM, BAM, and BED) in the 'human' directory are created once per sub-project and remain unchanged across runs.
+Intermediate metagenomic files in the 'metagenomic' directory are overwritten with each run and should be inspected beforehand if desired.
+Results are stored in the 'results' directory (including FastQC, host DNA analysis, and run-specific results like Kraken2 and Bracken).
+
+================================================= METAGENOMIC ABUNDANCE ESTIMATION =================================================
+⚠️  This step assumes reads have already been trimmed with Trimmomatic and host DNA removed with Bowtie2. Processed reads must be in the correct directory.
+
+Processing sample: D1RP_S9
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/D1RP_S9.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 1 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D1RP_S9_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D1RP_S9_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/D1RP_S9.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D1RP_S9_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D1RP_S9_metagenomic.2" 2>&1
+Loading database information... done.
+124006 sequences (32.63 Mbp) processed in 0.452s (16470.5 Kseq/m, 4334.07 Mbp/m).
+  13054 sequences classified (10.53%)
+  110952 sequences unclassified (89.47%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/D1RP_S9.k2report -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/D1RP_S9.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/D1RP_S9.k2report
+PROGRAM START TIME: 06-16-2025 00:21:36
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/D1RP_S9.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 175 
+	  >> Number of species with reads > threshold: 175 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 124006
+	  >> Total reads kept at species level (reads > threshold): 11617
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 1388
+	  >> Reads not distributed (eg. no species above threshold): 49
+	  >> Unclassified reads: 110952
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/D1RP_S9.bracken
+PROGRAM END TIME: 06-16-2025 00:21:36
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/krona/D1RP_S9.krona.html...
+✅  Krona plot generated.
+
+Processing sample: D1SG_S1
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/D1SG_S1.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 1 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D1SG_S1_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D1SG_S1_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/D1SG_S1.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D1SG_S1_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D1SG_S1_metagenomic.2" 2>&1
+Loading database information... done.
+155364 sequences (39.82 Mbp) processed in 0.519s (17965.0 Kseq/m, 4604.20 Mbp/m).
+  20358 sequences classified (13.10%)
+  135006 sequences unclassified (86.90%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/D1SG_S1.k2report -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/D1SG_S1.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/D1SG_S1.k2report
+PROGRAM START TIME: 06-16-2025 00:21:40
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/D1SG_S1.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 2346 
+	  >> Number of species with reads > threshold: 2346 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 155364
+	  >> Total reads kept at species level (reads > threshold): 14317
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 5981
+	  >> Reads not distributed (eg. no species above threshold): 60
+	  >> Unclassified reads: 135006
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/D1SG_S1.bracken
+PROGRAM END TIME: 06-16-2025 00:21:41
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/krona/D1SG_S1.krona.html...
+✅  Krona plot generated.
+
+Processing sample: D2RP_S10
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/D2RP_S10.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 1 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D2RP_S10_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D2RP_S10_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/D2RP_S10.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D2RP_S10_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D2RP_S10_metagenomic.2" 2>&1
+Loading database information... done.
+122720 sequences (31.55 Mbp) processed in 0.472s (15610.9 Kseq/m, 4012.95 Mbp/m).
+  75393 sequences classified (61.43%)
+  47327 sequences unclassified (38.57%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/D2RP_S10.k2report -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/D2RP_S10.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/D2RP_S10.k2report
+PROGRAM START TIME: 06-16-2025 00:21:45
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/D2RP_S10.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 44 
+	  >> Number of species with reads > threshold: 44 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 122720
+	  >> Total reads kept at species level (reads > threshold): 73269
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 2110
+	  >> Reads not distributed (eg. no species above threshold): 14
+	  >> Unclassified reads: 47327
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/D2RP_S10.bracken
+PROGRAM END TIME: 06-16-2025 00:21:45
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/krona/D2RP_S10.krona.html...
+✅  Krona plot generated.
+
+Processing sample: D2SG_S2
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/D2SG_S2.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 1 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/D2SG_S2_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/D2SG_S2_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/D2SG_S2.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D2SG_S2_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/D2SG_S2_metagenomic.2" 2>&1
+Loading database information... done.
+27649 sequences (6.00 Mbp) processed in 0.147s (11320.3 Kseq/m, 2456.27 Mbp/m).
+  13888 sequences classified (50.23%)
+  13761 sequences unclassified (49.77%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/D2SG_S2.k2report -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/D2SG_S2.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/D2SG_S2.k2report
+PROGRAM START TIME: 06-16-2025 00:21:49
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/D2SG_S2.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 207 
+	  >> Number of species with reads > threshold: 207 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 27649
+	  >> Total reads kept at species level (reads > threshold): 12372
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 1479
+	  >> Reads not distributed (eg. no species above threshold): 37
+	  >> Unclassified reads: 13761
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/D2SG_S2.bracken
+PROGRAM END TIME: 06-16-2025 00:21:49
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/krona/D2SG_S2.krona.html...
+✅  Krona plot generated.
+
+Processing sample: L1RP_S13
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/L1RP_S13.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 1 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L1RP_S13_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L1RP_S13_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/L1RP_S13.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L1RP_S13_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L1RP_S13_metagenomic.2" 2>&1
+Loading database information... done.
+164179 sequences (42.32 Mbp) processed in 0.567s (17375.6 Kseq/m, 4479.06 Mbp/m).
+  2773 sequences classified (1.69%)
+  161406 sequences unclassified (98.31%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/L1RP_S13.k2report -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/L1RP_S13.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/L1RP_S13.k2report
+PROGRAM START TIME: 06-16-2025 00:21:54
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/L1RP_S13.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 76 
+	  >> Number of species with reads > threshold: 76 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 164179
+	  >> Total reads kept at species level (reads > threshold): 2154
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 372
+	  >> Reads not distributed (eg. no species above threshold): 247
+	  >> Unclassified reads: 161406
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/L1RP_S13.bracken
+PROGRAM END TIME: 06-16-2025 00:21:55
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/krona/L1RP_S13.krona.html...
+✅  Krona plot generated.
+
+Processing sample: L1SG_S5
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/L1SG_S5.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 1 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L1SG_S5_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L1SG_S5_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/L1SG_S5.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L1SG_S5_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L1SG_S5_metagenomic.2" 2>&1
+Loading database information... done.
+46411 sequences (11.17 Mbp) processed in 0.210s (13263.6 Kseq/m, 3191.24 Mbp/m).
+  2279 sequences classified (4.91%)
+  44132 sequences unclassified (95.09%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/L1SG_S5.k2report -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/L1SG_S5.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/L1SG_S5.k2report
+PROGRAM START TIME: 06-16-2025 00:21:59
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/L1SG_S5.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 600 
+	  >> Number of species with reads > threshold: 600 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 46411
+	  >> Total reads kept at species level (reads > threshold): 1479
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 766
+	  >> Reads not distributed (eg. no species above threshold): 34
+	  >> Unclassified reads: 44132
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/L1SG_S5.bracken
+PROGRAM END TIME: 06-16-2025 00:21:59
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/krona/L1SG_S5.krona.html...
+✅  Krona plot generated.
+
+Processing sample: L2RP_S14
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/L2RP_S14.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 1 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L2RP_S14_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L2RP_S14_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/L2RP_S14.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L2RP_S14_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L2RP_S14_metagenomic.2" 2>&1
+Loading database information... done.
+129193 sequences (30.26 Mbp) processed in 0.392s (19793.5 Kseq/m, 4636.72 Mbp/m).
+  64535 sequences classified (49.95%)
+  64658 sequences unclassified (50.05%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/L2RP_S14.k2report -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/L2RP_S14.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/L2RP_S14.k2report
+PROGRAM START TIME: 06-16-2025 00:22:03
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/L2RP_S14.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 26 
+	  >> Number of species with reads > threshold: 26 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 129193
+	  >> Total reads kept at species level (reads > threshold): 50391
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 14092
+	  >> Reads not distributed (eg. no species above threshold): 52
+	  >> Unclassified reads: 64658
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/L2RP_S14.bracken
+PROGRAM END TIME: 06-16-2025 00:22:04
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/krona/L2RP_S14.krona.html...
+✅  Krona plot generated.
+
+Processing sample: L2SG_S6
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/L2SG_S6.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 1 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/L2SG_S6_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/L2SG_S6_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/L2SG_S6.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L2SG_S6_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/L2SG_S6_metagenomic.2" 2>&1
+Loading database information... done.
+10131 sequences (2.44 Mbp) processed in 0.121s (5006.6 Kseq/m, 1206.73 Mbp/m).
+  5456 sequences classified (53.85%)
+  4675 sequences unclassified (46.15%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/L2SG_S6.k2report -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/L2SG_S6.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/L2SG_S6.k2report
+PROGRAM START TIME: 06-16-2025 00:22:07
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/L2SG_S6.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 68 
+	  >> Number of species with reads > threshold: 68 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 10131
+	  >> Total reads kept at species level (reads > threshold): 5105
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 341
+	  >> Reads not distributed (eg. no species above threshold): 10
+	  >> Unclassified reads: 4675
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/L2SG_S6.bracken
+PROGRAM END TIME: 06-16-2025 00:22:07
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/krona/L2SG_S6.krona.html...
+✅  Krona plot generated.
+
+Processing sample: S1RP_S11
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/S1RP_S11.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 1 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S1RP_S11_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S1RP_S11_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/S1RP_S11.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S1RP_S11_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S1RP_S11_metagenomic.2" 2>&1
+Loading database information... done.
+133184 sequences (34.60 Mbp) processed in 0.374s (21359.3 Kseq/m, 5548.54 Mbp/m).
+  287 sequences classified (0.22%)
+  132897 sequences unclassified (99.78%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/S1RP_S11.k2report -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/S1RP_S11.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/S1RP_S11.k2report
+PROGRAM START TIME: 06-16-2025 00:22:12
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/S1RP_S11.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 30 
+	  >> Number of species with reads > threshold: 30 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 133184
+	  >> Total reads kept at species level (reads > threshold): 210
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 28
+	  >> Reads not distributed (eg. no species above threshold): 49
+	  >> Unclassified reads: 132897
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/S1RP_S11.bracken
+PROGRAM END TIME: 06-16-2025 00:22:12
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/krona/S1RP_S11.krona.html...
+✅  Krona plot generated.
+
+Processing sample: S1SG_S3
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/S1SG_S3.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 1 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S1SG_S3_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S1SG_S3_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/S1SG_S3.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S1SG_S3_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S1SG_S3_metagenomic.2" 2>&1
+Loading database information... done.
+7003 sequences (1.59 Mbp) processed in 0.112s (3767.9 Kseq/m, 855.54 Mbp/m).
+  1334 sequences classified (19.05%)
+  5669 sequences unclassified (80.95%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/S1SG_S3.k2report -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/S1SG_S3.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/S1SG_S3.k2report
+PROGRAM START TIME: 06-16-2025 00:22:16
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/S1SG_S3.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 195 
+	  >> Number of species with reads > threshold: 195 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 7003
+	  >> Total reads kept at species level (reads > threshold): 852
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 451
+	  >> Reads not distributed (eg. no species above threshold): 31
+	  >> Unclassified reads: 5669
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/S1SG_S3.bracken
+PROGRAM END TIME: 06-16-2025 00:22:16
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/krona/S1SG_S3.krona.html...
+✅  Krona plot generated.
+
+Processing sample: S2RP_S12
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/S2RP_S12.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 1 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S2RP_S12_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S2RP_S12_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/S2RP_S12.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S2RP_S12_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S2RP_S12_metagenomic.2" 2>&1
+Loading database information... done.
+236239 sequences (46.91 Mbp) processed in 0.581s (24387.6 Kseq/m, 4842.94 Mbp/m).
+  91301 sequences classified (38.65%)
+  144938 sequences unclassified (61.35%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/S2RP_S12.k2report -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/S2RP_S12.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/S2RP_S12.k2report
+PROGRAM START TIME: 06-16-2025 00:22:21
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/S2RP_S12.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 77 
+	  >> Number of species with reads > threshold: 77 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 236239
+	  >> Total reads kept at species level (reads > threshold): 79575
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 11697
+	  >> Reads not distributed (eg. no species above threshold): 29
+	  >> Unclassified reads: 144938
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/S2RP_S12.bracken
+PROGRAM END TIME: 06-16-2025 00:22:21
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/krona/S2RP_S12.krona.html...
+✅  Krona plot generated.
+
+Processing sample: S2SG_S4
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/S2SG_S4.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 1 		--classified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/classified/S2SG_S4_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/unclassified/S2SG_S4_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/kraken2/S2SG_S4.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S2SG_S4_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/filtered_fastq/S2SG_S4_metagenomic.2" 2>&1
+Loading database information... done.
+5794 sequences (1.33 Mbp) processed in 0.089s (3926.1 Kseq/m, 903.63 Mbp/m).
+  2105 sequences classified (36.33%)
+  3689 sequences unclassified (63.67%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/S2SG_S4.k2report -o /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/S2SG_S4.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_pluspfp_08gb_20241228/database100mers.kmer_distrib -l S -t 0
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/S2SG_S4.k2report
+PROGRAM START TIME: 06-16-2025 00:22:25
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/reports/S2SG_S4.k2report)
+    >>> Threshold: 0 
+    >>> Number of species in sample: 145 
+	  >> Number of species with reads > threshold: 145 
+	  >> Number of species with reads < threshold: 0 
+    >>> Total reads in sample: 5794
+	  >> Total reads kept at species level (reads > threshold): 1429
+	  >> Total reads discarded (species reads < threshold): 0
+	  >> Reads distributed: 658
+	  >> Reads not distributed (eg. no species above threshold): 18
+	  >> Unclassified reads: 3689
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/exposure_folder/processed_data/metagenomic/bracken/S2SG_S4.bracken
+PROGRAM END TIME: 06-16-2025 00:22:25
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/exposure_folder/results/runs/run_1606_0121/krona/S2SG_S4.krona.html...
+✅  Krona plot generated.
+
+Metagenomic classification completed in: 00:01:10
+
+Calculating read length statistics...
+D1RP_S9_metagenomic.1: mean = 132.8, median = 138.0
+D1SG_S1_metagenomic.1: mean = 129.0, median = 130.0
+D2RP_S10_metagenomic.1: mean = 129.6, median = 132.0
+D2SG_S2_metagenomic.1: mean = 108.7, median = 102.0
+L1RP_S13_metagenomic.1: mean = 129.4, median = 132.0
+L1SG_S5_metagenomic.1: mean = 120.8, median = 116.0
+L2RP_S14_metagenomic.1: mean = 117.3, median = 108.0
+L2SG_S6_metagenomic.1: mean = 120.7, median = 116.0
+S1RP_S11_metagenomic.1: mean = 130.7, median = 135.0
+S1SG_S3_metagenomic.1: mean = 114.0, median = 107.0
+S2RP_S12_metagenomic.1: mean = 99.5, median = 84.0
+S2SG_S4_metagenomic.1: mean = 115.5, median = 107.0
+D1RP_S9_metagenomic.2: mean = 130.4, median = 133.0
+D1SG_S1_metagenomic.2: mean = 127.3, median = 128.0
+D2RP_S10_metagenomic.2: mean = 127.5, median = 129.0
+D2SG_S2_metagenomic.2: mean = 108.3, median = 101.0
+L1RP_S13_metagenomic.2: mean = 128.3, median = 130.0
+L1SG_S5_metagenomic.2: mean = 119.8, median = 115.0
+L2RP_S14_metagenomic.2: mean = 116.9, median = 107.0
+L2SG_S6_metagenomic.2: mean = 120.3, median = 116.0
+S1RP_S11_metagenomic.2: mean = 129.1, median = 132.0
+S1SG_S3_metagenomic.2: mean = 113.0, median = 107.0
+S2RP_S12_metagenomic.2: mean = 99.1, median = 84.0
+S2SG_S4_metagenomic.2: mean = 114.7, median = 107.0
+D1RP_S9_classified_1.fastq: mean = 155.4, median = 180.0
+D1RP_S9_classified_2.fastq: mean = 152.7, median = 173.0
+D1SG_S1_classified_1.fastq: mean = 150.1, median = 164.0
+D1SG_S1_classified_2.fastq: mean = 148.3, median = 160.0
+D2RP_S10_classified_1.fastq: mean = 151.5, median = 172.0
+D2RP_S10_classified_2.fastq: mean = 148.7, median = 165.0
+D2SG_S2_classified_1.fastq: mean = 127.7, median = 128.0
+D2SG_S2_classified_2.fastq: mean = 127.1, median = 127.0
+L1RP_S13_classified_1.fastq: mean = 154.5, median = 177.0
+L1RP_S13_classified_2.fastq: mean = 151.3, median = 171.0
+L1SG_S5_classified_1.fastq: mean = 146.2, median = 155.0
+L1SG_S5_classified_2.fastq: mean = 144.9, median = 152.0
+L2RP_S14_classified_1.fastq: mean = 142.9, median = 153.0
+L2RP_S14_classified_2.fastq: mean = 142.4, median = 152.0
+L2SG_S6_classified_1.fastq: mean = 146.5, median = 158.0
+L2SG_S6_classified_2.fastq: mean = 145.9, median = 156.0
+S1RP_S11_classified_1.fastq: mean = 164.8, median = 194.0
+S1RP_S11_classified_2.fastq: mean = 162.0, median = 193.0
+S1SG_S3_classified_1.fastq: mean = 135.0, median = 137.0
+S1SG_S3_classified_2.fastq: mean = 133.7, median = 135.0
+S2RP_S12_classified_1.fastq: mean = 127.8, median = 122.0
+S2RP_S12_classified_2.fastq: mean = 127.1, median = 122.0
+S2SG_S4_classified_1.fastq: mean = 143.1, median = 145.0
+S2SG_S4_classified_2.fastq: mean = 141.9, median = 144.0
+D1RP_S9_unclassified_1.fastq: mean = 130.1, median = 133.0
+D1RP_S9_unclassified_2.fastq: mean = 127.7, median = 128.0
+D1SG_S1_unclassified_1.fastq: mean = 125.8, median = 124.0
+D1SG_S1_unclassified_2.fastq: mean = 124.2, median = 122.0
+D2RP_S10_unclassified_1.fastq: mean = 94.7, median = 78.0
+D2RP_S10_unclassified_2.fastq: mean = 93.6, median = 77.0
+D2SG_S2_unclassified_1.fastq: mean = 89.6, median = 77.0
+D2SG_S2_unclassified_2.fastq: mean = 89.3, median = 77.0
+L1RP_S13_unclassified_1.fastq: mean = 129.0, median = 131.0
+L1RP_S13_unclassified_2.fastq: mean = 127.9, median = 129.0
+L1SG_S5_unclassified_1.fastq: mean = 119.5, median = 114.0
+L1SG_S5_unclassified_2.fastq: mean = 118.5, median = 112.0
+L2RP_S14_unclassified_1.fastq: mean = 91.8, median = 74.0
+L2RP_S14_unclassified_2.fastq: mean = 91.5, median = 74.0
+L2SG_S6_unclassified_1.fastq: mean = 90.6, median = 78.0
+L2SG_S6_unclassified_2.fastq: mean = 90.4, median = 78.0
+S1RP_S11_unclassified_1.fastq: mean = 130.6, median = 135.0
+S1RP_S11_unclassified_2.fastq: mean = 129.0, median = 131.0
+S1SG_S3_unclassified_1.fastq: mean = 109.1, median = 100.0
+S1SG_S3_unclassified_2.fastq: mean = 108.2, median = 99.0
+S2RP_S12_unclassified_1.fastq: mean = 81.7, median = 67.0
+S2RP_S12_unclassified_2.fastq: mean = 81.4, median = 67.0
+S2SG_S4_unclassified_1.fastq: mean = 99.8, median = 84.0
+S2SG_S4_unclassified_2.fastq: mean = 99.1, median = 84.0
+✅ Statistics generated.
+
+Combining Bracken reports...
+✅ Bracken reports combined.
+
+Copying SLURM job logs...
+✅ SLURM job logs copied.
+
+================================================= COMPARISON TO GROUND TRUTH =================================================
+
+================================================= METAGENOMIC DIVERSITY ANALYSIS =================================================
+Calculating alpha and beta diversity...
+✅ Alpha diversity calculated.
+✅ Beta diversity heatmap generated.
+✅  Diversity analysis completed successfully.
+
+✅  Pipeline completed successfully.
+
+Copying final SLURM job logs
