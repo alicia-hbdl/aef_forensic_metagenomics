@@ -27,7 +27,6 @@ ground_truth <- args$ground_truth
 blast_result <- args$blast_results
 
 # Input validation
-if (!file.exists(ground_truth)) stop("❌ Ground truth file not found at: ", ground_truth)
 if (!file.exists(blast_result)) stop("❌ BLAST results file not found at: ", blast_result)
 
 # Load BLAST results and extract unique taxonomic IDs
@@ -42,10 +41,15 @@ taxonomy_data <- classification(taxids, db = "ncbi")
 # Convert taxonomy data to a phylogenetic tree
 tree <- class2tree(taxonomy_data)$phylo
 
-# Load ground truth species
-highlight_species <- read_csv(ground_truth, show_col_types = FALSE) %>%
-  pull(species) %>%
-  unique()
+if (!file.exists(ground_truth)) {
+  warning(paste("⚠️ Ground truth file not found at:", ground_truth, "- proceeding without it."))
+  highlight_species <- character(0)  # empty character vector
+} else {
+  # Load ground truth species
+  highlight_species <- read_csv(ground_truth, show_col_types = FALSE) %>%
+    pull(species) %>%
+    unique()
+}
 
 # Set dynamic scaling based on number of tips
 scale = length(tree$tip.label)
