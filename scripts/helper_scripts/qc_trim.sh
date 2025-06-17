@@ -3,29 +3,29 @@
 # This is a pipeline that performs quality control and trimming of FASTQ files using FastQC and Trimmomatic.
 # It generates reports before and after trimming, and handles paired-end reads.
 
-# Usage: ./qc_trim.sh -r|--reads <FASTQ_DIR> -a|--adapters <adapter_file.fa>
+# Usage: ./qc_trim.sh -r|--reads <raw_data_dir> -a|--adapters <adapter_file.fa>
 
 # TODO: Eventually allow the user to specify TRIM_PARAM and STEPS as arguments
 
 # Basic parsing only (adapter file and reads directory are validated in the main pipeline)
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    -r|--reads) RAW_FASTQ_DIR="$2"; shift 2 ;; # Set the RAW_FASTQ_DIR to the directory passed as argument
+    -r|--reads) RAW_DATA_DIR="$2"; shift 2 ;; # Set the RAW_DATA_DIR to the directory passed as argument
     -a|--adapters) ADAPTER_FILE="$2"; shift 2 ;;
     *) echo "❌ Unknown parameter: $1"; exit 1 ;;
   esac
 done
 
 # Create output directories 
-FASTQC_DIR="$(dirname "$RAW_FASTQ_DIR")/results/fastqc"
+FASTQC_DIR="$(dirname "$RAW_DATA_DIR")/results/fastqc"
 mkdir -p "$FASTQC_DIR/pre_trimming" "$FASTQC_DIR/post_trimming"
 
-TRIMMED_DIR="$(dirname "$RAW_FASTQ_DIR")/processed_data/trimmed"
+TRIMMED_DIR="$(dirname "$RAW_DATA_DIR")/processed_data/trimmed"
 mkdir -p "$TRIMMED_DIR/paired" "$TRIMMED_DIR/unpaired" # Created in main pipeline but needed for standalone use
 # ------------ PRE-TRIMMING QC ------------ 
 
 echo -e "\nRunning FastQC on all raw reads..."
-fastqc "$RAW_FASTQ_DIR"/*.fastq.gz --outdir "$FASTQC_DIR/pre_trimming" >&2 || { echo "❌ FastQC failed!"; exit 1; }
+fastqc "$RAW_DATA_DIR"/*.fastq.gz --outdir "$FASTQC_DIR/pre_trimming" >&2 || { echo "❌ FastQC failed!"; exit 1; }
 echo "✅ FastQC completed successfully."
 
 # Run MultiQC to summarize FastQC reports and clean up zip files
@@ -40,10 +40,10 @@ TRIM_PARAM="PE -phred33 -threads 4"
 STEPS="ILLUMINACLIP:$ADAPTER_FILE:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35"
 
 echo -e "Running Trimmomatic..."
-for R1 in "$RAW_FASTQ_DIR"/*_R1*.fastq.gz; do  # Handle variations of sample names
+for R1 in "$RAW_DATA_DIR"/*_R1*.fastq.gz; do  # Handle variations of sample names
     
     # Checks if the forward read file exists
-    [[ -f "$R1" ]] || { echo "❌ Error: No matching files found in $RAW_FASTQ_DIR"; exit 1; }
+    [[ -f "$R1" ]] || { echo "❌ Error: No matching files found in $RAW_DATA_DIR"; exit 1; }
 
     # Extract the base sample name by removing lane, read, and other suffixes
     base=$(basename "$R1" | sed -E 's/_L[0-9]+_R[12]_?[0-9]*\.fastq\.gz$//; s/_R[12]_?[0-9]*\.fastq\.gz$//')
