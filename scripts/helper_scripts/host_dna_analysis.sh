@@ -72,11 +72,11 @@ while IFS=$'\t' read -r chrom start end _; do
     for FILE in "$SORTED_BAM_DIR"/*.sorted.bam; do
         samtools view "$FILE" "$chrom:$start-$end" | awk '{print ">" $1 "\n" $10}' >> "$BLAST_QUERY" || { echo "❌ Failed to extract sequences from $FILE."; exit 1; }
     done
-done < <(tail -n +2 "$BED_FILES_DIR/common_intervals.bed") || { echo "❌ Failed to read BED file."; exit 1; }
+done < <(tail -n +2 "$HOST_DNA_ANALYSIS_DIR/common_intervals.bed") || { echo "❌ Failed to read BED file."; exit 1; }
 echo "✅ Sequences saved to BLAST query."
 
 # Skip BLAST if BED region file is empty
-if [ "$(tail -n +2 "$BED_FILES_DIR/common_intervals.bed" | wc -l)" -eq 0 ]; then
+if [ "$(tail -n +2 "$HOST_DNA_ANALYSIS_DIR/common_intervals.bed" | wc -l)" -eq 0 ]; then
     echo "❌ No regions found. Skipping BLAST."
     rm -f "$BLAST_QUERY" || { echo "❌ Failed to remove empty BLAST query file."; exit 1; }
 else

@@ -18,7 +18,7 @@ ROOT_DIR="/scratch/prj/aef_forensic_metagenomics"
 << 'COMMENT'
 =============================================================================================
 Usage:
-    ./pipeline.sh --raw-fastq/-f <reads_dir> 
+    ./pipeline.sh --raw-fastq/-f <raw_data_dir> 
                   [--database/-d <database_path>] 
                   [-t|--trim [adapter_file.fa]] 
                   [-r|--remove-host-dna <index_prefix>] 
@@ -57,7 +57,7 @@ K2_MIN_HIT=10                  # Default Kraken2 minimum hit threshold (must be 
 
 # Usage message
 print_usage() {
-  echo "Usage: $0 --raw-fastq/-f <reads_dir> \
+  echo "Usage: $0 --raw-fastq/-f <raw_data_dir> \
   [--database/-d <database_path>] [-t|--trim [adapter_file.fa]] \
   [-r|--remove-host-dna [index_prefix]] [-g|--ground-truth <file.csv>] \
   [--k2-min-hit <int>] [--b-threshold <float>]"
@@ -266,6 +266,13 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
         echo "$BOWTIE_CMD"
         eval "$BOWTIE_CMD"
         echo "✅  Host reads removed."
+    fi
+    
+    # If no host-aligned reads were detected, copy trimmed reads as metagenomic input
+    if [[ ! -f "$FILTERED_FASTQ_DIR/${base}_metagenomic.1" || ! -f "$FILTERED_FASTQ_DIR/${base}_metagenomic.2" ]]; then
+        echo "No filtered reads found. Assuming no host removal was necessary for this sample, copying trimmed reads as metagenomic output."
+        gunzip -c "$TRIMMED_DIR/paired/${base}_R1_paired.fastq.gz" > "$FILTERED_FASTQ_DIR/${base}_metagenomic.1"
+        gunzip -c "$TRIMMED_DIR/paired/${base}_R2_paired.fastq.gz" > "$FILTERED_FASTQ_DIR/${base}_metagenomic.2"
     fi
     
     # Taxonomic classification with Kraken2
