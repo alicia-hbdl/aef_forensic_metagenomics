@@ -1,0 +1,87 @@
+100.00	100904	0	R	1	root
+100.00	100904	0	R1	131567	  cellular organisms
+86.64	87421	0	D	2	    Bacteria
+86.57	87353	0	D1	1783272	      Terrabacteria group
+86.57	87353	0	P	201174	        Actinomycetota
+86.57	87353	0	C	1760	          Actinomycetes
+75.70	76384	0	O	85009	            Propionibacteriales
+75.70	76384	0	F	31957	              Propionibacteriaceae
+75.70	76384	0	G	1912216	                Cutibacterium
+75.64	76328	76328	S	1747	                  Cutibacterium acnes
+0.06	56	56	S	33011	                  Cutibacterium granulosum
+10.74	10834	0	O	85007	            Mycobacteriales
+10.70	10794	0	F	1653	              Corynebacteriaceae
+10.70	10794	0	G	1716	                Corynebacterium
+6.25	6308	6308	S	161879	                  Corynebacterium kroppenstedtii
+4.21	4244	4244	S	2804917	                  Corynebacterium pseudokroppenstedtii
+0.24	241	241	S	1979527	                  Corynebacterium kefirresidentii
+0.04	40	0	F	2805586	              Lawsonellaceae
+0.04	40	0	G	1847725	                Lawsonella
+0.04	40	40	S	1528099	                  Lawsonella clevelandensis
+0.13	133	0	O	85006	            Micrococcales
+0.13	133	0	F	1268	              Micrococcaceae
+0.13	133	0	G	32207	                Rothia
+0.13	133	133	S	2047	                  Rothia dentocariosa
+0.07	68	0	P	1224	      Pseudomonadota
+0.07	68	0	C	28216	        Betaproteobacteria
+0.07	68	0	O	206351	          Neisseriales
+0.07	68	0	F	481	            Neisseriaceae
+0.07	68	0	G	32257	              Kingella
+0.07	68	68	S	505	                Kingella oralis
+13.36	13482	0	D	2759	    Eukaryota
+13.36	13482	0	D1	33154	      Opisthokonta
+11.46	11564	0	K	33208	        Metazoa
+11.46	11564	0	K1	6072	          Eumetazoa
+11.46	11564	0	K2	33213	            Bilateria
+11.46	11564	0	K3	33511	              Deuterostomia
+11.46	11564	0	P	7711	                Chordata
+11.46	11564	0	P1	89593	                  Craniata
+11.46	11564	0	P2	7742	                    Vertebrata
+11.46	11564	0	P3	7776	                      Gnathostomata
+11.46	11564	0	P4	117570	                        Teleostomi
+11.46	11564	0	P5	117571	                          Euteleostomi
+11.46	11564	0	P6	8287	                            Sarcopterygii
+11.46	11564	0	P7	1338369	                              Dipnotetrapodomorpha
+11.46	11564	0	P8	32523	                                Tetrapoda
+11.46	11564	0	P9	32524	                                  Amniota
+11.46	11564	0	C	40674	                                    Mammalia
+11.46	11564	0	C1	32525	                                      Theria
+11.46	11564	0	C2	9347	                                        Eutheria
+11.46	11564	0	C3	1437010	                                          Boreoeutheria
+11.46	11564	0	C4	314146	                                            Euarchontoglires
+11.46	11564	0	O	9443	                                              Primates
+11.46	11564	0	O1	376913	                                                Haplorrhini
+11.46	11564	0	O2	314293	                                                  Simiiformes
+11.46	11564	0	O3	9526	                                                    Catarrhini
+11.40	11502	0	O4	314295	                                                      Hominoidea
+11.40	11502	0	F	9604	                                                        Hominidae
+11.40	11502	0	F1	207598	                                                          Homininae
+11.04	11140	0	G	9605	                                                            Homo
+11.04	11140	11140	S	9606	                                                              Homo sapiens
+0.36	361	0	G	9596	                                                            Pan
+0.36	361	361	S	9598	                                                              Pan troglodytes
+0.06	62	0	O4	314294	                                                      Cercopithecoidea
+0.06	62	0	F	9527	                                                        Cercopithecidae
+0.06	62	0	F1	9528	                                                          Cercopithecinae
+0.06	62	0	G	9554	                                                            Papio
+0.06	62	62	S	9555	                                                              Papio anubis
+1.90	1917	0	K	4751	        Fungi
+1.90	1917	0	K1	451864	          Dikarya
+1.86	1875	0	P	5204	            Basidiomycota
+1.86	1875	0	P1	452284	              Ustilaginomycotina
+1.86	1875	0	C	1538075	                Malasseziomycetes
+1.86	1875	0	O	162474	                  Malasseziales
+1.86	1875	0	F	742845	                    Malasseziaceae
+1.86	1875	0	G	55193	                      Malassezia
+1.70	1713	1713	S	76775	                        Malassezia restricta
+0.16	162	162	S	76773	                        Malassezia globosa
+0.04	42	0	P	4890	            Ascomycota
+0.04	42	0	P1	716545	              saccharomyceta
+0.04	42	0	P2	147538	                Pezizomycotina
+0.04	42	0	P3	716546	                  leotiomyceta
+0.04	42	0	C	147545	                    Eurotiomycetes
+0.04	42	0	C1	451871	                      Eurotiomycetidae
+0.04	42	0	O	5042	                        Eurotiales
+0.04	42	0	F	1131492	                          Aspergillaceae
+0.04	42	0	G	5073	                            Penicillium
+0.04	42	42	S	1131581	                              Penicillium argentinense
