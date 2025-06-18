@@ -584,4 +584,84 @@ L2RP_S14_metagenomic.1: mean = 117.3, median = 108.0
 L2SG_S6_metagenomic.1: mean = 120.7, median = 116.0
 S1RP_S11_metagenomic.1: mean = 130.7, median = 135.0
 S1SG_S3_metagenomic.1: mean = 114.0, median = 107.0
-S2RP_S12_metagenomic.1: 
+S2RP_S12_metagenomic.1: mean = 99.5, median = 84.0
+S2SG_S4_metagenomic.1: mean = 115.5, median = 107.0
+D1RP_S9_metagenomic.2: mean = 130.4, median = 133.0
+D1SG_S1_metagenomic.2: mean = 127.3, median = 128.0
+D2RP_S10_metagenomic.2: mean = 127.5, median = 129.0
+D2SG_S2_metagenomic.2: mean = 108.3, median = 101.0
+L1RP_S13_metagenomic.2: mean = 128.3, median = 130.0
+L1SG_S5_metagenomic.2: mean = 119.8, median = 115.0
+L2RP_S14_metagenomic.2: mean = 116.9, median = 107.0
+L2SG_S6_metagenomic.2: mean = 120.3, median = 116.0
+S1RP_S11_metagenomic.2: mean = 129.1, median = 132.0
+S1SG_S3_metagenomic.2: mean = 113.0, median = 107.0
+S2RP_S12_metagenomic.2: mean = 99.1, median = 84.0
+S2SG_S4_metagenomic.2: mean = 114.7, median = 107.0
+D1RP_S9_classified_1.fastq: mean = 145.6, median = 162.0
+D1RP_S9_classified_2.fastq: mean = 143.5, median = 157.0
+D1SG_S1_classified_1.fastq: mean = 143.4, median = 154.0
+D1SG_S1_classified_2.fastq: mean = 141.5, median = 150.0
+D2RP_S10_classified_1.fastq: mean = 134.8, median = 141.0
+D2RP_S10_classified_2.fastq: mean = 132.6, median = 137.0
+D2SG_S2_classified_1.fastq: mean = 110.7, median = 105.0
+D2SG_S2_classified_2.fastq: mean = 110.3, median = 105.0
+L1RP_S13_classified_1.fastq: mean = 155.4, median = 178.0
+L1RP_S13_classified_2.fastq: mean = 154.5, median = 175.0
+L1SG_S5_classified_1.fastq: mean = 139.2, median = 145.0
+L1SG_S5_classified_2.fastq: mean = 138.0, median = 143.0
+L2RP_S14_classified_1.fastq: mean = 128.4, median = 127.0
+L2RP_S14_classified_2.fastq: mean = 128.0, median = 126.0
+L2SG_S6_classified_1.fastq: mean = 134.3, median = 136.0
+L2SG_S6_classified_2.fastq: mean = 133.8, median = 136.0
+S1RP_S11_classified_1.fastq: mean = 161.1, median = 185.0
+S1RP_S11_classified_2.fastq: mean = 158.7, median = 179.0
+S1SG_S3_classified_1.fastq: mean = 125.3, median = 123.0
+S1SG_S3_classified_2.fastq: mean = 124.2, median = 122.0
+S2RP_S12_classified_1.fastq: mean = 108.3, median = 96.0
+S2RP_S12_classified_2.fastq: mean = 107.7, median = 95.0
+S2SG_S4_classified_1.fastq: mean = 123.5, median = 119.0
+S2SG_S4_classified_2.fastq: mean = 122.6, median = 119.0
+D1RP_S9_unclassified_1.fastq: mean = 126.8, median = 126.0
+D1RP_S9_unclassified_2.fastq: mean = 124.3, median = 121.0
+D1SG_S1_unclassified_1.fastq: mean = 117.2, median = 109.0
+D1SG_S1_unclassified_2.fastq: mean = 115.8, median = 107.0
+D2RP_S10_unclassified_1.fastq: mean = 97.8, median = 74.0
+D2RP_S10_unclassified_2.fastq: mean = 96.2, median = 72.0
+D2SG_S2_unclassified_1.fastq: mean = 90.9, median = 74.0
+D2SG_S2_unclassified_2.fastq: mean = 90.5, median = 74.0
+L1RP_S13_unclassified_1.fastq: mean = 124.5, median = 122.0
+L1RP_S13_unclassified_2.fastq: mean = 123.4, median = 120.0
+L1SG_S5_unclassified_1.fastq: mean = 111.6, median = 100.0
+L1SG_S5_unclassified_2.fastq: mean = 110.6, median = 99.0
+L2RP_S14_unclassified_1.fastq: mean = 94.2, median = 76.0
+L2RP_S14_unclassified_2.fastq: mean = 93.9, median = 76.0
+L2SG_S6_unclassified_1.fastq: mean = 99.8, median = 83.0
+L2SG_S6_unclassified_2.fastq: mean = 99.5, median = 83.0
+S1RP_S11_unclassified_1.fastq: mean = 126.4, median = 125.0
+S1RP_S11_unclassified_2.fastq: mean = 125.0, median = 122.0
+S1SG_S3_unclassified_1.fastq: mean = 103.5, median = 92.0
+S1SG_S3_unclassified_2.fastq: mean = 102.8, median = 91.0
+S2RP_S12_unclassified_1.fastq: mean = 73.1, median = 56.0
+S2RP_S12_unclassified_2.fastq: mean = 72.8, median = 56.0
+S2SG_S4_unclassified_1.fastq: mean = 92.7, median = 72.0
+S2SG_S4_unclassified_2.fastq: mean = 91.8, median = 71.0
+✅ Statistics generated.
+
+Combining Bracken reports...
+✅ Bracken reports combined.
+
+Copying SLURM job logs...
+✅ SLURM job logs copied.
+
+================================================= COMPARISON TO GROUND TRUTH =================================================
+
+================================================= METAGENOMIC DIVERSITY ANALYSIS =================================================
+Calculating alpha and beta diversity...
+✅ Alpha diversity calculated.
+✅ Beta diversity heatmap generated.
+✅  Diversity analysis completed successfully.
+
+✅  Pipeline completed successfully.
+
+Copying final SLURM job logs
