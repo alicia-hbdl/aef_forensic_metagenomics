@@ -573,10 +573,8 @@ pheatmap_grob <- function(mat, show_legend = TRUE, title = NULL) {
     BrackenThreshold = factor(ifelse(is_gt, "ground_truth", as.character(bracken_threshold_map[run_ids]))),
     row.names = run_ids
   )
-  
-  print(unique(annotation_col$KrakenMinHit))
-  print(levels(annotation_col$KrakenMinHit))
-  # Annotation color mappings with red for GT
+
+    # Annotation color mappings with red for GT
   ann_colors <- list(
     Database = {col <- db_colors; col["ground_truth"] <- "#e6194B"; col[names(col) %in% annotation_row$Database] },
     KrakenMinHit = {lv <- levels(annotation_col$KrakenMinHit);lv_num <- sort(as.numeric(lv[lv != "ground_truth"]))
