@@ -3,7 +3,7 @@
 #SBATCH --job-name=pipeline
 #SBATCH --output=logs/pipeline_%j.log
 #SBATCH --error=logs/pipeline_%j.err
-#SBATCH --time=02:00:00
+#SBATCH --time=10:00:00
 #SBATCH --mem=60G  
 #SBATCH --cpus-per-task=8 
 #SBATCH --ntasks=1  
@@ -297,7 +297,7 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
     # Generate Krona interactive plot
     echo -e "\nGenerating Krona visualization..."
     python "$ROOT_DIR/tools/KrakenTools/kreport2krona.py" -r "$REPORTS_DIR/${base}.breport" -o "$KRONA_DIR/${base}.krona.txt" --no-intermediate-ranks && \
-    "$ROOT_DIR/tools/Krona/KronaTools/scripts/ImportText.pl" "$KRONA_DIR/${base}.krona.txt" -o "$KRONA_DIR/${base}.krona.html" && rm "$KRONA_DIR/${base}.krona.txt" 
+    "$ROOT_DIR/tools/Krona/KronaTools/scripts/ImportText.pl" "$KRONA_DIR/${base}.krona.txt" -o "$KRONA_DIR/${base}.krona.html" && rm "$KRONA_DIR/${base}.krona.txt" \
     || { echo "❌ Krona plot generation failed for sample '$base'."; continue; }
     echo "✅  Krona plot generated."
 done

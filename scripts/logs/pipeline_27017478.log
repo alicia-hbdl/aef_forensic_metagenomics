@@ -1,0 +1,526 @@
+
+================================================= ARGUMENT PARSING & VALIDATION =================================================
+
+⚠️  No Bowtie2 index provided. Using default.
+⚠️  No adapter file provided. Using default.
+===== Pipeline Configuration Summary =====
+Raw FASTQ directory path: ../long_SG/raw_data/
+Kraken2/Bracken Database: ../data/databases/k2_core_nt_20240904/
+Ground Truth: Not provided ❌
+Quality Control & Trimming: Enabled ✅ (Adapter: /scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa)
+Host DNA Removal: Enabled ✅ (Index: /scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as)
+
+================================================= CONDA ENVIRONMENT ACTIVATION ==================================================
+
+✅ 'metagenomics' environment activated successfully.
+
+====================================================== PROJECT STRUCTURE ======================================================
+
+../long_SG
+├── processed_data
+│   ├── human
+│   │   ├── aligned_sam
+│   │   ├── bed_files
+│   │   └── sorted_bam
+│   ├── metagenomic
+│   │   ├── bracken
+│   │   ├── classified
+│   │   ├── filtered_fastq
+│   │   ├── kraken2
+│   │   └── unclassified
+│   └── trimmed
+│       ├── paired
+│       └── unpaired
+├── raw_data
+└── results
+    ├── fastqc
+    │   ├── post_trimming
+    │   └── pre_trimming
+    ├── host_dna_analysis
+    └── runs
+        ├── run_2206_1816
+        └── run_2206_2352
+
+23 directories
+Human DNA-related files (SAM, BAM, and BED) in the 'human' directory are created once per sub-project and remain unchanged across runs.
+Intermediate metagenomic files in the 'metagenomic' directory are overwritten with each run and should be inspected beforehand if desired.
+Results are stored in the 'results' directory (including FastQC, host DNA analysis, and run-specific results like Kraken2 and Bracken).
+
+=================================================== QUALITY CONTROL & TRIMMING ===================================================
+
+
+Running FastQC on all raw reads...
+✅ FastQC completed successfully.
+
+/// MultiQC 🔍 v1.28
+
+     version_check | MultiQC Version v1.29 now available!
+       file_search | Search path: /cephfs/volumes/hpc_data_prj/aef_forensic_metagenomics/08802aa9-726d-448b-82fb-de4fd3419dc2/long_SG/results/fastqc/pre_trimming
+
+            fastqc | Found 76 reports
+
+     write_results | Existing reports found, adding suffix to filenames. Use '--force' to overwrite.
+     write_results | Data        : None
+     write_results | Report      : /cephfs/volumes/hpc_data_prj/aef_forensic_metagenomics/08802aa9-726d-448b-82fb-de4fd3419dc2/long_SG/results/fastqc/pre_trimming/multiqc_report_1.html
+           multiqc | MultiQC complete
+✅ MultiQC report generated successfully.
+
+Running Trimmomatic...
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//A01_S1_L001_R1_001.fastq.gz ../long_SG/raw_data//A01_S1_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/A01_S1_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/A01_S1_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/A01_S1_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/A01_S1_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 312166 Both Surviving: 293151 (93.91%) Forward Only Surviving: 3655 (1.17%) Reverse Only Surviving: 1592 (0.51%) Dropped: 13768 (4.41%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed A01_S1!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//A02_S2_L001_R1_001.fastq.gz ../long_SG/raw_data//A02_S2_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/A02_S2_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/A02_S2_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/A02_S2_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/A02_S2_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 332462 Both Surviving: 316938 (95.33%) Forward Only Surviving: 4066 (1.22%) Reverse Only Surviving: 1399 (0.42%) Dropped: 10059 (3.03%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed A02_S2!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//A03_S3_L001_R1_001.fastq.gz ../long_SG/raw_data//A03_S3_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/A03_S3_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/A03_S3_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/A03_S3_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/A03_S3_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 462368 Both Surviving: 445137 (96.27%) Forward Only Surviving: 5537 (1.20%) Reverse Only Surviving: 2054 (0.44%) Dropped: 9640 (2.08%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed A03_S3!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//A04_S4_L001_R1_001.fastq.gz ../long_SG/raw_data//A04_S4_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/A04_S4_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/A04_S4_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/A04_S4_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/A04_S4_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 479458 Both Surviving: 461907 (96.34%) Forward Only Surviving: 7873 (1.64%) Reverse Only Surviving: 2147 (0.45%) Dropped: 7531 (1.57%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed A04_S4!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//A05_S5_L001_R1_001.fastq.gz ../long_SG/raw_data//A05_S5_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/A05_S5_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/A05_S5_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/A05_S5_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/A05_S5_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 410991 Both Surviving: 393440 (95.73%) Forward Only Surviving: 5535 (1.35%) Reverse Only Surviving: 1995 (0.49%) Dropped: 10021 (2.44%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed A05_S5!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//A06_S6_L001_R1_001.fastq.gz ../long_SG/raw_data//A06_S6_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/A06_S6_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/A06_S6_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/A06_S6_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/A06_S6_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 235805 Both Surviving: 227113 (96.31%) Forward Only Surviving: 3385 (1.44%) Reverse Only Surviving: 1063 (0.45%) Dropped: 4244 (1.80%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed A06_S6!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//A07_S7_L001_R1_001.fastq.gz ../long_SG/raw_data//A07_S7_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/A07_S7_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/A07_S7_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/A07_S7_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/A07_S7_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 286996 Both Surviving: 269913 (94.05%) Forward Only Surviving: 3990 (1.39%) Reverse Only Surviving: 1324 (0.46%) Dropped: 11769 (4.10%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed A07_S7!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//A08_S8_L001_R1_001.fastq.gz ../long_SG/raw_data//A08_S8_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/A08_S8_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/A08_S8_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/A08_S8_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/A08_S8_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 427912 Both Surviving: 395815 (92.50%) Forward Only Surviving: 5104 (1.19%) Reverse Only Surviving: 2062 (0.48%) Dropped: 24931 (5.83%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed A08_S8!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//A09_S9_L001_R1_001.fastq.gz ../long_SG/raw_data//A09_S9_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/A09_S9_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/A09_S9_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/A09_S9_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/A09_S9_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 284279 Both Surviving: 272411 (95.83%) Forward Only Surviving: 4478 (1.58%) Reverse Only Surviving: 1225 (0.43%) Dropped: 6165 (2.17%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed A09_S9!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//A10_S10_L001_R1_001.fastq.gz ../long_SG/raw_data//A10_S10_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/A10_S10_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/A10_S10_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/A10_S10_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/A10_S10_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 323958 Both Surviving: 312574 (96.49%) Forward Only Surviving: 4658 (1.44%) Reverse Only Surviving: 1473 (0.45%) Dropped: 5253 (1.62%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed A10_S10!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//A11_S11_L001_R1_001.fastq.gz ../long_SG/raw_data//A11_S11_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/A11_S11_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/A11_S11_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/A11_S11_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/A11_S11_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 133503 Both Surviving: 127650 (95.62%) Forward Only Surviving: 3276 (2.45%) Reverse Only Surviving: 548 (0.41%) Dropped: 2029 (1.52%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed A11_S11!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//A12_S12_L001_R1_001.fastq.gz ../long_SG/raw_data//A12_S12_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/A12_S12_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/A12_S12_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/A12_S12_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/A12_S12_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 576233 Both Surviving: 543666 (94.35%) Forward Only Surviving: 8054 (1.40%) Reverse Only Surviving: 2698 (0.47%) Dropped: 21815 (3.79%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed A12_S12!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//B01_S13_L001_R1_001.fastq.gz ../long_SG/raw_data//B01_S13_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/B01_S13_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/B01_S13_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/B01_S13_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/B01_S13_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 388753 Both Surviving: 371765 (95.63%) Forward Only Surviving: 5469 (1.41%) Reverse Only Surviving: 1740 (0.45%) Dropped: 9779 (2.52%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed B01_S13!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//B02_S14_L001_R1_001.fastq.gz ../long_SG/raw_data//B02_S14_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/B02_S14_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/B02_S14_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/B02_S14_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/B02_S14_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 373660 Both Surviving: 353781 (94.68%) Forward Only Surviving: 6918 (1.85%) Reverse Only Surviving: 1539 (0.41%) Dropped: 11422 (3.06%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed B02_S14!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//B03_S15_L001_R1_001.fastq.gz ../long_SG/raw_data//B03_S15_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/B03_S15_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/B03_S15_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/B03_S15_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/B03_S15_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 336841 Both Surviving: 320783 (95.23%) Forward Only Surviving: 5526 (1.64%) Reverse Only Surviving: 1457 (0.43%) Dropped: 9075 (2.69%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed B03_S15!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//B04_S16_L001_R1_001.fastq.gz ../long_SG/raw_data//B04_S16_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/B04_S16_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/B04_S16_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/B04_S16_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/B04_S16_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 261320 Both Surviving: 246680 (94.40%) Forward Only Surviving: 4824 (1.85%) Reverse Only Surviving: 1147 (0.44%) Dropped: 8669 (3.32%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed B04_S16!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//B05_S17_L001_R1_001.fastq.gz ../long_SG/raw_data//B05_S17_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/B05_S17_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/B05_S17_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/B05_S17_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/B05_S17_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 760899 Both Surviving: 723778 (95.12%) Forward Only Surviving: 11320 (1.49%) Reverse Only Surviving: 3456 (0.45%) Dropped: 22345 (2.94%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed B05_S17!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//B06_S18_L001_R1_001.fastq.gz ../long_SG/raw_data//B06_S18_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/B06_S18_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/B06_S18_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/B06_S18_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/B06_S18_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 379539 Both Surviving: 367081 (96.72%) Forward Only Surviving: 6457 (1.70%) Reverse Only Surviving: 1612 (0.42%) Dropped: 4389 (1.16%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed B06_S18!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//B07_S19_L001_R1_001.fastq.gz ../long_SG/raw_data//B07_S19_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/B07_S19_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/B07_S19_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/B07_S19_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/B07_S19_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 556410 Both Surviving: 537144 (96.54%) Forward Only Surviving: 8238 (1.48%) Reverse Only Surviving: 2493 (0.45%) Dropped: 8535 (1.53%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed B07_S19!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//B08_S20_L001_R1_001.fastq.gz ../long_SG/raw_data//B08_S20_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/B08_S20_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/B08_S20_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/B08_S20_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/B08_S20_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 416831 Both Surviving: 396187 (95.05%) Forward Only Surviving: 5521 (1.32%) Reverse Only Surviving: 1883 (0.45%) Dropped: 13240 (3.18%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed B08_S20!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//B09_S21_L001_R1_001.fastq.gz ../long_SG/raw_data//B09_S21_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/B09_S21_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/B09_S21_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/B09_S21_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/B09_S21_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 4023520 Both Surviving: 3848521 (95.65%) Forward Only Surviving: 47530 (1.18%) Reverse Only Surviving: 18728 (0.47%) Dropped: 108741 (2.70%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed B09_S21!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//B10_S22_L001_R1_001.fastq.gz ../long_SG/raw_data//B10_S22_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/B10_S22_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/B10_S22_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/B10_S22_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/B10_S22_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 285051 Both Surviving: 275305 (96.58%) Forward Only Surviving: 4899 (1.72%) Reverse Only Surviving: 1233 (0.43%) Dropped: 3614 (1.27%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed B10_S22!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//B11_S23_L001_R1_001.fastq.gz ../long_SG/raw_data//B11_S23_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/B11_S23_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/B11_S23_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/B11_S23_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/B11_S23_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 512827 Both Surviving: 484413 (94.46%) Forward Only Surviving: 9340 (1.82%) Reverse Only Surviving: 2205 (0.43%) Dropped: 16869 (3.29%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed B11_S23!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//B12_S24_L001_R1_001.fastq.gz ../long_SG/raw_data//B12_S24_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/B12_S24_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/B12_S24_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/B12_S24_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/B12_S24_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 378198 Both Surviving: 361304 (95.53%) Forward Only Surviving: 6206 (1.64%) Reverse Only Surviving: 1641 (0.43%) Dropped: 9047 (2.39%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed B12_S24!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//Blank_S38_L001_R1_001.fastq.gz ../long_SG/raw_data//Blank_S38_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/Blank_S38_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/Blank_S38_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/Blank_S38_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/Blank_S38_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 86186 Both Surviving: 20743 (24.07%) Forward Only Surviving: 506 (0.59%) Reverse Only Surviving: 820 (0.95%) Dropped: 64117 (74.39%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed Blank_S38!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//C01_S25_L001_R1_001.fastq.gz ../long_SG/raw_data//C01_S25_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/C01_S25_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/C01_S25_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/C01_S25_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/C01_S25_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 291531 Both Surviving: 264934 (90.88%) Forward Only Surviving: 4352 (1.49%) Reverse Only Surviving: 1330 (0.46%) Dropped: 20915 (7.17%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed C01_S25!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//C02_S26_L001_R1_001.fastq.gz ../long_SG/raw_data//C02_S26_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/C02_S26_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/C02_S26_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/C02_S26_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/C02_S26_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 333352 Both Surviving: 312210 (93.66%) Forward Only Surviving: 5470 (1.64%) Reverse Only Surviving: 1556 (0.47%) Dropped: 14116 (4.23%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed C02_S26!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//C03_S27_L001_R1_001.fastq.gz ../long_SG/raw_data//C03_S27_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/C03_S27_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/C03_S27_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/C03_S27_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/C03_S27_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 337249 Both Surviving: 321540 (95.34%) Forward Only Surviving: 5684 (1.69%) Reverse Only Surviving: 1346 (0.40%) Dropped: 8679 (2.57%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed C03_S27!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//C04_S28_L001_R1_001.fastq.gz ../long_SG/raw_data//C04_S28_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/C04_S28_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/C04_S28_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/C04_S28_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/C04_S28_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 196601 Both Surviving: 149800 (76.19%) Forward Only Surviving: 4199 (2.14%) Reverse Only Surviving: 1407 (0.72%) Dropped: 41195 (20.95%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed C04_S28!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//C05_S29_L001_R1_001.fastq.gz ../long_SG/raw_data//C05_S29_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/C05_S29_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/C05_S29_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/C05_S29_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/C05_S29_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 376809 Both Surviving: 358576 (95.16%) Forward Only Surviving: 6025 (1.60%) Reverse Only Surviving: 1790 (0.48%) Dropped: 10418 (2.76%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed C05_S29!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//C06_S30_L001_R1_001.fastq.gz ../long_SG/raw_data//C06_S30_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/C06_S30_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/C06_S30_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/C06_S30_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/C06_S30_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 280869 Both Surviving: 267920 (95.39%) Forward Only Surviving: 4077 (1.45%) Reverse Only Surviving: 1242 (0.44%) Dropped: 7630 (2.72%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed C06_S30!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//C07_S31_L001_R1_001.fastq.gz ../long_SG/raw_data//C07_S31_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/C07_S31_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/C07_S31_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/C07_S31_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/C07_S31_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 213193 Both Surviving: 179787 (84.33%) Forward Only Surviving: 2712 (1.27%) Reverse Only Surviving: 1210 (0.57%) Dropped: 29484 (13.83%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed C07_S31!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//C08_S32_L001_R1_001.fastq.gz ../long_SG/raw_data//C08_S32_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/C08_S32_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/C08_S32_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/C08_S32_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/C08_S32_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 446010 Both Surviving: 424911 (95.27%) Forward Only Surviving: 6649 (1.49%) Reverse Only Surviving: 2021 (0.45%) Dropped: 12429 (2.79%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed C08_S32!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//C09_S33_L001_R1_001.fastq.gz ../long_SG/raw_data//C09_S33_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/C09_S33_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/C09_S33_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/C09_S33_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/C09_S33_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 195229 Both Surviving: 151277 (77.49%) Forward Only Surviving: 2401 (1.23%) Reverse Only Surviving: 1065 (0.55%) Dropped: 40486 (20.74%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed C09_S33!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//C10_S34_L001_R1_001.fastq.gz ../long_SG/raw_data//C10_S34_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/C10_S34_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/C10_S34_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/C10_S34_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/C10_S34_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 193693 Both Surviving: 177746 (91.77%) Forward Only Surviving: 3669 (1.89%) Reverse Only Surviving: 843 (0.44%) Dropped: 11435 (5.90%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed C10_S34!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//C11_S35_L001_R1_001.fastq.gz ../long_SG/raw_data//C11_S35_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/C11_S35_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/C11_S35_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/C11_S35_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/C11_S35_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 433540 Both Surviving: 412642 (95.18%) Forward Only Surviving: 7666 (1.77%) Reverse Only Surviving: 1775 (0.41%) Dropped: 11457 (2.64%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed C11_S35!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//C12_S36_L001_R1_001.fastq.gz ../long_SG/raw_data//C12_S36_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/C12_S36_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/C12_S36_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/C12_S36_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/C12_S36_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 277184 Both Surviving: 252754 (91.19%) Forward Only Surviving: 4200 (1.52%) Reverse Only Surviving: 1251 (0.45%) Dropped: 18979 (6.85%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed C12_S36!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 ../long_SG/raw_data//ENC_S37_L001_R1_001.fastq.gz ../long_SG/raw_data//ENC_S37_L001_R2_001.fastq.gz ../long_SG/processed_data/trimmed/paired/ENC_S37_R1_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/ENC_S37_R1_unpaired.fastq.gz ../long_SG/processed_data/trimmed/paired/ENC_S37_R2_paired.fastq.gz ../long_SG/processed_data/trimmed/unpaired/ENC_S37_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 32670 Both Surviving: 7019 (21.48%) Forward Only Surviving: 219 (0.67%) Reverse Only Surviving: 435 (1.33%) Dropped: 24997 (76.51%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed ENC_S37!
+
+
+Running FastQC on paired trimmed reads...

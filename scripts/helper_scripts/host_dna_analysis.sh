@@ -21,6 +21,8 @@ mkdir -p "$SORTED_BAM_DIR" "$BED_FILES_DIR" "$HOST_DNA_ANALYSIS_DIR"
 ROOT_DIR="$ALIGNED_SAM_DIR/../../../.."
 GROUND_TRUTH="$ALIGNED_SAM_DIR/../../../raw_data/ground_truth.csv"
 
+source "$ROOT_DIR/scripts/helper_scripts/environment_setup.sh" "$ROOT_DIR/scripts/metagenomics.yml" || { echo "❌ Failed to set up Conda environment."; exit 1; }
+
 # Convert and process each SAM file
 for file in "$ALIGNED_SAM_DIR"/*.sam; do  
     base=$(basename "$file" .sam)  
@@ -54,11 +56,11 @@ fi
     echo "✅ BED files combined."
 
 echo -e "Generating karyotype plot..."
-Rscript "$ROOT_DIR/scripts/helper_scripts/karyotype.R" "$HOST_DNA_ANALYSIS_DIR/intervals.bed" || { echo "❌ Failed to generate karyotype plot."; exit 1; }
+Rscript "$ROOT_DIR/scripts/helper_scripts/karyoplot.R" "$BED_FILES_DIR/intervals.bed" || { echo "❌ Failed to generate karyotype plot."; exit 1; }
 echo "✅ Karyotype plot generated."
 
 # Filter regions present in more than one sample
-awk '$4 > 1' "$HOST_DNA_ANALYSIS_DIR/intervals.bed" > "$BED_FILES_DIR/common_intervals.bed" || { echo "❌ Failed to filter common intervals."; exit 1; }
+awk '$4 > 1' "$BED_FILES_DIR/intervals.bed" > "$BED_FILES_DIR/common_intervals.bed" || { echo "❌ Failed to filter common intervals."; exit 1; }
 echo "✅ Filtered common intervals saved."
 
 echo -e "\n================================================== BLAST =================================================="
@@ -108,7 +110,7 @@ else
     # Run taxonomy tree only if ≥ 3 unique tax IDs (column 2) exist
     if [ "$(cut -f2 "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" | sort -u | wc -l)" -ge 3 ]; then
        # Generate taxonomy tree from BLAST results
-       Rscript "$ROOT_DIR/scripts/helper_scripts/human_aligned_tree.R" -b "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" -t "$GROUND_TRUTH"|| { echo "❌ Failed to generate taxonomy tree."; exit 1; }
+       Rscript "$ROOT_DIR/scripts/helper_scripts/host_aligned_tree.R" -b "$HOST_DNA_ANALYSIS_DIR/combined_blast_results.txt" -t "$GROUND_TRUTH"|| { echo "❌ Failed to generate taxonomy tree."; exit 1; }
         echo "✅ Taxonomy tree generated."
     else
         echo "⚠️ Skipping taxonomy tree: fewer than 3 unique tax IDs."

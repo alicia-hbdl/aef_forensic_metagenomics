@@ -1,7 +1,8 @@
 # ----------------------------------------
 # Genomic data files
 # ----------------------------------------
-
+*.bam
+*.bam.bai
 # Ignore FASTA/FASTQ and related raw sequencing files
 *.fastq
 *.fq
