@@ -264,7 +264,7 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
 	                -1 \"$TRIMMED_DIR/paired/${base}_R1_paired.fastq.gz\" -2 \"$TRIMMED_DIR/paired/${base}_R2_paired.fastq.gz\" \
 	                --un-conc \"$FILTERED_FASTQ_DIR/${base}_metagenomic\" -S \"$ALIGNED_SAM_DIR/${base}_human.sam\" 2>&1"
         echo "$BOWTIE_CMD"
-        eval "$BOWTIE_CMD"
+        eval "$BOWTIE_CMD" || { echo "❌ Failed to remove human reads for sample '$base'."; continue; }
         echo "✅  Host reads removed."
     fi
     
@@ -283,20 +283,22 @@ for R1 in "$TRIMMED_DIR"/paired/*_R1_paired.fastq.gz; do
 		--classified-out \"$CLASSIFIED_DIR/${base}_classified#.fastq\" --unclassified-out \"$UNCLASSIFIED_DIR/${base}_unclassified#.fastq\" \
 		--output \"$KRAKEN2_DIR/${base}.kraken2\" --use-names \"$FILTERED_FASTQ_DIR/${base}_metagenomic.1\" \"$FILTERED_FASTQ_DIR/${base}_metagenomic.2\" 2>&1"
     echo "$KRAKEN_CMD"
-    eval "$KRAKEN_CMD"
+    eval "$KRAKEN_CMD" || { echo "❌ Kraken2 classification failed for sample '$base'."; continue; }
     echo "✅  Classification complete."
 
     # Abundance estimation with Bracken
     # -t 100 makes sense since the median read length is 110bp at this point. 
     echo -e "\nEstimating species abundance with Bracken..."
     bracken -d "$DATABASE" -i "$REPORTS_DIR/${base}.k2report" -l S \
-            -r 100 -t $B_THRESHOLD -w "$REPORTS_DIR/${base}.breport" -o "$BRACKEN_DIR/${base}.bracken" 2>&1 
+            -r 100 -t $B_THRESHOLD -w "$REPORTS_DIR/${base}.breport" -o "$BRACKEN_DIR/${base}.bracken" 2>&1 \
+            || { echo "❌ Bracken abundance estimation failed for sample '$base'."; continue; }
     echo "✅  Abundance estimated."
     
     # Generate Krona interactive plot
     echo -e "\nGenerating Krona visualization..."
     python "$ROOT_DIR/tools/KrakenTools/kreport2krona.py" -r "$REPORTS_DIR/${base}.breport" -o "$KRONA_DIR/${base}.krona.txt" --no-intermediate-ranks && \
-    "$ROOT_DIR/tools/Krona/KronaTools/scripts/ImportText.pl" "$KRONA_DIR/${base}.krona.txt" -o "$KRONA_DIR/${base}.krona.html" && rm "$KRONA_DIR/${base}.krona.txt" && \
+    "$ROOT_DIR/tools/Krona/KronaTools/scripts/ImportText.pl" "$KRONA_DIR/${base}.krona.txt" -o "$KRONA_DIR/${base}.krona.html" && rm "$KRONA_DIR/${base}.krona.txt" 
+    || { echo "❌ Krona plot generation failed for sample '$base'."; continue; }
     echo "✅  Krona plot generated."
 done
 
