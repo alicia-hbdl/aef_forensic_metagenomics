@@ -53,7 +53,7 @@ BOWTIE_PREFIX="$ROOT_DIR/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as"  # D
 ADAPTER_FILE="$ROOT_DIR/data/adapters/TruSeq3-PE-2.fa"              # Default adapter file for Trimmomatic
 
 B_THRESHOLD=0                  # Default Bracken abundance threshold (must be overridden by user)
-K2_MIN_HIT=10                  # Default Kraken2 minimum hit threshold (must be overridden by user)
+K2_MIN_HIT=2                  # Default Kraken2 minimum hit threshold (must be overridden by user)
 
 # Usage message
 print_usage() {
