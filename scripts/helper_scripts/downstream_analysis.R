@@ -128,6 +128,7 @@ row_data <- DataFrame(species = rownames(count_matrix))
 
 # Read and summarize run metadata (aggregates across all samples in a run)
 col_data <- read_csv(opts$`runs-summary`, show_col_types = FALSE) %>%
+  arrange(run_id) %>%                                       # Sort by run_id (ascending)
   group_by(run_id) %>% 
   summarise(
     across(where(is.numeric), ~ mean(.x, na.rm = TRUE)),   # Average numeric values
@@ -560,7 +561,6 @@ ggsave(file.path(results_dir, "precision_recall.png"), curves,  width = 10, heig
 db_name_map <- setNames(col_data$db_name, rownames(col_data))
 kraken_min_hit_map <- setNames(col_data$kraken2_min_hits, rownames(col_data))
 bracken_threshold_map <- setNames(col_data$bracken_thresh, rownames(col_data))
-
 #------------- Distance Computation -------------
 
 # Helper: wrap pheatmap as a ggplot-compatible grob with db_name annotations
@@ -574,6 +574,8 @@ pheatmap_grob <- function(mat, show_legend = TRUE, title = NULL) {
     row.names = run_ids
   )
   
+  print(unique(annotation_col$KrakenMinHit))
+  print(levels(annotation_col$KrakenMinHit))
   # Annotation color mappings with red for GT
   ann_colors <- list(
     Database = {col <- db_colors; col["ground_truth"] <- "#e6194B"; col[names(col) %in% annotation_row$Database] },
