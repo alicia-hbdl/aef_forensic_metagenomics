@@ -20,10 +20,10 @@ K2_MIN_HIT_VALUES=(5)
 B_THRESHOLD_VALUES=(0 5 10 20 40)
 
 # Run a single pipeline job with trimming and host DNA removal enabled before looping over all databases
-#jid_first=$(sbatch --parsable pipeline.sh \
- # -f /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/raw_data \
-  #-d "$DB_PATH/k2_standard_16gb_20250402" \
-  #-t -r)
+jid_first=$(sbatch --parsable pipeline.sh \
+  -f /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/raw_data \
+  -d "$DB_PATH/k2_standard_16gb_20250402" \
+  -t -r)
 
 # Wait for the first job to finish
 #while squeue -j "$jid_first" >/dev/null 2>&1; do

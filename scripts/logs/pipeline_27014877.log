@@ -1,0 +1,1366 @@
+
+================================================= ARGUMENT PARSING & VALIDATION =================================================
+
+⚠️  No adapter file provided. Using default.
+⚠️  No Bowtie2 index provided. Using default.
+===== Pipeline Configuration Summary =====
+Raw FASTQ directory path: /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data
+Kraken2/Bracken Database: /scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904
+Ground Truth: Not provided ❌
+Quality Control & Trimming: Enabled ✅ (Adapter: /scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa)
+Host DNA Removal: Enabled ✅ (Index: /scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as)
+
+================================================= CONDA ENVIRONMENT ACTIVATION ==================================================
+
+✅ 'metagenomics' environment activated successfully.
+
+====================================================== PROJECT STRUCTURE ======================================================
+
+/scratch/prj/aef_forensic_metagenomics/long_RP1
+├── processed_data
+│   ├── human
+│   │   ├── aligned_sam
+│   │   ├── bed_files
+│   │   └── sorted_bam
+│   ├── metagenomic
+│   │   ├── bracken
+│   │   ├── classified
+│   │   ├── filtered_fastq
+│   │   ├── kraken2
+│   │   └── unclassified
+│   └── trimmed
+│       ├── paired
+│       └── unpaired
+├── raw_data
+└── results
+    ├── host_dna_analysis
+    └── runs
+        └── run_2206_1509
+
+19 directories
+Human DNA-related files (SAM, BAM, and BED) in the 'human' directory are created once per sub-project and remain unchanged across runs.
+Intermediate metagenomic files in the 'metagenomic' directory are overwritten with each run and should be inspected beforehand if desired.
+Results are stored in the 'results' directory (including FastQC, host DNA analysis, and run-specific results like Kraken2 and Bracken).
+
+=================================================== QUALITY CONTROL & TRIMMING ===================================================
+
+
+Running FastQC on all raw reads...
+✅ FastQC completed successfully.
+
+/// MultiQC 🔍 v1.28
+
+     version_check | MultiQC Version v1.29 now available!
+       file_search | Search path: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/fastqc/pre_trimming
+
+            fastqc | Found 76 reports
+
+     write_results | Data        : None
+     write_results | Report      : /cephfs/volumes/hpc_data_prj/aef_forensic_metagenomics/08802aa9-726d-448b-82fb-de4fd3419dc2/long_RP1/results/fastqc/pre_trimming/multiqc_report.html
+           multiqc | MultiQC complete
+✅ MultiQC report generated successfully.
+
+Running Trimmomatic...
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/A01_S1_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/A01_S1_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A01_S1_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/A01_S1_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A01_S1_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/A01_S1_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 348239 Both Surviving: 330761 (94.98%) Forward Only Surviving: 2587 (0.74%) Reverse Only Surviving: 768 (0.22%) Dropped: 14123 (4.06%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed A01_S1!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/A02_S2_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/A02_S2_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A02_S2_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/A02_S2_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A02_S2_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/A02_S2_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 369819 Both Surviving: 281266 (76.06%) Forward Only Surviving: 2069 (0.56%) Reverse Only Surviving: 918 (0.25%) Dropped: 85566 (23.14%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed A02_S2!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/A03_S3_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/A03_S3_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A03_S3_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/A03_S3_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A03_S3_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/A03_S3_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 403288 Both Surviving: 356541 (88.41%) Forward Only Surviving: 2392 (0.59%) Reverse Only Surviving: 1010 (0.25%) Dropped: 43345 (10.75%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed A03_S3!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/A04_S4_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/A04_S4_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A04_S4_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/A04_S4_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A04_S4_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/A04_S4_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 196760 Both Surviving: 186777 (94.93%) Forward Only Surviving: 1729 (0.88%) Reverse Only Surviving: 440 (0.22%) Dropped: 7814 (3.97%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed A04_S4!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/A05_S5_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/A05_S5_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A05_S5_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/A05_S5_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A05_S5_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/A05_S5_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 348184 Both Surviving: 330215 (94.84%) Forward Only Surviving: 1822 (0.52%) Reverse Only Surviving: 803 (0.23%) Dropped: 15344 (4.41%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed A05_S5!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/A06_S6_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/A06_S6_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A06_S6_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/A06_S6_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A06_S6_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/A06_S6_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 154927 Both Surviving: 145690 (94.04%) Forward Only Surviving: 1624 (1.05%) Reverse Only Surviving: 277 (0.18%) Dropped: 7336 (4.74%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed A06_S6!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/A07_S7_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/A07_S7_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A07_S7_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/A07_S7_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A07_S7_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/A07_S7_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 297011 Both Surviving: 237586 (79.99%) Forward Only Surviving: 1421 (0.48%) Reverse Only Surviving: 558 (0.19%) Dropped: 57446 (19.34%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed A07_S7!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/A08_S8_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/A08_S8_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A08_S8_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/A08_S8_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A08_S8_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/A08_S8_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 543090 Both Surviving: 497943 (91.69%) Forward Only Surviving: 3121 (0.57%) Reverse Only Surviving: 994 (0.18%) Dropped: 41032 (7.56%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed A08_S8!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/A09_S9_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/A09_S9_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A09_S9_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/A09_S9_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A09_S9_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/A09_S9_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 400208 Both Surviving: 385625 (96.36%) Forward Only Surviving: 4430 (1.11%) Reverse Only Surviving: 856 (0.21%) Dropped: 9297 (2.32%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed A09_S9!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/A10_S10_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/A10_S10_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A10_S10_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/A10_S10_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A10_S10_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/A10_S10_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 270835 Both Surviving: 264566 (97.69%) Forward Only Surviving: 1642 (0.61%) Reverse Only Surviving: 448 (0.17%) Dropped: 4179 (1.54%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed A10_S10!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/A11_S11_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/A11_S11_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A11_S11_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/A11_S11_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A11_S11_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/A11_S11_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 466442 Both Surviving: 455357 (97.62%) Forward Only Surviving: 3160 (0.68%) Reverse Only Surviving: 741 (0.16%) Dropped: 7184 (1.54%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed A11_S11!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/A12_S12_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/A12_S12_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A12_S12_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/A12_S12_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A12_S12_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/A12_S12_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 428761 Both Surviving: 400701 (93.46%) Forward Only Surviving: 3810 (0.89%) Reverse Only Surviving: 1019 (0.24%) Dropped: 23231 (5.42%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed A12_S12!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/B01_S13_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/B01_S13_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B01_S13_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/B01_S13_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B01_S13_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/B01_S13_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 130686 Both Surviving: 127118 (97.27%) Forward Only Surviving: 1175 (0.90%) Reverse Only Surviving: 309 (0.24%) Dropped: 2084 (1.59%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed B01_S13!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/B02_S14_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/B02_S14_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B02_S14_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/B02_S14_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B02_S14_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/B02_S14_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 308753 Both Surviving: 295022 (95.55%) Forward Only Surviving: 3034 (0.98%) Reverse Only Surviving: 558 (0.18%) Dropped: 10139 (3.28%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed B02_S14!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/B03_S15_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/B03_S15_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B03_S15_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/B03_S15_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B03_S15_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/B03_S15_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 84 Both Surviving: 78 (92.86%) Forward Only Surviving: 0 (0.00%) Reverse Only Surviving: 0 (0.00%) Dropped: 6 (7.14%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed B03_S15!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/B04_S16_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/B04_S16_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B04_S16_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/B04_S16_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B04_S16_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/B04_S16_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 305231 Both Surviving: 280453 (91.88%) Forward Only Surviving: 1870 (0.61%) Reverse Only Surviving: 643 (0.21%) Dropped: 22265 (7.29%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed B04_S16!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/B05_S17_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/B05_S17_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B05_S17_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/B05_S17_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B05_S17_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/B05_S17_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 817578 Both Surviving: 760255 (92.99%) Forward Only Surviving: 5274 (0.65%) Reverse Only Surviving: 1600 (0.20%) Dropped: 50449 (6.17%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed B05_S17!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/B06_S18_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/B06_S18_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B06_S18_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/B06_S18_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B06_S18_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/B06_S18_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 302212 Both Surviving: 286237 (94.71%) Forward Only Surviving: 3064 (1.01%) Reverse Only Surviving: 895 (0.30%) Dropped: 12016 (3.98%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed B06_S18!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/B07_S19_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/B07_S19_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B07_S19_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/B07_S19_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B07_S19_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/B07_S19_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 337 Both Surviving: 308 (91.39%) Forward Only Surviving: 1 (0.30%) Reverse Only Surviving: 0 (0.00%) Dropped: 28 (8.31%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed B07_S19!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/B08_S20_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/B08_S20_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B08_S20_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/B08_S20_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B08_S20_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/B08_S20_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 199997 Both Surviving: 185280 (92.64%) Forward Only Surviving: 1914 (0.96%) Reverse Only Surviving: 451 (0.23%) Dropped: 12352 (6.18%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed B08_S20!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/B09_S21_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/B09_S21_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B09_S21_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/B09_S21_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B09_S21_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/B09_S21_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 390025 Both Surviving: 364440 (93.44%) Forward Only Surviving: 2896 (0.74%) Reverse Only Surviving: 762 (0.20%) Dropped: 21927 (5.62%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed B09_S21!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/B10_S22_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/B10_S22_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B10_S22_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/B10_S22_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B10_S22_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/B10_S22_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 314353 Both Surviving: 294627 (93.72%) Forward Only Surviving: 2505 (0.80%) Reverse Only Surviving: 747 (0.24%) Dropped: 16474 (5.24%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed B10_S22!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/B11_S23_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/B11_S23_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B11_S23_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/B11_S23_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B11_S23_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/B11_S23_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 384514 Both Surviving: 361029 (93.89%) Forward Only Surviving: 2767 (0.72%) Reverse Only Surviving: 932 (0.24%) Dropped: 19786 (5.15%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed B11_S23!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/B12_S24_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/B12_S24_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B12_S24_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/B12_S24_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B12_S24_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/B12_S24_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 115616 Both Surviving: 106626 (92.22%) Forward Only Surviving: 803 (0.69%) Reverse Only Surviving: 281 (0.24%) Dropped: 7906 (6.84%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed B12_S24!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/Blank_S38_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/Blank_S38_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/Blank_S38_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/Blank_S38_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/Blank_S38_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/Blank_S38_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 344217 Both Surviving: 257177 (74.71%) Forward Only Surviving: 2021 (0.59%) Reverse Only Surviving: 665 (0.19%) Dropped: 84354 (24.51%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed Blank_S38!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/C01_S25_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/C01_S25_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/C01_S25_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/C01_S25_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/C01_S25_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/C01_S25_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 422013 Both Surviving: 310381 (73.55%) Forward Only Surviving: 1702 (0.40%) Reverse Only Surviving: 670 (0.16%) Dropped: 109260 (25.89%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed C01_S25!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/C02_S26_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/C02_S26_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/C02_S26_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/C02_S26_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/C02_S26_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/C02_S26_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 485954 Both Surviving: 369685 (76.07%) Forward Only Surviving: 2527 (0.52%) Reverse Only Surviving: 897 (0.18%) Dropped: 112845 (23.22%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed C02_S26!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/C03_S27_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/C03_S27_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/C03_S27_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/C03_S27_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/C03_S27_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/C03_S27_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 343667 Both Surviving: 323212 (94.05%) Forward Only Surviving: 3180 (0.93%) Reverse Only Surviving: 573 (0.17%) Dropped: 16702 (4.86%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed C03_S27!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/C04_S28_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/C04_S28_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/C04_S28_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/C04_S28_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/C04_S28_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/C04_S28_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 13 Both Surviving: 11 (84.62%) Forward Only Surviving: 0 (0.00%) Reverse Only Surviving: 0 (0.00%) Dropped: 2 (15.38%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed C04_S28!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/C05_S29_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/C05_S29_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/C05_S29_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/C05_S29_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/C05_S29_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/C05_S29_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 246812 Both Surviving: 233254 (94.51%) Forward Only Surviving: 1467 (0.59%) Reverse Only Surviving: 476 (0.19%) Dropped: 11615 (4.71%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed C05_S29!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/C06_S30_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/C06_S30_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/C06_S30_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/C06_S30_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/C06_S30_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/C06_S30_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 416627 Both Surviving: 320737 (76.98%) Forward Only Surviving: 2250 (0.54%) Reverse Only Surviving: 832 (0.20%) Dropped: 92808 (22.28%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed C06_S30!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/C07_S31_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/C07_S31_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/C07_S31_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/C07_S31_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/C07_S31_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/C07_S31_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 28589 Both Surviving: 22265 (77.88%) Forward Only Surviving: 112 (0.39%) Reverse Only Surviving: 40 (0.14%) Dropped: 6172 (21.59%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed C07_S31!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/C08_S32_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/C08_S32_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/C08_S32_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/C08_S32_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/C08_S32_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/C08_S32_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 241495 Both Surviving: 157955 (65.41%) Forward Only Surviving: 1848 (0.77%) Reverse Only Surviving: 451 (0.19%) Dropped: 81241 (33.64%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed C08_S32!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/C09_S33_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/C09_S33_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/C09_S33_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/C09_S33_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/C09_S33_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/C09_S33_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 170869 Both Surviving: 123710 (72.40%) Forward Only Surviving: 2389 (1.40%) Reverse Only Surviving: 348 (0.20%) Dropped: 44422 (26.00%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed C09_S33!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/C10_S34_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/C10_S34_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/C10_S34_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/C10_S34_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/C10_S34_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/C10_S34_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 301396 Both Surviving: 293856 (97.50%) Forward Only Surviving: 2954 (0.98%) Reverse Only Surviving: 513 (0.17%) Dropped: 4073 (1.35%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed C10_S34!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/C11_S35_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/C11_S35_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/C11_S35_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/C11_S35_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/C11_S35_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/C11_S35_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 274155 Both Surviving: 252889 (92.24%) Forward Only Surviving: 2256 (0.82%) Reverse Only Surviving: 620 (0.23%) Dropped: 18390 (6.71%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed C11_S35!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/C12_S36_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/C12_S36_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/C12_S36_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/C12_S36_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/C12_S36_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/C12_S36_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 338097 Both Surviving: 255724 (75.64%) Forward Only Surviving: 3089 (0.91%) Reverse Only Surviving: 586 (0.17%) Dropped: 78698 (23.28%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed C12_S36!
+
+TrimmomaticPE: Started with arguments:
+ -phred33 -threads 4 /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/ENC_S37_L001_R1_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/raw_data/ENC_S37_L001_R2_001.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/ENC_S37_R1_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/ENC_S37_R1_unpaired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/ENC_S37_R2_paired.fastq.gz /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/unpaired/ENC_S37_R2_unpaired.fastq.gz ILLUMINACLIP:/scratch/prj/aef_forensic_metagenomics/data/adapters/TruSeq3-PE-2.fa:2:30:10:8:true HEADCROP:5 LEADING:5 CROP:240 SLIDINGWINDOW:4:15 TRAILING:10 MINLEN:35
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 4 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 761870 Both Surviving: 54168 (7.11%) Forward Only Surviving: 1042 (0.14%) Reverse Only Surviving: 1155 (0.15%) Dropped: 705505 (92.60%)
+TrimmomaticPE: Completed successfully
+✅ Trimmed ENC_S37!
+
+
+Running FastQC on paired trimmed reads...
+✅ FastQC completed successfully.
+
+/// MultiQC 🔍 v1.28
+
+     version_check | MultiQC Version v1.29 now available!
+       file_search | Search path: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/fastqc/post_trimming
+
+            fastqc | Found 76 reports
+
+     write_results | Data        : None
+     write_results | Report      : /cephfs/volumes/hpc_data_prj/aef_forensic_metagenomics/08802aa9-726d-448b-82fb-de4fd3419dc2/long_RP1/results/fastqc/post_trimming/multiqc_report.html
+           multiqc | MultiQC complete
+✅ MultiQC report generated successfully.
+
+✅  QC and trimming completed successfully.
+
+Calculating read length statistics...
+A01_S1_L001_R1_001.fastq.gz: mean = 119.2, median = 109.0
+A01_S1_L001_R2_001.fastq.gz: mean = 85.3, median = 99.0
+A02_S2_L001_R1_001.fastq.gz: mean = 99.7, median = 80.0
+A02_S2_L001_R2_001.fastq.gz: mean = 72.5, median = 80.0
+A03_S3_L001_R1_001.fastq.gz: mean = 114.5, median = 101.0
+A03_S3_L001_R2_001.fastq.gz: mean = 80.8, median = 98.0
+A04_S4_L001_R1_001.fastq.gz: mean = 129.9, median = 126.0
+A04_S4_L001_R2_001.fastq.gz: mean = 86.6, median = 99.0
+A05_S5_L001_R1_001.fastq.gz: mean = 113.0, median = 101.0
+A05_S5_L001_R2_001.fastq.gz: mean = 83.8, median = 98.0
+A06_S6_L001_R1_001.fastq.gz: mean = 146.4, median = 172.0
+A06_S6_L001_R2_001.fastq.gz: mean = 89.8, median = 99.0
+A07_S7_L001_R1_001.fastq.gz: mean = 95.7, median = 78.0
+A07_S7_L001_R2_001.fastq.gz: mean = 73.7, median = 78.0
+A08_S8_L001_R1_001.fastq.gz: mean = 119.4, median = 109.0
+A08_S8_L001_R2_001.fastq.gz: mean = 82.9, median = 98.0
+A09_S9_L001_R1_001.fastq.gz: mean = 139.1, median = 143.0
+A09_S9_L001_R2_001.fastq.gz: mean = 90.3, median = 99.0
+A10_S10_L001_R1_001.fastq.gz: mean = 147.6, median = 156.0
+A10_S10_L001_R2_001.fastq.gz: mean = 93.6, median = 99.0
+A11_S11_L001_R1_001.fastq.gz: mean = 145.7, median = 155.0
+A11_S11_L001_R2_001.fastq.gz: mean = 92.6, median = 99.0
+A12_S12_L001_R1_001.fastq.gz: mean = 136.8, median = 145.0
+A12_S12_L001_R2_001.fastq.gz: mean = 87.3, median = 99.0
+B01_S13_L001_R1_001.fastq.gz: mean = 150.0, median = 160.0
+B01_S13_L001_R2_001.fastq.gz: mean = 94.1, median = 100.0
+B02_S14_L001_R1_001.fastq.gz: mean = 147.2, median = 161.0
+B02_S14_L001_R2_001.fastq.gz: mean = 92.0, median = 100.0
+B03_S15_L001_R1_001.fastq.gz: mean = 114.6, median = 97.5
+B03_S15_L001_R2_001.fastq.gz: mean = 82.0, median = 97.0
+B04_S16_L001_R1_001.fastq.gz: mean = 115.6, median = 104.0
+B04_S16_L001_R2_001.fastq.gz: mean = 82.4, median = 98.0
+B05_S17_L001_R1_001.fastq.gz: mean = 118.6, median = 109.0
+B05_S17_L001_R2_001.fastq.gz: mean = 83.7, median = 99.0
+B06_S18_L001_R1_001.fastq.gz: mean = 135.6, median = 138.0
+B06_S18_L001_R2_001.fastq.gz: mean = 88.7, median = 99.0
+B07_S19_L001_R1_001.fastq.gz: mean = 113.0, median = 102.0
+B07_S19_L001_R2_001.fastq.gz: mean = 80.0, median = 97.0
+B08_S20_L001_R1_001.fastq.gz: mean = 130.5, median = 130.0
+B08_S20_L001_R2_001.fastq.gz: mean = 85.8, median = 99.0
+B09_S21_L001_R1_001.fastq.gz: mean = 122.2, median = 115.0
+B09_S21_L001_R2_001.fastq.gz: mean = 85.4, median = 99.0
+B10_S22_L001_R1_001.fastq.gz: mean = 128.0, median = 125.0
+B10_S22_L001_R2_001.fastq.gz: mean = 86.4, median = 99.0
+B11_S23_L001_R1_001.fastq.gz: mean = 122.3, median = 115.0
+B11_S23_L001_R2_001.fastq.gz: mean = 85.4, median = 99.0
+B12_S24_L001_R1_001.fastq.gz: mean = 123.3, median = 116.0
+B12_S24_L001_R2_001.fastq.gz: mean = 84.6, median = 99.0
+Blank_S38_L001_R1_001.fastq.gz: mean = 108.5, median = 93.0
+Blank_S38_L001_R2_001.fastq.gz: mean = 75.0, median = 92.0
+C01_S25_L001_R1_001.fastq.gz: mean = 106.5, median = 90.0
+C01_S25_L001_R2_001.fastq.gz: mean = 74.7, median = 89.0
+C02_S26_L001_R1_001.fastq.gz: mean = 112.3, median = 102.0
+C02_S26_L001_R2_001.fastq.gz: mean = 77.3, median = 98.0
+C03_S27_L001_R1_001.fastq.gz: mean = 134.8, median = 137.0
+C03_S27_L001_R2_001.fastq.gz: mean = 88.2, median = 99.0
+C04_S28_L001_R1_001.fastq.gz: mean = 108.7, median = 88.0
+C04_S28_L001_R2_001.fastq.gz: mean = 74.9, median = 88.0
+C05_S29_L001_R1_001.fastq.gz: mean = 128.2, median = 124.0
+C05_S29_L001_R2_001.fastq.gz: mean = 85.8, median = 99.0
+C06_S30_L001_R1_001.fastq.gz: mean = 96.1, median = 79.0
+C06_S30_L001_R2_001.fastq.gz: mean = 72.6, median = 78.0
+C07_S31_L001_R1_001.fastq.gz: mean = 111.7, median = 98.0
+C07_S31_L001_R2_001.fastq.gz: mean = 77.0, median = 96.0
+C08_S32_L001_R1_001.fastq.gz: mean = 89.4, median = 61.0
+C08_S32_L001_R2_001.fastq.gz: mean = 66.2, median = 61.0
+C09_S33_L001_R1_001.fastq.gz: mean = 126.3, median = 138.0
+C09_S33_L001_R2_001.fastq.gz: mean = 77.6, median = 98.0
+C10_S34_L001_R1_001.fastq.gz: mean = 159.5, median = 184.0
+C10_S34_L001_R2_001.fastq.gz: mean = 95.4, median = 100.0
+C11_S35_L001_R1_001.fastq.gz: mean = 130.4, median = 131.0
+C11_S35_L001_R2_001.fastq.gz: mean = 85.5, median = 99.0
+C12_S36_L001_R1_001.fastq.gz: mean = 115.5, median = 105.0
+C12_S36_L001_R2_001.fastq.gz: mean = 76.7, median = 98.0
+ENC_S37_L001_R1_001.fastq.gz: mean = 46.5, median = 37.0
+ENC_S37_L001_R2_001.fastq.gz: mean = 41.1, median = 37.0
+A01_S1_R1_paired.fastq.gz: mean = 112.7, median = 103.0
+A01_S1_R2_paired.fastq.gz: mean = 81.2, median = 93.0
+A02_S2_R1_paired.fastq.gz: mean = 109.4, median = 96.0
+A02_S2_R2_paired.fastq.gz: mean = 77.5, median = 92.0
+A03_S3_R1_paired.fastq.gz: mean = 115.5, median = 104.0
+A03_S3_R2_paired.fastq.gz: mean = 80.4, median = 93.0
+A04_S4_R1_paired.fastq.gz: mean = 125.2, median = 120.0
+A04_S4_R2_paired.fastq.gz: mean = 82.9, median = 94.0
+A05_S5_R1_paired.fastq.gz: mean = 107.3, median = 96.0
+A05_S5_R2_paired.fastq.gz: mean = 80.1, median = 92.0
+A06_S6_R1_paired.fastq.gz: mean = 141.5, median = 158.0
+A06_S6_R2_paired.fastq.gz: mean = 86.1, median = 94.0
+A07_S7_R1_paired.fastq.gz: mean = 95.8, median = 73.0
+A07_S7_R2_paired.fastq.gz: mean = 74.9, median = 73.0
+A08_S8_R1_paired.fastq.gz: mean = 117.9, median = 109.0
+A08_S8_R2_paired.fastq.gz: mean = 81.0, median = 94.0
+A09_S9_R1_paired.fastq.gz: mean = 130.3, median = 128.0
+A09_S9_R2_paired.fastq.gz: mean = 85.0, median = 94.0
+A10_S10_R1_paired.fastq.gz: mean = 141.7, median = 147.0
+A10_S10_R2_paired.fastq.gz: mean = 89.0, median = 94.0
+A11_S11_R1_paired.fastq.gz: mean = 139.3, median = 145.0
+A11_S11_R2_paired.fastq.gz: mean = 87.9, median = 94.0
+A12_S12_R1_paired.fastq.gz: mean = 133.5, median = 139.0
+A12_S12_R2_paired.fastq.gz: mean = 84.4, median = 94.0
+B01_S13_R1_paired.fastq.gz: mean = 141.7, median = 147.0
+B01_S13_R2_paired.fastq.gz: mean = 89.1, median = 95.0
+B02_S14_R1_paired.fastq.gz: mean = 142.3, median = 152.0
+B02_S14_R2_paired.fastq.gz: mean = 88.1, median = 95.0
+B03_S15_R1_paired.fastq.gz: mean = 112.7, median = 99.0
+B03_S15_R2_paired.fastq.gz: mean = 79.3, median = 92.5
+B04_S16_R1_paired.fastq.gz: mean = 113.4, median = 103.0
+B04_S16_R2_paired.fastq.gz: mean = 80.3, median = 93.0
+B05_S17_R1_paired.fastq.gz: mean = 115.7, median = 106.0
+B05_S17_R2_paired.fastq.gz: mean = 81.1, median = 94.0
+B06_S18_R1_paired.fastq.gz: mean = 129.7, median = 130.0
+B06_S18_R2_paired.fastq.gz: mean = 84.9, median = 94.0
+B07_S19_R1_paired.fastq.gz: mean = 109.1, median = 98.5
+B07_S19_R2_paired.fastq.gz: mean = 78.3, median = 93.0
+B08_S20_R1_paired.fastq.gz: mean = 127.4, median = 125.0
+B08_S20_R2_paired.fastq.gz: mean = 83.2, median = 94.0
+B09_S21_R1_paired.fastq.gz: mean = 118.3, median = 111.0
+B09_S21_R2_paired.fastq.gz: mean = 82.4, median = 94.0
+B10_S22_R1_paired.fastq.gz: mean = 124.1, median = 120.0
+B10_S22_R2_paired.fastq.gz: mean = 83.3, median = 94.0
+B11_S23_R1_paired.fastq.gz: mean = 117.3, median = 109.0
+B11_S23_R2_paired.fastq.gz: mean = 82.3, median = 94.0
+B12_S24_R1_paired.fastq.gz: mean = 119.5, median = 112.0
+B12_S24_R2_paired.fastq.gz: mean = 82.1, median = 94.0
+Blank_S38_R1_paired.fastq.gz: mean = 119.8, median = 113.0
+Blank_S38_R2_paired.fastq.gz: mean = 81.1, median = 93.0
+C01_S25_R1_paired.fastq.gz: mean = 120.6, median = 114.0
+C01_S25_R2_paired.fastq.gz: mean = 81.8, median = 94.0
+C02_S26_R1_paired.fastq.gz: mean = 125.1, median = 122.0
+C02_S26_R2_paired.fastq.gz: mean = 83.8, median = 94.0
+C03_S27_R1_paired.fastq.gz: mean = 131.3, median = 132.0
+C03_S27_R2_paired.fastq.gz: mean = 85.1, median = 94.0
+C04_S28_R1_paired.fastq.gz: mean = 113.4, median = 86.0
+C04_S28_R2_paired.fastq.gz: mean = 76.8, median = 86.0
+C05_S29_R1_paired.fastq.gz: mean = 124.1, median = 119.0
+C05_S29_R2_paired.fastq.gz: mean = 82.6, median = 94.0
+C06_S30_R1_paired.fastq.gz: mean = 102.3, median = 89.0
+C06_S30_R2_paired.fastq.gz: mean = 76.9, median = 89.0
+C07_S31_R1_paired.fastq.gz: mean = 122.3, median = 116.0
+C07_S31_R2_paired.fastq.gz: mean = 82.1, median = 94.0
+C08_S32_R1_paired.fastq.gz: mean = 104.8, median = 87.0
+C08_S32_R2_paired.fastq.gz: mean = 74.9, median = 85.0
+C09_S33_R1_paired.fastq.gz: mean = 144.7, median = 176.0
+C09_S33_R2_paired.fastq.gz: mean = 84.9, median = 94.0
+C10_S34_R1_paired.fastq.gz: mean = 152.6, median = 170.0
+C10_S34_R2_paired.fastq.gz: mean = 90.4, median = 95.0
+C11_S35_R1_paired.fastq.gz: mean = 128.2, median = 128.0
+C11_S35_R2_paired.fastq.gz: mean = 83.3, median = 94.0
+C12_S36_R1_paired.fastq.gz: mean = 129.8, median = 132.0
+C12_S36_R2_paired.fastq.gz: mean = 82.9, median = 94.0
+ENC_S37_R1_paired.fastq.gz: mean = 87.1, median = 65.0
+ENC_S37_R2_paired.fastq.gz: mean = 65.3, median = 64.0
+✅ Statistics generated.
+
+================================================= METAGENOMIC ABUNDANCE ESTIMATION =================================================
+⚠️  This step assumes reads have already been trimmed with Trimmomatic and host DNA removed with Bowtie2. Processed reads must be in the correct directory.
+
+Processing sample: A01_S1
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A01_S1_R1_paired.fastq.gz" -2 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A01_S1_R2_paired.fastq.gz" 	                --un-conc "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A01_S1_metagenomic" -S "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/human/aligned_sam/A01_S1_human.sam" 2>&1
+330761 reads; of these:
+  330761 (100.00%) were paired; of these:
+    249410 (75.40%) aligned concordantly 0 times
+    35436 (10.71%) aligned concordantly exactly 1 time
+    45915 (13.88%) aligned concordantly >1 times
+24.60% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A01_S1.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/classified/A01_S1_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/unclassified/A01_S1_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/kraken2/A01_S1.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A01_S1_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A01_S1_metagenomic.2" 2>&1
+Loading database information... done.
+249410 sequences (46.04 Mbp) processed in 0.917s (16314.7 Kseq/m, 3011.89 Mbp/m).
+  225935 sequences classified (90.59%)
+  23475 sequences unclassified (9.41%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A01_S1.k2report -o /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/A01_S1.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A01_S1.k2report
+PROGRAM START TIME: 06-22-2025 14:38:31
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A01_S1.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 568 
+	  >> Number of species with reads > threshold: 55 
+	  >> Number of species with reads < threshold: 513 
+    >>> Total reads in sample: 249410
+	  >> Total reads kept at species level (reads > threshold): 158424
+	  >> Total reads discarded (species reads < threshold): 1729
+	  >> Reads distributed: 65412
+	  >> Reads not distributed (eg. no species above threshold): 370
+	  >> Unclassified reads: 23475
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/A01_S1.bracken
+PROGRAM END TIME: 06-22-2025 14:38:43
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/krona/A01_S1.krona.html...
+✅  Krona plot generated.
+
+Processing sample: A02_S2
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A02_S2_R1_paired.fastq.gz" -2 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A02_S2_R2_paired.fastq.gz" 	                --un-conc "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A02_S2_metagenomic" -S "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/human/aligned_sam/A02_S2_human.sam" 2>&1
+281266 reads; of these:
+  281266 (100.00%) were paired; of these:
+    239124 (85.02%) aligned concordantly 0 times
+    36456 (12.96%) aligned concordantly exactly 1 time
+    5686 (2.02%) aligned concordantly >1 times
+14.98% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A02_S2.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/classified/A02_S2_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/unclassified/A02_S2_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/kraken2/A02_S2.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A02_S2_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A02_S2_metagenomic.2" 2>&1
+Loading database information... done.
+239124 sequences (41.23 Mbp) processed in 0.794s (18063.5 Kseq/m, 3114.83 Mbp/m).
+  152294 sequences classified (63.69%)
+  86830 sequences unclassified (36.31%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A02_S2.k2report -o /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/A02_S2.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A02_S2.k2report
+PROGRAM START TIME: 06-22-2025 14:41:30
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A02_S2.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 346 
+	  >> Number of species with reads > threshold: 27 
+	  >> Number of species with reads < threshold: 319 
+    >>> Total reads in sample: 239124
+	  >> Total reads kept at species level (reads > threshold): 116149
+	  >> Total reads discarded (species reads < threshold): 1135
+	  >> Reads distributed: 33488
+	  >> Reads not distributed (eg. no species above threshold): 1522
+	  >> Unclassified reads: 86830
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/A02_S2.bracken
+PROGRAM END TIME: 06-22-2025 14:41:40
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/krona/A02_S2.krona.html...
+✅  Krona plot generated.
+
+Processing sample: A03_S3
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A03_S3_R1_paired.fastq.gz" -2 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A03_S3_R2_paired.fastq.gz" 	                --un-conc "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A03_S3_metagenomic" -S "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/human/aligned_sam/A03_S3_human.sam" 2>&1
+356541 reads; of these:
+  356541 (100.00%) were paired; of these:
+    296929 (83.28%) aligned concordantly 0 times
+    44247 (12.41%) aligned concordantly exactly 1 time
+    15365 (4.31%) aligned concordantly >1 times
+16.72% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A03_S3.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/classified/A03_S3_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/unclassified/A03_S3_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/kraken2/A03_S3.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A03_S3_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A03_S3_metagenomic.2" 2>&1
+Loading database information... done.
+296929 sequences (53.34 Mbp) processed in 0.849s (20994.7 Kseq/m, 3771.16 Mbp/m).
+  230464 sequences classified (77.62%)
+  66465 sequences unclassified (22.38%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A03_S3.k2report -o /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/A03_S3.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A03_S3.k2report
+PROGRAM START TIME: 06-22-2025 14:44:33
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A03_S3.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 353 
+	  >> Number of species with reads > threshold: 21 
+	  >> Number of species with reads < threshold: 332 
+    >>> Total reads in sample: 296929
+	  >> Total reads kept at species level (reads > threshold): 179437
+	  >> Total reads discarded (species reads < threshold): 1005
+	  >> Reads distributed: 49777
+	  >> Reads not distributed (eg. no species above threshold): 245
+	  >> Unclassified reads: 66465
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/A03_S3.bracken
+PROGRAM END TIME: 06-22-2025 14:44:43
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/krona/A03_S3.krona.html...
+✅  Krona plot generated.
+
+Processing sample: A04_S4
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A04_S4_R1_paired.fastq.gz" -2 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A04_S4_R2_paired.fastq.gz" 	                --un-conc "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A04_S4_metagenomic" -S "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/human/aligned_sam/A04_S4_human.sam" 2>&1
+186777 reads; of these:
+  186777 (100.00%) were paired; of these:
+    143365 (76.76%) aligned concordantly 0 times
+    28071 (15.03%) aligned concordantly exactly 1 time
+    15341 (8.21%) aligned concordantly >1 times
+23.24% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A04_S4.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/classified/A04_S4_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/unclassified/A04_S4_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/kraken2/A04_S4.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A04_S4_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A04_S4_metagenomic.2" 2>&1
+Loading database information... done.
+143365 sequences (26.81 Mbp) processed in 0.611s (14083.3 Kseq/m, 2634.12 Mbp/m).
+  136154 sequences classified (94.97%)
+  7211 sequences unclassified (5.03%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A04_S4.k2report -o /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/A04_S4.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A04_S4.k2report
+PROGRAM START TIME: 06-22-2025 14:47:37
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A04_S4.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 412 
+	  >> Number of species with reads > threshold: 23 
+	  >> Number of species with reads < threshold: 389 
+    >>> Total reads in sample: 143365
+	  >> Total reads kept at species level (reads > threshold): 65863
+	  >> Total reads discarded (species reads < threshold): 1110
+	  >> Reads distributed: 69023
+	  >> Reads not distributed (eg. no species above threshold): 158
+	  >> Unclassified reads: 7211
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/A04_S4.bracken
+PROGRAM END TIME: 06-22-2025 14:47:47
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/krona/A04_S4.krona.html...
+✅  Krona plot generated.
+
+Processing sample: A05_S5
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A05_S5_R1_paired.fastq.gz" -2 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A05_S5_R2_paired.fastq.gz" 	                --un-conc "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A05_S5_metagenomic" -S "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/human/aligned_sam/A05_S5_human.sam" 2>&1
+330215 reads; of these:
+  330215 (100.00%) were paired; of these:
+    268007 (81.16%) aligned concordantly 0 times
+    37040 (11.22%) aligned concordantly exactly 1 time
+    25168 (7.62%) aligned concordantly >1 times
+18.84% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A05_S5.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/classified/A05_S5_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/unclassified/A05_S5_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/kraken2/A05_S5.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A05_S5_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A05_S5_metagenomic.2" 2>&1
+Loading database information... done.
+268007 sequences (47.31 Mbp) processed in 0.957s (16799.1 Kseq/m, 2965.35 Mbp/m).
+  248499 sequences classified (92.72%)
+  19508 sequences unclassified (7.28%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A05_S5.k2report -o /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/A05_S5.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A05_S5.k2report
+PROGRAM START TIME: 06-22-2025 14:50:53
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A05_S5.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 503 
+	  >> Number of species with reads > threshold: 41 
+	  >> Number of species with reads < threshold: 462 
+    >>> Total reads in sample: 268007
+	  >> Total reads kept at species level (reads > threshold): 153055
+	  >> Total reads discarded (species reads < threshold): 1843
+	  >> Reads distributed: 93035
+	  >> Reads not distributed (eg. no species above threshold): 566
+	  >> Unclassified reads: 19508
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/A05_S5.bracken
+PROGRAM END TIME: 06-22-2025 14:51:03
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/krona/A05_S5.krona.html...
+✅  Krona plot generated.
+
+Processing sample: A06_S6
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A06_S6_R1_paired.fastq.gz" -2 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A06_S6_R2_paired.fastq.gz" 	                --un-conc "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A06_S6_metagenomic" -S "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/human/aligned_sam/A06_S6_human.sam" 2>&1
+145690 reads; of these:
+  145690 (100.00%) were paired; of these:
+    109465 (75.14%) aligned concordantly 0 times
+    33217 (22.80%) aligned concordantly exactly 1 time
+    3008 (2.06%) aligned concordantly >1 times
+24.86% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A06_S6.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/classified/A06_S6_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/unclassified/A06_S6_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/kraken2/A06_S6.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A06_S6_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A06_S6_metagenomic.2" 2>&1
+Loading database information... done.
+109465 sequences (23.26 Mbp) processed in 0.426s (15401.9 Kseq/m, 3273.17 Mbp/m).
+  77047 sequences classified (70.39%)
+  32418 sequences unclassified (29.61%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A06_S6.k2report -o /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/A06_S6.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A06_S6.k2report
+PROGRAM START TIME: 06-22-2025 14:53:40
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A06_S6.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 276 
+	  >> Number of species with reads > threshold: 13 
+	  >> Number of species with reads < threshold: 263 
+    >>> Total reads in sample: 109465
+	  >> Total reads kept at species level (reads > threshold): 41193
+	  >> Total reads discarded (species reads < threshold): 632
+	  >> Reads distributed: 34768
+	  >> Reads not distributed (eg. no species above threshold): 454
+	  >> Unclassified reads: 32418
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/A06_S6.bracken
+PROGRAM END TIME: 06-22-2025 14:53:50
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/krona/A06_S6.krona.html...
+✅  Krona plot generated.
+
+Processing sample: A07_S7
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A07_S7_R1_paired.fastq.gz" -2 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A07_S7_R2_paired.fastq.gz" 	                --un-conc "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A07_S7_metagenomic" -S "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/human/aligned_sam/A07_S7_human.sam" 2>&1
+237586 reads; of these:
+  237586 (100.00%) were paired; of these:
+    210416 (88.56%) aligned concordantly 0 times
+    26623 (11.21%) aligned concordantly exactly 1 time
+    547 (0.23%) aligned concordantly >1 times
+11.44% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A07_S7.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/classified/A07_S7_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/unclassified/A07_S7_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/kraken2/A07_S7.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A07_S7_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A07_S7_metagenomic.2" 2>&1
+Loading database information... done.
+210416 sequences (33.08 Mbp) processed in 0.654s (19298.6 Kseq/m, 3033.73 Mbp/m).
+  89126 sequences classified (42.36%)
+  121290 sequences unclassified (57.64%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A07_S7.k2report -o /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/A07_S7.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A07_S7.k2report
+PROGRAM START TIME: 06-22-2025 14:56:28
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A07_S7.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 1029 
+	  >> Number of species with reads > threshold: 25 
+	  >> Number of species with reads < threshold: 1004 
+    >>> Total reads in sample: 210416
+	  >> Total reads kept at species level (reads > threshold): 11735
+	  >> Total reads discarded (species reads < threshold): 2766
+	  >> Reads distributed: 73899
+	  >> Reads not distributed (eg. no species above threshold): 726
+	  >> Unclassified reads: 121290
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/A07_S7.bracken
+PROGRAM END TIME: 06-22-2025 14:56:37
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/krona/A07_S7.krona.html...
+✅  Krona plot generated.
+
+Processing sample: A08_S8
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A08_S8_R1_paired.fastq.gz" -2 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A08_S8_R2_paired.fastq.gz" 	                --un-conc "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A08_S8_metagenomic" -S "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/human/aligned_sam/A08_S8_human.sam" 2>&1
+497943 reads; of these:
+  497943 (100.00%) were paired; of these:
+    410098 (82.36%) aligned concordantly 0 times
+    84118 (16.89%) aligned concordantly exactly 1 time
+    3727 (0.75%) aligned concordantly >1 times
+17.64% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A08_S8.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/classified/A08_S8_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/unclassified/A08_S8_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/kraken2/A08_S8.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A08_S8_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A08_S8_metagenomic.2" 2>&1
+Loading database information... done.
+410098 sequences (74.48 Mbp) processed in 1.262s (19501.1 Kseq/m, 3541.84 Mbp/m).
+  386835 sequences classified (94.33%)
+  23263 sequences unclassified (5.67%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A08_S8.k2report -o /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/A08_S8.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A08_S8.k2report
+PROGRAM START TIME: 06-22-2025 14:59:50
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A08_S8.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 631 
+	  >> Number of species with reads > threshold: 20 
+	  >> Number of species with reads < threshold: 611 
+    >>> Total reads in sample: 410098
+	  >> Total reads kept at species level (reads > threshold): 317199
+	  >> Total reads discarded (species reads < threshold): 1776
+	  >> Reads distributed: 66865
+	  >> Reads not distributed (eg. no species above threshold): 995
+	  >> Unclassified reads: 23263
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/A08_S8.bracken
+PROGRAM END TIME: 06-22-2025 15:00:00
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/krona/A08_S8.krona.html...
+✅  Krona plot generated.
+
+Processing sample: A09_S9
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A09_S9_R1_paired.fastq.gz" -2 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A09_S9_R2_paired.fastq.gz" 	                --un-conc "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A09_S9_metagenomic" -S "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/human/aligned_sam/A09_S9_human.sam" 2>&1
+385625 reads; of these:
+  385625 (100.00%) were paired; of these:
+    304835 (79.05%) aligned concordantly 0 times
+    59302 (15.38%) aligned concordantly exactly 1 time
+    21488 (5.57%) aligned concordantly >1 times
+20.95% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A09_S9.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/classified/A09_S9_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/unclassified/A09_S9_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/kraken2/A09_S9.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A09_S9_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A09_S9_metagenomic.2" 2>&1
+Loading database information... done.
+304835 sequences (62.90 Mbp) processed in 1.099s (16641.9 Kseq/m, 3433.98 Mbp/m).
+  283997 sequences classified (93.16%)
+  20838 sequences unclassified (6.84%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A09_S9.k2report -o /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/A09_S9.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A09_S9.k2report
+PROGRAM START TIME: 06-22-2025 15:03:04
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A09_S9.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 316 
+	  >> Number of species with reads > threshold: 26 
+	  >> Number of species with reads < threshold: 290 
+    >>> Total reads in sample: 304835
+	  >> Total reads kept at species level (reads > threshold): 243973
+	  >> Total reads discarded (species reads < threshold): 1117
+	  >> Reads distributed: 37604
+	  >> Reads not distributed (eg. no species above threshold): 1303
+	  >> Unclassified reads: 20838
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/A09_S9.bracken
+PROGRAM END TIME: 06-22-2025 15:03:13
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/krona/A09_S9.krona.html...
+✅  Krona plot generated.
+
+Processing sample: A10_S10
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A10_S10_R1_paired.fastq.gz" -2 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A10_S10_R2_paired.fastq.gz" 	                --un-conc "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A10_S10_metagenomic" -S "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/human/aligned_sam/A10_S10_human.sam" 2>&1
+264566 reads; of these:
+  264566 (100.00%) were paired; of these:
+    229825 (86.87%) aligned concordantly 0 times
+    31180 (11.79%) aligned concordantly exactly 1 time
+    3561 (1.35%) aligned concordantly >1 times
+13.13% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A10_S10.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/classified/A10_S10_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/unclassified/A10_S10_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/kraken2/A10_S10.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A10_S10_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A10_S10_metagenomic.2" 2>&1
+Loading database information... done.
+229825 sequences (51.53 Mbp) processed in 0.826s (16688.2 Kseq/m, 3741.66 Mbp/m).
+  214656 sequences classified (93.40%)
+  15169 sequences unclassified (6.60%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A10_S10.k2report -o /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/A10_S10.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A10_S10.k2report
+PROGRAM START TIME: 06-22-2025 15:05:41
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A10_S10.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 279 
+	  >> Number of species with reads > threshold: 34 
+	  >> Number of species with reads < threshold: 245 
+    >>> Total reads in sample: 229825
+	  >> Total reads kept at species level (reads > threshold): 125862
+	  >> Total reads discarded (species reads < threshold): 1153
+	  >> Reads distributed: 86922
+	  >> Reads not distributed (eg. no species above threshold): 719
+	  >> Unclassified reads: 15169
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/A10_S10.bracken
+PROGRAM END TIME: 06-22-2025 15:05:48
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/krona/A10_S10.krona.html...
+✅  Krona plot generated.
+
+Processing sample: A11_S11
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A11_S11_R1_paired.fastq.gz" -2 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A11_S11_R2_paired.fastq.gz" 	                --un-conc "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A11_S11_metagenomic" -S "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/human/aligned_sam/A11_S11_human.sam" 2>&1
+455357 reads; of these:
+  455357 (100.00%) were paired; of these:
+    318635 (69.97%) aligned concordantly 0 times
+    134395 (29.51%) aligned concordantly exactly 1 time
+    2327 (0.51%) aligned concordantly >1 times
+30.03% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A11_S11.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/classified/A11_S11_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/unclassified/A11_S11_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/kraken2/A11_S11.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A11_S11_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A11_S11_metagenomic.2" 2>&1
+Loading database information... done.
+318635 sequences (64.88 Mbp) processed in 0.885s (21610.8 Kseq/m, 4400.17 Mbp/m).
+  308364 sequences classified (96.78%)
+  10271 sequences unclassified (3.22%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A11_S11.k2report -o /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/A11_S11.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A11_S11.k2report
+PROGRAM START TIME: 06-22-2025 15:08:11
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A11_S11.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 396 
+	  >> Number of species with reads > threshold: 25 
+	  >> Number of species with reads < threshold: 371 
+    >>> Total reads in sample: 318635
+	  >> Total reads kept at species level (reads > threshold): 256829
+	  >> Total reads discarded (species reads < threshold): 1223
+	  >> Reads distributed: 50100
+	  >> Reads not distributed (eg. no species above threshold): 212
+	  >> Unclassified reads: 10271
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/A11_S11.bracken
+PROGRAM END TIME: 06-22-2025 15:08:19
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/krona/A11_S11.krona.html...
+✅  Krona plot generated.
+
+Processing sample: A12_S12
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A12_S12_R1_paired.fastq.gz" -2 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/A12_S12_R2_paired.fastq.gz" 	                --un-conc "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A12_S12_metagenomic" -S "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/human/aligned_sam/A12_S12_human.sam" 2>&1
+400701 reads; of these:
+  400701 (100.00%) were paired; of these:
+    280475 (70.00%) aligned concordantly 0 times
+    80495 (20.09%) aligned concordantly exactly 1 time
+    39731 (9.92%) aligned concordantly >1 times
+30.00% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A12_S12.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/classified/A12_S12_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/unclassified/A12_S12_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/kraken2/A12_S12.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A12_S12_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/A12_S12_metagenomic.2" 2>&1
+Loading database information... done.
+280475 sequences (53.88 Mbp) processed in 0.792s (21236.1 Kseq/m, 4079.82 Mbp/m).
+  260666 sequences classified (92.94%)
+  19809 sequences unclassified (7.06%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A12_S12.k2report -o /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/A12_S12.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A12_S12.k2report
+PROGRAM START TIME: 06-22-2025 15:10:55
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/A12_S12.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 364 
+	  >> Number of species with reads > threshold: 27 
+	  >> Number of species with reads < threshold: 337 
+    >>> Total reads in sample: 280475
+	  >> Total reads kept at species level (reads > threshold): 192916
+	  >> Total reads discarded (species reads < threshold): 1119
+	  >> Reads distributed: 66198
+	  >> Reads not distributed (eg. no species above threshold): 433
+	  >> Unclassified reads: 19809
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/A12_S12.bracken
+PROGRAM END TIME: 06-22-2025 15:11:02
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/krona/A12_S12.krona.html...
+✅  Krona plot generated.
+
+Processing sample: B01_S13
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B01_S13_R1_paired.fastq.gz" -2 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B01_S13_R2_paired.fastq.gz" 	                --un-conc "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/B01_S13_metagenomic" -S "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/human/aligned_sam/B01_S13_human.sam" 2>&1
+127118 reads; of these:
+  127118 (100.00%) were paired; of these:
+    90661 (71.32%) aligned concordantly 0 times
+    28443 (22.38%) aligned concordantly exactly 1 time
+    8014 (6.30%) aligned concordantly >1 times
+28.68% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/B01_S13.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/classified/B01_S13_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/unclassified/B01_S13_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/kraken2/B01_S13.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/B01_S13_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/B01_S13_metagenomic.2" 2>&1
+Loading database information... done.
+90661 sequences (19.75 Mbp) processed in 0.463s (11741.0 Kseq/m, 2557.88 Mbp/m).
+  83182 sequences classified (91.75%)
+  7479 sequences unclassified (8.25%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/B01_S13.k2report -o /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/B01_S13.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/B01_S13.k2report
+PROGRAM START TIME: 06-22-2025 15:13:04
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/B01_S13.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 438 
+	  >> Number of species with reads > threshold: 35 
+	  >> Number of species with reads < threshold: 403 
+    >>> Total reads in sample: 90661
+	  >> Total reads kept at species level (reads > threshold): 53388
+	  >> Total reads discarded (species reads < threshold): 1283
+	  >> Reads distributed: 28246
+	  >> Reads not distributed (eg. no species above threshold): 265
+	  >> Unclassified reads: 7479
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/B01_S13.bracken
+PROGRAM END TIME: 06-22-2025 15:13:11
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/krona/B01_S13.krona.html...
+✅  Krona plot generated.
+
+Processing sample: B02_S14
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B02_S14_R1_paired.fastq.gz" -2 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B02_S14_R2_paired.fastq.gz" 	                --un-conc "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/B02_S14_metagenomic" -S "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/human/aligned_sam/B02_S14_human.sam" 2>&1
+295022 reads; of these:
+  295022 (100.00%) were paired; of these:
+    257601 (87.32%) aligned concordantly 0 times
+    31053 (10.53%) aligned concordantly exactly 1 time
+    6368 (2.16%) aligned concordantly >1 times
+12.68% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/B02_S14.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/classified/B02_S14_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/unclassified/B02_S14_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/kraken2/B02_S14.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/B02_S14_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/B02_S14_metagenomic.2" 2>&1
+Loading database information... done.
+257601 sequences (57.72 Mbp) processed in 0.959s (16117.3 Kseq/m, 3611.61 Mbp/m).
+  244823 sequences classified (95.04%)
+  12778 sequences unclassified (4.96%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/B02_S14.k2report -o /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/B02_S14.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/B02_S14.k2report
+PROGRAM START TIME: 06-22-2025 15:15:20
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/B02_S14.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 422 
+	  >> Number of species with reads > threshold: 27 
+	  >> Number of species with reads < threshold: 395 
+    >>> Total reads in sample: 257601
+	  >> Total reads kept at species level (reads > threshold): 210587
+	  >> Total reads discarded (species reads < threshold): 1204
+	  >> Reads distributed: 32540
+	  >> Reads not distributed (eg. no species above threshold): 492
+	  >> Unclassified reads: 12778
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/B02_S14.bracken
+PROGRAM END TIME: 06-22-2025 15:15:27
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/krona/B02_S14.krona.html...
+✅  Krona plot generated.
+
+Processing sample: B03_S15
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B03_S15_R1_paired.fastq.gz" -2 "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/trimmed/paired/B03_S15_R2_paired.fastq.gz" 	                --un-conc "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/B03_S15_metagenomic" -S "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/human/aligned_sam/B03_S15_human.sam" 2>&1
+78 reads; of these:
+  78 (100.00%) were paired; of these:
+    71 (91.03%) aligned concordantly 0 times
+    7 (8.97%) aligned concordantly exactly 1 time
+    0 (0.00%) aligned concordantly >1 times
+8.97% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/B03_S15.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/classified/B03_S15_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/unclassified/B03_S15_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/kraken2/B03_S15.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/B03_S15_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/filtered_fastq/B03_S15_metagenomic.2" 2>&1
+Loading database information... done.
+71 sequences (0.01 Mbp) processed in 0.010s (425.8 Kseq/m, 78.78 Mbp/m).
+  59 sequences classified (83.10%)
+  12 sequences unclassified (16.90%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/B03_S15.k2report -o /scratch/prj/aef_forensic_metagenomics/long_RP1/processed_data/metagenomic/bracken/B03_S15.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/long_RP1/results/runs/run_2206_1509/reports/B03_S15.k2report
+Error: no reads found. Please check your Kraken report
+PROGRAM START TIME: 06-22-2025 15:17:17
