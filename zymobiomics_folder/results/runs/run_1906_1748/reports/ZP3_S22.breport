@@ -1,0 +1,76 @@
+100.00	290115	0	R	1	root
+99.70	289239	0	R1	131567	  cellular organisms
+96.07	278705	0	D	2	    Bacteria
+62.38	180964	0	D1	1783272	      Terrabacteria group
+62.38	180964	0	P	1239	        Bacillota
+62.38	180964	0	C	91061	          Bacilli
+39.64	115012	0	O	1385	            Bacillales
+13.47	39067	0	F	186817	              Bacillaceae
+13.47	39067	0	G	1386	                Bacillus
+13.47	39067	0	G1	653685	                  Bacillus subtilis group
+11.57	33570	33570	S	96241	                    Bacillus spizizenii
+1.82	5285	5285	S	1423	                    Bacillus subtilis
+0.04	105	105	S	72361	                    Bacillus vallismortis
+0.04	106	106	S	483913	                    Bacillus inaquosorum
+13.28	38532	0	F	90964	              Staphylococcaceae
+13.28	38532	0	G	1279	                Staphylococcus
+13.28	38532	38532	S	1280	                  Staphylococcus aureus
+12.90	37411	0	F	186820	              Listeriaceae
+12.90	37411	0	G	1637	                Listeria
+12.80	37121	37121	S	1639	                  Listeria monocytogenes
+0.06	184	184	S	1642	                  Listeria innocua
+0.02	56	56	S	2713501	                  Listeria swaminathanii
+0.02	49	49	S	1643	                  Listeria welshimeri
+22.73	65951	0	O	186826	            Lactobacillales
+12.66	36726	0	F	81852	              Enterococcaceae
+12.66	36726	0	G	1350	                Enterococcus
+12.66	36726	36726	S	1351	                  Enterococcus faecalis
+10.07	29224	0	F	33958	              Lactobacillaceae
+10.07	29224	0	G	2742598	                Limosilactobacillus
+10.07	29224	29224	S	1613	                  Limosilactobacillus fermentum
+33.69	97741	0	P	1224	      Pseudomonadota
+33.69	97741	0	C	1236	        Gammaproteobacteria
+22.51	65303	0	O	91347	          Enterobacterales
+22.51	65303	0	F	543	            Enterobacteriaceae
+13.73	39845	0	G	590	              Salmonella
+13.73	39845	39845	S	28901	                Salmonella enterica
+8.78	25458	0	G	561	              Escherichia
+8.78	25458	25458	S	562	                Escherichia coli
+11.18	32437	0	O	72274	          Pseudomonadales
+11.18	32437	0	F	135621	            Pseudomonadaceae
+11.18	32437	0	G	286	              Pseudomonas
+11.18	32437	0	G1	136841	                Pseudomonas aeruginosa group
+11.18	32437	32437	S	287	                  Pseudomonas aeruginosa
+3.63	10533	0	D	2759	    Eukaryota
+3.63	10533	0	D1	33154	      Opisthokonta
+3.63	10533	0	K	4751	        Fungi
+3.63	10533	0	K1	451864	          Dikarya
+1.94	5626	0	P	4890	            Ascomycota
+1.94	5626	0	P1	716545	              saccharomyceta
+1.94	5626	0	P2	147537	                Saccharomycotina
+1.94	5626	0	C	4891	                  Saccharomycetes
+1.94	5626	0	O	4892	                    Saccharomycetales
+1.94	5626	0	F	4893	                      Saccharomycetaceae
+1.94	5626	0	G	4930	                        Saccharomyces
+1.92	5575	5575	S	4932	                          Saccharomyces cerevisiae
+0.02	51	51	S	27291	                          Saccharomyces paradoxus
+1.69	4906	0	P	5204	            Basidiomycota
+1.69	4906	0	P1	5302	              Agaricomycotina
+1.69	4906	0	C	155616	                Tremellomycetes
+1.69	4906	0	O	5234	                  Tremellales
+1.69	4906	0	F	1884633	                    Cryptococcaceae
+1.69	4906	0	G	5206	                      Cryptococcus
+1.69	4906	0	G1	1897064	                        Cryptococcus neoformans species complex
+1.69	4906	4906	S	5207	                          Cryptococcus neoformans
+0.30	875	0	D	10239	  Viruses
+0.30	875	0	D1	2559587	    Riboviria
+0.30	875	0	K	2732396	      Orthornavirae
+0.30	875	0	P	2732408	        Pisuviricota
+0.30	875	0	C	2732506	          Pisoniviricetes
+0.30	875	0	O	76804	            Nidovirales
+0.30	875	0	O1	2499399	              Cornidovirineae
+0.30	875	0	F	11118	                Coronaviridae
+0.30	875	0	F1	2501931	                  Orthocoronavirinae
+0.30	875	0	G	694002	                    Betacoronavirus
+0.30	875	0	G1	2509511	                      Sarbecovirus
+0.30	875	875	S	694009	                        Severe acute respiratory syndrome-related coronavirus

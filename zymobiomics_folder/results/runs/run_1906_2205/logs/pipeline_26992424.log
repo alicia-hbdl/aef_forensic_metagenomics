@@ -1,0 +1,633 @@
+
+================================================= ARGUMENT PARSING & VALIDATION =================================================
+
+⚠️  Trimming and host DNA removal are optional but must be done once; if skipped, ensure trimmed and filtered files exist in the correct directories.\n
+===== Pipeline Configuration Summary =====
+Raw FASTQ directory path: /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/raw_data
+Kraken2/Bracken Database: /scratch/prj/aef_forensic_metagenomics/data/databases/k2_eupathdb48_20230407
+Ground Truth: /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/raw_data/ground_truth.csv ✅
+Quality Control & Trimming: Disabled ❌
+Host DNA Removal: Disabled ❌
+
+================================================= CONDA ENVIRONMENT ACTIVATION ==================================================
+
+✅ 'metagenomics' environment activated successfully.
+
+====================================================== PROJECT STRUCTURE ======================================================
+
+/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder
+├── processed_data
+│   ├── human
+│   │   ├── aligned_sam
+│   │   ├── bed_files
+│   │   └── sorted_bam
+│   ├── metagenomic
+│   │   ├── bracken
+│   │   ├── classified
+│   │   ├── filtered_fastq
+│   │   ├── kraken2
+│   │   └── unclassified
+│   └── trimmed
+│       ├── paired
+│       └── unpaired
+├── raw_data
+└── results
+    ├── benchmarking
+    ├── fastqc
+    │   ├── post_trimming
+    │   └── pre_trimming
+    ├── host_dna_analysis
+    └── runs
+        ├── run_0806_2227
+        ├── run_0806_2325
+        ├── run_0806_2336
+        ├── run_0806_2347
+        ├── run_0806_2356
+        ├── run_0906_0005
+        ├── run_0906_0017
+        ├── run_0906_0029
+        ├── run_0906_0040
+        ├── run_0906_0051
+        ├── run_0906_0102
+        ├── run_0906_0113
+        ├── run_0906_0122
+        ├── run_0906_0131
+        ├── run_0906_0141
+        ├── run_0906_0149
+        ├── run_0906_0157
+        ├── run_0906_0205
+        ├── run_0906_0213
+        ├── run_0906_0221
+        ├── run_0906_0229
+        ├── run_0906_0237
+        ├── run_0906_0246
+        ├── run_0906_0256
+        ├── run_0906_0305
+        ├── run_0906_0314
+        ├── run_0906_0323
+        ├── run_0906_0332
+        ├── run_0906_0341
+        ├── run_0906_0350
+        ├── run_0906_0400
+        ├── run_0906_0409
+        ├── run_0906_0418
+        ├── run_0906_0427
+        ├── run_0906_0436
+        ├── run_0906_0442
+        ├── run_0906_0448
+        ├── run_0906_0457
+        ├── run_0906_0506
+        ├── run_0906_0515
+        ├── run_0906_0522
+        ├── run_0906_0529
+        ├── run_0906_0540
+        ├── run_0906_0551
+        ├── run_0906_0601
+        ├── run_0906_0609
+        ├── run_0906_0619
+        ├── run_0906_0628
+        ├── run_0906_0636
+        ├── run_0906_0648
+        ├── run_0906_0658
+        ├── run_0906_0709
+        ├── run_0906_0720
+        ├── run_0906_0731
+        ├── run_0906_0742
+        ├── run_0906_0754
+        ├── run_0906_0802
+        ├── run_0906_0810
+        ├── run_0906_0818
+        ├── run_0906_0828
+        ├── run_0906_0839
+        ├── run_0906_0851
+        ├── run_0906_0901
+        ├── run_0906_0911
+        ├── run_0906_0920
+        ├── run_0906_0929
+        ├── run_0906_0939
+        ├── run_0906_0951
+        ├── run_0906_1001
+        ├── run_0906_1011
+        ├── run_0906_1021
+        ├── run_0906_1031
+        ├── run_0906_1042
+        ├── run_0906_1052
+        ├── run_0906_1110
+        ├── run_0906_1132
+        ├── run_0906_1142
+        ├── run_0906_1206
+        ├── run_0906_1217
+        ├── run_0906_1227
+        ├── run_0906_1237
+        ├── run_0906_1251
+        ├── run_0906_1305
+        ├── run_0906_1314
+        ├── run_0906_1323
+        ├── run_0906_1336
+        ├── run_0906_1345
+        ├── run_0906_1354
+        ├── run_0906_1403
+        ├── run_0906_1413
+        ├── run_0906_1422
+        ├── run_0906_1431
+        ├── run_0906_1440
+        ├── run_0906_1450
+        ├── run_0906_1501
+        ├── run_0906_1511
+        ├── run_0906_1520
+        ├── run_0906_1530
+        ├── run_0906_1540
+        ├── run_0906_1549
+        ├── run_0906_1558
+        ├── run_0906_1608
+        ├── run_0906_1618
+        ├── run_0906_1632
+        ├── run_0906_1642
+        ├── run_0906_1652
+        ├── run_0906_1702
+        ├── run_0906_1713
+        ├── run_0906_1723
+        ├── run_0906_1734
+        ├── run_0906_1747
+        ├── run_0906_1757
+        ├── run_0906_1806
+        ├── run_0906_1816
+        ├── run_0906_1828
+        ├── run_0906_1855
+        ├── run_0906_1904
+        ├── run_0906_1917
+        ├── run_0906_1928
+        ├── run_0906_1940
+        ├── run_0906_1952
+        ├── run_0906_2002
+        ├── run_0906_2020
+        ├── run_0906_2030
+        ├── run_0906_2040
+        ├── run_0906_2049
+        ├── run_0906_2059
+        ├── run_0906_2110
+        ├── run_0906_2120
+        ├── run_0906_2128
+        ├── run_0906_2138
+        ├── run_0906_2146
+        ├── run_0906_2155
+        ├── run_0906_2205
+        ├── run_0906_2214
+        ├── run_0906_2223
+        ├── run_1006_1224
+        ├── run_1006_1259
+        ├── run_1006_1311
+        ├── run_1006_1321
+        ├── run_1006_1330
+        ├── run_1006_1339
+        ├── run_1006_1348
+        ├── run_1006_1402
+        ├── run_1006_1411
+        ├── run_1006_1420
+        ├── run_1006_1428
+        ├── run_1006_1437
+        ├── run_1006_1454
+        ├── run_1006_1506
+        ├── run_1006_1548
+        ├── run_1006_1557
+        ├── run_1006_1606
+        ├── run_1006_1615
+        ├── run_1006_1623
+        ├── run_1006_1632
+        ├── run_1006_1640
+        ├── run_1106_1050
+        ├── run_1106_1111
+        ├── run_1106_1146
+        ├── run_1106_1222
+        ├── run_1106_1308
+        ├── run_1106_1403
+        ├── run_1106_1434
+        ├── run_1106_1549
+        ├── run_1106_1706
+        ├── run_1106_1812
+        ├── run_1106_1835
+        ├── run_1106_1917
+        ├── run_1106_1949
+        ├── run_1106_2019
+        ├── run_1106_2103
+        ├── run_1106_2142
+        ├── run_1106_2249
+        ├── run_1106_2355
+        ├── run_1206_0051
+        ├── run_1206_0123
+        ├── run_1206_2241
+        ├── run_1206_2258
+        ├── run_1206_2315
+        ├── run_1206_2329
+        ├── run_1206_2343
+        ├── run_1206_2356
+        ├── run_1306_0014
+        ├── run_1306_0028
+        ├── run_1306_0042
+        ├── run_1306_0058
+        ├── run_1306_0112
+        ├── run_1306_0132
+        ├── run_1306_0150
+        ├── run_1306_0205
+        ├── run_1306_0225
+        ├── run_1306_0242
+        ├── run_1306_0257
+        ├── run_1306_0313
+        ├── run_1306_0328
+        ├── run_1306_0343
+        ├── run_1306_0357
+        ├── run_1306_0413
+        ├── run_1306_0446
+        ├── run_1306_0511
+        ├── run_1306_0543
+        ├── run_1306_0608
+        ├── run_1306_0634
+        ├── run_1306_0700
+        ├── run_1306_0729
+        ├── run_1306_0754
+        ├── run_1306_0825
+        ├── run_1306_0854
+        ├── run_1306_0929
+        ├── run_1306_0955
+        ├── run_1306_1015
+        ├── run_1306_1047
+        ├── run_1306_1106
+        ├── run_1306_1127
+        ├── run_1306_1208
+        ├── run_1306_1242
+        ├── run_1306_1311
+        ├── run_1306_1542
+        ├── run_1406_2359
+        ├── run_1506_0008
+        ├── run_1506_0017
+        ├── run_1506_0025
+        ├── run_1506_0036
+        ├── run_1506_0048
+        ├── run_1506_0057
+        ├── run_1506_0105
+        ├── run_1506_0115
+        ├── run_1506_0124
+        ├── run_1506_0132
+        ├── run_1506_0140
+        ├── run_1506_0149
+        ├── run_1506_0157
+        ├── run_1506_0206
+        ├── run_1506_0215
+        ├── run_1506_0223
+        ├── run_1506_0231
+        ├── run_1506_0239
+        ├── run_1506_0247
+        ├── run_1906_1538
+        ├── run_1906_1609
+        ├── run_1906_1646
+        ├── run_1906_1717
+        ├── run_1906_1748
+        ├── run_1906_1827
+        ├── run_1906_1835
+        ├── run_1906_1844
+        ├── run_1906_1855
+        ├── run_1906_1902
+        ├── run_1906_1909
+        ├── run_1906_1918
+        ├── run_1906_1925
+        ├── run_1906_1934
+        ├── run_1906_1943
+        ├── run_1906_1953
+        ├── run_1906_2001
+        ├── run_1906_2009
+        ├── run_1906_2017
+        ├── run_1906_2025
+        ├── run_1906_2034
+        ├── run_1906_2049
+        ├── run_1906_2101
+        ├── run_1906_2113
+        ├── run_1906_2125
+        ├── run_1906_2139
+        ├── run_1906_2148
+        ├── run_1906_2157
+        └── run_1906_2205
+
+290 directories
+Human DNA-related files (SAM, BAM, and BED) in the 'human' directory are created once per sub-project and remain unchanged across runs.
+Intermediate metagenomic files in the 'metagenomic' directory are overwritten with each run and should be inspected beforehand if desired.
+Results are stored in the 'results' directory (including FastQC, host DNA analysis, and run-specific results like Kraken2 and Bracken).
+
+================================================= METAGENOMIC ABUNDANCE ESTIMATION =================================================
+⚠️  This step assumes reads have already been trimmed with Trimmomatic and host DNA removed with Bowtie2. Processed reads must be in the correct directory.
+
+Processing sample: ZC1_S4
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_eupathdb48_20230407" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZC1_S4.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 5 		--classified-out "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/classified/ZC1_S4_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/unclassified/ZC1_S4_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/kraken2/ZC1_S4.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC1_S4_metagenomic.2" 2>&1
+Loading database information... done.
+287710 sequences (51.71 Mbp) processed in 0.807s (21385.1 Kseq/m, 3843.57 Mbp/m).
+  12726 sequences classified (4.42%)
+  274984 sequences unclassified (95.58%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZC1_S4.k2report -o /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/bracken/ZC1_S4.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_eupathdb48_20230407/database100mers.kmer_distrib -l S -t 20
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZC1_S4.k2report
+PROGRAM START TIME: 06-19-2025 21:06:04
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZC1_S4.k2report)
+    >>> Threshold: 20 
+    >>> Number of species in sample: 34 
+	  >> Number of species with reads > threshold: 4 
+	  >> Number of species with reads < threshold: 30 
+    >>> Total reads in sample: 287710
+	  >> Total reads kept at species level (reads > threshold): 12515
+	  >> Total reads discarded (species reads < threshold): 77
+	  >> Reads distributed: 120
+	  >> Reads not distributed (eg. no species above threshold): 14
+	  >> Unclassified reads: 274984
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/bracken/ZC1_S4.bracken
+PROGRAM END TIME: 06-19-2025 21:06:04
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/krona/ZC1_S4.krona.html...
+✅  Krona plot generated.
+
+Processing sample: ZC2_S5
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_eupathdb48_20230407" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZC2_S5.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 5 		--classified-out "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/classified/ZC2_S5_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/unclassified/ZC2_S5_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/kraken2/ZC2_S5.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC2_S5_metagenomic.2" 2>&1
+Loading database information... done.
+267582 sequences (38.37 Mbp) processed in 0.939s (17102.6 Kseq/m, 2452.26 Mbp/m).
+  11059 sequences classified (4.13%)
+  256523 sequences unclassified (95.87%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZC2_S5.k2report -o /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/bracken/ZC2_S5.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_eupathdb48_20230407/database100mers.kmer_distrib -l S -t 20
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZC2_S5.k2report
+PROGRAM START TIME: 06-19-2025 21:06:10
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZC2_S5.k2report)
+    >>> Threshold: 20 
+    >>> Number of species in sample: 34 
+	  >> Number of species with reads > threshold: 3 
+	  >> Number of species with reads < threshold: 31 
+    >>> Total reads in sample: 267582
+	  >> Total reads kept at species level (reads > threshold): 10867
+	  >> Total reads discarded (species reads < threshold): 76
+	  >> Reads distributed: 103
+	  >> Reads not distributed (eg. no species above threshold): 13
+	  >> Unclassified reads: 256523
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/bracken/ZC2_S5.bracken
+PROGRAM END TIME: 06-19-2025 21:06:10
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/krona/ZC2_S5.krona.html...
+✅  Krona plot generated.
+
+Processing sample: ZC3_S6
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_eupathdb48_20230407" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZC3_S6.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 5 		--classified-out "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/classified/ZC3_S6_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/unclassified/ZC3_S6_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/kraken2/ZC3_S6.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC3_S6_metagenomic.2" 2>&1
+Loading database information... done.
+273941 sequences (42.88 Mbp) processed in 1.140s (14414.1 Kseq/m, 2255.99 Mbp/m).
+  13336 sequences classified (4.87%)
+  260605 sequences unclassified (95.13%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZC3_S6.k2report -o /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/bracken/ZC3_S6.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_eupathdb48_20230407/database100mers.kmer_distrib -l S -t 20
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZC3_S6.k2report
+PROGRAM START TIME: 06-19-2025 21:06:17
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZC3_S6.k2report)
+    >>> Threshold: 20 
+    >>> Number of species in sample: 32 
+	  >> Number of species with reads > threshold: 4 
+	  >> Number of species with reads < threshold: 28 
+    >>> Total reads in sample: 273941
+	  >> Total reads kept at species level (reads > threshold): 13141
+	  >> Total reads discarded (species reads < threshold): 58
+	  >> Reads distributed: 132
+	  >> Reads not distributed (eg. no species above threshold): 5
+	  >> Unclassified reads: 260605
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/bracken/ZC3_S6.bracken
+PROGRAM END TIME: 06-19-2025 21:06:17
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/krona/ZC3_S6.krona.html...
+✅  Krona plot generated.
+
+Processing sample: ZC4_S7
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_eupathdb48_20230407" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZC4_S7.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 5 		--classified-out "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/classified/ZC4_S7_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/unclassified/ZC4_S7_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/kraken2/ZC4_S7.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZC4_S7_metagenomic.2" 2>&1
+Loading database information... done.
+238874 sequences (35.00 Mbp) processed in 0.545s (26307.2 Kseq/m, 3854.83 Mbp/m).
+  9906 sequences classified (4.15%)
+  228968 sequences unclassified (95.85%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZC4_S7.k2report -o /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/bracken/ZC4_S7.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_eupathdb48_20230407/database100mers.kmer_distrib -l S -t 20
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZC4_S7.k2report
+PROGRAM START TIME: 06-19-2025 21:06:23
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZC4_S7.k2report)
+    >>> Threshold: 20 
+    >>> Number of species in sample: 30 
+	  >> Number of species with reads > threshold: 2 
+	  >> Number of species with reads < threshold: 28 
+    >>> Total reads in sample: 238874
+	  >> Total reads kept at species level (reads > threshold): 9735
+	  >> Total reads discarded (species reads < threshold): 73
+	  >> Reads distributed: 84
+	  >> Reads not distributed (eg. no species above threshold): 14
+	  >> Unclassified reads: 228968
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/bracken/ZC4_S7.bracken
+PROGRAM END TIME: 06-19-2025 21:06:23
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/krona/ZC4_S7.krona.html...
+✅  Krona plot generated.
+
+Processing sample: ZP1_S20
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_eupathdb48_20230407" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZP1_S20.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 5 		--classified-out "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/classified/ZP1_S20_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/unclassified/ZP1_S20_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/kraken2/ZP1_S20.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP1_S20_metagenomic.2" 2>&1
+Loading database information... done.
+299531 sequences (46.78 Mbp) processed in 0.730s (24626.5 Kseq/m, 3846.47 Mbp/m).
+  9396 sequences classified (3.14%)
+  290135 sequences unclassified (96.86%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZP1_S20.k2report -o /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/bracken/ZP1_S20.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_eupathdb48_20230407/database100mers.kmer_distrib -l S -t 20
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZP1_S20.k2report
+PROGRAM START TIME: 06-19-2025 21:06:29
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZP1_S20.k2report)
+    >>> Threshold: 20 
+    >>> Number of species in sample: 37 
+	  >> Number of species with reads > threshold: 2 
+	  >> Number of species with reads < threshold: 35 
+    >>> Total reads in sample: 299531
+	  >> Total reads kept at species level (reads > threshold): 9220
+	  >> Total reads discarded (species reads < threshold): 76
+	  >> Reads distributed: 78
+	  >> Reads not distributed (eg. no species above threshold): 22
+	  >> Unclassified reads: 290135
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/bracken/ZP1_S20.bracken
+PROGRAM END TIME: 06-19-2025 21:06:30
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/krona/ZP1_S20.krona.html...
+✅  Krona plot generated.
+
+Processing sample: ZP2_S21
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_eupathdb48_20230407" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZP2_S21.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 5 		--classified-out "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/classified/ZP2_S21_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/unclassified/ZP2_S21_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/kraken2/ZP2_S21.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP2_S21_metagenomic.2" 2>&1
+Loading database information... done.
+293442 sequences (42.99 Mbp) processed in 0.675s (26081.8 Kseq/m, 3821.13 Mbp/m).
+  8775 sequences classified (2.99%)
+  284667 sequences unclassified (97.01%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZP2_S21.k2report -o /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/bracken/ZP2_S21.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_eupathdb48_20230407/database100mers.kmer_distrib -l S -t 20
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZP2_S21.k2report
+PROGRAM START TIME: 06-19-2025 21:06:36
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZP2_S21.k2report)
+    >>> Threshold: 20 
+    >>> Number of species in sample: 25 
+	  >> Number of species with reads > threshold: 2 
+	  >> Number of species with reads < threshold: 23 
+    >>> Total reads in sample: 293442
+	  >> Total reads kept at species level (reads > threshold): 8627
+	  >> Total reads discarded (species reads < threshold): 62
+	  >> Reads distributed: 71
+	  >> Reads not distributed (eg. no species above threshold): 15
+	  >> Unclassified reads: 284667
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/bracken/ZP2_S21.bracken
+PROGRAM END TIME: 06-19-2025 21:06:36
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/krona/ZP2_S21.krona.html...
+✅  Krona plot generated.
+
+Processing sample: ZP3_S22
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "/scratch/prj/aef_forensic_metagenomics/data/databases/k2_eupathdb48_20230407" --threads 8 --report "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZP3_S22.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 5 		--classified-out "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/classified/ZP3_S22_classified#.fastq" --unclassified-out "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/unclassified/ZP3_S22_unclassified#.fastq" 		--output "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/kraken2/ZP3_S22.kraken2" --use-names "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic.1" "/scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/filtered_fastq/ZP3_S22_metagenomic.2" 2>&1
+Loading database information... done.
+326854 sequences (47.05 Mbp) processed in 1.085s (18070.5 Kseq/m, 2601.11 Mbp/m).
+  9683 sequences classified (2.96%)
+  317171 sequences unclassified (97.04%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZP3_S22.k2report -o /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/bracken/ZP3_S22.bracken -k /scratch/prj/aef_forensic_metagenomics/data/databases/k2_eupathdb48_20230407/database100mers.kmer_distrib -l S -t 20
+>> Checking report file: /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZP3_S22.k2report
+PROGRAM START TIME: 06-19-2025 21:06:42
+BRACKEN SUMMARY (Kraken report: /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/reports/ZP3_S22.k2report)
+    >>> Threshold: 20 
+    >>> Number of species in sample: 30 
+	  >> Number of species with reads > threshold: 2 
+	  >> Number of species with reads < threshold: 28 
+    >>> Total reads in sample: 326854
+	  >> Total reads kept at species level (reads > threshold): 9510
+	  >> Total reads discarded (species reads < threshold): 77
+	  >> Reads distributed: 84
+	  >> Reads not distributed (eg. no species above threshold): 12
+	  >> Unclassified reads: 317171
+BRACKEN OUTPUT PRODUCED: /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/processed_data/metagenomic/bracken/ZP3_S22.bracken
+PROGRAM END TIME: 06-19-2025 21:06:42
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing /scratch/prj/aef_forensic_metagenomics/zymobiomics_folder/results/runs/run_1906_2205/krona/ZP3_S22.krona.html...
+✅  Krona plot generated.
+
+Metagenomic classification completed in: 00:00:44
+
+Calculating read length statistics...
+ZC1_S4_metagenomic.1: mean = 90.3, median = 78.0
+ZC2_S5_metagenomic.1: mean = 71.7, median = 63.0
+ZC3_S6_metagenomic.1: mean = 78.4, median = 67.0
+ZC4_S7_metagenomic.1: mean = 73.4, median = 62.0
+ZP1_S20_metagenomic.1: mean = 78.2, median = 69.0
+ZP2_S21_metagenomic.1: mean = 73.4, median = 64.0
+ZP3_S22_metagenomic.1: mean = 72.0, median = 62.0
+ZC1_S4_metagenomic.2: mean = 89.5, median = 78.0
+ZC2_S5_metagenomic.2: mean = 71.7, median = 63.0
+ZC3_S6_metagenomic.2: mean = 78.1, median = 67.0
+ZC4_S7_metagenomic.2: mean = 73.2, median = 62.0
+ZP1_S20_metagenomic.2: mean = 78.0, median = 69.0
+ZP2_S21_metagenomic.2: mean = 73.1, median = 64.0
+ZP3_S22_metagenomic.2: mean = 72.0, median = 63.0
+ZC1_S4_classified_1.fastq: mean = 96.6, median = 85.0
+ZC1_S4_classified_2.fastq: mean = 95.8, median = 85.0
+ZC2_S5_classified_1.fastq: mean = 77.5, median = 68.0
+ZC2_S5_classified_2.fastq: mean = 77.4, median = 68.0
+ZC3_S6_classified_1.fastq: mean = 84.5, median = 73.0
+ZC3_S6_classified_2.fastq: mean = 84.2, median = 73.0
+ZC4_S7_classified_1.fastq: mean = 79.9, median = 69.0
+ZC4_S7_classified_2.fastq: mean = 79.7, median = 69.0
+ZP1_S20_classified_1.fastq: mean = 82.5, median = 74.0
+ZP1_S20_classified_2.fastq: mean = 82.4, median = 74.0
+ZP2_S21_classified_1.fastq: mean = 78.9, median = 69.0
+ZP2_S21_classified_2.fastq: mean = 78.5, median = 69.0
+ZP3_S22_classified_1.fastq: mean = 76.4, median = 67.0
+ZP3_S22_classified_2.fastq: mean = 76.5, median = 67.0
+ZC1_S4_unclassified_1.fastq: mean = 90.0, median = 78.0
+ZC1_S4_unclassified_2.fastq: mean = 89.2, median = 78.0
+ZC2_S5_unclassified_1.fastq: mean = 71.5, median = 62.0
+ZC2_S5_unclassified_2.fastq: mean = 71.4, median = 62.0
+ZC3_S6_unclassified_1.fastq: mean = 78.1, median = 67.0
+ZC3_S6_unclassified_2.fastq: mean = 77.8, median = 67.0
+ZC4_S7_unclassified_1.fastq: mean = 73.1, median = 61.0
+ZC4_S7_unclassified_2.fastq: mean = 72.9, median = 62.0
+ZP1_S20_unclassified_1.fastq: mean = 78.1, median = 69.0
+ZP1_S20_unclassified_2.fastq: mean = 77.9, median = 69.0
+ZP2_S21_unclassified_1.fastq: mean = 73.2, median = 64.0
+ZP2_S21_unclassified_2.fastq: mean = 73.0, median = 64.0
+ZP3_S22_unclassified_1.fastq: mean = 71.8, median = 62.0
+ZP3_S22_unclassified_2.fastq: mean = 71.8, median = 62.0
+✅ Statistics generated.
+
+Combining Bracken reports...
+✅ Bracken reports combined.
+
+Copying SLURM job logs...
+✅ SLURM job logs copied.
+
+================================================= COMPARISON TO GROUND TRUTH =================================================
+
+================================================= METAGENOMIC DIVERSITY ANALYSIS =================================================
+Calculating alpha and beta diversity...
+✅ Alpha diversity calculated.
+✅ Beta diversity heatmap generated.
+✅  Diversity analysis completed successfully.
+
+✅  Pipeline completed successfully.
+
+Copying final SLURM job logs
