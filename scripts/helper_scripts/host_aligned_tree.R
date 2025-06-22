@@ -19,7 +19,7 @@ options(ENTREZ_KEY = "5a8133264ac32a3f11c0f1e666a90d96c908")
 
 # Argument parsing
 parser <- ArgumentParser(description = "Karyotype plot script with BLAST results and ground truth")
-parser$add_argument("-t", "--ground-truth", required = TRUE, help = "Path to the ground truth file")
+parser$add_argument("-t", "--ground-truth", required = FALSE, default = NULL, help = "Path to the ground truth file")
 parser$add_argument("-b", "--blast-results", required = TRUE, help = "Path to the BLAST results file")
 args <- parser$parse_args()
 ground_truth <- args$ground_truth
@@ -40,7 +40,7 @@ taxonomy_data <- classification(taxids, db = "ncbi")
 # Convert taxonomy data to a phylogenetic tree
 tree <- class2tree(taxonomy_data)$phylo
 
-if (!file.exists(ground_truth)) {
+if (is.null(ground_truth) || !file.exists(ground_truth)) {
   warning(paste("⚠️ Ground truth file not found at:", ground_truth, "- proceeding without it."))
   highlight_species <- character(0)  # empty character vector
 } else {
