@@ -524,3 +524,2414 @@ TrimmomaticPE: Completed successfully
 
 
 Running FastQC on paired trimmed reads...
+✅ FastQC completed successfully.
+
+/// MultiQC 🔍 v1.28
+
+     version_check | MultiQC Version v1.29 now available!
+       file_search | Search path: /cephfs/volumes/hpc_data_prj/aef_forensic_metagenomics/08802aa9-726d-448b-82fb-de4fd3419dc2/long_SG/results/fastqc/post_trimming
+
+            fastqc | Found 76 reports
+
+     write_results | Data        : None
+     write_results | Report      : /cephfs/volumes/hpc_data_prj/aef_forensic_metagenomics/08802aa9-726d-448b-82fb-de4fd3419dc2/long_SG/results/fastqc/post_trimming/multiqc_report.html   (overwritten)
+           multiqc | MultiQC complete
+✅ MultiQC report generated successfully.
+
+✅  QC and trimming completed successfully.
+
+Calculating read length statistics...
+A01_S1_L001_R1_001.fastq.gz: mean = 125.6, median = 120.0
+A01_S1_L001_R2_001.fastq.gz: mean = 86.2, median = 99.0
+A02_S2_L001_R1_001.fastq.gz: mean = 129.6, median = 126.0
+A02_S2_L001_R2_001.fastq.gz: mean = 89.5, median = 99.0
+A03_S3_L001_R1_001.fastq.gz: mean = 135.3, median = 134.0
+A03_S3_L001_R2_001.fastq.gz: mean = 90.5, median = 99.0
+A04_S4_L001_R1_001.fastq.gz: mean = 134.8, median = 133.0
+A04_S4_L001_R2_001.fastq.gz: mean = 91.1, median = 99.0
+A05_S5_L001_R1_001.fastq.gz: mean = 133.0, median = 132.0
+A05_S5_L001_R2_001.fastq.gz: mean = 89.3, median = 99.0
+A06_S6_L001_R1_001.fastq.gz: mean = 143.1, median = 150.0
+A06_S6_L001_R2_001.fastq.gz: mean = 91.9, median = 99.0
+A07_S7_L001_R1_001.fastq.gz: mean = 129.4, median = 125.0
+A07_S7_L001_R2_001.fastq.gz: mean = 88.4, median = 99.0
+A08_S8_L001_R1_001.fastq.gz: mean = 114.1, median = 102.0
+A08_S8_L001_R2_001.fastq.gz: mean = 82.9, median = 98.0
+A09_S9_L001_R1_001.fastq.gz: mean = 145.6, median = 157.0
+A09_S9_L001_R2_001.fastq.gz: mean = 91.9, median = 99.0
+A10_S10_L001_R1_001.fastq.gz: mean = 145.6, median = 153.0
+A10_S10_L001_R2_001.fastq.gz: mean = 92.9, median = 99.0
+A11_S11_L001_R1_001.fastq.gz: mean = 176.2, median = 199.0
+A11_S11_L001_R2_001.fastq.gz: mean = 96.2, median = 100.0
+A12_S12_L001_R1_001.fastq.gz: mean = 136.5, median = 139.0
+A12_S12_L001_R2_001.fastq.gz: mean = 89.2, median = 99.0
+B01_S13_L001_R1_001.fastq.gz: mean = 141.3, median = 148.0
+B01_S13_L001_R2_001.fastq.gz: mean = 90.8, median = 99.0
+B02_S14_L001_R1_001.fastq.gz: mean = 141.8, median = 152.0
+B02_S14_L001_R2_001.fastq.gz: mean = 90.2, median = 99.0
+B03_S15_L001_R1_001.fastq.gz: mean = 142.5, median = 154.0
+B03_S15_L001_R2_001.fastq.gz: mean = 90.5, median = 99.0
+B04_S16_L001_R1_001.fastq.gz: mean = 140.4, median = 148.0
+B04_S16_L001_R2_001.fastq.gz: mean = 90.1, median = 99.0
+B05_S17_L001_R1_001.fastq.gz: mean = 128.2, median = 124.0
+B05_S17_L001_R2_001.fastq.gz: mean = 88.0, median = 99.0
+B06_S18_L001_R1_001.fastq.gz: mean = 147.9, median = 156.0
+B06_S18_L001_R2_001.fastq.gz: mean = 93.9, median = 100.0
+B07_S19_L001_R1_001.fastq.gz: mean = 140.7, median = 144.0
+B07_S19_L001_R2_001.fastq.gz: mean = 92.0, median = 99.0
+B08_S20_L001_R1_001.fastq.gz: mean = 129.5, median = 126.0
+B08_S20_L001_R2_001.fastq.gz: mean = 88.3, median = 99.0
+B09_S21_L001_R1_001.fastq.gz: /scratch/prj/aef_forensic_metagenomics/scripts/helper_scripts/get_fastq_stats.sh: xrealloc: cannot allocate 18446744072070196864 bytes
+awk: cmd. line:19: fatal: division by zero attempted
+B09_S21_L001_R2_001.fastq.gz: mean = 88.5, median = 99.0
+B10_S22_L001_R1_001.fastq.gz: mean = 154.1, median = 175.0
+B10_S22_L001_R2_001.fastq.gz: mean = 94.0, median = 100.0
+B11_S23_L001_R1_001.fastq.gz: mean = 134.7, median = 137.0
+B11_S23_L001_R2_001.fastq.gz: mean = 88.4, median = 99.0
+B12_S24_L001_R1_001.fastq.gz: mean = 142.6, median = 153.0
+B12_S24_L001_R2_001.fastq.gz: mean = 90.7, median = 99.0
+Blank_S38_L001_R1_001.fastq.gz: mean = 153.8, median = 199.0
+Blank_S38_L001_R2_001.fastq.gz: mean = 86.1, median = 99.0
+C01_S25_L001_R1_001.fastq.gz: mean = 126.4, median = 121.0
+C01_S25_L001_R2_001.fastq.gz: mean = 87.6, median = 99.0
+C02_S26_L001_R1_001.fastq.gz: mean = 143.3, median = 153.0
+C02_S26_L001_R2_001.fastq.gz: mean = 91.1, median = 99.0
+C03_S27_L001_R1_001.fastq.gz: mean = 140.9, median = 145.0
+C03_S27_L001_R2_001.fastq.gz: mean = 91.6, median = 100.0
+C04_S28_L001_R1_001.fastq.gz: mean = 183.4, median = 199.0
+C04_S28_L001_R2_001.fastq.gz: mean = 98.1, median = 100.0
+C05_S29_L001_R1_001.fastq.gz: mean = 139.9, median = 145.0
+C05_S29_L001_R2_001.fastq.gz: mean = 90.4, median = 99.0
+C06_S30_L001_R1_001.fastq.gz: mean = 138.8, median = 142.0
+C06_S30_L001_R2_001.fastq.gz: mean = 90.7, median = 99.0
+C07_S31_L001_R1_001.fastq.gz: mean = 123.2, median = 114.0
+C07_S31_L001_R2_001.fastq.gz: mean = 84.8, median = 99.0
+C08_S32_L001_R1_001.fastq.gz: mean = 131.5, median = 129.0
+C08_S32_L001_R2_001.fastq.gz: mean = 89.0, median = 99.0
+C09_S33_L001_R1_001.fastq.gz: mean = 138.8, median = 147.0
+C09_S33_L001_R2_001.fastq.gz: mean = 88.6, median = 99.0
+C10_S34_L001_R1_001.fastq.gz: mean = 144.7, median = 152.0
+C10_S34_L001_R2_001.fastq.gz: mean = 92.5, median = 100.0
+C11_S35_L001_R1_001.fastq.gz: mean = 138.5, median = 141.0
+C11_S35_L001_R2_001.fastq.gz: mean = 91.2, median = 100.0
+C12_S36_L001_R1_001.fastq.gz: mean = 147.9, median = 168.0
+C12_S36_L001_R2_001.fastq.gz: mean = 91.5, median = 99.0
+ENC_S37_L001_R1_001.fastq.gz: mean = 139.1, median = 199.0
+ENC_S37_L001_R2_001.fastq.gz: mean = 80.6, median = 99.0
+A01_S1_R1_paired.fastq.gz: mean = 120.0, median = 113.0
+A01_S1_R2_paired.fastq.gz: mean = 82.3, median = 94.0
+A02_S2_R1_paired.fastq.gz: mean = 122.4, median = 117.0
+A02_S2_R2_paired.fastq.gz: mean = 84.7, median = 94.0
+A03_S3_R1_paired.fastq.gz: mean = 126.9, median = 123.0
+A03_S3_R2_paired.fastq.gz: mean = 85.5, median = 94.0
+A04_S4_R1_paired.fastq.gz: mean = 126.3, median = 122.0
+A04_S4_R2_paired.fastq.gz: mean = 85.7, median = 94.0
+A05_S5_R1_paired.fastq.gz: mean = 125.7, median = 122.0
+A05_S5_R2_paired.fastq.gz: mean = 84.5, median = 94.0
+A06_S6_R1_paired.fastq.gz: mean = 134.3, median = 136.0
+A06_S6_R2_paired.fastq.gz: mean = 86.5, median = 94.0
+A07_S7_R1_paired.fastq.gz: mean = 121.3, median = 115.0
+A07_S7_R2_paired.fastq.gz: mean = 83.4, median = 94.0
+A08_S8_R1_paired.fastq.gz: mean = 108.7, median = 97.0
+A08_S8_R2_paired.fastq.gz: mean = 79.2, median = 93.0
+A09_S9_R1_paired.fastq.gz: mean = 137.8, median = 144.0
+A09_S9_R2_paired.fastq.gz: mean = 86.7, median = 94.0
+A10_S10_R1_paired.fastq.gz: mean = 137.9, median = 142.0
+A10_S10_R2_paired.fastq.gz: mean = 87.7, median = 94.0
+A11_S11_R1_paired.fastq.gz: mean = 167.6, median = 194.0
+A11_S11_R2_paired.fastq.gz: mean = 90.5, median = 95.0
+A12_S12_R1_paired.fastq.gz: mean = 129.6, median = 129.0
+A12_S12_R2_paired.fastq.gz: mean = 84.7, median = 94.0
+B01_S13_R1_paired.fastq.gz: mean = 134.4, median = 137.0
+B01_S13_R2_paired.fastq.gz: mean = 86.0, median = 94.0
+B02_S14_R1_paired.fastq.gz: mean = 135.5, median = 141.0
+B02_S14_R2_paired.fastq.gz: mean = 85.5, median = 94.0
+B03_S15_R1_paired.fastq.gz: mean = 136.0, median = 142.0
+B03_S15_R2_paired.fastq.gz: mean = 85.7, median = 94.0
+B04_S16_R1_paired.fastq.gz: mean = 133.4, median = 136.0
+B04_S16_R2_paired.fastq.gz: mean = 85.4, median = 94.0
+B05_S17_R1_paired.fastq.gz: mean = 121.5, median = 115.0
+B05_S17_R2_paired.fastq.gz: mean = 83.4, median = 94.0
+B06_S18_R1_paired.fastq.gz: mean = 139.4, median = 143.0
+B06_S18_R2_paired.fastq.gz: mean = 88.5, median = 94.0
+B07_S19_R1_paired.fastq.gz: mean = 132.8, median = 133.0
+B07_S19_R2_paired.fastq.gz: mean = 86.8, median = 94.0
+B08_S20_R1_paired.fastq.gz: mean = 123.2, median = 118.0
+B08_S20_R2_paired.fastq.gz: mean = 83.9, median = 94.0
+B09_S21_R1_paired.fastq.gz: /scratch/prj/aef_forensic_metagenomics/scripts/helper_scripts/get_fastq_stats.sh: xrealloc: cannot allocate 18446744071858660992 bytes
+awk: cmd. line:19: fatal: division by zero attempted
+B09_S21_R2_paired.fastq.gz: mean = 84.0, median = 94.0
+B10_S22_R1_paired.fastq.gz: mean = 145.6, median = 159.0
+B10_S22_R2_paired.fastq.gz: mean = 88.5, median = 94.0
+B11_S23_R1_paired.fastq.gz: mean = 128.3, median = 128.0
+B11_S23_R2_paired.fastq.gz: mean = 83.7, median = 94.0
+B12_S24_R1_paired.fastq.gz: mean = 135.6, median = 141.0
+B12_S24_R2_paired.fastq.gz: mean = 85.8, median = 94.0
+Blank_S38_R1_paired.fastq.gz: mean = 71.8, median = 60.0
+Blank_S38_R2_paired.fastq.gz: mean = 64.1, median = 60.0
+C01_S25_R1_paired.fastq.gz: mean = 118.7, median = 112.0
+C01_S25_R2_paired.fastq.gz: mean = 83.2, median = 94.0
+C02_S26_R1_paired.fastq.gz: mean = 135.5, median = 140.0
+C02_S26_R2_paired.fastq.gz: mean = 86.2, median = 94.0
+C03_S27_R1_paired.fastq.gz: mean = 134.3, median = 135.0
+C03_S27_R2_paired.fastq.gz: mean = 86.8, median = 94.0
+C04_S28_R1_paired.fastq.gz: mean = 170.6, median = 194.0
+C04_S28_R2_paired.fastq.gz: mean = 91.8, median = 95.0
+C05_S29_R1_paired.fastq.gz: mean = 132.6, median = 134.0
+C05_S29_R2_paired.fastq.gz: mean = 85.5, median = 94.0
+C06_S30_R1_paired.fastq.gz: mean = 131.4, median = 131.0
+C06_S30_R2_paired.fastq.gz: mean = 85.7, median = 94.0
+C07_S31_R1_paired.fastq.gz: mean = 113.0, median = 102.0
+C07_S31_R2_paired.fastq.gz: mean = 80.5, median = 93.0
+C08_S32_R1_paired.fastq.gz: mean = 124.5, median = 120.0
+C08_S32_R2_paired.fastq.gz: mean = 84.2, median = 94.0
+C09_S33_R1_paired.fastq.gz: mean = 123.4, median = 119.0
+C09_S33_R2_paired.fastq.gz: mean = 83.4, median = 94.0
+C10_S34_R1_paired.fastq.gz: mean = 136.3, median = 139.0
+C10_S34_R2_paired.fastq.gz: mean = 87.4, median = 94.0
+C11_S35_R1_paired.fastq.gz: mean = 132.0, median = 132.0
+C11_S35_R2_paired.fastq.gz: mean = 86.4, median = 94.0
+C12_S36_R1_paired.fastq.gz: mean = 139.9, median = 150.0
+C12_S36_R2_paired.fastq.gz: mean = 86.7, median = 94.0
+ENC_S37_R1_paired.fastq.gz: mean = 83.3, median = 73.0
+ENC_S37_R2_paired.fastq.gz: mean = 71.5, median = 73.0
+✅ Statistics generated.
+
+================================================= METAGENOMIC ABUNDANCE ESTIMATION =================================================
+⚠️  This step assumes reads have already been trimmed with Trimmomatic and host DNA removed with Bowtie2. Processed reads must be in the correct directory.
+
+Processing sample: A01_S1
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/A01_S1_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/A01_S1_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/A01_S1_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/A01_S1_human.sam" 2>&1
+293151 reads; of these:
+  293151 (100.00%) were paired; of these:
+    239162 (81.58%) aligned concordantly 0 times
+    42620 (14.54%) aligned concordantly exactly 1 time
+    11369 (3.88%) aligned concordantly >1 times
+18.42% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/A01_S1.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/A01_S1_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/A01_S1_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/A01_S1.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/A01_S1_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/A01_S1_metagenomic.2" 2>&1
+Loading database information... done.
+239162 sequences (45.13 Mbp) processed in 1.062s (13507.7 Kseq/m, 2548.75 Mbp/m).
+  221357 sequences classified (92.56%)
+  17805 sequences unclassified (7.44%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/A01_S1.k2report -o ../long_SG/processed_data/metagenomic/bracken/A01_S1.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/A01_S1.k2report
+PROGRAM START TIME: 06-22-2025 23:31:31
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/A01_S1.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 2823 
+	  >> Number of species with reads > threshold: 138 
+	  >> Number of species with reads < threshold: 2685 
+    >>> Total reads in sample: 239162
+	  >> Total reads kept at species level (reads > threshold): 139202
+	  >> Total reads discarded (species reads < threshold): 8836
+	  >> Reads distributed: 72121
+	  >> Reads not distributed (eg. no species above threshold): 1198
+	  >> Unclassified reads: 17805
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/A01_S1.bracken
+PROGRAM END TIME: 06-22-2025 23:31:39
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/A01_S1.krona.html...
+✅  Krona plot generated.
+
+Processing sample: A02_S2
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/A02_S2_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/A02_S2_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/A02_S2_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/A02_S2_human.sam" 2>&1
+316938 reads; of these:
+  316938 (100.00%) were paired; of these:
+    285989 (90.23%) aligned concordantly 0 times
+    23795 (7.51%) aligned concordantly exactly 1 time
+    7154 (2.26%) aligned concordantly >1 times
+9.77% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/A02_S2.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/A02_S2_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/A02_S2_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/A02_S2.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/A02_S2_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/A02_S2_metagenomic.2" 2>&1
+Loading database information... done.
+285989 sequences (57.62 Mbp) processed in 1.274s (13473.4 Kseq/m, 2714.35 Mbp/m).
+  263308 sequences classified (92.07%)
+  22681 sequences unclassified (7.93%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/A02_S2.k2report -o ../long_SG/processed_data/metagenomic/bracken/A02_S2.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/A02_S2.k2report
+PROGRAM START TIME: 06-22-2025 23:34:15
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/A02_S2.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 3206 
+	  >> Number of species with reads > threshold: 197 
+	  >> Number of species with reads < threshold: 3009 
+    >>> Total reads in sample: 285989
+	  >> Total reads kept at species level (reads > threshold): 154910
+	  >> Total reads discarded (species reads < threshold): 10511
+	  >> Reads distributed: 96605
+	  >> Reads not distributed (eg. no species above threshold): 1282
+	  >> Unclassified reads: 22681
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/A02_S2.bracken
+PROGRAM END TIME: 06-22-2025 23:34:23
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/A02_S2.krona.html...
+✅  Krona plot generated.
+
+Processing sample: A03_S3
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/A03_S3_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/A03_S3_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/A03_S3_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/A03_S3_human.sam" 2>&1
+445137 reads; of these:
+  445137 (100.00%) were paired; of these:
+    356210 (80.02%) aligned concordantly 0 times
+    70312 (15.80%) aligned concordantly exactly 1 time
+    18615 (4.18%) aligned concordantly >1 times
+19.98% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/A03_S3.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/A03_S3_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/A03_S3_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/A03_S3.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/A03_S3_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/A03_S3_metagenomic.2" 2>&1
+Loading database information... done.
+356210 sequences (70.93 Mbp) processed in 1.541s (13868.4 Kseq/m, 2761.45 Mbp/m).
+  322315 sequences classified (90.48%)
+  33895 sequences unclassified (9.52%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/A03_S3.k2report -o ../long_SG/processed_data/metagenomic/bracken/A03_S3.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/A03_S3.k2report
+PROGRAM START TIME: 06-22-2025 23:37:34
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/A03_S3.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 4769 
+	  >> Number of species with reads > threshold: 155 
+	  >> Number of species with reads < threshold: 4614 
+    >>> Total reads in sample: 356210
+	  >> Total reads kept at species level (reads > threshold): 218061
+	  >> Total reads discarded (species reads < threshold): 13860
+	  >> Reads distributed: 88037
+	  >> Reads not distributed (eg. no species above threshold): 2357
+	  >> Unclassified reads: 33895
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/A03_S3.bracken
+PROGRAM END TIME: 06-22-2025 23:37:43
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/A03_S3.krona.html...
+✅  Krona plot generated.
+
+Processing sample: A04_S4
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/A04_S4_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/A04_S4_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/A04_S4_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/A04_S4_human.sam" 2>&1
+461907 reads; of these:
+  461907 (100.00%) were paired; of these:
+    373322 (80.82%) aligned concordantly 0 times
+    69867 (15.13%) aligned concordantly exactly 1 time
+    18718 (4.05%) aligned concordantly >1 times
+19.18% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/A04_S4.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/A04_S4_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/A04_S4_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/A04_S4.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/A04_S4_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/A04_S4_metagenomic.2" 2>&1
+Loading database information... done.
+373322 sequences (74.57 Mbp) processed in 1.473s (15211.0 Kseq/m, 3038.41 Mbp/m).
+  343205 sequences classified (91.93%)
+  30117 sequences unclassified (8.07%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/A04_S4.k2report -o ../long_SG/processed_data/metagenomic/bracken/A04_S4.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/A04_S4.k2report
+PROGRAM START TIME: 06-22-2025 23:41:03
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/A04_S4.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 4283 
+	  >> Number of species with reads > threshold: 180 
+	  >> Number of species with reads < threshold: 4103 
+    >>> Total reads in sample: 373322
+	  >> Total reads kept at species level (reads > threshold): 236287
+	  >> Total reads discarded (species reads < threshold): 12826
+	  >> Reads distributed: 91968
+	  >> Reads not distributed (eg. no species above threshold): 2124
+	  >> Unclassified reads: 30117
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/A04_S4.bracken
+PROGRAM END TIME: 06-22-2025 23:41:10
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/A04_S4.krona.html...
+✅  Krona plot generated.
+
+Processing sample: A05_S5
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/A05_S5_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/A05_S5_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/A05_S5_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/A05_S5_human.sam" 2>&1
+393440 reads; of these:
+  393440 (100.00%) were paired; of these:
+    312314 (79.38%) aligned concordantly 0 times
+    64298 (16.34%) aligned concordantly exactly 1 time
+    16828 (4.28%) aligned concordantly >1 times
+20.62% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/A05_S5.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/A05_S5_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/A05_S5_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/A05_S5.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/A05_S5_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/A05_S5_metagenomic.2" 2>&1
+Loading database information... done.
+312314 sequences (61.23 Mbp) processed in 1.598s (11729.0 Kseq/m, 2299.33 Mbp/m).
+  289764 sequences classified (92.78%)
+  22550 sequences unclassified (7.22%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/A05_S5.k2report -o ../long_SG/processed_data/metagenomic/bracken/A05_S5.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/A05_S5.k2report
+PROGRAM START TIME: 06-22-2025 23:44:09
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/A05_S5.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 2984 
+	  >> Number of species with reads > threshold: 151 
+	  >> Number of species with reads < threshold: 2833 
+    >>> Total reads in sample: 312314
+	  >> Total reads kept at species level (reads > threshold): 201736
+	  >> Total reads discarded (species reads < threshold): 8460
+	  >> Reads distributed: 78152
+	  >> Reads not distributed (eg. no species above threshold): 1416
+	  >> Unclassified reads: 22550
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/A05_S5.bracken
+PROGRAM END TIME: 06-22-2025 23:44:17
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/A05_S5.krona.html...
+✅  Krona plot generated.
+
+Processing sample: A06_S6
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/A06_S6_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/A06_S6_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/A06_S6_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/A06_S6_human.sam" 2>&1
+227113 reads; of these:
+  227113 (100.00%) were paired; of these:
+    166792 (73.44%) aligned concordantly 0 times
+    48848 (21.51%) aligned concordantly exactly 1 time
+    11473 (5.05%) aligned concordantly >1 times
+26.56% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/A06_S6.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/A06_S6_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/A06_S6_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/A06_S6.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/A06_S6_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/A06_S6_metagenomic.2" 2>&1
+Loading database information... done.
+166792 sequences (33.88 Mbp) processed in 0.888s (11269.0 Kseq/m, 2288.92 Mbp/m).
+  151335 sequences classified (90.73%)
+  15457 sequences unclassified (9.27%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/A06_S6.k2report -o ../long_SG/processed_data/metagenomic/bracken/A06_S6.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/A06_S6.k2report
+PROGRAM START TIME: 06-22-2025 23:47:01
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/A06_S6.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 2910 
+	  >> Number of species with reads > threshold: 81 
+	  >> Number of species with reads < threshold: 2829 
+    >>> Total reads in sample: 166792
+	  >> Total reads kept at species level (reads > threshold): 102166
+	  >> Total reads discarded (species reads < threshold): 7919
+	  >> Reads distributed: 39846
+	  >> Reads not distributed (eg. no species above threshold): 1404
+	  >> Unclassified reads: 15457
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/A06_S6.bracken
+PROGRAM END TIME: 06-22-2025 23:47:09
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/A06_S6.krona.html...
+✅  Krona plot generated.
+
+Processing sample: A07_S7
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/A07_S7_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/A07_S7_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/A07_S7_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/A07_S7_human.sam" 2>&1
+269913 reads; of these:
+  269913 (100.00%) were paired; of these:
+    228051 (84.49%) aligned concordantly 0 times
+    32721 (12.12%) aligned concordantly exactly 1 time
+    9141 (3.39%) aligned concordantly >1 times
+15.51% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/A07_S7.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/A07_S7_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/A07_S7_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/A07_S7.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/A07_S7_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/A07_S7_metagenomic.2" 2>&1
+Loading database information... done.
+228051 sequences (44.26 Mbp) processed in 0.916s (14938.8 Kseq/m, 2899.42 Mbp/m).
+  199100 sequences classified (87.31%)
+  28951 sequences unclassified (12.69%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/A07_S7.k2report -o ../long_SG/processed_data/metagenomic/bracken/A07_S7.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/A07_S7.k2report
+PROGRAM START TIME: 06-22-2025 23:49:42
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/A07_S7.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 3979 
+	  >> Number of species with reads > threshold: 134 
+	  >> Number of species with reads < threshold: 3845 
+    >>> Total reads in sample: 228051
+	  >> Total reads kept at species level (reads > threshold): 125702
+	  >> Total reads discarded (species reads < threshold): 12864
+	  >> Reads distributed: 57979
+	  >> Reads not distributed (eg. no species above threshold): 2555
+	  >> Unclassified reads: 28951
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/A07_S7.bracken
+PROGRAM END TIME: 06-22-2025 23:49:50
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/A07_S7.krona.html...
+✅  Krona plot generated.
+
+Processing sample: A08_S8
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/A08_S8_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/A08_S8_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/A08_S8_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/A08_S8_human.sam" 2>&1
+395815 reads; of these:
+  395815 (100.00%) were paired; of these:
+    340705 (86.08%) aligned concordantly 0 times
+    41388 (10.46%) aligned concordantly exactly 1 time
+    13722 (3.47%) aligned concordantly >1 times
+13.92% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/A08_S8.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/A08_S8_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/A08_S8_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/A08_S8.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/A08_S8_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/A08_S8_metagenomic.2" 2>&1
+Loading database information... done.
+340705 sequences (60.45 Mbp) processed in 1.269s (16103.1 Kseq/m, 2857.24 Mbp/m).
+  311939 sequences classified (91.56%)
+  28766 sequences unclassified (8.44%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/A08_S8.k2report -o ../long_SG/processed_data/metagenomic/bracken/A08_S8.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/A08_S8.k2report
+PROGRAM START TIME: 06-22-2025 23:52:50
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/A08_S8.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 3117 
+	  >> Number of species with reads > threshold: 137 
+	  >> Number of species with reads < threshold: 2980 
+    >>> Total reads in sample: 340705
+	  >> Total reads kept at species level (reads > threshold): 203280
+	  >> Total reads discarded (species reads < threshold): 9393
+	  >> Reads distributed: 97823
+	  >> Reads not distributed (eg. no species above threshold): 1443
+	  >> Unclassified reads: 28766
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/A08_S8.bracken
+PROGRAM END TIME: 06-22-2025 23:52:59
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/A08_S8.krona.html...
+✅  Krona plot generated.
+
+Processing sample: A09_S9
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/A09_S9_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/A09_S9_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/A09_S9_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/A09_S9_human.sam" 2>&1
+272411 reads; of these:
+  272411 (100.00%) were paired; of these:
+    196997 (72.32%) aligned concordantly 0 times
+    61520 (22.58%) aligned concordantly exactly 1 time
+    13894 (5.10%) aligned concordantly >1 times
+27.68% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/A09_S9.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/A09_S9_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/A09_S9_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/A09_S9.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/A09_S9_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/A09_S9_metagenomic.2" 2>&1
+Loading database information... done.
+196997 sequences (40.69 Mbp) processed in 0.851s (13894.0 Kseq/m, 2869.81 Mbp/m).
+  182353 sequences classified (92.57%)
+  14644 sequences unclassified (7.43%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/A09_S9.k2report -o ../long_SG/processed_data/metagenomic/bracken/A09_S9.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/A09_S9.k2report
+PROGRAM START TIME: 06-22-2025 23:55:41
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/A09_S9.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 2708 
+	  >> Number of species with reads > threshold: 111 
+	  >> Number of species with reads < threshold: 2597 
+    >>> Total reads in sample: 196997
+	  >> Total reads kept at species level (reads > threshold): 125811
+	  >> Total reads discarded (species reads < threshold): 7941
+	  >> Reads distributed: 47227
+	  >> Reads not distributed (eg. no species above threshold): 1374
+	  >> Unclassified reads: 14644
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/A09_S9.bracken
+PROGRAM END TIME: 06-22-2025 23:55:49
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/A09_S9.krona.html...
+✅  Krona plot generated.
+
+Processing sample: A10_S10
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/A10_S10_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/A10_S10_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/A10_S10_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/A10_S10_human.sam" 2>&1
+312574 reads; of these:
+  312574 (100.00%) were paired; of these:
+    246215 (78.77%) aligned concordantly 0 times
+    53980 (17.27%) aligned concordantly exactly 1 time
+    12379 (3.96%) aligned concordantly >1 times
+21.23% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/A10_S10.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/A10_S10_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/A10_S10_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/A10_S10.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/A10_S10_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/A10_S10_metagenomic.2" 2>&1
+Loading database information... done.
+246215 sequences (52.56 Mbp) processed in 1.149s (12859.8 Kseq/m, 2744.95 Mbp/m).
+  215480 sequences classified (87.52%)
+  30735 sequences unclassified (12.48%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/A10_S10.k2report -o ../long_SG/processed_data/metagenomic/bracken/A10_S10.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/A10_S10.k2report
+PROGRAM START TIME: 06-22-2025 23:58:36
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/A10_S10.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 4351 
+	  >> Number of species with reads > threshold: 134 
+	  >> Number of species with reads < threshold: 4217 
+    >>> Total reads in sample: 246215
+	  >> Total reads kept at species level (reads > threshold): 152091
+	  >> Total reads discarded (species reads < threshold): 12861
+	  >> Reads distributed: 48334
+	  >> Reads not distributed (eg. no species above threshold): 2194
+	  >> Unclassified reads: 30735
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/A10_S10.bracken
+PROGRAM END TIME: 06-22-2025 23:58:45
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/A10_S10.krona.html...
+✅  Krona plot generated.
+
+Processing sample: A11_S11
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/A11_S11_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/A11_S11_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/A11_S11_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/A11_S11_human.sam" 2>&1
+127650 reads; of these:
+  127650 (100.00%) were paired; of these:
+    72433 (56.74%) aligned concordantly 0 times
+    46518 (36.44%) aligned concordantly exactly 1 time
+    8699 (6.81%) aligned concordantly >1 times
+43.26% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/A11_S11.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/A11_S11_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/A11_S11_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/A11_S11.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/A11_S11_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/A11_S11_metagenomic.2" 2>&1
+Loading database information... done.
+72433 sequences (17.50 Mbp) processed in 0.588s (7394.8 Kseq/m, 1786.54 Mbp/m).
+  63391 sequences classified (87.52%)
+  9042 sequences unclassified (12.48%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/A11_S11.k2report -o ../long_SG/processed_data/metagenomic/bracken/A11_S11.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/A11_S11.k2report
+PROGRAM START TIME: 06-23-2025 00:01:11
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/A11_S11.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 2468 
+	  >> Number of species with reads > threshold: 84 
+	  >> Number of species with reads < threshold: 2384 
+    >>> Total reads in sample: 72433
+	  >> Total reads kept at species level (reads > threshold): 44281
+	  >> Total reads discarded (species reads < threshold): 6559
+	  >> Reads distributed: 11652
+	  >> Reads not distributed (eg. no species above threshold): 899
+	  >> Unclassified reads: 9042
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/A11_S11.bracken
+PROGRAM END TIME: 06-23-2025 00:01:20
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/A11_S11.krona.html...
+✅  Krona plot generated.
+
+Processing sample: A12_S12
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/A12_S12_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/A12_S12_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/A12_S12_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/A12_S12_human.sam" 2>&1
+543666 reads; of these:
+  543666 (100.00%) were paired; of these:
+    416752 (76.66%) aligned concordantly 0 times
+    101635 (18.69%) aligned concordantly exactly 1 time
+    25279 (4.65%) aligned concordantly >1 times
+23.34% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/A12_S12.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/A12_S12_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/A12_S12_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/A12_S12.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/A12_S12_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/A12_S12_metagenomic.2" 2>&1
+Loading database information... done.
+416752 sequences (82.53 Mbp) processed in 1.726s (14486.9 Kseq/m, 2868.89 Mbp/m).
+  380909 sequences classified (91.40%)
+  35843 sequences unclassified (8.60%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/A12_S12.k2report -o ../long_SG/processed_data/metagenomic/bracken/A12_S12.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/A12_S12.k2report
+PROGRAM START TIME: 06-23-2025 00:04:42
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/A12_S12.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 4482 
+	  >> Number of species with reads > threshold: 174 
+	  >> Number of species with reads < threshold: 4308 
+    >>> Total reads in sample: 416752
+	  >> Total reads kept at species level (reads > threshold): 266902
+	  >> Total reads discarded (species reads < threshold): 12216
+	  >> Reads distributed: 100002
+	  >> Reads not distributed (eg. no species above threshold): 1789
+	  >> Unclassified reads: 35843
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/A12_S12.bracken
+PROGRAM END TIME: 06-23-2025 00:04:51
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/A12_S12.krona.html...
+✅  Krona plot generated.
+
+Processing sample: B01_S13
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/B01_S13_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/B01_S13_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/B01_S13_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/B01_S13_human.sam" 2>&1
+371765 reads; of these:
+  371765 (100.00%) were paired; of these:
+    299614 (80.59%) aligned concordantly 0 times
+    57949 (15.59%) aligned concordantly exactly 1 time
+    14202 (3.82%) aligned concordantly >1 times
+19.41% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/B01_S13.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/B01_S13_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/B01_S13_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/B01_S13.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/B01_S13_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/B01_S13_metagenomic.2" 2>&1
+Loading database information... done.
+299614 sequences (62.45 Mbp) processed in 1.309s (13738.4 Kseq/m, 2863.54 Mbp/m).
+  252177 sequences classified (84.17%)
+  47437 sequences unclassified (15.83%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/B01_S13.k2report -o ../long_SG/processed_data/metagenomic/bracken/B01_S13.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/B01_S13.k2report
+PROGRAM START TIME: 06-23-2025 00:07:45
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/B01_S13.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 3688 
+	  >> Number of species with reads > threshold: 147 
+	  >> Number of species with reads < threshold: 3541 
+    >>> Total reads in sample: 299614
+	  >> Total reads kept at species level (reads > threshold): 184485
+	  >> Total reads discarded (species reads < threshold): 10347
+	  >> Reads distributed: 55598
+	  >> Reads not distributed (eg. no species above threshold): 1747
+	  >> Unclassified reads: 47437
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/B01_S13.bracken
+PROGRAM END TIME: 06-23-2025 00:07:54
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/B01_S13.krona.html...
+✅  Krona plot generated.
+
+Processing sample: B02_S14
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/B02_S14_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/B02_S14_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/B02_S14_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/B02_S14_human.sam" 2>&1
+353781 reads; of these:
+  353781 (100.00%) were paired; of these:
+    299459 (84.65%) aligned concordantly 0 times
+    43065 (12.17%) aligned concordantly exactly 1 time
+    11257 (3.18%) aligned concordantly >1 times
+15.35% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/B02_S14.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/B02_S14_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/B02_S14_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/B02_S14.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/B02_S14_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/B02_S14_metagenomic.2" 2>&1
+Loading database information... done.
+299459 sequences (63.58 Mbp) processed in 1.215s (14783.9 Kseq/m, 3138.71 Mbp/m).
+  279372 sequences classified (93.29%)
+  20087 sequences unclassified (6.71%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/B02_S14.k2report -o ../long_SG/processed_data/metagenomic/bracken/B02_S14.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/B02_S14.k2report
+PROGRAM START TIME: 06-23-2025 00:10:29
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/B02_S14.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 1997 
+	  >> Number of species with reads > threshold: 66 
+	  >> Number of species with reads < threshold: 1931 
+    >>> Total reads in sample: 299459
+	  >> Total reads kept at species level (reads > threshold): 231608
+	  >> Total reads discarded (species reads < threshold): 5255
+	  >> Reads distributed: 41674
+	  >> Reads not distributed (eg. no species above threshold): 835
+	  >> Unclassified reads: 20087
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/B02_S14.bracken
+PROGRAM END TIME: 06-23-2025 00:10:37
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/B02_S14.krona.html...
+✅  Krona plot generated.
+
+Processing sample: B03_S15
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/B03_S15_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/B03_S15_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/B03_S15_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/B03_S15_human.sam" 2>&1
+320783 reads; of these:
+  320783 (100.00%) were paired; of these:
+    257939 (80.41%) aligned concordantly 0 times
+    49802 (15.53%) aligned concordantly exactly 1 time
+    13042 (4.07%) aligned concordantly >1 times
+19.59% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/B03_S15.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/B03_S15_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/B03_S15_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/B03_S15.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/B03_S15_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/B03_S15_metagenomic.2" 2>&1
+Loading database information... done.
+257939 sequences (54.19 Mbp) processed in 1.137s (13615.4 Kseq/m, 2860.55 Mbp/m).
+  230943 sequences classified (89.53%)
+  26996 sequences unclassified (10.47%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/B03_S15.k2report -o ../long_SG/processed_data/metagenomic/bracken/B03_S15.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/B03_S15.k2report
+PROGRAM START TIME: 06-23-2025 00:13:22
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/B03_S15.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 2520 
+	  >> Number of species with reads > threshold: 87 
+	  >> Number of species with reads < threshold: 2433 
+    >>> Total reads in sample: 257939
+	  >> Total reads kept at species level (reads > threshold): 177174
+	  >> Total reads discarded (species reads < threshold): 7031
+	  >> Reads distributed: 45366
+	  >> Reads not distributed (eg. no species above threshold): 1372
+	  >> Unclassified reads: 26996
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/B03_S15.bracken
+PROGRAM END TIME: 06-23-2025 00:13:29
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/B03_S15.krona.html...
+✅  Krona plot generated.
+
+Processing sample: B04_S16
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/B04_S16_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/B04_S16_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/B04_S16_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/B04_S16_human.sam" 2>&1
+246680 reads; of these:
+  246680 (100.00%) were paired; of these:
+    199744 (80.97%) aligned concordantly 0 times
+    37479 (15.19%) aligned concordantly exactly 1 time
+    9457 (3.83%) aligned concordantly >1 times
+19.03% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/B04_S16.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/B04_S16_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/B04_S16_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/B04_S16.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/B04_S16_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/B04_S16_metagenomic.2" 2>&1
+Loading database information... done.
+199744 sequences (41.33 Mbp) processed in 0.913s (13123.0 Kseq/m, 2715.24 Mbp/m).
+  179900 sequences classified (90.07%)
+  19844 sequences unclassified (9.93%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/B04_S16.k2report -o ../long_SG/processed_data/metagenomic/bracken/B04_S16.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/B04_S16.k2report
+PROGRAM START TIME: 06-23-2025 00:15:59
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/B04_S16.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 2559 
+	  >> Number of species with reads > threshold: 71 
+	  >> Number of species with reads < threshold: 2488 
+    >>> Total reads in sample: 199744
+	  >> Total reads kept at species level (reads > threshold): 138448
+	  >> Total reads discarded (species reads < threshold): 6652
+	  >> Reads distributed: 33457
+	  >> Reads not distributed (eg. no species above threshold): 1343
+	  >> Unclassified reads: 19844
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/B04_S16.bracken
+PROGRAM END TIME: 06-23-2025 00:16:07
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/B04_S16.krona.html...
+✅  Krona plot generated.
+
+Processing sample: B05_S17
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/B05_S17_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/B05_S17_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/B05_S17_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/B05_S17_human.sam" 2>&1
+723778 reads; of these:
+  723778 (100.00%) were paired; of these:
+    616107 (85.12%) aligned concordantly 0 times
+    81718 (11.29%) aligned concordantly exactly 1 time
+    25953 (3.59%) aligned concordantly >1 times
+14.88% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/B05_S17.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/B05_S17_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/B05_S17_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/B05_S17.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/B05_S17_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/B05_S17_metagenomic.2" 2>&1
+Loading database information... done.
+616107 sequences (120.41 Mbp) processed in 2.110s (17515.9 Kseq/m, 3423.36 Mbp/m).
+  572160 sequences classified (92.87%)
+  43947 sequences unclassified (7.13%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/B05_S17.k2report -o ../long_SG/processed_data/metagenomic/bracken/B05_S17.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/B05_S17.k2report
+PROGRAM START TIME: 06-23-2025 00:19:54
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/B05_S17.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 3318 
+	  >> Number of species with reads > threshold: 120 
+	  >> Number of species with reads < threshold: 3198 
+    >>> Total reads in sample: 616107
+	  >> Total reads kept at species level (reads > threshold): 433803
+	  >> Total reads discarded (species reads < threshold): 8588
+	  >> Reads distributed: 128139
+	  >> Reads not distributed (eg. no species above threshold): 1630
+	  >> Unclassified reads: 43947
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/B05_S17.bracken
+PROGRAM END TIME: 06-23-2025 00:20:03
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/B05_S17.krona.html...
+✅  Krona plot generated.
+
+Processing sample: B06_S18
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/B06_S18_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/B06_S18_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/B06_S18_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/B06_S18_human.sam" 2>&1
+367081 reads; of these:
+  367081 (100.00%) were paired; of these:
+    302965 (82.53%) aligned concordantly 0 times
+    51667 (14.08%) aligned concordantly exactly 1 time
+    12449 (3.39%) aligned concordantly >1 times
+17.47% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/B06_S18.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/B06_S18_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/B06_S18_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/B06_S18.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/B06_S18_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/B06_S18_metagenomic.2" 2>&1
+Loading database information... done.
+302965 sequences (66.34 Mbp) processed in 1.356s (13403.2 Kseq/m, 2934.85 Mbp/m).
+  268862 sequences classified (88.74%)
+  34103 sequences unclassified (11.26%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/B06_S18.k2report -o ../long_SG/processed_data/metagenomic/bracken/B06_S18.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/B06_S18.k2report
+PROGRAM START TIME: 06-23-2025 00:22:55
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/B06_S18.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 3063 
+	  >> Number of species with reads > threshold: 103 
+	  >> Number of species with reads < threshold: 2960 
+    >>> Total reads in sample: 302965
+	  >> Total reads kept at species level (reads > threshold): 211811
+	  >> Total reads discarded (species reads < threshold): 7608
+	  >> Reads distributed: 47982
+	  >> Reads not distributed (eg. no species above threshold): 1461
+	  >> Unclassified reads: 34103
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/B06_S18.bracken
+PROGRAM END TIME: 06-23-2025 00:23:03
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/B06_S18.krona.html...
+✅  Krona plot generated.
+
+Processing sample: B07_S19
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/B07_S19_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/B07_S19_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/B07_S19_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/B07_S19_human.sam" 2>&1
+537144 reads; of these:
+  537144 (100.00%) were paired; of these:
+    456779 (85.04%) aligned concordantly 0 times
+    62920 (11.71%) aligned concordantly exactly 1 time
+    17445 (3.25%) aligned concordantly >1 times
+14.96% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/B07_S19.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/B07_S19_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/B07_S19_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/B07_S19.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/B07_S19_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/B07_S19_metagenomic.2" 2>&1
+Loading database information... done.
+456779 sequences (96.59 Mbp) processed in 1.830s (14975.8 Kseq/m, 3166.76 Mbp/m).
+  410158 sequences classified (89.79%)
+  46621 sequences unclassified (10.21%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/B07_S19.k2report -o ../long_SG/processed_data/metagenomic/bracken/B07_S19.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/B07_S19.k2report
+PROGRAM START TIME: 06-23-2025 00:26:05
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/B07_S19.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 3693 
+	  >> Number of species with reads > threshold: 140 
+	  >> Number of species with reads < threshold: 3553 
+    >>> Total reads in sample: 456779
+	  >> Total reads kept at species level (reads > threshold): 321200
+	  >> Total reads discarded (species reads < threshold): 10199
+	  >> Reads distributed: 76865
+	  >> Reads not distributed (eg. no species above threshold): 1894
+	  >> Unclassified reads: 46621
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/B07_S19.bracken
+PROGRAM END TIME: 06-23-2025 00:26:14
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/B07_S19.krona.html...
+✅  Krona plot generated.
+
+Processing sample: B08_S20
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/B08_S20_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/B08_S20_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/B08_S20_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/B08_S20_human.sam" 2>&1
+396187 reads; of these:
+  396187 (100.00%) were paired; of these:
+    353632 (89.26%) aligned concordantly 0 times
+    32304 (8.15%) aligned concordantly exactly 1 time
+    10251 (2.59%) aligned concordantly >1 times
+10.74% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/B08_S20.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/B08_S20_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/B08_S20_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/B08_S20.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/B08_S20_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/B08_S20_metagenomic.2" 2>&1
+Loading database information... done.
+353632 sequences (71.07 Mbp) processed in 1.381s (15369.3 Kseq/m, 3088.59 Mbp/m).
+  326582 sequences classified (92.35%)
+  27050 sequences unclassified (7.65%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/B08_S20.k2report -o ../long_SG/processed_data/metagenomic/bracken/B08_S20.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/B08_S20.k2report
+PROGRAM START TIME: 06-23-2025 00:29:03
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/B08_S20.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 2368 
+	  >> Number of species with reads > threshold: 76 
+	  >> Number of species with reads < threshold: 2292 
+    >>> Total reads in sample: 353632
+	  >> Total reads kept at species level (reads > threshold): 263097
+	  >> Total reads discarded (species reads < threshold): 6414
+	  >> Reads distributed: 55819
+	  >> Reads not distributed (eg. no species above threshold): 1252
+	  >> Unclassified reads: 27050
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/B08_S20.bracken
+PROGRAM END TIME: 06-23-2025 00:29:12
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/B08_S20.krona.html...
+✅  Krona plot generated.
+
+Processing sample: B09_S21
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/B09_S21_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/B09_S21_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/B09_S21_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/B09_S21_human.sam" 2>&1
+3848521 reads; of these:
+  3848521 (100.00%) were paired; of these:
+    3444871 (89.51%) aligned concordantly 0 times
+    299715 (7.79%) aligned concordantly exactly 1 time
+    103935 (2.70%) aligned concordantly >1 times
+10.49% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/B09_S21.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/B09_S21_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/B09_S21_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/B09_S21.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/B09_S21_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/B09_S21_metagenomic.2" 2>&1
+Loading database information... done.
+3444871 sequences (688.28 Mbp) processed in 11.669s (17713.6 Kseq/m, 3539.16 Mbp/m).
+  3204237 sequences classified (93.01%)
+  240634 sequences unclassified (6.99%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/B09_S21.k2report -o ../long_SG/processed_data/metagenomic/bracken/B09_S21.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/B09_S21.k2report
+PROGRAM START TIME: 06-23-2025 00:38:40
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/B09_S21.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 7822 
+	  >> Number of species with reads > threshold: 315 
+	  >> Number of species with reads < threshold: 7507 
+    >>> Total reads in sample: 3444871
+	  >> Total reads kept at species level (reads > threshold): 2557570
+	  >> Total reads discarded (species reads < threshold): 27086
+	  >> Reads distributed: 615435
+	  >> Reads not distributed (eg. no species above threshold): 4146
+	  >> Unclassified reads: 240634
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/B09_S21.bracken
+PROGRAM END TIME: 06-23-2025 00:38:49
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/B09_S21.krona.html...
+✅  Krona plot generated.
+
+Processing sample: B10_S22
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/B10_S22_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/B10_S22_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/B10_S22_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/B10_S22_human.sam" 2>&1
+275305 reads; of these:
+  275305 (100.00%) were paired; of these:
+    216147 (78.51%) aligned concordantly 0 times
+    48362 (17.57%) aligned concordantly exactly 1 time
+    10796 (3.92%) aligned concordantly >1 times
+21.49% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/B10_S22.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/B10_S22_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/B10_S22_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/B10_S22.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/B10_S22_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/B10_S22_metagenomic.2" 2>&1
+Loading database information... done.
+216147 sequences (48.29 Mbp) processed in 1.070s (12122.0 Kseq/m, 2708.21 Mbp/m).
+  198729 sequences classified (91.94%)
+  17418 sequences unclassified (8.06%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/B10_S22.k2report -o ../long_SG/processed_data/metagenomic/bracken/B10_S22.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/B10_S22.k2report
+PROGRAM START TIME: 06-23-2025 00:41:30
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/B10_S22.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 1906 
+	  >> Number of species with reads > threshold: 83 
+	  >> Number of species with reads < threshold: 1823 
+    >>> Total reads in sample: 216147
+	  >> Total reads kept at species level (reads > threshold): 160972
+	  >> Total reads discarded (species reads < threshold): 4858
+	  >> Reads distributed: 32207
+	  >> Reads not distributed (eg. no species above threshold): 692
+	  >> Unclassified reads: 17418
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/B10_S22.bracken
+PROGRAM END TIME: 06-23-2025 00:41:39
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/B10_S22.krona.html...
+✅  Krona plot generated.
+
+Processing sample: B11_S23
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/B11_S23_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/B11_S23_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/B11_S23_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/B11_S23_human.sam" 2>&1
+484413 reads; of these:
+  484413 (100.00%) were paired; of these:
+    382629 (78.99%) aligned concordantly 0 times
+    79786 (16.47%) aligned concordantly exactly 1 time
+    21998 (4.54%) aligned concordantly >1 times
+21.01% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/B11_S23.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/B11_S23_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/B11_S23_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/B11_S23.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/B11_S23_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/B11_S23_metagenomic.2" 2>&1
+Loading database information... done.
+382629 sequences (75.67 Mbp) processed in 1.512s (15184.5 Kseq/m, 3002.99 Mbp/m).
+  352102 sequences classified (92.02%)
+  30527 sequences unclassified (7.98%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/B11_S23.k2report -o ../long_SG/processed_data/metagenomic/bracken/B11_S23.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/B11_S23.k2report
+PROGRAM START TIME: 06-23-2025 00:44:56
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/B11_S23.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 2510 
+	  >> Number of species with reads > threshold: 78 
+	  >> Number of species with reads < threshold: 2432 
+    >>> Total reads in sample: 382629
+	  >> Total reads kept at species level (reads > threshold): 265148
+	  >> Total reads discarded (species reads < threshold): 6265
+	  >> Reads distributed: 79594
+	  >> Reads not distributed (eg. no species above threshold): 1095
+	  >> Unclassified reads: 30527
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/B11_S23.bracken
+PROGRAM END TIME: 06-23-2025 00:45:05
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/B11_S23.krona.html...
+✅  Krona plot generated.
+
+Processing sample: B12_S24
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/B12_S24_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/B12_S24_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/B12_S24_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/B12_S24_human.sam" 2>&1
+361304 reads; of these:
+  361304 (100.00%) were paired; of these:
+    270997 (75.01%) aligned concordantly 0 times
+    71857 (19.89%) aligned concordantly exactly 1 time
+    18450 (5.11%) aligned concordantly >1 times
+24.99% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/B12_S24.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/B12_S24_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/B12_S24_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/B12_S24.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/B12_S24_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/B12_S24_metagenomic.2" 2>&1
+Loading database information... done.
+270997 sequences (55.65 Mbp) processed in 1.148s (14159.8 Kseq/m, 2907.60 Mbp/m).
+  252885 sequences classified (93.32%)
+  18112 sequences unclassified (6.68%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/B12_S24.k2report -o ../long_SG/processed_data/metagenomic/bracken/B12_S24.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/B12_S24.k2report
+PROGRAM START TIME: 06-23-2025 00:48:07
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/B12_S24.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 1854 
+	  >> Number of species with reads > threshold: 65 
+	  >> Number of species with reads < threshold: 1789 
+    >>> Total reads in sample: 270997
+	  >> Total reads kept at species level (reads > threshold): 190075
+	  >> Total reads discarded (species reads < threshold): 5046
+	  >> Reads distributed: 57003
+	  >> Reads not distributed (eg. no species above threshold): 761
+	  >> Unclassified reads: 18112
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/B12_S24.bracken
+PROGRAM END TIME: 06-23-2025 00:48:16
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/B12_S24.krona.html...
+✅  Krona plot generated.
+
+Processing sample: Blank_S38
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/Blank_S38_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/Blank_S38_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/Blank_S38_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/Blank_S38_human.sam" 2>&1
+20743 reads; of these:
+  20743 (100.00%) were paired; of these:
+    20512 (98.89%) aligned concordantly 0 times
+    180 (0.87%) aligned concordantly exactly 1 time
+    51 (0.25%) aligned concordantly >1 times
+1.11% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/Blank_S38.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/Blank_S38_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/Blank_S38_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/Blank_S38.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/Blank_S38_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/Blank_S38_metagenomic.2" 2>&1
+Loading database information... done.
+20512 sequences (2.76 Mbp) processed in 0.175s (7046.4 Kseq/m, 947.50 Mbp/m).
+  7891 sequences classified (38.47%)
+  12621 sequences unclassified (61.53%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/Blank_S38.k2report -o ../long_SG/processed_data/metagenomic/bracken/Blank_S38.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/Blank_S38.k2report
+PROGRAM START TIME: 06-23-2025 00:50:23
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/Blank_S38.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 656 
+	  >> Number of species with reads > threshold: 7 
+	  >> Number of species with reads < threshold: 649 
+    >>> Total reads in sample: 20512
+	  >> Total reads kept at species level (reads > threshold): 5503
+	  >> Total reads discarded (species reads < threshold): 1208
+	  >> Reads distributed: 865
+	  >> Reads not distributed (eg. no species above threshold): 315
+	  >> Unclassified reads: 12621
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/Blank_S38.bracken
+PROGRAM END TIME: 06-23-2025 00:50:33
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/Blank_S38.krona.html...
+✅  Krona plot generated.
+
+Processing sample: C01_S25
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/C01_S25_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/C01_S25_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/C01_S25_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/C01_S25_human.sam" 2>&1
+264934 reads; of these:
+  264934 (100.00%) were paired; of these:
+    251316 (94.86%) aligned concordantly 0 times
+    10509 (3.97%) aligned concordantly exactly 1 time
+    3109 (1.17%) aligned concordantly >1 times
+5.14% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/C01_S25.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/C01_S25_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/C01_S25_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/C01_S25.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/C01_S25_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/C01_S25_metagenomic.2" 2>&1
+Loading database information... done.
+251316 sequences (49.94 Mbp) processed in 1.227s (12293.6 Kseq/m, 2442.80 Mbp/m).
+  119862 sequences classified (47.69%)
+  131454 sequences unclassified (52.31%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/C01_S25.k2report -o ../long_SG/processed_data/metagenomic/bracken/C01_S25.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/C01_S25.k2report
+PROGRAM START TIME: 06-23-2025 00:52:58
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/C01_S25.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 6618 
+	  >> Number of species with reads > threshold: 176 
+	  >> Number of species with reads < threshold: 6442 
+    >>> Total reads in sample: 251316
+	  >> Total reads kept at species level (reads > threshold): 61917
+	  >> Total reads discarded (species reads < threshold): 22889
+	  >> Reads distributed: 31724
+	  >> Reads not distributed (eg. no species above threshold): 3332
+	  >> Unclassified reads: 131454
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/C01_S25.bracken
+PROGRAM END TIME: 06-23-2025 00:53:07
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/C01_S25.krona.html...
+✅  Krona plot generated.
+
+Processing sample: C02_S26
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/C02_S26_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/C02_S26_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/C02_S26_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/C02_S26_human.sam" 2>&1
+312210 reads; of these:
+  312210 (100.00%) were paired; of these:
+    246251 (78.87%) aligned concordantly 0 times
+    52896 (16.94%) aligned concordantly exactly 1 time
+    13063 (4.18%) aligned concordantly >1 times
+21.13% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/C02_S26.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/C02_S26_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/C02_S26_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/C02_S26.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/C02_S26_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/C02_S26_metagenomic.2" 2>&1
+Loading database information... done.
+246251 sequences (51.34 Mbp) processed in 1.220s (12106.3 Kseq/m, 2524.00 Mbp/m).
+  194937 sequences classified (79.16%)
+  51314 sequences unclassified (20.84%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/C02_S26.k2report -o ../long_SG/processed_data/metagenomic/bracken/C02_S26.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/C02_S26.k2report
+PROGRAM START TIME: 06-23-2025 00:55:55
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/C02_S26.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 5291 
+	  >> Number of species with reads > threshold: 167 
+	  >> Number of species with reads < threshold: 5124 
+    >>> Total reads in sample: 246251
+	  >> Total reads kept at species level (reads > threshold): 126096
+	  >> Total reads discarded (species reads < threshold): 15992
+	  >> Reads distributed: 50114
+	  >> Reads not distributed (eg. no species above threshold): 2735
+	  >> Unclassified reads: 51314
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/C02_S26.bracken
+PROGRAM END TIME: 06-23-2025 00:56:04
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/C02_S26.krona.html...
+✅  Krona plot generated.
+
+Processing sample: C03_S27
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/C03_S27_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/C03_S27_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/C03_S27_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/C03_S27_human.sam" 2>&1
+321540 reads; of these:
+  321540 (100.00%) were paired; of these:
+    314137 (97.70%) aligned concordantly 0 times
+    5930 (1.84%) aligned concordantly exactly 1 time
+    1473 (0.46%) aligned concordantly >1 times
+2.30% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/C03_S27.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/C03_S27_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/C03_S27_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/C03_S27.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/C03_S27_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/C03_S27_metagenomic.2" 2>&1
+Loading database information... done.
+314137 sequences (69.07 Mbp) processed in 1.374s (13715.9 Kseq/m, 3015.64 Mbp/m).
+  90415 sequences classified (28.78%)
+  223722 sequences unclassified (71.22%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/C03_S27.k2report -o ../long_SG/processed_data/metagenomic/bracken/C03_S27.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/C03_S27.k2report
+PROGRAM START TIME: 06-23-2025 00:58:27
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/C03_S27.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 7518 
+	  >> Number of species with reads > threshold: 160 
+	  >> Number of species with reads < threshold: 7358 
+    >>> Total reads in sample: 314137
+	  >> Total reads kept at species level (reads > threshold): 38285
+	  >> Total reads discarded (species reads < threshold): 28212
+	  >> Reads distributed: 18318
+	  >> Reads not distributed (eg. no species above threshold): 5600
+	  >> Unclassified reads: 223722
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/C03_S27.bracken
+PROGRAM END TIME: 06-23-2025 00:58:36
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/C03_S27.krona.html...
+✅  Krona plot generated.
+
+Processing sample: C04_S28
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/C04_S28_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/C04_S28_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/C04_S28_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/C04_S28_human.sam" 2>&1
+149800 reads; of these:
+  149800 (100.00%) were paired; of these:
+    112274 (74.95%) aligned concordantly 0 times
+    30914 (20.64%) aligned concordantly exactly 1 time
+    6612 (4.41%) aligned concordantly >1 times
+25.05% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/C04_S28.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/C04_S28_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/C04_S28_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/C04_S28.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/C04_S28_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/C04_S28_metagenomic.2" 2>&1
+Loading database information... done.
+112274 sequences (28.80 Mbp) processed in 0.921s (7311.8 Kseq/m, 1875.54 Mbp/m).
+  69023 sequences classified (61.48%)
+  43251 sequences unclassified (38.52%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/C04_S28.k2report -o ../long_SG/processed_data/metagenomic/bracken/C04_S28.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/C04_S28.k2report
+PROGRAM START TIME: 06-23-2025 01:01:01
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/C04_S28.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 4604 
+	  >> Number of species with reads > threshold: 105 
+	  >> Number of species with reads < threshold: 4499 
+    >>> Total reads in sample: 112274
+	  >> Total reads kept at species level (reads > threshold): 39425
+	  >> Total reads discarded (species reads < threshold): 14410
+	  >> Reads distributed: 13011
+	  >> Reads not distributed (eg. no species above threshold): 2177
+	  >> Unclassified reads: 43251
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/C04_S28.bracken
+PROGRAM END TIME: 06-23-2025 01:01:10
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/C04_S28.krona.html...
+✅  Krona plot generated.
+
+Processing sample: C05_S29
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/C05_S29_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/C05_S29_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/C05_S29_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/C05_S29_human.sam" 2>&1
+358576 reads; of these:
+  358576 (100.00%) were paired; of these:
+    265795 (74.13%) aligned concordantly 0 times
+    74057 (20.65%) aligned concordantly exactly 1 time
+    18724 (5.22%) aligned concordantly >1 times
+25.87% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/C05_S29.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/C05_S29_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/C05_S29_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/C05_S29.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/C05_S29_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/C05_S29_metagenomic.2" 2>&1
+Loading database information... done.
+265795 sequences (53.26 Mbp) processed in 1.155s (13809.2 Kseq/m, 2766.93 Mbp/m).
+  236395 sequences classified (88.94%)
+  29400 sequences unclassified (11.06%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/C05_S29.k2report -o ../long_SG/processed_data/metagenomic/bracken/C05_S29.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/C05_S29.k2report
+PROGRAM START TIME: 06-23-2025 01:04:15
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/C05_S29.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 3843 
+	  >> Number of species with reads > threshold: 114 
+	  >> Number of species with reads < threshold: 3729 
+    >>> Total reads in sample: 265795
+	  >> Total reads kept at species level (reads > threshold): 159500
+	  >> Total reads discarded (species reads < threshold): 10050
+	  >> Reads distributed: 65051
+	  >> Reads not distributed (eg. no species above threshold): 1794
+	  >> Unclassified reads: 29400
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/C05_S29.bracken
+PROGRAM END TIME: 06-23-2025 01:04:24
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/C05_S29.krona.html...
+✅  Krona plot generated.
+
+Processing sample: C06_S30
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/C06_S30_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/C06_S30_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/C06_S30_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/C06_S30_human.sam" 2>&1
+267920 reads; of these:
+  267920 (100.00%) were paired; of these:
+    222248 (82.95%) aligned concordantly 0 times
+    36453 (13.61%) aligned concordantly exactly 1 time
+    9219 (3.44%) aligned concordantly >1 times
+17.05% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/C06_S30.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/C06_S30_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/C06_S30_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/C06_S30.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/C06_S30_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/C06_S30_metagenomic.2" 2>&1
+Loading database information... done.
+222248 sequences (45.94 Mbp) processed in 1.026s (12991.1 Kseq/m, 2685.32 Mbp/m).
+  174425 sequences classified (78.48%)
+  47823 sequences unclassified (21.52%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/C06_S30.k2report -o ../long_SG/processed_data/metagenomic/bracken/C06_S30.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/C06_S30.k2report
+PROGRAM START TIME: 06-23-2025 01:07:04
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/C06_S30.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 3813 
+	  >> Number of species with reads > threshold: 121 
+	  >> Number of species with reads < threshold: 3692 
+    >>> Total reads in sample: 222248
+	  >> Total reads kept at species level (reads > threshold): 120289
+	  >> Total reads discarded (species reads < threshold): 10792
+	  >> Reads distributed: 41362
+	  >> Reads not distributed (eg. no species above threshold): 1982
+	  >> Unclassified reads: 47823
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/C06_S30.bracken
+PROGRAM END TIME: 06-23-2025 01:07:13
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/C06_S30.krona.html...
+✅  Krona plot generated.
+
+Processing sample: C07_S31
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/C07_S31_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/C07_S31_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/C07_S31_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/C07_S31_human.sam" 2>&1
+179787 reads; of these:
+  179787 (100.00%) were paired; of these:
+    163752 (91.08%) aligned concordantly 0 times
+    12138 (6.75%) aligned concordantly exactly 1 time
+    3897 (2.17%) aligned concordantly >1 times
+8.92% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/C07_S31.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/C07_S31_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/C07_S31_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/C07_S31.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/C07_S31_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/C07_S31_metagenomic.2" 2>&1
+Loading database information... done.
+163752 sequences (30.68 Mbp) processed in 0.784s (12529.8 Kseq/m, 2347.70 Mbp/m).
+  109338 sequences classified (66.77%)
+  54414 sequences unclassified (33.23%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/C07_S31.k2report -o ../long_SG/processed_data/metagenomic/bracken/C07_S31.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/C07_S31.k2report
+PROGRAM START TIME: 06-23-2025 01:09:34
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/C07_S31.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 4732 
+	  >> Number of species with reads > threshold: 102 
+	  >> Number of species with reads < threshold: 4630 
+    >>> Total reads in sample: 163752
+	  >> Total reads kept at species level (reads > threshold): 62764
+	  >> Total reads discarded (species reads < threshold): 13404
+	  >> Reads distributed: 30399
+	  >> Reads not distributed (eg. no species above threshold): 2771
+	  >> Unclassified reads: 54414
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/C07_S31.bracken
+PROGRAM END TIME: 06-23-2025 01:09:43
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/C07_S31.krona.html...
+✅  Krona plot generated.
+
+Processing sample: C08_S32
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/C08_S32_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/C08_S32_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/C08_S32_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/C08_S32_human.sam" 2>&1
+424911 reads; of these:
+  424911 (100.00%) were paired; of these:
+    331408 (77.99%) aligned concordantly 0 times
+    72662 (17.10%) aligned concordantly exactly 1 time
+    20841 (4.90%) aligned concordantly >1 times
+22.01% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/C08_S32.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/C08_S32_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/C08_S32_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/C08_S32.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/C08_S32_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/C08_S32_metagenomic.2" 2>&1
+Loading database information... done.
+331408 sequences (64.05 Mbp) processed in 1.488s (13363.1 Kseq/m, 2582.78 Mbp/m).
+  304554 sequences classified (91.90%)
+  26854 sequences unclassified (8.10%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/C08_S32.k2report -o ../long_SG/processed_data/metagenomic/bracken/C08_S32.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/C08_S32.k2report
+PROGRAM START TIME: 06-23-2025 01:13:03
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/C08_S32.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 3204 
+	  >> Number of species with reads > threshold: 88 
+	  >> Number of species with reads < threshold: 3116 
+    >>> Total reads in sample: 331408
+	  >> Total reads kept at species level (reads > threshold): 209179
+	  >> Total reads discarded (species reads < threshold): 8144
+	  >> Reads distributed: 85649
+	  >> Reads not distributed (eg. no species above threshold): 1582
+	  >> Unclassified reads: 26854
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/C08_S32.bracken
+PROGRAM END TIME: 06-23-2025 01:13:12
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/C08_S32.krona.html...
+✅  Krona plot generated.
+
+Processing sample: C09_S33
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/C09_S33_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/C09_S33_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/C09_S33_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/C09_S33_human.sam" 2>&1
+151277 reads; of these:
+  151277 (100.00%) were paired; of these:
+    138072 (91.27%) aligned concordantly 0 times
+    10386 (6.87%) aligned concordantly exactly 1 time
+    2819 (1.86%) aligned concordantly >1 times
+8.73% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/C09_S33.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/C09_S33_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/C09_S33_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/C09_S33.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/C09_S33_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/C09_S33_metagenomic.2" 2>&1
+Loading database information... done.
+138072 sequences (27.78 Mbp) processed in 0.714s (11602.1 Kseq/m, 2334.12 Mbp/m).
+  88819 sequences classified (64.33%)
+  49253 sequences unclassified (35.67%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/C09_S33.k2report -o ../long_SG/processed_data/metagenomic/bracken/C09_S33.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/C09_S33.k2report
+PROGRAM START TIME: 06-23-2025 01:15:32
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/C09_S33.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 4909 
+	  >> Number of species with reads > threshold: 104 
+	  >> Number of species with reads < threshold: 4805 
+    >>> Total reads in sample: 138072
+	  >> Total reads kept at species level (reads > threshold): 50778
+	  >> Total reads discarded (species reads < threshold): 14178
+	  >> Reads distributed: 20991
+	  >> Reads not distributed (eg. no species above threshold): 2872
+	  >> Unclassified reads: 49253
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/C09_S33.bracken
+PROGRAM END TIME: 06-23-2025 01:15:41
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/C09_S33.krona.html...
+✅  Krona plot generated.
+
+Processing sample: C10_S34
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/C10_S34_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/C10_S34_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/C10_S34_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/C10_S34_human.sam" 2>&1
+177746 reads; of these:
+  177746 (100.00%) were paired; of these:
+    159578 (89.78%) aligned concordantly 0 times
+    14734 (8.29%) aligned concordantly exactly 1 time
+    3434 (1.93%) aligned concordantly >1 times
+10.22% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/C10_S34.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/C10_S34_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/C10_S34_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/C10_S34.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/C10_S34_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/C10_S34_metagenomic.2" 2>&1
+Loading database information... done.
+159578 sequences (34.84 Mbp) processed in 0.917s (10439.9 Kseq/m, 2279.56 Mbp/m).
+  98586 sequences classified (61.78%)
+  60992 sequences unclassified (38.22%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/C10_S34.k2report -o ../long_SG/processed_data/metagenomic/bracken/C10_S34.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/C10_S34.k2report
+PROGRAM START TIME: 06-23-2025 01:18:03
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/C10_S34.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 5845 
+	  >> Number of species with reads > threshold: 109 
+	  >> Number of species with reads < threshold: 5736 
+    >>> Total reads in sample: 159578
+	  >> Total reads kept at species level (reads > threshold): 52076
+	  >> Total reads discarded (species reads < threshold): 19058
+	  >> Reads distributed: 23763
+	  >> Reads not distributed (eg. no species above threshold): 3689
+	  >> Unclassified reads: 60992
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/C10_S34.bracken
+PROGRAM END TIME: 06-23-2025 01:18:12
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/C10_S34.krona.html...
+✅  Krona plot generated.
+
+Processing sample: C11_S35
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/C11_S35_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/C11_S35_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/C11_S35_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/C11_S35_human.sam" 2>&1
+412642 reads; of these:
+  412642 (100.00%) were paired; of these:
+    412512 (99.97%) aligned concordantly 0 times
+    80 (0.02%) aligned concordantly exactly 1 time
+    50 (0.01%) aligned concordantly >1 times
+0.03% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/C11_S35.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/C11_S35_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/C11_S35_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/C11_S35.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/C11_S35_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/C11_S35_metagenomic.2" 2>&1
+Loading database information... done.
+412512 sequences (90.08 Mbp) processed in 1.623s (15253.8 Kseq/m, 3330.85 Mbp/m).
+  86380 sequences classified (20.94%)
+  326132 sequences unclassified (79.06%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/C11_S35.k2report -o ../long_SG/processed_data/metagenomic/bracken/C11_S35.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/C11_S35.k2report
+PROGRAM START TIME: 06-23-2025 01:20:30
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/C11_S35.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 8297 
+	  >> Number of species with reads > threshold: 195 
+	  >> Number of species with reads < threshold: 8102 
+    >>> Total reads in sample: 412512
+	  >> Total reads kept at species level (reads > threshold): 19146
+	  >> Total reads discarded (species reads < threshold): 39180
+	  >> Reads distributed: 19330
+	  >> Reads not distributed (eg. no species above threshold): 8724
+	  >> Unclassified reads: 326132
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/C11_S35.bracken
+PROGRAM END TIME: 06-23-2025 01:20:39
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/C11_S35.krona.html...
+✅  Krona plot generated.
+
+Processing sample: C12_S36
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/C12_S36_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/C12_S36_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/C12_S36_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/C12_S36_human.sam" 2>&1
+252754 reads; of these:
+  252754 (100.00%) were paired; of these:
+    212079 (83.91%) aligned concordantly 0 times
+    33131 (13.11%) aligned concordantly exactly 1 time
+    7544 (2.98%) aligned concordantly >1 times
+16.09% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/C12_S36.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/C12_S36_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/C12_S36_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/C12_S36.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/C12_S36_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/C12_S36_metagenomic.2" 2>&1
+Loading database information... done.
+212079 sequences (46.17 Mbp) processed in 1.113s (11430.1 Kseq/m, 2488.21 Mbp/m).
+  155548 sequences classified (73.34%)
+  56531 sequences unclassified (26.66%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/C12_S36.k2report -o ../long_SG/processed_data/metagenomic/bracken/C12_S36.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/C12_S36.k2report
+PROGRAM START TIME: 06-23-2025 01:23:13
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/C12_S36.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 4824 
+	  >> Number of species with reads > threshold: 156 
+	  >> Number of species with reads < threshold: 4668 
+    >>> Total reads in sample: 212079
+	  >> Total reads kept at species level (reads > threshold): 105962
+	  >> Total reads discarded (species reads < threshold): 13174
+	  >> Reads distributed: 33754
+	  >> Reads not distributed (eg. no species above threshold): 2658
+	  >> Unclassified reads: 56531
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/C12_S36.bracken
+PROGRAM END TIME: 06-23-2025 01:23:22
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/C12_S36.krona.html...
+✅  Krona plot generated.
+
+Processing sample: ENC_S37
+
+Removing human reads with Bowtie2...
+bowtie2 -x "/scratch/prj/aef_forensic_metagenomics/data/bowtie_index/GRCh38_noalt_as/GRCh38_noalt_as" -p 8 -q --end-to-end --very-sensitive --no-mixed --no-discordant 	                -1 "../long_SG/processed_data/trimmed/paired/ENC_S37_R1_paired.fastq.gz" -2 "../long_SG/processed_data/trimmed/paired/ENC_S37_R2_paired.fastq.gz" 	                --un-conc "../long_SG/processed_data/metagenomic/filtered_fastq/ENC_S37_metagenomic" -S "../long_SG/processed_data/human/aligned_sam/ENC_S37_human.sam" 2>&1
+7019 reads; of these:
+  7019 (100.00%) were paired; of these:
+    6861 (97.75%) aligned concordantly 0 times
+    106 (1.51%) aligned concordantly exactly 1 time
+    52 (0.74%) aligned concordantly >1 times
+2.25% overall alignment rate
+✅  Host reads removed.
+
+Classifying metagenomic reads with Kraken2...
+kraken2 --db "../data/databases/k2_core_nt_20240904/" --threads 8 --report "../long_SG/results/runs/run_2206_2352/reports/ENC_S37.k2report" 		--report-minimizer-data --paired --minimum-hit-groups 3 		--classified-out "../long_SG/processed_data/metagenomic/classified/ENC_S37_classified#.fastq" --unclassified-out "../long_SG/processed_data/metagenomic/unclassified/ENC_S37_unclassified#.fastq" 		--output "../long_SG/processed_data/metagenomic/kraken2/ENC_S37.kraken2" --use-names "../long_SG/processed_data/metagenomic/filtered_fastq/ENC_S37_metagenomic.1" "../long_SG/processed_data/metagenomic/filtered_fastq/ENC_S37_metagenomic.2" 2>&1
+Loading database information... done.
+6861 sequences (1.05 Mbp) processed in 0.141s (2918.6 Kseq/m, 447.67 Mbp/m).
+  3555 sequences classified (51.81%)
+  3306 sequences unclassified (48.19%)
+✅  Classification complete.
+
+Estimating species abundance with Bracken...
+ >> Checking for Valid Options...
+ >> Running Bracken 
+      >> python src/est_abundance.py -i ../long_SG/results/runs/run_2206_2352/reports/ENC_S37.k2report -o ../long_SG/processed_data/metagenomic/bracken/ENC_S37.bracken -k ../data/databases/k2_core_nt_20240904/database100mers.kmer_distrib -l S -t 40
+>> Checking report file: ../long_SG/results/runs/run_2206_2352/reports/ENC_S37.k2report
+PROGRAM START TIME: 06-23-2025 01:25:28
+BRACKEN SUMMARY (Kraken report: ../long_SG/results/runs/run_2206_2352/reports/ENC_S37.k2report)
+    >>> Threshold: 40 
+    >>> Number of species in sample: 262 
+	  >> Number of species with reads > threshold: 3 
+	  >> Number of species with reads < threshold: 259 
+    >>> Total reads in sample: 6861
+	  >> Total reads kept at species level (reads > threshold): 2223
+	  >> Total reads discarded (species reads < threshold): 514
+	  >> Reads distributed: 636
+	  >> Reads not distributed (eg. no species above threshold): 182
+	  >> Unclassified reads: 3306
+BRACKEN OUTPUT PRODUCED: ../long_SG/processed_data/metagenomic/bracken/ENC_S37.bracken
+PROGRAM END TIME: 06-23-2025 01:25:37
+  Bracken complete.
+✅  Abundance estimated.
+
+Generating Krona visualization...
+Writing ../long_SG/results/runs/run_2206_2352/krona/ENC_S37.krona.html...
+✅  Krona plot generated.
+
+Metagenomic classification completed in: 02:00:21
+
+Calculating read length statistics...
+A01_S1_metagenomic.1: mean = 108.3, median = 101.0
+A02_S2_metagenomic.1: mean = 117.3, median = 112.0
+A03_S3_metagenomic.1: mean = 115.1, median = 110.0
+A04_S4_metagenomic.1: mean = 115.2, median = 111.0
+A05_S5_metagenomic.1: mean = 113.2, median = 108.0
+A06_S6_metagenomic.1: mean = 118.5, median = 114.0
+A07_S7_metagenomic.1: mean = 112.0, median = 105.0
+A08_S8_metagenomic.1: mean = 99.8, median = 90.0
+A09_S9_metagenomic.1: mean = 121.8, median = 120.0
+A10_S10_metagenomic.1: mean = 126.9, median = 126.0
+A11_S11_metagenomic.1: mean = 152.9, median = 177.0
+A12_S12_metagenomic.1: mean = 115.3, median = 110.0
+B01_S13_metagenomic.1: mean = 123.8, median = 121.0
+B02_S14_metagenomic.1: mean = 127.8, median = 127.0
+B03_S15_metagenomic.1: mean = 125.8, median = 125.0
+B04_S16_metagenomic.1: mean = 123.0, median = 120.0
+B05_S17_metagenomic.1: mean = 113.2, median = 106.0
+B06_S18_metagenomic.1: mean = 131.3, median = 131.0
+B07_S19_metagenomic.1: mean = 125.4, median = 123.0
+B08_S20_metagenomic.1: mean = 117.8, median = 112.0
+B09_S21_metagenomic.1: mean = 116.5, median = 110.0
+B10_S22_metagenomic.1: mean = 135.9, median = 139.0
+B11_S23_metagenomic.1: mean = 115.9, median = 110.0
+B12_S24_metagenomic.1: mean = 121.4, median = 119.0
+Blank_S38_metagenomic.1: mean = 70.7, median = 60.0
+C01_S25_metagenomic.1: mean = 115.9, median = 109.0
+C02_S26_metagenomic.1: mean = 123.8, median = 121.0
+C03_S27_metagenomic.1: mean = 133.2, median = 134.0
+C04_S28_metagenomic.1: mean = 165.2, median = 193.0
+C05_S29_metagenomic.1: mean = 117.0, median = 113.0
+C06_S30_metagenomic.1: mean = 122.2, median = 118.0
+C07_S31_metagenomic.1: mean = 107.7, median = 97.0
+C08_S32_metagenomic.1: mean = 110.9, median = 105.0
+C09_S33_metagenomic.1: mean = 118.5, median = 112.0
+C10_S34_metagenomic.1: mean = 131.5, median = 131.0
+C11_S35_metagenomic.1: mean = 132.0, median = 132.0
+C12_S36_metagenomic.1: mean = 132.0, median = 134.0
+ENC_S37_metagenomic.1: mean = 82.2, median = 73.0
+A01_S1_metagenomic.2: mean = 80.4, median = 93.0
+A02_S2_metagenomic.2: mean = 84.1, median = 94.0
+A03_S3_metagenomic.2: mean = 84.0, median = 94.0
+A04_S4_metagenomic.2: mean = 84.5, median = 94.0
+A05_S5_metagenomic.2: mean = 82.8, median = 94.0
+A06_S6_metagenomic.2: mean = 84.6, median = 94.0
+A07_S7_metagenomic.2: mean = 82.1, median = 94.0
+A08_S8_metagenomic.2: mean = 77.7, median = 89.0
+A09_S9_metagenomic.2: mean = 84.8, median = 94.0
+A10_S10_metagenomic.2: mean = 86.5, median = 94.0
+A11_S11_metagenomic.2: mean = 88.7, median = 95.0
+A12_S12_metagenomic.2: mean = 82.7, median = 94.0
+B01_S13_metagenomic.2: mean = 84.7, median = 94.0
+B02_S14_metagenomic.2: mean = 84.5, median = 94.0
+B03_S15_metagenomic.2: mean = 84.3, median = 94.0
+B04_S16_metagenomic.2: mean = 83.9, median = 94.0
+B05_S17_metagenomic.2: mean = 82.2, median = 94.0
+B06_S18_metagenomic.2: mean = 87.7, median = 94.0
+B07_S19_metagenomic.2: mean = 86.0, median = 94.0
+B08_S20_metagenomic.2: mean = 83.2, median = 94.0
+B09_S21_metagenomic.2: mean = 83.3, median = 94.0
+B10_S22_metagenomic.2: mean = 87.5, median = 94.0
+B11_S23_metagenomic.2: mean = 81.9, median = 94.0
+B12_S24_metagenomic.2: mean = 83.9, median = 94.0
+Blank_S38_metagenomic.2: mean = 63.8, median = 60.0
+C01_S25_metagenomic.2: mean = 82.8, median = 94.0
+C02_S26_metagenomic.2: mean = 84.7, median = 94.0
+C03_S27_metagenomic.2: mean = 86.7, median = 94.0
+C04_S28_metagenomic.2: mean = 91.4, median = 95.0
+C05_S29_metagenomic.2: mean = 83.4, median = 94.0
+C06_S30_metagenomic.2: mean = 84.5, median = 94.0
+C07_S31_metagenomic.2: mean = 79.7, median = 93.0
+C08_S32_metagenomic.2: mean = 82.3, median = 94.0
+C09_S33_metagenomic.2: mean = 82.7, median = 94.0
+C10_S34_metagenomic.2: mean = 86.9, median = 94.0
+C11_S35_metagenomic.2: mean = 86.4, median = 94.0
+C12_S36_metagenomic.2: mean = 85.7, median = 94.0
+ENC_S37_metagenomic.2: mean = 71.2, median = 72.0
+A01_S1_classified_1.fastq: mean = 110.3, median = 103.0
+A01_S1_classified_2.fastq: mean = 81.6, median = 94.0
+A02_S2_classified_1.fastq: mean = 119.2, median = 114.0
+A02_S2_classified_2.fastq: mean = 85.0, median = 94.0
+A03_S3_classified_1.fastq: mean = 116.4, median = 112.0
+A03_S3_classified_2.fastq: mean = 84.8, median = 94.0
+A04_S4_classified_1.fastq: mean = 116.4, median = 112.0
+A04_S4_classified_2.fastq: mean = 85.2, median = 94.0
+A05_S5_classified_1.fastq: mean = 114.8, median = 110.0
+A05_S5_classified_2.fastq: mean = 83.7, median = 94.0
+A06_S6_classified_1.fastq: mean = 120.0, median = 116.0
+A06_S6_classified_2.fastq: mean = 85.5, median = 94.0
+A07_S7_classified_1.fastq: mean = 114.5, median = 108.0
+A07_S7_classified_2.fastq: mean = 83.4, median = 94.0
+A08_S8_classified_1.fastq: mean = 102.0, median = 92.0
+A08_S8_classified_2.fastq: mean = 79.0, median = 91.0
+A09_S9_classified_1.fastq: mean = 123.2, median = 121.0
+A09_S9_classified_2.fastq: mean = 85.6, median = 94.0
+A10_S10_classified_1.fastq: mean = 127.9, median = 127.0
+A10_S10_classified_2.fastq: mean = 87.1, median = 94.0
+A11_S11_classified_1.fastq: mean = 153.7, median = 177.0
+A11_S11_classified_2.fastq: mean = 89.2, median = 95.0
+A12_S12_classified_1.fastq: mean = 117.1, median = 113.0
+A12_S12_classified_2.fastq: mean = 83.7, median = 94.0
+B01_S13_classified_1.fastq: mean = 125.1, median = 123.0
+B01_S13_classified_2.fastq: mean = 85.5, median = 94.0
+B02_S14_classified_1.fastq: mean = 129.5, median = 129.0
+B02_S14_classified_2.fastq: mean = 85.2, median = 94.0
+B03_S15_classified_1.fastq: mean = 127.5, median = 127.0
+B03_S15_classified_2.fastq: mean = 85.2, median = 94.0
+B04_S16_classified_1.fastq: mean = 124.7, median = 122.0
+B04_S16_classified_2.fastq: mean = 84.9, median = 94.0
+B05_S17_classified_1.fastq: mean = 114.8, median = 108.0
+B05_S17_classified_2.fastq: mean = 83.1, median = 94.0
+B06_S18_classified_1.fastq: mean = 132.4, median = 133.0
+B06_S18_classified_2.fastq: mean = 88.3, median = 94.0
+B07_S19_classified_1.fastq: mean = 126.7, median = 125.0
+B07_S19_classified_2.fastq: mean = 86.7, median = 94.0
+B08_S20_classified_1.fastq: mean = 119.5, median = 114.0
+B08_S20_classified_2.fastq: mean = 84.0, median = 94.0
+B09_S21_classified_1.fastq: mean = 118.0, median = 112.0
+B09_S21_classified_2.fastq: mean = 84.1, median = 94.0
+B10_S22_classified_1.fastq: mean = 136.8, median = 140.0
+B10_S22_classified_2.fastq: mean = 88.0, median = 94.0
+B11_S23_classified_1.fastq: mean = 117.6, median = 113.0
+B11_S23_classified_2.fastq: mean = 82.8, median = 94.0
+B12_S24_classified_1.fastq: mean = 122.9, median = 121.0
+B12_S24_classified_2.fastq: mean = 84.7, median = 94.0
+Blank_S38_classified_1.fastq: mean = 82.0, median = 70.0
+Blank_S38_classified_2.fastq: mean = 70.3, median = 69.0
+C01_S25_classified_1.fastq: mean = 120.0, median = 115.0
+C01_S25_classified_2.fastq: mean = 84.8, median = 94.0
+C02_S26_classified_1.fastq: mean = 125.5, median = 123.0
+C02_S26_classified_2.fastq: mean = 85.7, median = 94.0
+C03_S27_classified_1.fastq: mean = 139.1, median = 142.0
+C03_S27_classified_2.fastq: mean = 88.8, median = 95.0
+C04_S28_classified_1.fastq: mean = 166.2, median = 192.0
+C04_S28_classified_2.fastq: mean = 91.9, median = 95.0
+C05_S29_classified_1.fastq: mean = 118.3, median = 115.0
+C05_S29_classified_2.fastq: mean = 84.3, median = 94.0
+C06_S30_classified_1.fastq: mean = 123.1, median = 119.0
+C06_S30_classified_2.fastq: mean = 85.4, median = 94.0
+C07_S31_classified_1.fastq: mean = 111.2, median = 102.0
+C07_S31_classified_2.fastq: mean = 81.6, median = 94.0
+C08_S32_classified_1.fastq: mean = 112.6, median = 107.0
+C08_S32_classified_2.fastq: mean = 83.3, median = 94.0
+C09_S33_classified_1.fastq: mean = 122.8, median = 119.0
+C09_S33_classified_2.fastq: mean = 84.7, median = 94.0
+C10_S34_classified_1.fastq: mean = 134.0, median = 134.0
+C10_S34_classified_2.fastq: mean = 88.0, median = 94.0
+C11_S35_classified_1.fastq: mean = 146.9, median = 155.0
+C11_S35_classified_2.fastq: mean = 90.3, median = 95.0
+C12_S36_classified_1.fastq: mean = 133.8, median = 136.0
+C12_S36_classified_2.fastq: mean = 86.7, median = 94.0
+ENC_S37_classified_1.fastq: mean = 91.5, median = 83.0
+ENC_S37_classified_2.fastq: mean = 76.3, median = 82.0
+A01_S1_unclassified_1.fastq: mean = 83.1, median = 63.0
+A01_S1_unclassified_2.fastq: mean = 65.9, median = 62.0
+A02_S2_unclassified_1.fastq: mean = 96.2, median = 83.0
+A02_S2_unclassified_2.fastq: mean = 73.8, median = 82.0
+A03_S3_unclassified_1.fastq: mean = 102.8, median = 91.0
+A03_S3_unclassified_2.fastq: mean = 76.5, median = 90.0
+A04_S4_unclassified_1.fastq: mean = 101.8, median = 91.0
+A04_S4_unclassified_2.fastq: mean = 76.5, median = 89.0
+A05_S5_unclassified_1.fastq: mean = 92.7, median = 76.0
+A05_S5_unclassified_2.fastq: mean = 71.0, median = 75.0
+A06_S6_unclassified_1.fastq: mean = 103.5, median = 90.0
+A06_S6_unclassified_2.fastq: mean = 76.2, median = 89.0
+A07_S7_unclassified_1.fastq: mean = 94.4, median = 80.0
+A07_S7_unclassified_2.fastq: mean = 73.2, median = 79.0
+A08_S8_unclassified_1.fastq: mean = 75.6, median = 58.0
+A08_S8_unclassified_2.fastq: mean = 63.1, median = 58.0
+A09_S9_unclassified_1.fastq: mean = 104.4, median = 90.0
+A09_S9_unclassified_2.fastq: mean = 74.9, median = 89.0
+A10_S10_unclassified_1.fastq: mean = 119.9, median = 115.0
+A10_S10_unclassified_2.fastq: mean = 82.2, median = 94.0
+A11_S11_unclassified_1.fastq: mean = 147.3, median = 188.0
+A11_S11_unclassified_2.fastq: mean = 84.8, median = 94.0
+A12_S12_unclassified_1.fastq: mean = 96.1, median = 79.0
+A12_S12_unclassified_2.fastq: mean = 71.9, median = 78.0
+B01_S13_unclassified_1.fastq: mean = 116.4, median = 110.0
+B01_S13_unclassified_2.fastq: mean = 80.1, median = 94.0
+B02_S14_unclassified_1.fastq: mean = 104.3, median = 88.0
+B02_S14_unclassified_2.fastq: mean = 73.7, median = 87.0
+B03_S15_unclassified_1.fastq: mean = 111.2, median = 100.0
+B03_S15_unclassified_2.fastq: mean = 76.9, median = 93.0
+B04_S16_unclassified_1.fastq: mean = 107.0, median = 94.0
+B04_S16_unclassified_2.fastq: mean = 75.7, median = 91.0
+B05_S17_unclassified_1.fastq: mean = 92.2, median = 75.0
+B05_S17_unclassified_2.fastq: mean = 70.6, median = 74.0
+B06_S18_unclassified_1.fastq: mean = 122.5, median = 119.0
+B06_S18_unclassified_2.fastq: mean = 83.3, median = 94.0
+B07_S19_unclassified_1.fastq: mean = 114.4, median = 107.0
+B07_S19_unclassified_2.fastq: mean = 80.4, median = 94.0
+B08_S20_unclassified_1.fastq: mean = 97.6, median = 82.0
+B08_S20_unclassified_2.fastq: mean = 73.1, median = 82.0
+B09_S21_unclassified_1.fastq: mean = 95.5, median = 81.0
+B09_S21_unclassified_2.fastq: mean = 72.6, median = 80.0
+B10_S22_unclassified_1.fastq: mean = 126.0, median = 126.0
+B10_S22_unclassified_2.fastq: mean = 82.1, median = 94.0
+B11_S23_unclassified_1.fastq: mean = 95.8, median = 76.0
+B11_S23_unclassified_2.fastq: mean = 70.5, median = 75.0
+B12_S24_unclassified_1.fastq: mean = 100.5, median = 83.0
+B12_S24_unclassified_2.fastq: mean = 72.5, median = 81.0
+Blank_S38_unclassified_1.fastq: mean = 63.6, median = 55.0
+Blank_S38_unclassified_2.fastq: mean = 59.7, median = 55.0
+C01_S25_unclassified_1.fastq: mean = 112.1, median = 103.0
+C01_S25_unclassified_2.fastq: mean = 81.0, median = 94.0
+C02_S26_unclassified_1.fastq: mean = 117.5, median = 109.0
+C02_S26_unclassified_2.fastq: mean = 80.8, median = 94.0
+C03_S27_unclassified_1.fastq: mean = 130.8, median = 130.0
+C03_S27_unclassified_2.fastq: mean = 85.8, median = 94.0
+C04_S28_unclassified_1.fastq: mean = 163.5, median = 193.0
+C04_S28_unclassified_2.fastq: mean = 90.5, median = 95.0
+C05_S29_unclassified_1.fastq: mean = 106.0, median = 93.0
+C05_S29_unclassified_2.fastq: mean = 75.9, median = 91.0
+C06_S30_unclassified_1.fastq: mean = 118.9, median = 112.0
+C06_S30_unclassified_2.fastq: mean = 81.2, median = 94.0
+C07_S31_unclassified_1.fastq: mean = 100.7, median = 87.0
+C07_S31_unclassified_2.fastq: mean = 75.9, median = 86.0
+C08_S32_unclassified_1.fastq: mean = 92.6, median = 76.0
+C08_S32_unclassified_2.fastq: mean = 71.3, median = 75.0
+C09_S33_unclassified_1.fastq: mean = 110.7, median = 100.0
+C09_S33_unclassified_2.fastq: mean = 79.1, median = 93.0
+C10_S34_unclassified_1.fastq: mean = 127.4, median = 125.0
+C10_S34_unclassified_2.fastq: mean = 85.0, median = 94.0
+C11_S35_unclassified_1.fastq: mean = 128.0, median = 125.0
+C11_S35_unclassified_2.fastq: mean = 85.4, median = 94.0
+C12_S36_unclassified_1.fastq: mean = 127.0, median = 126.0
+C12_S36_unclassified_2.fastq: mean = 82.7, median = 94.0
+ENC_S37_unclassified_1.fastq: mean = 72.1, median = 64.0
+ENC_S37_unclassified_2.fastq: mean = 65.8, median = 64.0
+✅ Statistics generated.
+
+Combining Bracken reports...
+✅ Bracken reports combined.
+
+Copying SLURM job logs...
+✅ SLURM job logs copied.
+
+================================================= COMPARISON TO GROUND TRUTH =================================================
+
+================================================= METAGENOMIC DIVERSITY ANALYSIS =================================================
+Calculating alpha and beta diversity...
+✅ Alpha diversity calculated.
+✅ Beta diversity heatmap generated.
+✅  Diversity analysis completed successfully.
+
+====================================================== HUMAN DNA ANALYSIS ======================================================
+✅ 'metagenomics' environment activated successfully.
+
+Processing host reads from sample: A01_S1_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: A02_S2_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: A03_S3_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: A04_S4_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: A05_S5_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: A06_S6_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: A07_S7_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: A08_S8_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: A09_S9_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: A10_S10_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: A11_S11_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: A12_S12_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: B01_S13_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: B02_S14_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: B03_S15_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: B04_S16_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: B05_S17_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: B06_S18_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: B07_S19_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: B08_S20_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: B09_S21_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: B10_S22_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: B11_S23_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: B12_S24_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: Blank_S38_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: C01_S25_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: C02_S26_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: C03_S27_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: C04_S28_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: C05_S29_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: C06_S30_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: C07_S31_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: C08_S32_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: C09_S33_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: C10_S34_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: C11_S35_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: C12_S36_human
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+Processing host reads from sample: ENC_S37_human
+✅ BAM sorted.
+✅ BAM indexed.
+✅ BED created.
+
+=============================================== KARYOTYPE ================================================
+Finding overlapping regions across samples...
+✅ BED files combined.
+Generating karyotype plot...
+null device 
+          1 
+✅ Karyotype plot generated.
+✅ Filtered common intervals saved.
+
+================================================== BLAST ==================================================
+
+Extracting sequences for BLAST query...

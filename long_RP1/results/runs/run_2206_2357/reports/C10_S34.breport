@@ -1,0 +1,118 @@
+100.00	99908	0	R	1	root
+100.00	99908	0	R1	131567	  cellular organisms
+79.21	79136	0	D	2	    Bacteria
+79.21	79136	0	P	1224	      Pseudomonadota
+77.16	77093	0	C	1236	        Gammaproteobacteria
+77.16	77093	0	O	2887326	          Moraxellales
+77.16	77093	0	F	468	            Moraxellaceae
+75.13	75058	0	G	475	              Moraxella
+75.13	75058	75058	S	34062	                Moraxella osloensis
+2.04	2034	0	G	469	              Acinetobacter
+2.04	2034	0	G1	196816	                unclassified Acinetobacter
+2.04	2034	2034	S	3045147	                  Acinetobacter sp. KCTC 92772
+2.05	2043	0	C	28216	        Betaproteobacteria
+2.05	2043	0	O	80840	          Burkholderiales
+1.94	1936	0	F	119060	            Burkholderiaceae
+1.94	1936	0	G	1822464	              Paraburkholderia
+1.94	1936	1936	S	984307	                Paraburkholderia kururiensis
+0.11	107	0	F	506	            Alcaligenaceae
+0.11	107	0	G	517	              Bordetella
+0.11	107	0	G1	2630031	                unclassified Bordetella
+0.11	107	107	S	1746199	                  Bordetella sp. N
+20.79	20772	0	D	2759	    Eukaryota
+20.79	20772	0	D1	33154	      Opisthokonta
+19.92	19900	0	K	33208	        Metazoa
+19.92	19900	0	K1	6072	          Eumetazoa
+19.92	19900	0	K2	33213	            Bilateria
+19.75	19728	0	K3	33511	              Deuterostomia
+19.75	19728	0	P	7711	                Chordata
+19.75	19728	0	P1	89593	                  Craniata
+19.75	19728	0	P2	7742	                    Vertebrata
+19.75	19728	0	P3	7776	                      Gnathostomata
+19.75	19728	0	P4	117570	                        Teleostomi
+19.75	19728	0	P5	117571	                          Euteleostomi
+19.66	19638	0	P6	8287	                            Sarcopterygii
+19.66	19638	0	P7	1338369	                              Dipnotetrapodomorpha
+19.66	19638	0	P8	32523	                                Tetrapoda
+19.66	19638	0	P9	32524	                                  Amniota
+13.95	13936	0	P10	8457	                                    Sauropsida
+13.95	13936	0	P11	32561	                                      Sauria
+13.95	13936	0	P12	1329799	                                        Archelosauria
+13.95	13936	0	P13	8492	                                          Archosauria
+13.95	13936	0	P14	436486	                                            Dinosauria
+13.95	13936	0	P15	436489	                                              Saurischia
+13.95	13936	0	P16	436491	                                                Theropoda
+13.95	13936	0	P17	436492	                                                  Coelurosauria
+13.95	13936	0	C	8782	                                                    Aves
+13.95	13936	0	C1	8825	                                                      Neognathae
+13.95	13936	0	C2	3078114	                                                        Neoaves
+13.95	13936	0	C3	3073812	                                                          Aequornithes
+13.95	13936	0	O	9230	                                                            Sphenisciformes
+13.95	13936	0	F	9231	                                                              Spheniscidae
+13.95	13936	0	G	9232	                                                                Aptenodytes
+13.95	13936	13936	S	9233	                                                                  Aptenodytes forsteri
+5.71	5702	0	C	40674	                                    Mammalia
+5.71	5702	0	C1	32525	                                      Theria
+5.71	5702	0	C2	9347	                                        Eutheria
+5.71	5702	0	C3	1437010	                                          Boreoeutheria
+5.71	5702	0	C4	314146	                                            Euarchontoglires
+5.71	5702	0	O	9443	                                              Primates
+5.71	5702	0	O1	376913	                                                Haplorrhini
+5.71	5702	0	O2	314293	                                                  Simiiformes
+5.71	5702	0	O3	9526	                                                    Catarrhini
+5.71	5702	0	O4	314295	                                                      Hominoidea
+5.71	5702	0	F	9604	                                                        Hominidae
+5.71	5702	0	F1	207598	                                                          Homininae
+5.71	5702	0	G	9605	                                                            Homo
+5.71	5702	5702	S	9606	                                                              Homo sapiens
+0.09	89	0	P6	7898	                            Actinopterygii
+0.09	89	0	C	186623	                              Actinopteri
+0.09	89	0	C1	41665	                                Neopterygii
+0.09	89	0	C2	32443	                                  Teleostei
+0.09	89	0	C3	1489341	                                    Osteoglossocephalai
+0.09	89	0	C4	186625	                                      Clupeocephala
+0.09	89	0	C5	186634	                                        Otomorpha
+0.09	89	0	C6	32519	                                          Ostariophysi
+0.09	89	0	C7	186626	                                            Otophysi
+0.09	89	0	C8	186628	                                              Characiphysae
+0.09	89	0	O	7991	                                                Characiformes
+0.09	89	0	O1	1489739	                                                  Characoidei
+0.09	89	0	F	7992	                                                    Characidae
+0.09	89	0	F1	42595	                                                      Stethaprioninae
+0.09	89	0	G	7993	                                                        Astyanax
+0.09	89	89	S	142828	                                                          Astyanax altiparanae
+0.17	172	0	K3	33317	              Protostomia
+0.17	172	0	K4	1206794	                Ecdysozoa
+0.17	172	0	K5	88770	                  Panarthropoda
+0.17	172	0	P	6656	                    Arthropoda
+0.17	172	0	P1	197563	                      Mandibulata
+0.17	172	0	P2	197562	                        Pancrustacea
+0.17	172	0	P3	6960	                          Hexapoda
+0.17	172	0	C	50557	                            Insecta
+0.17	172	0	C1	85512	                              Dicondylia
+0.17	172	0	C2	7496	                                Pterygota
+0.17	172	0	C3	33340	                                  Neoptera
+0.17	172	0	C4	33392	                                    Endopterygota
+0.17	172	0	C5	85604	                                      Amphiesmenoptera
+0.17	172	0	O	7088	                                        Lepidoptera
+0.17	172	0	O1	41191	                                          Glossata
+0.17	172	0	O2	41196	                                            Neolepidoptera
+0.17	172	0	O3	41197	                                              Heteroneura
+0.17	172	0	O4	37567	                                                Ditrysia
+0.17	172	0	O5	104431	                                                  Obtectomera
+0.17	172	0	O6	37572	                                                    Papilionoidea
+0.17	172	0	F	7114	                                                      Pieridae
+0.17	172	0	F1	42449	                                                        Pierinae
+0.17	172	0	F2	152601	                                                          Pierini
+0.17	172	0	G	7115	                                                            Pieris
+0.17	172	172	S	78633	                                                              Pieris napi
+0.87	871	0	K	4751	        Fungi
+0.87	871	0	K1	451864	          Dikarya
+0.87	871	0	P	5204	            Basidiomycota
+0.87	871	0	P1	452284	              Ustilaginomycotina
+0.87	871	0	C	1538075	                Malasseziomycetes
+0.87	871	0	O	162474	                  Malasseziales
+0.87	871	0	F	742845	                    Malasseziaceae
+0.87	871	0	G	55193	                      Malassezia
+0.82	823	823	S	76775	                        Malassezia restricta
+0.05	48	48	S	76773	                        Malassezia globosa
