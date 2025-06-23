@@ -34,6 +34,7 @@ if (is.null(opt$reports)) {
   # Load and clean combined Bracken reports
   if (file.exists(opt$reports)) {
     read_counts <- read_csv(opt$reports, show_col_types = FALSE) %>%
+      filter(species != "Homo sapiens") %>%
       mutate(
         species = recode(species,  # Rename species to reflect current NCBI taxonomy.
                          "Bacillus subtilis" = "Bacillus spizizenii",
@@ -42,9 +43,12 @@ if (is.null(opt$reports)) {
                          "Lactobacillus fermentum" = "Limosilactobacillus fermentum",
                          "Cryptococcus gattii VGII" = "Cryptococcus deuterogattii")) %>%
       replace(is.na(.), 0) %>%
-      mutate(total_abundance = rowSums(across(-species))) %>%
-      slice_max(total_abundance, n = min(55,  nrow(.))) %>%  # Handle fewer than 80 species gracefully
-      select(-total_abundance)
+      #mutate(total_abundance = rowSums(across(-species))) %>%
+      #slice_max(total_abundance, n = min(55,  nrow(.))) %>%  # Handle fewer than 80 species gracefully
+      #select(-total_abundance) 
+      mutate(variability = apply(select(., -species), 1, sd)) %>%
+      slice_max(variability, n = min(55, nrow(.))) %>%  # Select most variable species
+      select(-variability)
     
     total_reads <- colSums(select(read_counts, -species))  # Total reads per sample (excluding species column).
   } else {
@@ -243,9 +247,12 @@ compute_taxon_differences <- function(taxonomy_lookup, species_differences, rank
 
 # Generate a heatmap for the provided abundance difference data
 plot_heatmap <- function(data, y_var, title, lower_bound, upper_bound, threshold) {
-  ggplot(data, aes(x = sample, y = .data[[y_var]], fill = value)) +
+  
+  n_samples <- length(unique(data$sample))
+  
+  base_plot <- ggplot(data, aes(x = sample, y = .data[[y_var]], fill = value)) +
     geom_tile(color = "grey80") +  # Add grid borders
-    geom_text(aes(label = sprintf("%+.2f", value)), color = "white", size = 2) +
+  #  geom_text(aes(label = sprintf("%+.2f", value)), color = "white", size = 2) +
     scale_fill_viridis_c(option = "D", limits = c(lower_bound, upper_bound), oob = squish) + 
     scale_color_identity() +  # Maintain original colors
     labs(title = title, fill="Legend") + 
@@ -256,6 +263,12 @@ plot_heatmap <- function(data, y_var, title, lower_bound, upper_bound, threshold
       axis.text = element_text(size = 8),  # ✅ Missing comma added here
       axis.text.x = element_text(angle = 45, hjust = 1, family = "mono", face = "bold"),  
       axis.text.y = element_text(family = "mono", face = "bold"), legend.position = "none")
+  
+  if (n_samples < 20) {
+    base_plot <- base_plot + geom_text(aes(label = sprintf("%+.2f", value)), color = "white", size = 2)
+  }
+  
+  return(base_plot)
 }
 
 # ---------- MAIN CALCULATIONS ----------

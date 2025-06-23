@@ -400,20 +400,21 @@ df <- tibble(
   L2_Distance = c(dist_clas, dist_lib)
 )
 
-normalization <- ggplot(df, aes(x = Database, y = L2_Distance, fill = Normalization)) +
-  geom_boxplot(position = position_dodge(width = 0.8), alpha = 0.4) +
-  geom_jitter(aes(group = Normalization, color = Database), position = position_jitterdodge(jitter.width = 0.2, dodge.width = 0.8), size = 1) +
+normalization <- ggplot(df, aes(x = Database, y = L2_Distance, fill = Database, alpha = Normalization)) +
+  geom_boxplot(position = position_dodge(width = 0.8))+
   stat_compare_means(method = "wilcox.test",label = "p.format",paired = FALSE, size = 3) +
   labs(x = "Database", y = "L2 Distance (logCPM)") +
-  scale_color_manual(values = db_colors) +
-  scale_fill_manual(values = c("/Classified" = "#000075", "/Total" = "#800000"), name = "Normalization Method") +
+  scale_fill_manual(values = db_colors) +
+  scale_alpha_manual(values = c("/Classified" = 1, "/Total" = 0.3))+
+  guides(alpha = guide_legend(
+    override.aes = list(fill = "grey20", color = "black", size = 0.5, shape = NA ))) +
   theme_minimal() +
   theme(plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
         axis.text.x = element_blank(), legend.title = element_text(size = 9, face = "bold"), 
         legend.text = element_text(size = 8))
 
-ggsave(file.path(results_dir, "normalization_boxplot.jpg"), normalization,  width = 10, height = 5, dpi = 600)
+ggsave(file.path(results_dir, "normalization_boxplot.jpg"), normalization,  width = 10, height = 4, dpi = 600)
 
 #=========================================================
 # Database Precision and Recall 
