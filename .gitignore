@@ -1,12 +1,8 @@
 # ----------------------------------------
 # Genomic data files
 # ----------------------------------------
-.*
-*.bam
-*.bam.bai
 *.fasta.unique
 *.fasta
-*.bed
 
 # Ignore FASTA/FASTQ and related raw sequencing files
 *.fastq
@@ -19,11 +15,11 @@
 
 # Ignore intermediate alignment files
 *.sam
-*human.bam
+*.bam
+*.bam.bai
 
 # Ignore all BED files except 'common_intersections.bed'
 *.bed
-!**/intervals.bed
 
 # ----------------------------------------
 # Analysis output files
