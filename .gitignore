@@ -4,10 +4,9 @@
 .*
 *.bam
 *.bam.bai
-*long_RP1/results/host_dna_analysis/blast_query.fasta
-*long_SG/processed_data/human/bed_files/intervals.bed
-*long_RP1/results/host_dna_analysis/blast_query.fasta.unique
-*long_SG/processed_data/human/bed_files/intervals.bed
+*.fasta.unique
+*.fasta
+*.bed
 
 # Ignore FASTA/FASTQ and related raw sequencing files
 *.fastq
