@@ -63,6 +63,14 @@ echo "✅ Karyotype plot generated."
 awk '$4 > 1' "$BED_FILES_DIR/intervals.bed" > "$BED_FILES_DIR/common_intervals.bed" || { echo "❌ Failed to filter common intervals."; exit 1; }
 echo "✅ Filtered common intervals saved."
 
+# If common_intervals.bed only contains a header (i.e. no actual regions), fall back to intervals.bed
+if [ "$(tail -n +2 "$BED_FILES_DIR/common_intervals.bed" | wc -l)" -eq 0 ]; then
+    echo "⚠️ No common intervals found. Using all intervals instead."
+    cp "$BED_FILES_DIR/intervals.bed" "$BED_FILES_DIR/common_intervals.bed" || { echo "❌ Failed to copy intervals."; exit 1; }
+else
+    echo "✅ Filtered common intervals saved."
+fi
+
 echo -e "\n================================================== BLAST =================================================="
     
 # Prepare BLAST query file
