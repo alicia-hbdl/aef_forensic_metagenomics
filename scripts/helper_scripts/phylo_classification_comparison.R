@@ -121,6 +121,8 @@ taxonomy_data <- keep(taxonomy_full, ~
                         all(!is.na(.$name[.$rank %in% c("species", "genus", "phylum")]))
 )
 
+taxonomy_data <- taxonomy_data[!duplicated(taxonomy_data)]
+
 # Initialize dropped_text with a default message
 dropped_text <- "No species were dropped due to incomplete taxonomy."
 
@@ -175,6 +177,10 @@ if (length(missing_species) > 0) {
     ground_truth,
     tibble(species = missing_species, abundance = 0))
 }
+
+duplicated_names <- names(taxonomy_data)[duplicated(names(taxonomy_data))]
+cat("Duplicate species names in taxonomy_data:\n")
+print(duplicated_names)
 
 # Build tree from taxonomy
 tree <- class2tree(taxonomy_data)$phylo  
@@ -297,8 +303,6 @@ upper_bound <- max(species_differences$value, na.rm = TRUE)
 threshold <- abs(lower_bound+0.25*(upper_bound-lower_bound))
 
 # Generate heatmaps for species, genus, and phylum levels
-print(unique(species_differences$species))
-
 species_heatmap <- plot_heatmap(species_differences, "species", "Species", lower_bound, upper_bound, threshold)
 genus_heatmap <- plot_heatmap(genus_differences, "genus", "Genus", lower_bound, upper_bound, threshold)
 phylum_heatmap <- plot_heatmap(phylum_differences, "phylum", "Phylum", lower_bound, upper_bound, threshold)
