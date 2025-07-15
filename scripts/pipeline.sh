@@ -3,7 +3,7 @@
 #SBATCH --job-name=pipeline
 #SBATCH --output=logs/pipeline_%j.log
 #SBATCH --error=logs/pipeline_%j.err
-#SBATCH --time=10:00:00
+#SBATCH --time=48:00:00
 #SBATCH --mem=60G  
 #SBATCH --cpus-per-task=8 
 #SBATCH --ntasks=1  
