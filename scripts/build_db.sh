@@ -10,7 +10,7 @@
 #SBATCH --time=12:00:00
 #SBATCH --partition=cpu
 
-# Usage: ./build_db.sh [-g/--genomes <path/to/genomes>] [-d/--database <path/to/database>]
+# Usage: ./build_db.sh [-g/--genomes <genomes_dir>] [-d/--database <database_dir>]
 
 set -e  # Exit on error 
 set -x  # Print each command and its arguments as it is executed for debugging 
