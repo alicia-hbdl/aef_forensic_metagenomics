@@ -254,6 +254,23 @@ compute_taxon_differences <- function(taxonomy_lookup, species_differences, rank
 # Generate a heatmap for the provided abundance difference data
 plot_heatmap <- function(data, y_var, title, lower_bound, upper_bound, threshold) {
   
+  # Convert data to wide format for clustering
+  data_wide <- data %>%
+    select(sample, !!sym(y_var), value) %>%
+    pivot_wider(names_from = sample, values_from = value) %>%
+    column_to_rownames(var = y_var) %>%
+    as.matrix()
+  
+  data_wide[is.na(data_wide)] <- 0
+  
+  # Cluster columns (samples)
+  col_dist <- dist(t(data_wide))
+  col_cluster <- hclust(col_dist)
+  clustered_samples <- colnames(data_wide)[col_cluster$order]
+  
+  # Reorder factor levels for ggplot
+  data$sample <- factor(data$sample, levels = clustered_samples)
+  
   n_samples <- length(unique(data$sample))
   
   base_plot <- ggplot(data, aes(x = sample, y = .data[[y_var]], fill = value)) +

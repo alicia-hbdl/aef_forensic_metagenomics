@@ -58,7 +58,7 @@ df_long <- melt(matrix, na.rm = TRUE)
 heatmap <- ggplot(df_long, aes(Var1, Var2, fill = value)) +
   geom_tile(color = "white") +
   scale_fill_viridis_c(option = "D", name = "β-diversity") + 
-  labs(x = NULL, y = NULL, title = "Jaccard Similarity Heatmap") +
+  labs(x = NULL, y = NULL, title = "β-diversity Similarity Heatmap") +
   theme_minimal() +
   theme(aspect.ratio=1, plot.title = element_text(size = 10, face = "bold"),
         axis.text = element_text(size = 8), axis.title = element_text(size = 9),
