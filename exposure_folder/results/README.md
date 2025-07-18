@@ -1,0 +1,1 @@
+This folder pertains to the proof-of-concept study. Samples were collected from three individuals after contact with specific foods or animals, with the aim of detecting these sources in the final metagenomic results.
