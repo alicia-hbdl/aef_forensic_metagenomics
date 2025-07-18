@@ -1,8 +1,3 @@
-
-*/long_SG
-*/long_RP1
-
-
 # ----------------------------------------
 # Genomic data files
 # ----------------------------------------
@@ -23,8 +18,13 @@
 *.bam
 *.bam.bai
 
-# Ignore all BED files except 'common_intersections.bed'
+# Ignore all BED files 
 *.bed
+
+
+# Ignore compressed files
+*.zip
+*.gz
 
 # ----------------------------------------
 # Analysis output files
@@ -60,7 +60,3 @@ bowtie_index/
 .Rhistory
 .Rproj.user/
 *.Rproj
-
-# Ignore compressed files
-*.zip
-*.gz
