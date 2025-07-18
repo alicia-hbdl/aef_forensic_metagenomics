@@ -1,0 +1,1 @@
+This folder contains the log and error files generated during pipeline execution. Pipeline log files are moved to the result directories upon successful completion; otherwise, they remain here to allow evaluation of what went wrong.
